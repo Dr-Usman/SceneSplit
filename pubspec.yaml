@@ -1,0 +1,46 @@
+name: scene_split
+description: "A Splitwise-inspired expense splitting app"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Database
+  drift: ^2.22.1
+  drift_flutter: ^0.2.4
+  path_provider: ^2.1.5
+
+  # UUID
+  uuid: ^4.5.1
+
+  # Routing
+  go_router: ^14.8.1
+
+  # UI
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.16
+  intl: ^0.19.0
+  cupertino_icons: ^1.0.8
+
+  # Utils
+  collection: ^1.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  drift_dev: ^2.22.1
+  build_runner: ^2.5.4
+  riverpod_generator: ^2.6.2
+
+flutter:
+  uses-material-design: true
