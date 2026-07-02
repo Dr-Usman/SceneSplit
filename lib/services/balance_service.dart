@@ -1,143 +1,84 @@
-import '../models/expense_model.dart';
-import '../models/expense_split_model.dart';
-import '../models/settlement_model.dart';
-import '../models/balance_model.dart';
+import '../database/app_database.dart';
 
-class BalanceService {
-  /// Calculate net balances from expenses and settlements
-  Map<String, double> calculateNetBalances({
-    required List<ExpenseModel> expenses,
-    required List<ExpenseSplitModel> allSplits,
-    required List<SettlementModel> settlements,
-    String? groupId,
+/// Pure balance math. All amounts in integer cents.
+abstract class BalanceService {
+  /// Net balance per user: positive = others owe them, negative = they owe.
+  ///
+  /// An expense credits the payer with the full amount and debits each
+  /// participant with their share. A settlement from A to B credits A
+  /// (paying back debt) and debits B.
+  static Map<String, int> netBalances({
+    required List<Expense> expenses,
+    required List<ExpenseSplit> splits,
+    required List<Settlement> settlements,
   }) {
-    final balances = <String, double>{};
+    final net = <String, int>{};
 
-    // Add amounts paid by each user
-    for (final expense in expenses) {
-      if (groupId != null && expense.groupId != groupId) continue;
-      balances[expense.paidBy] =
-          (balances[expense.paidBy] ?? 0) + expense.amount;
+    for (final e in expenses) {
+      net[e.paidById] = (net[e.paidById] ?? 0) + e.amountCents;
+    }
+    for (final s in splits) {
+      net[s.userId] = (net[s.userId] ?? 0) - s.amountCents;
+    }
+    for (final s in settlements) {
+      net[s.fromUserId] = (net[s.fromUserId] ?? 0) + s.amountCents;
+      net[s.toUserId] = (net[s.toUserId] ?? 0) - s.amountCents;
+    }
+    return net;
+  }
+
+  /// Simplified pairwise debts from net balances (minimum transactions style).
+  static List<PairwiseDebt> simplifyDebts(Map<String, int> net) {
+    final creditors = <String, int>{};
+    final debtors = <String, int>{};
+
+    for (final e in net.entries) {
+      if (e.value > 0) creditors[e.key] = e.value;
+      if (e.value < 0) debtors[e.key] = -e.value;
     }
 
-    // Subtract amounts owed by each user (their splits)
-    for (final split in allSplits) {
-      // Find the expense for this split
-      final expense = expenses.firstWhere(
-        (e) => e.id == split.expenseId,
-        orElse: () => throw Exception('Expense not found for split'),
+    final result = <PairwiseDebt>[];
+    final creditorList = creditors.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    final debtorList = debtors.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    var ci = 0;
+    var di = 0;
+    while (ci < creditorList.length && di < debtorList.length) {
+      final amount = creditorList[ci].value < debtorList[di].value
+          ? creditorList[ci].value
+          : debtorList[di].value;
+      if (amount > 0) {
+        result.add(PairwiseDebt(
+          fromUserId: debtorList[di].key,
+          toUserId: creditorList[ci].key,
+          amountCents: amount,
+        ));
+      }
+      creditorList[ci] = MapEntry(
+        creditorList[ci].key,
+        creditorList[ci].value - amount,
       );
-      if (groupId != null && expense.groupId != groupId) continue;
-      balances[split.userId] = (balances[split.userId] ?? 0) - split.amount;
+      debtorList[di] = MapEntry(
+        debtorList[di].key,
+        debtorList[di].value - amount,
+      );
+      if (creditorList[ci].value == 0) ci++;
+      if (debtorList[di].value == 0) di++;
     }
-
-    // Apply settlements
-    for (final settlement in settlements) {
-      if (groupId != null && settlement.groupId != groupId) continue;
-      // Settlement: fromUser paid toUser
-      // fromUser's balance increases (they paid)
-      // toUser's balance decreases (they received)
-      balances[settlement.fromUser] =
-          (balances[settlement.fromUser] ?? 0) + settlement.amount;
-      balances[settlement.toUser] =
-          (balances[settlement.toUser] ?? 0) - settlement.amount;
-    }
-
-    return balances;
+    return result;
   }
+}
 
-  /// Calculate pairwise balances between users
-  List<BalanceModel> calculatePairwiseBalances({
-    required List<ExpenseModel> expenses,
-    required List<ExpenseSplitModel> allSplits,
-    required List<SettlementModel> settlements,
-    String? groupId,
-  }) {
-    final pairwiseBalances = <String, double>{};
+class PairwiseDebt {
+  final String fromUserId;
+  final String toUserId;
+  final int amountCents;
 
-    // Process expenses
-    for (final expense in expenses) {
-      if (groupId != null && expense.groupId != groupId) continue;
-
-      // Get splits for this expense
-      final expenseSplits = allSplits
-          .where((s) => s.expenseId == expense.id)
-          .toList();
-
-      for (final split in expenseSplits) {
-        if (split.userId == expense.paidBy) continue;
-
-        // split.userId owes expense.paidBy
-        final key = '${split.userId}_${expense.paidBy}';
-        pairwiseBalances[key] = (pairwiseBalances[key] ?? 0) - split.amount;
-
-        final reverseKey = '${expense.paidBy}_${split.userId}';
-        pairwiseBalances[reverseKey] =
-            (pairwiseBalances[reverseKey] ?? 0) + split.amount;
-      }
-    }
-
-    // Process settlements
-    for (final settlement in settlements) {
-      if (groupId != null && settlement.groupId != groupId) continue;
-
-      final key = '${settlement.fromUser}_${settlement.toUser}';
-      pairwiseBalances[key] = (pairwiseBalances[key] ?? 0) + settlement.amount;
-
-      final reverseKey = '${settlement.toUser}_${settlement.fromUser}';
-      pairwiseBalances[reverseKey] =
-          (pairwiseBalances[reverseKey] ?? 0) - settlement.amount;
-    }
-
-    // Convert to BalanceModel list
-    final balances = <BalanceModel>[];
-    final processed = <String>{};
-
-    for (final entry in pairwiseBalances.entries) {
-      if (processed.contains(entry.key)) continue;
-
-      final parts = entry.key.split('_');
-      final userId = parts[0];
-      final otherUserId = parts[1];
-      final reverseKey = '${otherUserId}_$userId';
-
-      // Skip zero balances
-      if (entry.value.abs() < 0.01) {
-        processed.add(entry.key);
-        processed.add(reverseKey);
-        continue;
-      }
-
-      // Only add positive balances (one direction)
-      if (entry.value > 0) {
-        balances.add(
-          BalanceModel(
-            userId: userId,
-            otherUserId: otherUserId,
-            amount: entry.value,
-            groupId: groupId,
-          ),
-        );
-      }
-
-      processed.add(entry.key);
-      processed.add(reverseKey);
-    }
-
-    return balances;
-  }
-
-  /// Get total amount a user owes across all balances
-  double getTotalOwing(String userId, List<BalanceModel> balances) {
-    return balances
-        .where((b) => b.userId == userId && b.isOwing)
-        .fold(0.0, (sum, b) => sum + b.absoluteAmount);
-  }
-
-  /// Get total amount a user is owed across all balances
-  double getTotalOwed(String userId, List<BalanceModel> balances) {
-    return balances
-        .where((b) => b.userId == userId && b.isOwed)
-        .fold(0.0, (sum, b) => sum + b.absoluteAmount);
-  }
+  const PairwiseDebt({
+    required this.fromUserId,
+    required this.toUserId,
+    required this.amountCents,
+  });
 }

@@ -1,104 +1,131 @@
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
-import '../core/enums/group_type.dart';
 import '../database/app_database.dart';
-import '../database/daos/groups_dao.dart';
-import '../models/group_model.dart';
-import '../models/user_model.dart';
 
-class GroupRepository {
-  final GroupsDao _groupsDao;
-  static const _uuid = Uuid();
+const _uuid = Uuid();
 
-  GroupRepository(this._groupsDao);
+/// Creates a group with the given members. [existingUserIds] are users
+/// already in the database (always includes the current user);
+/// [newMemberNames] are typed names that become new reusable users.
+Future<String> createGroup(
+  AppDatabase db, {
+  required String name,
+  required String emoji,
+  required String currencyCode,
+  required List<String> existingUserIds,
+  required List<String> newMemberNames,
+}) async {
+  final groupId = _uuid.v4();
 
-  Stream<List<GroupModel>> watchAllGroups() {
-    return _groupsDao.watchAllGroups().map(
-      (rows) => rows.map((row) => GroupModel.fromRow(row)).toList(),
-    );
-  }
+  await db.transaction(() async {
+    await db.into(db.groups).insert(GroupsCompanion.insert(
+          id: groupId,
+          name: name,
+          emoji: Value(emoji),
+          currencyCode: Value(currencyCode),
+        ));
 
-  Future<List<GroupModel>> getAllGroups() async {
-    final rows = await _groupsDao.getAllGroups();
-    return rows.map((row) => GroupModel.fromRow(row)).toList();
-  }
+    final memberIds = [...existingUserIds];
 
-  Future<GroupModel?> getGroupById(String id) async {
-    final row = await _groupsDao.getGroupById(id);
-    if (row == null) return null;
-    final members = await _groupsDao.getGroupMembers(id);
-    return GroupModel.fromRow(
-      row,
-      members: members.map((m) => UserModel.fromRow(m)).toList(),
-    );
-  }
-
-  Future<GroupModel> createGroup({
-    required String name,
-    String? description,
-    GroupType type = GroupType.custom,
-    String? avatarUrl,
-    List<String> memberIds = const [],
-  }) async {
-    final now = DateTime.now();
-    final id = _uuid.v4();
-    final group = GroupsCompanion.insert(
-      id: id,
-      name: name,
-      description: Value(description),
-      type: Value(type.name),
-      avatarUrl: Value(avatarUrl),
-      createdAt: Value(now),
-      updatedAt: Value(now),
-    );
-
-    await _groupsDao.insertGroup(group);
-
-    // Add members
-    for (final memberId in memberIds) {
-      await _groupsDao.addMember(id, memberId);
+    for (var i = 0; i < newMemberNames.length; i++) {
+      final userId = _uuid.v4();
+      await db.into(db.users).insert(UsersCompanion.insert(
+            id: userId,
+            name: newMemberNames[i],
+            colorIndex: Value((existingUserIds.length + i) % 8),
+          ));
+      memberIds.add(userId);
     }
 
-    final createdGroup = await _groupsDao.getGroupById(id);
-    final members = await _groupsDao.getGroupMembers(id);
-    return GroupModel.fromRow(
-      createdGroup!,
-      members: members.map((m) => UserModel.fromRow(m)).toList(),
-    );
-  }
+    for (final userId in memberIds) {
+      await db.into(db.groupMembers).insert(GroupMembersCompanion.insert(
+            id: _uuid.v4(),
+            groupId: groupId,
+            userId: userId,
+          ));
+    }
+  });
 
-  Future<void> updateGroup(GroupModel group) async {
-    final companion = GroupsCompanion(
-      id: Value(group.id),
-      name: Value(group.name),
-      description: Value(group.description),
-      type: Value(group.type.name),
-      avatarUrl: Value(group.avatarUrl),
-      isSynced: Value(group.isSynced),
-      createdAt: Value(group.createdAt),
-      updatedAt: Value(DateTime.now()),
-    );
-    await _groupsDao.updateGroup(companion);
-  }
+  return groupId;
+}
 
-  Future<void> deleteGroup(String id) async {
-    await _groupsDao.deleteGroup(id);
-  }
+Future<void> updateGroup(
+  AppDatabase db, {
+  required String groupId,
+  required String name,
+  required String emoji,
+}) async {
+  await (db.update(db.groups)..where((g) => g.id.equals(groupId))).write(
+    GroupsCompanion(
+      name: Value(name),
+      emoji: Value(emoji),
+    ),
+  );
+}
 
-  Future<void> addMember(String groupId, String userId) async {
-    await _groupsDao.addMember(groupId, userId);
-  }
+/// Syncs group members: keeps [memberUserIds], adds [newMemberNames] as users.
+Future<void> syncGroupMembers(
+  AppDatabase db, {
+  required String groupId,
+  required List<String> memberUserIds,
+  required List<String> newMemberNames,
+  required int colorOffset,
+}) async {
+  await db.transaction(() async {
+    final allIds = [...memberUserIds];
 
-  Future<void> removeMember(String groupId, String userId) async {
-    await _groupsDao.removeMember(groupId, userId);
-  }
+    for (var i = 0; i < newMemberNames.length; i++) {
+      final userId = _uuid.v4();
+      await db.into(db.users).insert(UsersCompanion.insert(
+            id: userId,
+            name: newMemberNames[i],
+            colorIndex: Value((colorOffset + i) % 8),
+          ));
+      allIds.add(userId);
+    }
 
-  Future<List<String>> getGroupMemberIds(String groupId) async {
-    return await _groupsDao.getGroupMemberIds(groupId);
-  }
+    final existing = await (db.select(db.groupMembers)
+          ..where((m) => m.groupId.equals(groupId)))
+        .get();
+    final existingUserIds = existing.map((m) => m.userId).toSet();
 
-  Stream<List<String>> watchGroupMemberIds(String groupId) {
-    return _groupsDao.watchGroupMemberIds(groupId);
-  }
+    for (final userId in allIds) {
+      if (!existingUserIds.contains(userId)) {
+        await db.into(db.groupMembers).insert(GroupMembersCompanion.insert(
+              id: _uuid.v4(),
+              groupId: groupId,
+              userId: userId,
+            ));
+      }
+    }
+
+    for (final member in existing) {
+      if (!allIds.contains(member.userId)) {
+        await (db.delete(db.groupMembers)
+              ..where((m) => m.id.equals(member.id)))
+            .go();
+      }
+    }
+  });
+}
+
+Future<void> deleteGroup(AppDatabase db, String groupId) async {
+  await db.transaction(() async {
+    final expenses = await (db.select(db.expenses)
+          ..where((e) => e.groupId.equals(groupId)))
+        .get();
+    for (final e in expenses) {
+      await (db.delete(db.expenseSplits)
+            ..where((s) => s.expenseId.equals(e.id)))
+          .go();
+    }
+    await (db.delete(db.expenses)..where((e) => e.groupId.equals(groupId)))
+        .go();
+    await (db.delete(db.settlements)..where((s) => s.groupId.equals(groupId)))
+        .go();
+    await (db.delete(db.groupMembers)..where((m) => m.groupId.equals(groupId)))
+        .go();
+    await (db.delete(db.groups)..where((g) => g.id.equals(groupId))).go();
+  });
 }

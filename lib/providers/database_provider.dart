@@ -1,60 +1,53 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../database/app_database.dart';
-import '../database/daos/daos.dart';
-import '../repositories/repositories.dart';
-import '../services/services.dart';
 
-// Database Provider
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
-  ref.onDispose(() => db.close());
+  ref.onDispose(db.close);
   return db;
 });
 
-// DAO Providers
-final usersDaoProvider = Provider<UsersDao>((ref) {
-  return UsersDao(ref.watch(databaseProvider));
+/// The user of this device (marked isCurrentUser). Null until onboarding done.
+final currentUserProvider = StreamProvider<User?>((ref) {
+  final db = ref.watch(databaseProvider);
+  final query = db.select(db.users)
+    ..where((u) => u.isCurrentUser.equals(true))
+    ..limit(1);
+  return query.watchSingleOrNull();
 });
 
-final groupsDaoProvider = Provider<GroupsDao>((ref) {
-  return GroupsDao(ref.watch(databaseProvider));
+/// App-wide default currency code.
+final currencyCodeProvider = StreamProvider<String>((ref) {
+  final db = ref.watch(databaseProvider);
+  final query = db.select(db.appSettings)..limit(1);
+  return query
+      .watchSingleOrNull()
+      .map((row) => row?.currencyCode ?? 'PKR');
 });
 
-final expensesDaoProvider = Provider<ExpensesDao>((ref) {
-  return ExpensesDao(ref.watch(databaseProvider));
-});
-
-final settlementsDaoProvider = Provider<SettlementsDao>((ref) {
-  return SettlementsDao(ref.watch(databaseProvider));
-});
-
-// Repository Providers
-final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepository(ref.watch(usersDaoProvider));
-});
-
-final groupRepositoryProvider = Provider<GroupRepository>((ref) {
-  return GroupRepository(ref.watch(groupsDaoProvider));
-});
-
-final expenseRepositoryProvider = Provider<ExpenseRepository>((ref) {
-  return ExpenseRepository(ref.watch(expensesDaoProvider));
-});
-
-final settlementRepositoryProvider = Provider<SettlementRepository>((ref) {
-  return SettlementRepository(ref.watch(settlementsDaoProvider));
-});
-
-// Service Providers
-final splitEngineServiceProvider = Provider<SplitEngineService>((ref) {
-  return SplitEngineService();
-});
-
-final balanceServiceProvider = Provider<BalanceService>((ref) {
-  return BalanceService();
-});
-
-final settlementServiceProvider = Provider<SettlementService>((ref) {
-  return SettlementService();
-});
+/// Completes onboarding: creates the device user and saves currency.
+Future<void> completeOnboarding(
+  AppDatabase db, {
+  required String name,
+  required String currencyCode,
+}) async {
+  await db.transaction(() async {
+    await db.into(db.users).insert(
+          UsersCompanion.insert(
+            id: const Uuid().v4(),
+            name: name,
+            isCurrentUser: const Value(true),
+          ),
+        );
+    await db.into(db.appSettings).insert(
+          AppSettingsCompanion.insert(
+            id: const Value(1),
+            currencyCode: Value(currencyCode),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+  });
+}

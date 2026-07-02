@@ -1,108 +1,56 @@
-import 'package:uuid/uuid.dart';
-
-import '../core/enums/split_type.dart';
-import '../models/expense_split_model.dart';
-
-class SplitEngineService {
-  static const _uuid = Uuid();
-
-  /// Calculate splits for an expense based on split type
-  List<ExpenseSplitModel> calculateSplits({
-    required String expenseId,
-    required double totalAmount,
-    required SplitType splitType,
-    required List<String> participantIds,
-    Map<String, double>? exactAmounts,
-    Map<String, double>? percentages,
-  }) {
-    switch (splitType) {
-      case SplitType.equal:
-        return _calculateEqualSplit(expenseId, totalAmount, participantIds);
-      case SplitType.exact:
-        return _calculateExactSplit(expenseId, participantIds, exactAmounts!);
-      case SplitType.percentage:
-        return _calculatePercentageSplit(
-          expenseId,
-          totalAmount,
-          participantIds,
-          percentages!,
-        );
+/// Cent-accurate expense splitting.
+abstract class SplitEngineService {
+  /// Equal split with remainder distributed one cent at a time.
+  static Map<String, int> equalSplit(int totalCents, List<String> userIds) {
+    if (userIds.isEmpty) return {};
+    final n = userIds.length;
+    final base = totalCents ~/ n;
+    var remainder = totalCents - base * n;
+    final result = <String, int>{};
+    for (final id in userIds) {
+      final extra = remainder > 0 ? 1 : 0;
+      if (remainder > 0) remainder--;
+      result[id] = base + extra;
     }
+    return result;
   }
 
-  List<ExpenseSplitModel> _calculateEqualSplit(
-    String expenseId,
-    double totalAmount,
-    List<String> participantIds,
-  ) {
-    final share = totalAmount / participantIds.length;
-    final now = DateTime.now();
+  /// Exact amounts — caller must ensure sum equals total.
+  static Map<String, int> exactSplit(Map<String, int> amountsCents) =>
+      Map.from(amountsCents);
 
-    return participantIds.map((userId) {
-      return ExpenseSplitModel(
-        id: _uuid.v4(),
-        expenseId: expenseId,
-        userId: userId,
-        amount: share,
-        createdAt: now,
-      );
-    }).toList();
-  }
-
-  List<ExpenseSplitModel> _calculateExactSplit(
-    String expenseId,
-    List<String> participantIds,
-    Map<String, double> exactAmounts,
-  ) {
-    final now = DateTime.now();
-
-    return participantIds.map((userId) {
-      return ExpenseSplitModel(
-        id: _uuid.v4(),
-        expenseId: expenseId,
-        userId: userId,
-        amount: exactAmounts[userId] ?? 0,
-        createdAt: now,
-      );
-    }).toList();
-  }
-
-  List<ExpenseSplitModel> _calculatePercentageSplit(
-    String expenseId,
-    double totalAmount,
-    List<String> participantIds,
+  /// Percentage split with cent rounding; remainder to largest shares first.
+  static Map<String, int> percentageSplit(
+    int totalCents,
     Map<String, double> percentages,
   ) {
-    final now = DateTime.now();
-
-    return participantIds.map((userId) {
-      final percentage = percentages[userId] ?? 0;
-      return ExpenseSplitModel(
-        id: _uuid.v4(),
-        expenseId: expenseId,
-        userId: userId,
-        amount: totalAmount * (percentage / 100),
-        percentage: percentage,
-        createdAt: now,
-      );
-    }).toList();
+    if (percentages.isEmpty) return {};
+    final ids = percentages.keys.toList();
+    final raw = <String, double>{};
+    var allocated = 0;
+    for (final id in ids) {
+      final cents = (totalCents * percentages[id]! / 100).floor();
+      raw[id] = cents.toDouble();
+      allocated += cents;
+    }
+    var remainder = totalCents - allocated;
+    final sorted = ids.toList()
+      ..sort((a, b) => percentages[b]!.compareTo(percentages[a]!));
+    var i = 0;
+    while (remainder > 0) {
+      raw[sorted[i % sorted.length]] =
+          raw[sorted[i % sorted.length]]! + 1;
+      remainder--;
+      i++;
+    }
+    return {for (final e in raw.entries) e.key: e.value.toInt()};
   }
 
-  /// Validate splits sum to total amount
-  bool validateSplits(double totalAmount, List<ExpenseSplitModel> splits) {
-    final splitSum = splits.fold(0.0, (sum, split) => sum + split.amount);
-    return (splitSum - totalAmount).abs() < 0.01;
-  }
+  static bool exactSplitsValid(int totalCents, Map<String, int> amounts) =>
+      amounts.values.fold(0, (a, b) => a + b) == totalCents;
 
-  /// Validate percentages sum to 100
-  bool validatePercentages(Map<String, double> percentages) {
-    final sum = percentages.values.fold(0.0, (sum, p) => sum + p);
+  static bool percentageSplitsValid(Map<String, double> percentages) {
+    final sum = percentages.values.fold(0.0, (a, b) => a + b);
     return (sum - 100).abs() < 0.01;
-  }
-
-  /// Calculate equal split amount per person
-  double calculateEqualSplitAmount(double totalAmount, int participantCount) {
-    if (participantCount == 0) return 0;
-    return totalAmount / participantCount;
   }
 }

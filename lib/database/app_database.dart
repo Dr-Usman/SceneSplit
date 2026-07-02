@@ -1,41 +1,35 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'tables/tables.dart';
-import 'daos/daos.dart';
+import 'tables.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [Users, Groups, GroupMembers, Expenses, ExpenseSplits, Settlements],
-  daos: [UsersDao, GroupsDao, ExpensesDao, SettlementsDao],
+  tables: [
+    Users,
+    AppSettings,
+    Groups,
+    GroupMembers,
+    Expenses,
+    ExpenseSplits,
+    Settlements,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
+  AppDatabase() : super(_openConnection());
+
+  AppDatabase.forTesting(super.executor);
 
   @override
   int get schemaVersion => 1;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (Migrator m) async {
-      await m.createAll();
-    },
-    onUpgrade: (Migrator m, int from, int to) async {
-      // Future migrations go here
-    },
-    beforeOpen: (details) async {
-      await customStatement('PRAGMA foreign_keys = ON');
-    },
-  );
+        onCreate: (m) async => m.createAll(),
+      );
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(
-      name: 'scene_split_database',
-      native: const DriftNativeOptions(
-        databaseDirectory: getApplicationSupportDirectory,
-      ),
-    );
+    return driftDatabase(name: 'scene_split');
   }
 }
