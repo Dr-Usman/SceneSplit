@@ -18,6 +18,6 @@ const supportedCurrencies = [
 ];
 
 Currency currencyByCode(String code) => supportedCurrencies.firstWhere(
-      (c) => c.code == code,
-      orElse: () => supportedCurrencies.first,
-    );
+  (c) => c.code == code,
+  orElse: () => supportedCurrencies.first,
+);

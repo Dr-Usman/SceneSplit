@@ -38,8 +38,7 @@ abstract class SplitEngineService {
       ..sort((a, b) => percentages[b]!.compareTo(percentages[a]!));
     var i = 0;
     while (remainder > 0) {
-      raw[sorted[i % sorted.length]] =
-          raw[sorted[i % sorted.length]]! + 1;
+      raw[sorted[i % sorted.length]] = raw[sorted[i % sorted.length]]! + 1;
       remainder--;
       i++;
     }

@@ -23,9 +23,7 @@ final currentUserProvider = StreamProvider<User?>((ref) {
 final currencyCodeProvider = StreamProvider<String>((ref) {
   final db = ref.watch(databaseProvider);
   final query = db.select(db.appSettings)..limit(1);
-  return query
-      .watchSingleOrNull()
-      .map((row) => row?.currencyCode ?? 'PKR');
+  return query.watchSingleOrNull().map((row) => row?.currencyCode ?? 'PKR');
 });
 
 /// Completes onboarding: creates the device user and saves currency.
@@ -35,14 +33,18 @@ Future<void> completeOnboarding(
   required String currencyCode,
 }) async {
   await db.transaction(() async {
-    await db.into(db.users).insert(
+    await db
+        .into(db.users)
+        .insert(
           UsersCompanion.insert(
             id: const Uuid().v4(),
             name: name,
             isCurrentUser: const Value(true),
           ),
         );
-    await db.into(db.appSettings).insert(
+    await db
+        .into(db.appSettings)
+        .insert(
           AppSettingsCompanion.insert(
             id: const Value(1),
             currencyCode: Value(currencyCode),

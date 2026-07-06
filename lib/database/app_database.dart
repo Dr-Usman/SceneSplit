@@ -25,9 +25,8 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   @override
-  MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async => m.createAll(),
-      );
+  MigrationStrategy get migration =>
+      MigrationStrategy(onCreate: (m) async => m.createAll());
 
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'scene_split');

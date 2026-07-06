@@ -65,13 +65,15 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
   final summaries = <GroupSummary>[];
 
   for (final group in groups.value!) {
-    final groupExpenses =
-        allExpenses.where((e) => e.groupId == group.id).toList();
+    final groupExpenses = allExpenses
+        .where((e) => e.groupId == group.id)
+        .toList();
     final groupSplits = [
       for (final e in groupExpenses) ...?splitsByExpense[e.id],
     ];
-    final groupSettlements =
-        allSettlements.where((s) => s.groupId == group.id).toList();
+    final groupSettlements = allSettlements
+        .where((s) => s.groupId == group.id)
+        .toList();
 
     final net = BalanceService.netBalances(
       expenses: groupExpenses,
@@ -83,16 +85,20 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
     if (myNet > 0) totalOwed += myNet;
     if (myNet < 0) totalOwe += -myNet;
 
-    summaries.add(GroupSummary(
-      group: group,
-      memberCount: allMembers.where((m) => m.groupId == group.id).length,
-      myNetCents: myNet,
-    ));
+    summaries.add(
+      GroupSummary(
+        group: group,
+        memberCount: allMembers.where((m) => m.groupId == group.id).length,
+        myNetCents: myNet,
+      ),
+    );
   }
 
-  return AsyncValue.data(HomeData(
-    totalOwedToMeCents: totalOwed,
-    totalIOweCents: totalOwe,
-    groups: summaries,
-  ));
+  return AsyncValue.data(
+    HomeData(
+      totalOwedToMeCents: totalOwed,
+      totalIOweCents: totalOwe,
+      groups: summaries,
+    ),
+  );
 });

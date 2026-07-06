@@ -50,11 +50,13 @@ abstract class BalanceService {
           ? creditorList[ci].value
           : debtorList[di].value;
       if (amount > 0) {
-        result.add(PairwiseDebt(
-          fromUserId: debtorList[di].key,
-          toUserId: creditorList[ci].key,
-          amountCents: amount,
-        ));
+        result.add(
+          PairwiseDebt(
+            fromUserId: debtorList[di].key,
+            toUserId: creditorList[ci].key,
+            amountCents: amount,
+          ),
+        );
       }
       creditorList[ci] = MapEntry(
         creditorList[ci].key,
