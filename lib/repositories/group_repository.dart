@@ -2,8 +2,18 @@ import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
 import '../database/app_database.dart';
+import 'user_repository.dart';
 
 const _uuid = Uuid();
+
+class MemberRemovalBlockedException implements Exception {
+  MemberRemovalBlockedException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
 
 /// Creates a group with the given members. [existingUserIds] are users
 /// already in the database (always includes the current user);
@@ -55,11 +65,15 @@ Future<void> updateGroup(
   required String groupId,
   required String name,
   required String emoji,
+  String? currencyCode,
 }) async {
   await (db.update(db.groups)..where((g) => g.id.equals(groupId))).write(
     GroupsCompanion(
       name: Value(name),
       emoji: Value(emoji),
+      currencyCode: currencyCode == null
+          ? const Value.absent()
+          : Value(currencyCode),
     ),
   );
 }
@@ -102,6 +116,19 @@ Future<void> syncGroupMembers(
 
     for (final member in existing) {
       if (!allIds.contains(member.userId)) {
+        if (!await canRemoveMemberFromGroup(
+          db,
+          member.userId,
+          groupId,
+        )) {
+          final user = await (db.select(db.users)
+                ..where((u) => u.id.equals(member.userId)))
+              .getSingleOrNull();
+          final name = user?.name ?? 'This member';
+          throw MemberRemovalBlockedException(
+            '$name has expenses or settlements in this group and cannot be removed.',
+          );
+        }
         await (db.delete(db.groupMembers)
               ..where((m) => m.id.equals(member.id)))
             .go();

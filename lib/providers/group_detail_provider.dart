@@ -24,6 +24,9 @@ class GroupDetailData {
   final List<ExpenseWithSplits> expenses;
   final List<Settlement> settlements;
 
+  /// Total expense share per member (userId -> cents). Only entries > 0.
+  final Map<String, int> memberShareCents;
+
   const GroupDetailData({
     required this.group,
     required this.members,
@@ -31,6 +34,7 @@ class GroupDetailData {
     required this.myNetCents,
     required this.expenses,
     required this.settlements,
+    required this.memberShareCents,
   });
 }
 
@@ -105,6 +109,15 @@ final groupDetailProvider =
       ),
   ];
 
+  final shareByUserId = <String, int>{};
+  for (final e in groupExpenses) {
+    for (final split in splitsByExpense[e.id] ?? []) {
+      shareByUserId[split.userId] =
+          (shareByUserId[split.userId] ?? 0) + split.amountCents as int;
+    }
+  }
+  shareByUserId.removeWhere((_, cents) => cents <= 0);
+
   return AsyncValue.data(GroupDetailData(
     group: group,
     members: memberInfos,
@@ -112,5 +125,6 @@ final groupDetailProvider =
     myNetCents: myNet,
     expenses: expenseList,
     settlements: groupSettlements,
+    memberShareCents: shareByUserId,
   ));
 });

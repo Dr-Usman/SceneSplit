@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_assets.dart';
-import '../../core/constants/currencies.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/database_provider.dart';
+import '../../shared/widgets/currency_picker_sheet.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -124,8 +124,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                _CurrencyPicker(
-                  selected: _currencyCode,
+                CurrencyPickerField(
+                  currencyCode: _currencyCode,
                   onChanged: (code) => setState(() => _currencyCode = code),
                 ),
                 const SizedBox(height: 36),
@@ -154,82 +154,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CurrencyPicker extends StatelessWidget {
-  const _CurrencyPicker({required this.selected, required this.onChanged});
-
-  final String selected;
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final currency = currencyByCode(selected);
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: () => _showPicker(context),
-      child: InputDecorator(
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.payments_outlined),
-          suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
-        ),
-        child: Text(
-          '${currency.code} — ${currency.name}',
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-      ),
-    );
-  }
-
-  void _showPicker(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (sheetContext) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
-              child: Text(
-                'Choose currency',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-              ),
-            ),
-            for (final c in supportedCurrencies)
-              ListTile(
-                leading: SizedBox(
-                  width: 40,
-                  child: Text(
-                    c.symbol,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                title: Text(c.name),
-                subtitle: Text(c.code),
-                trailing: c.code == selected
-                    ? const Icon(Icons.check_rounded, color: AppColors.primary)
-                    : null,
-                onTap: () {
-                  onChanged(c.code);
-                  Navigator.pop(sheetContext);
-                },
-              ),
-          ],
         ),
       ),
     );

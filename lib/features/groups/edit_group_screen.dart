@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/group_emojis.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/group_repository.dart';
+import '../../repositories/user_repository.dart';
+import '../../shared/widgets/currency_picker_sheet.dart';
+import '../../shared/widgets/group_emoji_picker.dart';
 import '../../shared/widgets/user_avatar.dart';
 
 class EditGroupScreen extends ConsumerStatefulWidget {
@@ -22,6 +24,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
   final _nameController = TextEditingController();
   final _memberController = TextEditingController();
   String _emoji = '🧾';
+  String _currencyCode = 'PKR';
   bool _saving = false;
   bool _initialized = false;
 
@@ -40,6 +43,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     _initialized = true;
     _nameController.text = data.group.name;
     _emoji = data.group.emoji;
+    _currencyCode = data.group.currencyCode;
     _selectedMemberIds.addAll(data.members.map((m) => m.user.id));
     _nameController.addListener(() => setState(() {}));
   }
@@ -62,22 +66,65 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     setState(() => _saving = true);
     final db = ref.read(databaseProvider);
 
-    await updateGroup(
-      db,
-      groupId: widget.groupId,
-      name: _nameController.text.trim(),
-      emoji: _emoji,
-    );
+    try {
+      await updateGroup(
+        db,
+        groupId: widget.groupId,
+        name: _nameController.text.trim(),
+        emoji: _emoji,
+        currencyCode: _currencyCode,
+      );
 
-    await syncGroupMembers(
-      db,
-      groupId: widget.groupId,
-      memberUserIds: _selectedMemberIds.toList(),
-      newMemberNames: _newNames,
-      colorOffset: _selectedMemberIds.length,
-    );
+      await syncGroupMembers(
+        db,
+        groupId: widget.groupId,
+        memberUserIds: _selectedMemberIds.toList(),
+        newMemberNames: _newNames,
+        colorOffset: _selectedMemberIds.length,
+      );
 
-    if (mounted) Navigator.of(context).pop();
+      if (mounted) Navigator.of(context).pop();
+    } on MemberRemovalBlockedException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message)),
+        );
+        setState(() => _saving = false);
+      }
+    }
+  }
+
+  Future<void> _toggleMember({
+    required String userId,
+    required bool include,
+    required String? userName,
+    required bool isCurrentUser,
+  }) async {
+    if (!include) {
+      final db = ref.read(databaseProvider);
+      if (!await canRemoveMemberFromGroup(db, userId, widget.groupId)) {
+        if (!mounted) return;
+        final who = isCurrentUser ? 'You' : (userName ?? 'This member');
+        final verb = isCurrentUser ? 'have' : 'has';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$who $verb expenses or settlements in this group '
+              'and cannot be removed.',
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
+    setState(() {
+      if (include) {
+        _selectedMemberIds.add(userId);
+      } else {
+        _selectedMemberIds.remove(userId);
+      }
+    });
   }
 
   @override
@@ -115,17 +162,16 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
               const SizedBox(height: 24),
               _sectionLabel('ICON'),
               const SizedBox(height: 12),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  for (final emoji in groupEmojis)
-                    _EmojiChip(
-                      emoji: emoji,
-                      selected: emoji == _emoji,
-                      onTap: () => setState(() => _emoji = emoji),
-                    ),
-                ],
+              GroupEmojiPicker(
+                selectedEmoji: _emoji,
+                onChanged: (emoji) => setState(() => _emoji = emoji),
+              ),
+              const SizedBox(height: 24),
+              _sectionLabel('CURRENCY'),
+              const SizedBox(height: 8),
+              CurrencyPickerField(
+                currencyCode: _currencyCode,
+                onChanged: (code) => setState(() => _currencyCode = code),
               ),
               const SizedBox(height: 24),
               _sectionLabel('MEMBERS'),
@@ -137,13 +183,12 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                   colorIndex: m.user.colorIndex,
                   trailing: Checkbox(
                     value: _selectedMemberIds.contains(m.user.id),
-                    onChanged: (checked) => setState(() {
-                      if (checked == true) {
-                        _selectedMemberIds.add(m.user.id);
-                      } else {
-                        _selectedMemberIds.remove(m.user.id);
-                      }
-                    }),
+                    onChanged: (checked) => _toggleMember(
+                      userId: m.user.id,
+                      include: checked == true,
+                      userName: m.user.name,
+                      isCurrentUser: m.user.id == me?.id,
+                    ),
                   ),
                 ),
               for (final user in otherUsers)
@@ -152,23 +197,21 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                   colorIndex: user.colorIndex,
                   trailing: Checkbox(
                     value: _selectedMemberIds.contains(user.id),
-                    onChanged: (checked) => setState(() {
-                      if (checked == true) {
-                        _selectedMemberIds.add(user.id);
-                      } else {
-                        _selectedMemberIds.remove(user.id);
-                      }
-                    }),
+                    onChanged: (checked) => _toggleMember(
+                      userId: user.id,
+                      include: checked == true,
+                      userName: user.name,
+                      isCurrentUser: false,
+                    ),
                   ),
                 ),
               for (var i = 0; i < _newNames.length; i++)
                 _MemberTile(
                   name: _newNames[i],
                   colorIndex: (data.members.length + i) % 8,
-                  trailing: IconButton(
-                    icon: const Icon(Icons.close_rounded, size: 20),
-                    color: AppColors.textSecondary,
-                    onPressed: () => setState(() => _newNames.removeAt(i)),
+                  trailing: Checkbox(
+                    value: true,
+                    onChanged: (_) => setState(() => _newNames.removeAt(i)),
                   ),
                 ),
               const SizedBox(height: 8),
@@ -232,40 +275,6 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
           ),
-    );
-  }
-}
-
-class _EmojiChip extends StatelessWidget {
-  const _EmojiChip({
-    required this.emoji,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String emoji;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primarySoft : AppColors.surface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
-            width: selected ? 1.5 : 1,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(emoji, style: const TextStyle(fontSize: 22)),
-      ),
     );
   }
 }

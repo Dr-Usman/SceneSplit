@@ -6,8 +6,6 @@
 
 Current compatible versions:
 - `flutter_riverpod: ^2.6.1`
-- `riverpod_annotation: ^2.6.1`
-- `riverpod_generator: ^2.6.2`
 - `drift: ^2.22.1`
 - `drift_dev: ^2.22.1`
 - `build_runner: ^2.5.4`
@@ -18,11 +16,8 @@ Current compatible versions:
 # Install dependencies
 flutter pub get
 
-# Generate code (required after table/provider changes)
+# Generate code (required after Drift table/schema changes only)
 dart run build_runner build --delete-conflicting-outputs
-
-# Watch mode during development
-dart run build_runner watch --delete-conflicting-outputs
 
 # Analyze
 flutter analyze
@@ -33,29 +28,34 @@ flutter run
 
 ## Code Generation
 
-11 generated `.g.dart` files:
+Generated file:
 - `lib/database/app_database.g.dart`
-- `lib/database/daos/{users,groups,expenses,settlements}_dao.g.dart`
-- `lib/providers/{user,group,expense,settlement,dashboard,add_expense}_provider.g.dart`
 
-After any Drift table, DAO, or `@riverpod` annotation change, re-run build_runner.
+Re-run `build_runner` only after changes to `lib/database/tables.dart` or `@DriftDatabase` annotations. Repository and UI changes do not require codegen.
 
 ## Architecture
 
 Feature-first + service/repository:
-- `lib/database/` - Drift tables, DAOs, AppDatabase
-- `lib/models/` - Data models (plain Dart classes, not Drift entities)
-- `lib/repositories/` - Abstracts DAO access
-- `lib/services/` - Business logic (SplitEngineService, BalanceService, SettlementService)
-- `lib/providers/` - Riverpod providers
-- `lib/features/` - UI screens by feature
-- `lib/shared/widgets/` - Reusable widgets
+- `lib/database/` — Drift tables (`tables.dart`), `AppDatabase` (no DAO layer)
+- `lib/repositories/` — Direct Drift access (`user_repository`, `group_repository`, etc.)
+- `lib/services/` — Business logic (`SplitEngineService`, `BalanceService`)
+- `lib/providers/` — Riverpod providers (manual, no codegen)
+- `lib/features/` — UI screens by feature
+- `lib/shared/widgets/` — Reusable widgets (`user_avatar`, `currency_picker_sheet`)
 
 ## Conventions
 
 - All primary keys are UUIDs (not auto-increment)
-- Models include `isSynced` and `updatedAt` fields for future backend sync
-- Drift Companions: `DateTime` fields must be wrapped in `Value()`
-- DAO insert methods return `Future<int>` (not `Future<String>`)
+- Money stored as integer cents (`amountCents`); format with `formatCents(cents, currencyCode)`
+- Drift Companions: optional/nullable fields use `Value()` or `Value.absent()`
 - `withCheck` constraints are not supported in this Drift version
-- No freezed or json_serializable in use
+- No freezed, json_serializable, or riverpod_generator in use
+
+## Users and currency
+
+- **Users** are a global pool (`Users` table). Created at onboarding, via Profile “Add person”, or when adding members to a group.
+- **Group members** are a join table (`GroupMembers`). Removing a member from a group does not delete the user row.
+- **Delete user** — blocked if `isCurrentUser` or user has any expenses/splits/settlements.
+- **Remove member from group** — blocked if user has financial activity in that group.
+- **App default currency** (`AppSettings.currencyCode`) — set in onboarding/profile; used for home summary and as default when creating groups.
+- **Group currency** (`Groups.currencyCode`) — set at group creation, editable in edit group; all amounts in group detail use this code.

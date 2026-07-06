@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/group_emojis.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../repositories/group_repository.dart';
+import '../../shared/widgets/currency_picker_sheet.dart';
+import '../../shared/widgets/group_emoji_picker.dart';
 import '../../shared/widgets/user_avatar.dart';
-
-const _groupEmojis = groupEmojis;
 
 class CreateGroupScreen extends ConsumerStatefulWidget {
   const CreateGroupScreen({super.key});
@@ -21,7 +20,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   final _nameController = TextEditingController();
   final _memberController = TextEditingController();
   String _emoji = '🧾';
+  String _currencyCode = 'PKR';
   bool _saving = false;
+  bool _currencyInitialized = false;
 
   /// Whether the current user is included in the group.
   bool _includeMe = true;
@@ -66,13 +67,12 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
     setState(() => _saving = true);
     final db = ref.read(databaseProvider);
-    final currency = ref.read(currencyCodeProvider).value ?? 'PKR';
 
     await createGroup(
       db,
       name: _nameController.text.trim(),
       emoji: _emoji,
-      currencyCode: currency,
+      currencyCode: _currencyCode,
       existingUserIds: [if (_includeMe) me.id, ..._selectedUserIds],
       newMemberNames: _newNames,
     );
@@ -85,6 +85,11 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final me = ref.watch(currentUserProvider).value;
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
     final otherUsers = allUsers.where((u) => !u.isCurrentUser).toList();
+    final defaultCurrency = ref.watch(currencyCodeProvider).value ?? 'PKR';
+    if (!_currencyInitialized) {
+      _currencyCode = defaultCurrency;
+      _currencyInitialized = true;
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('New group')),
@@ -103,17 +108,16 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           const SizedBox(height: 24),
           _sectionLabel(context, 'ICON'),
           const SizedBox(height: 12),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (final emoji in _groupEmojis)
-                _EmojiChip(
-                  emoji: emoji,
-                  selected: emoji == _emoji,
-                  onTap: () => setState(() => _emoji = emoji),
-                ),
-            ],
+          GroupEmojiPicker(
+            selectedEmoji: _emoji,
+            onChanged: (emoji) => setState(() => _emoji = emoji),
+          ),
+          const SizedBox(height: 24),
+          _sectionLabel(context, 'CURRENCY'),
+          const SizedBox(height: 8),
+          CurrencyPickerField(
+            currencyCode: _currencyCode,
+            onChanged: (code) => setState(() => _currencyCode = code),
           ),
           const SizedBox(height: 24),
           _sectionLabel(context, 'MEMBERS'),
@@ -150,10 +154,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             _MemberTile(
               name: _newNames[i],
               colorIndex: (otherUsers.length + 1 + i) % 8,
-              trailing: IconButton(
-                icon: const Icon(Icons.close_rounded, size: 20),
-                color: AppColors.textSecondary,
-                onPressed: () => setState(() => _newNames.removeAt(i)),
+              trailing: Checkbox(
+                value: true,
+                onChanged: (_) => setState(() => _newNames.removeAt(i)),
               ),
             ),
           const SizedBox(height: 8),
@@ -215,40 +218,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
           ),
-    );
-  }
-}
-
-class _EmojiChip extends StatelessWidget {
-  const _EmojiChip({
-    required this.emoji,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String emoji;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primarySoft : AppColors.surface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
-            width: selected ? 1.5 : 1,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(emoji, style: const TextStyle(fontSize: 22)),
-      ),
     );
   }
 }

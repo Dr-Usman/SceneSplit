@@ -5,6 +5,7 @@ import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/home_provider.dart';
+import '../../shared/widgets/breakdown_pie_chart.dart';
 import '../groups/create_group_screen.dart';
 import '../groups/group_detail_screen.dart';
 import '../profile/profile_screen.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('SceneSplit'),
         actions: [
-          if (user != null)
+          if (user!= null)
             Padding(
               padding: const EdgeInsets.only(right: 20),
               child: GestureDetector(
@@ -45,9 +46,9 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const CreateGroupScreen()),
-        ),
+        onPressed: () => Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const CreateGroupScreen())),
         icon: const Icon(Icons.add_rounded),
         label: const Text('New group'),
       ),
@@ -62,10 +63,10 @@ class HomeScreen extends ConsumerWidget {
             Text(
               'GROUPS',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                  ),
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
             ),
             const SizedBox(height: 12),
             if (data.groups.isEmpty)
@@ -88,32 +89,70 @@ class _BalanceSummaryCard extends StatelessWidget {
   final HomeData data;
   final String currencyCode;
 
+  void _showOwedBreakdown(BuildContext context) {
+    final slices = <BreakdownSlice>[];
+    var colorIndex = 0;
+    for (final summary in data.groups) {
+      if (summary.myNetCents <= 0) continue;
+      slices.add(BreakdownSlice(
+        label: '${summary.group.emoji} ${summary.group.name}',
+        cents: summary.myNetCents,
+        color: chartColorForIndex(colorIndex++),
+        currencyCode: summary.group.currencyCode,
+      ));
+    }
+    showBreakdownSheet(
+      context,
+      title: 'You get by group',
+      subtitle: 'Amounts shown in each group\'s currency',
+      slices: slices,
+    );
+  }
+
+  void _showOweBreakdown(BuildContext context) {
+    final slices = <BreakdownSlice>[];
+    var colorIndex = 0;
+    for (final summary in data.groups) {
+      if (summary.myNetCents >= 0) continue;
+      slices.add(BreakdownSlice(
+        label: '${summary.group.emoji} ${summary.group.name}',
+        cents: -summary.myNetCents,
+        color: chartColorForIndex(colorIndex++),
+        currencyCode: summary.group.currencyCode,
+      ));
+    }
+    showBreakdownSheet(
+      context,
+      title: 'You will give by group',
+      subtitle: 'Amounts shown in each group\'s currency',
+      slices: slices,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(24),
-      ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
       child: Row(
         children: [
           Expanded(
-            child: _SummaryColumn(
+            child: _SummaryHalf(
               label: 'You are owed',
               amount: formatCents(data.totalOwedToMeCents, currencyCode),
+              backgroundColor: AppColors.primary,
+              labelColor: Colors.white.withValues(alpha: 0.88),
+              amountColor: Colors.white,
+              onTap: () => _showOwedBreakdown(context),
             ),
           ),
-          Container(
-            width: 1,
-            height: 48,
-            color: Colors.white.withValues(alpha: 0.25),
-          ),
-          const SizedBox(width: 20),
           Expanded(
-            child: _SummaryColumn(
+            child: _SummaryHalf(
               label: 'You owe',
               amount: formatCents(data.totalIOweCents, currencyCode),
+              backgroundColor: AppColors.secondary,
+              labelColor: Colors.white.withValues(alpha: 0.88),
+              amountColor: Colors.white,
+              onTap: () => _showOweBreakdown(context),
             ),
           ),
         ],
@@ -122,39 +161,58 @@ class _BalanceSummaryCard extends StatelessWidget {
   }
 }
 
-class _SummaryColumn extends StatelessWidget {
-  const _SummaryColumn({required this.label, required this.amount});
+class _SummaryHalf extends StatelessWidget {
+  const _SummaryHalf({
+    required this.label,
+    required this.amount,
+    required this.backgroundColor,
+    required this.labelColor,
+    required this.amountColor,
+    this.onTap,
+  });
 
   final String label;
   final String amount;
+  final Color backgroundColor;
+  final Color labelColor;
+  final Color amountColor;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.85),
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+    return Material(
+      color: backgroundColor,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: labelColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 6),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  amount,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: amountColor,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 6),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            amount,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -170,16 +228,20 @@ class _GroupCard extends StatelessWidget {
     final net = summary.myNetCents;
     final settled = net == 0;
 
-    final String balanceText;
+    final String balanceLabel;
+    final String? balanceAmount;
     final Color balanceColor;
     if (settled) {
-      balanceText = 'settled up';
+      balanceLabel = 'settled up';
+      balanceAmount = null;
       balanceColor = AppColors.textSecondary;
     } else if (net > 0) {
-      balanceText = 'you get ${formatCents(net, group.currencyCode)}';
+      balanceLabel = 'you will get';
+      balanceAmount = formatCents(net, group.currencyCode);
       balanceColor = AppColors.positive;
     } else {
-      balanceText = 'you owe ${formatCents(net, group.currencyCode)}';
+      balanceLabel = 'you will give';
+      balanceAmount = formatCents(net, group.currencyCode);
       balanceColor = AppColors.negative;
     }
 
@@ -229,13 +291,27 @@ class _GroupCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Text(
-                balanceText,
-                style: TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w700,
-                  color: balanceColor,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    balanceLabel,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: balanceColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (balanceAmount != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      balanceAmount,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: balanceColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ],
           ),

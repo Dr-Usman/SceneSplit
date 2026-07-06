@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/constants/currencies.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
@@ -12,6 +13,8 @@ import '../../repositories/expense_repository.dart';
 import '../../repositories/group_repository.dart';
 import '../../repositories/settlement_repository.dart';
 import '../../services/balance_service.dart';
+import '../../shared/widgets/breakdown_pie_chart.dart';
+import '../../shared/widgets/user_avatar.dart';
 import '../expenses/add_expense_screen.dart';
 import '../expenses/expense_detail_screen.dart';
 import '../settlements/record_settlement_sheet.dart';
@@ -29,139 +32,228 @@ class GroupDetailScreen extends ConsumerWidget {
     final me = ref.watch(currentUserProvider).value;
 
     return detail.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('Something went wrong: $e')),
       ),
-      data: (data) => Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Text(data.group.emoji, style: const TextStyle(fontSize: 22)),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  data.group.name,
-                  overflow: TextOverflow.ellipsis,
+      data: (data) {
+        final currency = currencyByCode(data.group.currencyCode);
+        return Scaffold(
+          appBar: AppBar(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      data.group.emoji,
+                      style: const TextStyle(fontSize: 22),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        data.group.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
+                Text(
+                  '${currency.symbol} — ${currency.name} (${currency.code})',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              PopupMenuButton<String>(
+                onSelected: (action) async {
+                  if (action == 'edit') {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => EditGroupScreen(groupId: groupId),
+                      ),
+                    );
+                  } else if (action == 'delete') {
+                    await _confirmDeleteGroup(context, ref, data.group);
+                  }
+                },
+                itemBuilder: (_) => const [
+                  PopupMenuItem(value: 'edit', child: Text('Edit group')),
+                  PopupMenuItem(value: 'delete', child: Text('Delete group')),
+                ],
               ),
             ],
           ),
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (action) async {
-                if (action == 'edit') {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          EditGroupScreen(groupId: groupId),
-                    ),
-                  );
-                } else if (action == 'delete') {
-                  await _confirmDeleteGroup(context, ref, data.group);
-                }
-              },
-              itemBuilder: (_) => const [
-                PopupMenuItem(value: 'edit', child: Text('Edit group')),
-                PopupMenuItem(value: 'delete', child: Text('Delete group')),
-              ],
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => AddExpenseScreen(
-                groupId: groupId,
-                currencyCode: data.group.currencyCode,
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => AddExpenseScreen(
+                  groupId: groupId,
+                  currencyCode: data.group.currencyCode,
+                ),
               ),
             ),
+            icon: const Icon(Icons.add_rounded),
+            label: const Text('Add expense'),
           ),
-          icon: const Icon(Icons.add_rounded),
-          label: const Text('Add expense'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
-          children: [
-            _MyBalanceCard(
-              netCents: data.myNetCents,
-              currencyCode: data.group.currencyCode,
-            ),
-            if (data.debts.isNotEmpty) ...[
+          body: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
+            children: [
+              _MyBalanceCard(
+                netCents: data.myNetCents,
+                currencyCode: data.group.currencyCode,
+              ),
+              if (data.memberShareCents.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                _sectionLabel(context, 'EXPENSE BREAKDOWN'),
+                const SizedBox(height: 10),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: BreakdownPieChart(
+                      slices: [
+                        for (final entry in data.memberShareCents.entries)
+                          BreakdownSlice(
+                            label: users[entry.key]?.name ?? 'Unknown',
+                            cents: entry.value,
+                            color: chartColorForIndex(
+                              users[entry.key]?.colorIndex ?? 0,
+                            ),
+                            currencyCode: data.group.currencyCode,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 24),
               Row(
                 children: [
-                  Expanded(child: _sectionLabel(context, 'WHO OWES WHOM')),
-                  TextButton.icon(
-                    onPressed: () => showRecordSettlementSheet(
+                  Expanded(
+                    child: _sectionLabel(
                       context,
-                      groupId: groupId,
-                      currencyCode: data.group.currencyCode,
-                      members: data.members,
+                      'MEMBERS (${data.members.length})',
                     ),
-                    icon: const Icon(Icons.handshake_outlined, size: 18),
-                    label: const Text('Settle up'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => EditGroupScreen(groupId: groupId),
+                      ),
+                    ),
+                    child: const Text('Manage'),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              for (final debt in data.debts)
-                _DebtTile(
-                  debt: debt,
-                  users: users,
-                  currencyCode: data.group.currencyCode,
-                  highlightMe: me?.id,
-                  onTap: () => showRecordSettlementSheet(
-                    context,
-                    groupId: groupId,
-                    currencyCode: data.group.currencyCode,
-                    members: data.members,
-                    prefill: debt,
-                  ),
+              SizedBox(
+                height: 72,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: data.members.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final member = data.members[index];
+                    return Column(
+                      children: [
+                        UserAvatar(
+                          name: member.user.name,
+                          colorIndex: member.user.colorIndex,
+                          size: 44,
+                        ),
+                        const SizedBox(height: 6),
+                        SizedBox(
+                          width: 56,
+                          child: Text(
+                            member.user.name.split(' ').first,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-            ],
-            if (data.settlements.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              _sectionLabel(context, 'SETTLEMENTS'),
-              const SizedBox(height: 10),
-              for (final s in data.settlements)
-                _SettlementTile(
-                  settlement: s,
-                  users: users,
-                  currencyCode: data.group.currencyCode,
-                  onDelete: () => _confirmDeleteSettlement(context, ref, s),
-                ),
-            ],
-            const SizedBox(height: 28),
-            _sectionLabel(context, 'EXPENSES'),
-            const SizedBox(height: 12),
-            if (data.expenses.isEmpty)
-              const _EmptyExpenses()
-            else
-              for (final item in data.expenses) ...[
-                _ExpenseTile(
-                  item: item,
-                  users: users,
-                  currencyCode: data.group.currencyCode,
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ExpenseDetailScreen(
+              ),
+              if (data.debts.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(child: _sectionLabel(context, 'WHO OWES WHOM')),
+                    TextButton.icon(
+                      onPressed: () => showRecordSettlementSheet(
+                        context,
                         groupId: groupId,
-                        expenseId: item.expense.id,
                         currencyCode: data.group.currencyCode,
+                        members: data.members,
                       ),
+                      icon: const Icon(Icons.handshake_outlined, size: 18),
+                      label: const Text('Settle up'),
                     ),
-                  ),
-                  onDelete: () => _confirmDelete(context, ref, item.expense),
+                  ],
                 ),
                 const SizedBox(height: 10),
+                for (final debt in data.debts)
+                  _DebtTile(
+                    debt: debt,
+                    users: users,
+                    currencyCode: data.group.currencyCode,
+                    highlightMe: me?.id,
+                    onTap: () => showRecordSettlementSheet(
+                      context,
+                      groupId: groupId,
+                      currencyCode: data.group.currencyCode,
+                      members: data.members,
+                      prefill: debt,
+                    ),
+                  ),
               ],
-          ],
-        ),
-      ),
+              if (data.settlements.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                _sectionLabel(context, 'SETTLEMENTS'),
+                const SizedBox(height: 10),
+                for (final s in data.settlements)
+                  _SettlementTile(
+                    settlement: s,
+                    users: users,
+                    currencyCode: data.group.currencyCode,
+                    onDelete: () => _confirmDeleteSettlement(context, ref, s),
+                  ),
+              ],
+              const SizedBox(height: 28),
+              _sectionLabel(context, 'EXPENSES'),
+              const SizedBox(height: 12),
+              if (data.expenses.isEmpty)
+                const _EmptyExpenses()
+              else
+                for (final item in data.expenses) ...[
+                  _ExpenseTile(
+                    item: item,
+                    users: users,
+                    currencyCode: data.group.currencyCode,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ExpenseDetailScreen(
+                          groupId: groupId,
+                          expenseId: item.expense.id,
+                          currencyCode: data.group.currencyCode,
+                        ),
+                      ),
+                    ),
+                    onDelete: () => _confirmDelete(context, ref, item.expense),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -169,10 +261,10 @@ class GroupDetailScreen extends ConsumerWidget {
     return Text(
       text,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+      ),
     );
   }
 
@@ -282,11 +374,11 @@ class _MyBalanceCard extends StatelessWidget {
       amount = '';
       color = AppColors.textSecondary;
     } else if (netCents > 0) {
-      label = 'You are owed';
+      label = 'You get';
       amount = formatCents(netCents, currencyCode);
       color = AppColors.positive;
     } else {
-      label = 'You owe';
+      label = 'You will give';
       amount = formatCents(netCents, currencyCode);
       color = AppColors.negative;
     }
@@ -304,8 +396,7 @@ class _MyBalanceCard extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 14,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w500,
             ),
@@ -314,9 +405,8 @@ class _MyBalanceCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               amount,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w800,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
                 color: color,
                 letterSpacing: -0.5,
               ),
@@ -362,8 +452,9 @@ class _DebtTile extends StatelessWidget {
                 text: TextSpan(
                   style: TextStyle(
                     fontSize: 14,
-                    color:
-                        isMe ? AppColors.textPrimary : AppColors.textSecondary,
+                    color: isMe
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary,
                     fontWeight: isMe ? FontWeight.w600 : FontWeight.w500,
                   ),
                   children: [
@@ -387,8 +478,11 @@ class _DebtTile extends StatelessWidget {
             ),
             if (onTap != null) ...[
               const SizedBox(width: 4),
-              const Icon(Icons.chevron_right_rounded,
-                  size: 18, color: AppColors.textSecondary),
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 18,
+                color: AppColors.textSecondary,
+              ),
             ],
           ],
         ),
@@ -428,8 +522,10 @@ class _ExpenseTile extends StatelessWidget {
           color: AppColors.negative.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: const Icon(Icons.delete_outline_rounded,
-            color: AppColors.negative),
+        child: const Icon(
+          Icons.delete_outline_rounded,
+          color: AppColors.negative,
+        ),
       ),
       confirmDismiss: (_) async {
         onDelete();
@@ -442,37 +538,37 @@ class _ExpenseTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      expense.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        expense.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$payer paid · $date',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
+                      const SizedBox(height: 4),
+                      Text(
+                        '$payer paid · $date',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                formatCents(expense.amountCents, currencyCode),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                Text(
+                  formatCents(expense.amountCents, currencyCode),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
+              ],
             ),
           ),
         ),
@@ -510,8 +606,10 @@ class _SettlementTile extends StatelessWidget {
           color: AppColors.negative.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(14),
         ),
-        child: const Icon(Icons.delete_outline_rounded,
-            color: AppColors.negative),
+        child: const Icon(
+          Icons.delete_outline_rounded,
+          color: AppColors.negative,
+        ),
       ),
       confirmDismiss: (_) async {
         onDelete();
@@ -521,8 +619,11 @@ class _SettlementTile extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(
           children: [
-            const Icon(Icons.check_circle_outline_rounded,
-                size: 18, color: AppColors.positive),
+            const Icon(
+              Icons.check_circle_outline_rounded,
+              size: 18,
+              color: AppColors.positive,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -572,8 +673,11 @@ class _EmptyExpenses extends StatelessWidget {
       ),
       child: const Column(
         children: [
-          Icon(Icons.receipt_long_outlined,
-              size: 40, color: AppColors.textSecondary),
+          Icon(
+            Icons.receipt_long_outlined,
+            size: 40,
+            color: AppColors.textSecondary,
+          ),
           SizedBox(height: 12),
           Text(
             'No expenses yet',

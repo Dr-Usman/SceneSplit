@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/currencies.dart';
 import '../../core/theme/app_theme.dart';
+import '../../database/app_database.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../repositories/user_repository.dart';
+import '../../shared/widgets/currency_picker_sheet.dart';
 import '../../shared/widgets/user_avatar.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -39,53 +40,94 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
-  Future<void> _pickCurrency(String current) async {
-    await showModalBottomSheet<void>(
+  Future<void> _addPerson() async {
+    final name = await _showNameDialog(title: 'Add person', hint: 'e.g. Alice');
+    if (name == null || name.isEmpty || !mounted) return;
+    await createUser(ref.read(databaseProvider), name);
+  }
+
+  Future<void> _editPerson(User person) async {
+    final name = await _showNameDialog(
+      title: 'Edit name',
+      hint: person.name,
+      initialValue: person.name,
+    );
+    if (name == null || name.isEmpty || name == person.name || !mounted) {
+      return;
+    }
+    await updateUserName(ref.read(databaseProvider), person.id, name);
+  }
+
+  Future<void> _deletePerson(User person) async {
+    final confirmed = await showDialog<bool>(
       context: context,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
-              child: Text(
-                'Default currency',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ),
-            for (final c in supportedCurrencies)
-              ListTile(
-                leading: SizedBox(
-                  width: 40,
-                  child: Text(
-                    c.symbol,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                title: Text(c.name),
-                subtitle: Text(c.code),
-                trailing: c.code == current
-                    ? const Icon(Icons.check_rounded,
-                        color: AppColors.primary)
-                    : null,
-                onTap: () async {
-                  await updateCurrency(ref.read(databaseProvider), c.code);
-                  if (ctx.mounted) Navigator.pop(ctx);
-                },
-              ),
-          ],
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete person?'),
+        content: Text(
+          'Remove ${person.name} from your people list? '
+          'This cannot be undone.',
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    try {
+      await deleteUser(ref.read(databaseProvider), person.id);
+    } on UserDeleteBlockedException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message)),
+        );
+      }
+    }
+  }
+
+  Future<String?> _showNameDialog({
+    required String title,
+    required String hint,
+    String? initialValue,
+  }) {
+    final controller = TextEditingController(text: initialValue);
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: controller,
+          textCapitalization: TextCapitalization.words,
+          autofocus: true,
+          decoration: InputDecoration(hintText: hint),
+          onSubmitted: (_) => Navigator.pop(ctx, controller.text.trim()),
+        ),
+        actions: [
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+                  child: const Text('Save'),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -94,7 +136,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider).value;
     final currencyCode = ref.watch(currencyCodeProvider).value ?? 'PKR';
-    final allUsers = ref.watch(usersStreamProvider).value ?? [];
+    final allUsers = [...(ref.watch(usersStreamProvider).value ?? [])]
+      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     if (user != null && !_editingName && _nameController.text.isEmpty) {
       _nameController.text = user.name;
@@ -163,21 +206,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 24),
           _sectionLabel('DEFAULT CURRENCY'),
           const SizedBox(height: 8),
-          InkWell(
-            borderRadius: BorderRadius.circular(14),
-            onTap: () => _pickCurrency(currencyCode),
-            child: InputDecorator(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.payments_outlined),
-                suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
-              ),
-              child: Text(
-                '${currencyByCode(currencyCode).code} — ${currencyByCode(currencyCode).name}',
-              ),
-            ),
+          Text(
+            'Used for new groups and the home summary.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+          const SizedBox(height: 8),
+          CurrencyPickerField(
+            currencyCode: currencyCode,
+            sheetTitle: 'Default currency',
+            onChanged: (code) =>
+                updateCurrency(ref.read(databaseProvider), code),
           ),
           const SizedBox(height: 32),
-          _sectionLabel('PEOPLE'),
+          Row(
+            children: [
+              Expanded(child: _sectionLabel('PEOPLE')),
+              IconButton(
+                onPressed: _addPerson,
+                icon: const Icon(Icons.person_add_alt_1_outlined),
+                tooltip: 'Add person',
+                color: AppColors.primary,
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
           Text(
             'Everyone added across your groups.',
@@ -186,6 +239,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
           ),
           const SizedBox(height: 12),
+          if (allUsers.isEmpty)
+            Text(
+              'No people yet. Tap + to add someone.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+            ),
           for (final u in allUsers)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -206,6 +266,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                     ),
                   ),
+                  if (!u.isCurrentUser)
+                    PopupMenuButton<String>(
+                      onSelected: (action) {
+                        if (action == 'edit') {
+                          _editPerson(u);
+                        } else if (action == 'delete') {
+                          _deletePerson(u);
+                        }
+                      },
+                      itemBuilder: (_) => const [
+                        PopupMenuItem(value: 'edit', child: Text('Edit name')),
+                        PopupMenuItem(value: 'delete', child: Text('Delete')),
+                      ],
+                    ),
                 ],
               ),
             ),
