@@ -17,13 +17,13 @@ class SceneSplitApp extends ConsumerWidget {
       title: 'SceneSplit',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       home: currentUser.when(
-        loading: () => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
-        error: (e, _) => Scaffold(
-          body: Center(child: Text('Something went wrong: $e')),
-        ),
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        error: (e, _) =>
+            Scaffold(body: Center(child: Text('Something went wrong: $e'))),
         data: (user) =>
             user == null ? const OnboardingScreen() : const HomeScreen(),
       ),

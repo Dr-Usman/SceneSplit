@@ -86,9 +86,9 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       if (mounted) Navigator.of(context).pop();
     } on MemberRemovalBlockedException catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
         setState(() => _saving = false);
       }
     }
@@ -134,9 +134,8 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     final me = ref.watch(currentUserProvider).value;
 
     return detail.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('Error: $e')),
@@ -240,8 +239,10 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
-                      icon: const Icon(Icons.add_rounded,
-                          color: AppColors.primaryDark),
+                      icon: const Icon(
+                        Icons.add_rounded,
+                        color: AppColors.primaryDark,
+                      ),
                     ),
                   ),
                 ],
@@ -271,10 +272,10 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     return Text(
       text,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+      ),
     );
   }
 }

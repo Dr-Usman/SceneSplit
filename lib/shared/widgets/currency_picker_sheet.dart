@@ -10,7 +10,7 @@ Future<String?> showCurrencyPickerSheet(
 }) async {
   return showModalBottomSheet<String>(
     context: context,
-    backgroundColor: AppColors.surface,
+    backgroundColor: Theme.of(context).colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -23,9 +23,9 @@ Future<String?> showCurrencyPickerSheet(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
           for (final c in supportedCurrencies)

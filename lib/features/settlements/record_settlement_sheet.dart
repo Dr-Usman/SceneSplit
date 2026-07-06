@@ -20,7 +20,7 @@ Future<void> showRecordSettlementSheet(
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: AppColors.surface,
+    backgroundColor: Theme.of(context).colorScheme.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -65,10 +65,8 @@ class _RecordSettlementSheetState
     if (widget.prefill != null) {
       _fromUserId = widget.prefill!.fromUserId;
       _toUserId = widget.prefill!.toUserId;
-      _amountController.text =
-          (widget.prefill!.amountCents / 100).toStringAsFixed(
-        widget.prefill!.amountCents % 100 == 0 ? 0 : 2,
-      );
+      _amountController.text = (widget.prefill!.amountCents / 100)
+          .toStringAsFixed(widget.prefill!.amountCents % 100 == 0 ? 0 : 2);
     } else {
       _fromUserId = widget.members.first.user.id;
       _toUserId = widget.members.length > 1
@@ -87,10 +85,7 @@ class _RecordSettlementSheetState
 
   bool get _canSave {
     final cents = parseAmountToCents(_amountController.text);
-    return cents != null &&
-        cents > 0 &&
-        _fromUserId != _toUserId &&
-        !_saving;
+    return cents != null && cents > 0 && _fromUserId != _toUserId && !_saving;
   }
 
   Future<void> _save() async {
@@ -114,83 +109,90 @@ class _RecordSettlementSheetState
   @override
   Widget build(BuildContext context) {
     final symbol = currencyByCode(widget.currencyCode).symbol;
-    final bottom = MediaQuery.of(context).viewInsets.bottom;
+    final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(24, 20, 24, 24 + bottom),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.border,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Record settlement',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-          ),
-          const SizedBox(height: 20),
-          _label('FROM (PAYS)'),
-          const SizedBox(height: 8),
-          _userDropdown(
-            value: _fromUserId,
-            excludeId: _toUserId,
-            onChanged: (v) => setState(() => _fromUserId = v!),
-          ),
-          const SizedBox(height: 16),
-          _label('TO (RECEIVES)'),
-          const SizedBox(height: 8),
-          _userDropdown(
-            value: _toUserId,
-            excludeId: _fromUserId,
-            onChanged: (v) => setState(() => _toUserId = v!),
-          ),
-          const SizedBox(height: 16),
-          _label('AMOUNT'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _amountController,
-            keyboardType:
-                const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Record settlement',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+              ),
+              const SizedBox(height: 20),
+              _label('FROM (PAYS)'),
+              const SizedBox(height: 8),
+              _userDropdown(
+                value: _fromUserId,
+                excludeId: _toUserId,
+                onChanged: (v) => setState(() => _fromUserId = v!),
+              ),
+              const SizedBox(height: 16),
+              _label('TO (RECEIVES)'),
+              const SizedBox(height: 8),
+              _userDropdown(
+                value: _toUserId,
+                excludeId: _fromUserId,
+                onChanged: (v) => setState(() => _toUserId = v!),
+              ),
+              const SizedBox(height: 16),
+              _label('AMOUNT'),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _amountController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
+                ],
+                decoration: InputDecoration(prefixText: '$symbol '),
+              ),
+              const SizedBox(height: 16),
+              _label('NOTE (OPTIONAL)'),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _noteController,
+                decoration: const InputDecoration(
+                  hintText: 'Cash, bank transfer…',
+                ),
+              ),
+              const SizedBox(height: 28),
+              FilledButton(
+                onPressed: _canSave ? _save : null,
+                child: _saving
+                    ? const SizedBox(
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Record payment'),
+              ),
             ],
-            decoration: InputDecoration(
-              prefixText: '$symbol ',
-            ),
           ),
-          const SizedBox(height: 16),
-          _label('NOTE (OPTIONAL)'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _noteController,
-            decoration: const InputDecoration(hintText: 'Cash, bank transfer…'),
-          ),
-          const SizedBox(height: 28),
-          FilledButton(
-            onPressed: _canSave ? _save : null,
-            child: _saving
-                ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text('Record payment'),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -199,10 +201,10 @@ class _RecordSettlementSheetState
     return Text(
       text,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+      ),
     );
   }
 
@@ -213,14 +215,15 @@ class _RecordSettlementSheetState
   }) {
     final items = widget.members
         .where((m) => m.user.id != excludeId)
-        .map((m) => DropdownMenuItem(
-              value: m.user.id,
-              child: Text(m.user.name),
-            ))
+        .map(
+          (m) => DropdownMenuItem(value: m.user.id, child: Text(m.user.name)),
+        )
         .toList();
 
     return DropdownButtonFormField<String>(
-      initialValue: items.any((i) => i.value == value) ? value : items.first.value,
+      initialValue: items.any((i) => i.value == value)
+          ? value
+          : items.first.value,
       items: items,
       onChanged: onChanged,
       decoration: const InputDecoration(),

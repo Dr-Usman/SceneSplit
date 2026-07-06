@@ -29,18 +29,17 @@ class ExpenseDetailScreen extends ConsumerWidget {
     final users = ref.watch(userByIdProvider);
 
     return detail.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('Error: $e')),
       ),
       data: (data) {
         final item = data.expenses.cast<ExpenseWithSplits?>().firstWhere(
-              (e) => e?.expense.id == expenseId,
-              orElse: () => null,
-            );
+          (e) => e?.expense.id == expenseId,
+          orElse: () => null,
+        );
         if (item == null) {
           return Scaffold(
             appBar: AppBar(),
@@ -77,8 +76,9 @@ class ExpenseDetailScreen extends ConsumerWidget {
                       context: context,
                       builder: (ctx) => AlertDialog(
                         title: const Text('Delete expense?'),
-                        content:
-                            Text('Remove "${expense.title}" from this group?'),
+                        content: Text(
+                          'Remove "${expense.title}" from this group?',
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(ctx, false),
@@ -155,10 +155,10 @@ class ExpenseDetailScreen extends ConsumerWidget {
               Text(
                 'SPLIT BREAKDOWN',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.2,
-                    ),
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
               ),
               const SizedBox(height: 12),
               for (final split in item.splits) ...[

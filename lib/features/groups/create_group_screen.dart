@@ -101,9 +101,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           TextField(
             controller: _nameController,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              hintText: 'e.g. Naran Trip',
-            ),
+            decoration: const InputDecoration(hintText: 'e.g. Naran Trip'),
           ),
           const SizedBox(height: 24),
           _sectionLabel(context, 'ICON'),
@@ -185,8 +183,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  icon: const Icon(Icons.add_rounded,
-                      color: AppColors.primaryDark),
+                  icon: const Icon(
+                    Icons.add_rounded,
+                    color: AppColors.primaryDark,
+                  ),
                 ),
               ),
             ],
@@ -214,10 +214,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     return Text(
       text,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+      ),
     );
   }
 }

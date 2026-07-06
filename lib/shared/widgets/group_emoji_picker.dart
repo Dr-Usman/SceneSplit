@@ -10,10 +10,7 @@ bool isValidSingleEmoji(String input) {
   return trimmed.characters.length == 1;
 }
 
-Future<String?> showCustomEmojiDialog(
-  BuildContext context, {
-  String? initial,
-}) {
+Future<String?> showCustomEmojiDialog(BuildContext context, {String? initial}) {
   final controller = TextEditingController(text: initial ?? '');
   return showDialog<String>(
     context: context,
@@ -24,10 +21,7 @@ Future<String?> showCustomEmojiDialog(
         autofocus: true,
         textAlign: TextAlign.center,
         style: const TextStyle(fontSize: 32),
-        decoration: const InputDecoration(
-          hintText: '😀',
-          counterText: '',
-        ),
+        decoration: const InputDecoration(hintText: '😀', counterText: ''),
         inputFormatters: [LengthLimitingTextInputFormatter(8)],
         onSubmitted: (_) {
           final value = controller.text.trim();
@@ -124,7 +118,9 @@ class _EmojiChip extends StatelessWidget {
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-          color: selected ? AppColors.primarySoft : AppColors.surface,
+          color: selected
+              ? AppColors.primarySoft
+              : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: selected ? AppColors.primary : AppColors.border,
@@ -158,7 +154,9 @@ class _CustomEmojiChip extends StatelessWidget {
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-          color: selected ? AppColors.primarySoft : AppColors.surface,
+          color: selected
+              ? AppColors.primarySoft
+              : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: selected ? AppColors.primary : AppColors.border,

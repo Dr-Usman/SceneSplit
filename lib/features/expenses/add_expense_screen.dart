@@ -108,8 +108,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
         : members.first.user.id;
     _participants.addAll(members.map((m) => m.user.id));
     for (final m in members) {
-      _percentControllers[m.user.id]?.text =
-          members.length == 1 ? '100' : '';
+      _percentControllers[m.user.id]?.text = members.length == 1 ? '100' : '';
     }
   }
 
@@ -130,8 +129,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             SplitEngineService.exactSplitsValid(_amountCents!, amounts);
       case SplitType.percentage:
         final pcts = _parsePercentages();
-        return pcts != null &&
-            SplitEngineService.percentageSplitsValid(pcts);
+        return pcts != null && SplitEngineService.percentageSplitsValid(pcts);
     }
   }
 
@@ -230,9 +228,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final symbol = currencyByCode(widget.currencyCode).symbol;
 
     return detail.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
         body: Center(child: Text('Error: $e')),
@@ -252,8 +249,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 8),
               TextField(
                 controller: _amountController,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
                 ],
@@ -301,32 +299,24 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 20),
               _sectionLabel('PAID BY'),
               const SizedBox(height: 8),
-              ...members.map((m) => _PaidByTile(
-                    user: m.user,
-                    selected: _paidById == m.user.id,
-                    onTap: () => setState(() => _paidById = m.user.id),
-                  )),
+              ...members.map(
+                (m) => _PaidByTile(
+                  user: m.user,
+                  selected: _paidById == m.user.id,
+                  onTap: () => setState(() => _paidById = m.user.id),
+                ),
+              ),
               const SizedBox(height: 20),
               _sectionLabel('SPLIT'),
               const SizedBox(height: 8),
               SegmentedButton<SplitType>(
                 segments: const [
-                  ButtonSegment(
-                    value: SplitType.equal,
-                    label: Text('Equal'),
-                  ),
-                  ButtonSegment(
-                    value: SplitType.exact,
-                    label: Text('Exact'),
-                  ),
-                  ButtonSegment(
-                    value: SplitType.percentage,
-                    label: Text('%'),
-                  ),
+                  ButtonSegment(value: SplitType.equal, label: Text('Equal')),
+                  ButtonSegment(value: SplitType.exact, label: Text('Exact')),
+                  ButtonSegment(value: SplitType.percentage, label: Text('%')),
                 ],
                 selected: {_splitType},
-                onSelectionChanged: (s) =>
-                    setState(() => _splitType = s.first),
+                onSelectionChanged: (s) => setState(() => _splitType = s.first),
               ),
               const SizedBox(height: 16),
               ..._buildSplitSection(members, symbol),
@@ -336,9 +326,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               TextField(
                 controller: _noteController,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  hintText: 'Add a note',
-                ),
+                decoration: const InputDecoration(hintText: 'Add a note'),
               ),
               const SizedBox(height: 32),
               FilledButton(
@@ -368,24 +356,26 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     switch (_splitType) {
       case SplitType.equal:
         return members
-            .map((m) => CheckboxListTile(
-                  value: _participants.contains(m.user.id),
-                  onChanged: (checked) => setState(() {
-                    if (checked == true) {
-                      _participants.add(m.user.id);
-                    } else {
-                      _participants.remove(m.user.id);
-                    }
-                  }),
-                  title: Text(m.user.name),
-                  secondary: UserAvatar(
-                    name: m.user.name,
-                    colorIndex: m.user.colorIndex,
-                    size: 36,
-                  ),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding: EdgeInsets.zero,
-                ))
+            .map(
+              (m) => CheckboxListTile(
+                value: _participants.contains(m.user.id),
+                onChanged: (checked) => setState(() {
+                  if (checked == true) {
+                    _participants.add(m.user.id);
+                  } else {
+                    _participants.remove(m.user.id);
+                  }
+                }),
+                title: Text(m.user.name),
+                secondary: UserAvatar(
+                  name: m.user.name,
+                  colorIndex: m.user.colorIndex,
+                  size: 36,
+                ),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+            )
             .toList();
 
       case SplitType.exact:
@@ -400,15 +390,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: Text(m.user.name,
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text(
+                    m.user.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
                 SizedBox(
                   width: 110,
                   child: TextField(
                     controller: _exactControllers[m.user.id],
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
                     ],
@@ -442,15 +435,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: Text(m.user.name,
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text(
+                    m.user.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
                 SizedBox(
                   width: 80,
                   child: TextField(
                     controller: _percentControllers[m.user.id],
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                     ],
@@ -508,7 +504,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 style: const TextStyle(fontSize: 13),
               ),
             ),
-          const Divider(height: 16),
+          Divider(height: 16, color: Theme.of(context).dividerTheme.color),
           Text(
             'Total: $symbol ${(total / 100).toStringAsFixed(2)}',
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
@@ -522,10 +518,10 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     return Text(
       text,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+      ),
     );
   }
 }
@@ -560,7 +556,11 @@ class _PaidByTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              UserAvatar(name: user.name, colorIndex: user.colorIndex, size: 34),
+              UserAvatar(
+                name: user.name,
+                colorIndex: user.colorIndex,
+                size: 34,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -574,8 +574,11 @@ class _PaidByTile extends StatelessWidget {
                 ),
               ),
               if (selected)
-                const Icon(Icons.check_circle_rounded,
-                    color: AppColors.primary, size: 22),
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: AppColors.primary,
+                  size: 22,
+                ),
             ],
           ),
         ),

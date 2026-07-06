@@ -13,7 +13,10 @@ import '../../repositories/expense_repository.dart';
 import '../../repositories/group_repository.dart';
 import '../../repositories/settlement_repository.dart';
 import '../../services/balance_service.dart';
+import '../../shared/widgets/app_card.dart';
+import '../../shared/widgets/balance_hero_card.dart';
 import '../../shared/widgets/breakdown_pie_chart.dart';
+import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/user_avatar.dart';
 import '../expenses/add_expense_screen.dart';
 import '../expenses/expense_detail_screen.dart';
@@ -29,7 +32,6 @@ class GroupDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final detail = ref.watch(groupDetailProvider(groupId));
     final users = ref.watch(userByIdProvider);
-    final me = ref.watch(currentUserProvider).value;
 
     return detail.when(
       loading: () =>
@@ -40,6 +42,7 @@ class GroupDetailScreen extends ConsumerWidget {
       ),
       data: (data) {
         final currency = currencyByCode(data.group.currencyCode);
+        final shareEntries = data.memberShareCents.entries.toList();
         return Scaffold(
           appBar: AppBar(
             title: Column(
@@ -103,51 +106,39 @@ class GroupDetailScreen extends ConsumerWidget {
           body: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
             children: [
-              _MyBalanceCard(
+              BalanceHeroCard(
                 netCents: data.myNetCents,
                 currencyCode: data.group.currencyCode,
               ),
               if (data.memberShareCents.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                _sectionLabel(context, 'EXPENSE BREAKDOWN'),
+                const SectionHeader('EXPENSE BREAKDOWN'),
                 const SizedBox(height: 10),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: BreakdownPieChart(
-                      slices: [
-                        for (final entry in data.memberShareCents.entries)
-                          BreakdownSlice(
-                            label: users[entry.key]?.name ?? 'Unknown',
-                            cents: entry.value,
-                            color: chartColorForIndex(
-                              users[entry.key]?.colorIndex ?? 0,
-                            ),
-                            currencyCode: data.group.currencyCode,
-                          ),
-                      ],
-                    ),
+                AppCard(
+                  child: BreakdownPieChart(
+                    slices: [
+                      for (var i = 0; i < shareEntries.length; i++)
+                        BreakdownSlice(
+                          label: users[shareEntries[i].key]?.name ?? 'Unknown',
+                          cents: shareEntries[i].value,
+                          color: chartColorForIndex(i),
+                          currencyCode: data.group.currencyCode,
+                        ),
+                    ],
                   ),
                 ),
               ],
               const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: _sectionLabel(
-                      context,
-                      'MEMBERS (${data.members.length})',
+              SectionHeader(
+                'MEMBERS (${data.members.length})',
+                trailing: TextButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => EditGroupScreen(groupId: groupId),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => EditGroupScreen(groupId: groupId),
-                      ),
-                    ),
-                    child: const Text('Manage'),
-                  ),
-                ],
+                  child: const Text('Manage'),
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -183,40 +174,49 @@ class GroupDetailScreen extends ConsumerWidget {
               ),
               if (data.debts.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(child: _sectionLabel(context, 'WHO OWES WHOM')),
-                    TextButton.icon(
-                      onPressed: () => showRecordSettlementSheet(
-                        context,
-                        groupId: groupId,
-                        currencyCode: data.group.currencyCode,
-                        members: data.members,
-                      ),
-                      icon: const Icon(Icons.handshake_outlined, size: 18),
-                      label: const Text('Settle up'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                for (final debt in data.debts)
-                  _DebtTile(
-                    debt: debt,
-                    users: users,
-                    currencyCode: data.group.currencyCode,
-                    highlightMe: me?.id,
-                    onTap: () => showRecordSettlementSheet(
+                SectionHeader(
+                  'WHO OWES WHOM',
+                  trailing: TextButton.icon(
+                    onPressed: () => showRecordSettlementSheet(
                       context,
                       groupId: groupId,
                       currencyCode: data.group.currencyCode,
                       members: data.members,
-                      prefill: debt,
                     ),
+                    icon: const Icon(Icons.handshake_outlined, size: 18),
+                    label: const Text('Settle up'),
                   ),
+                ),
+                const SizedBox(height: 10),
+                AppCard(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < data.debts.length; i++) ...[
+                        _DebtTile(
+                          debt: data.debts[i],
+                          users: users,
+                          currencyCode: data.group.currencyCode,
+                          onTap: () => showRecordSettlementSheet(
+                            context,
+                            groupId: groupId,
+                            currencyCode: data.group.currencyCode,
+                            members: data.members,
+                            prefill: data.debts[i],
+                          ),
+                        ),
+                        if (i < data.debts.length - 1) const Divider(height: 1),
+                      ],
+                    ],
+                  ),
+                ),
               ],
               if (data.settlements.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                _sectionLabel(context, 'SETTLEMENTS'),
+                const SectionHeader('SETTLEMENTS'),
                 const SizedBox(height: 10),
                 for (final s in data.settlements)
                   _SettlementTile(
@@ -227,7 +227,7 @@ class GroupDetailScreen extends ConsumerWidget {
                   ),
               ],
               const SizedBox(height: 28),
-              _sectionLabel(context, 'EXPENSES'),
+              const SectionHeader('EXPENSES'),
               const SizedBox(height: 12),
               if (data.expenses.isEmpty)
                 const _EmptyExpenses()
@@ -254,17 +254,6 @@ class GroupDetailScreen extends ConsumerWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _sectionLabel(BuildContext context, String text) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-        color: AppColors.textSecondary,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1.2,
-      ),
     );
   }
 
@@ -356,107 +345,42 @@ class GroupDetailScreen extends ConsumerWidget {
   }
 }
 
-class _MyBalanceCard extends StatelessWidget {
-  const _MyBalanceCard({required this.netCents, required this.currencyCode});
-
-  final int netCents;
-  final String currencyCode;
-
-  @override
-  Widget build(BuildContext context) {
-    final settled = netCents == 0;
-    final String label;
-    final String amount;
-    final Color color;
-
-    if (settled) {
-      label = 'You are all settled up';
-      amount = '';
-      color = AppColors.textSecondary;
-    } else if (netCents > 0) {
-      label = 'You get';
-      amount = formatCents(netCents, currencyCode);
-      color = AppColors.positive;
-    } else {
-      label = 'You will give';
-      amount = formatCents(netCents, currencyCode);
-      color = AppColors.negative;
-    }
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          if (!settled) ...[
-            const SizedBox(height: 6),
-            Text(
-              amount,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: color,
-                letterSpacing: -0.5,
-              ),
-            ),
-          ] else
-            const SizedBox(height: 4),
-        ],
-      ),
-    );
-  }
-}
-
 class _DebtTile extends StatelessWidget {
   const _DebtTile({
     required this.debt,
     required this.users,
     required this.currencyCode,
-    this.highlightMe,
     this.onTap,
   });
 
   final PairwiseDebt debt;
   final Map<String, User> users;
   final String currencyCode;
-  final String? highlightMe;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final from = users[debt.fromUserId]?.name ?? '?';
     final to = users[debt.toUserId]?.name ?? '?';
-    final isMe = debt.fromUserId == highlightMe || debt.toUserId == highlightMe;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final onVariant = Theme.of(context).colorScheme.onSurfaceVariant;
+    final descriptionStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+      color: onSurface,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    );
 
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
         child: Row(
           children: [
             Expanded(
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isMe
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary,
-                    fontWeight: isMe ? FontWeight.w600 : FontWeight.w500,
-                  ),
+              child: Text.rich(
+                TextSpan(
+                  style: descriptionStyle,
                   children: [
                     TextSpan(text: from),
                     const TextSpan(text: ' owes '),
@@ -473,16 +397,12 @@ class _DebtTile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: isMe ? AppColors.textPrimary : AppColors.textSecondary,
+                color: onSurface,
               ),
             ),
             if (onTap != null) ...[
               const SizedBox(width: 4),
-              const Icon(
-                Icons.chevron_right_rounded,
-                size: 18,
-                color: AppColors.textSecondary,
-              ),
+              Icon(Icons.chevron_right_rounded, size: 18, color: onVariant),
             ],
           ],
         ),
@@ -531,46 +451,38 @@ class _ExpenseTile extends StatelessWidget {
         onDelete();
         return false;
       },
-      child: Card(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        expense.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '$payer paid · $date',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
+      child: AppCard(
+        padding: const EdgeInsets.all(16),
+        onTap: onTap,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    expense.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                Text(
-                  formatCents(expense.amountCents, currencyCode),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(height: 4),
+                  Text(
+                    '$payer paid · $date',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            Text(
+              formatCents(expense.amountCents, currencyCode),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+          ],
         ),
       ),
     );
@@ -665,28 +577,21 @@ class _EmptyExpenses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final onVariant = Theme.of(context).colorScheme.onSurfaceVariant;
+    return AppCard(
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: const Column(
+      child: Column(
         children: [
-          Icon(
-            Icons.receipt_long_outlined,
-            size: 40,
-            color: AppColors.textSecondary,
-          ),
-          SizedBox(height: 12),
-          Text(
+          Icon(Icons.receipt_long_outlined, size: 40, color: onVariant),
+          const SizedBox(height: 12),
+          const Text(
             'No expenses yet',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             'Tap "Add expense" to split your first bill.',
-            style: TextStyle(color: AppColors.textSecondary),
+            style: TextStyle(color: onVariant),
           ),
         ],
       ),

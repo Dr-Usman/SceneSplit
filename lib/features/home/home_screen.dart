@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/home_provider.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/breakdown_pie_chart.dart';
+import '../../shared/widgets/section_header.dart';
+import '../../shared/widgets/summary_split_card.dart';
 import '../groups/create_group_screen.dart';
 import '../groups/group_detail_screen.dart';
 import '../profile/profile_screen.dart';
@@ -23,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('SceneSplit'),
         actions: [
-          if (user!= null)
+          if (user != null)
             Padding(
               padding: const EdgeInsets.only(right: 20),
               child: GestureDetector(
@@ -60,14 +64,7 @@ class HomeScreen extends ConsumerWidget {
           children: [
             _BalanceSummaryCard(data: data, currencyCode: currencyCode),
             const SizedBox(height: 28),
-            Text(
-              'GROUPS',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.2,
-              ),
-            ),
+            const SectionHeader('GROUPS'),
             const SizedBox(height: 12),
             if (data.groups.isEmpty)
               const _EmptyGroups()
@@ -94,12 +91,14 @@ class _BalanceSummaryCard extends StatelessWidget {
     var colorIndex = 0;
     for (final summary in data.groups) {
       if (summary.myNetCents <= 0) continue;
-      slices.add(BreakdownSlice(
-        label: '${summary.group.emoji} ${summary.group.name}',
-        cents: summary.myNetCents,
-        color: chartColorForIndex(colorIndex++),
-        currencyCode: summary.group.currencyCode,
-      ));
+      slices.add(
+        BreakdownSlice(
+          label: '${summary.group.emoji} ${summary.group.name}',
+          cents: summary.myNetCents,
+          color: chartColorForIndex(colorIndex++),
+          currencyCode: summary.group.currencyCode,
+        ),
+      );
     }
     showBreakdownSheet(
       context,
@@ -114,12 +113,14 @@ class _BalanceSummaryCard extends StatelessWidget {
     var colorIndex = 0;
     for (final summary in data.groups) {
       if (summary.myNetCents >= 0) continue;
-      slices.add(BreakdownSlice(
-        label: '${summary.group.emoji} ${summary.group.name}',
-        cents: -summary.myNetCents,
-        color: chartColorForIndex(colorIndex++),
-        currencyCode: summary.group.currencyCode,
-      ));
+      slices.add(
+        BreakdownSlice(
+          label: '${summary.group.emoji} ${summary.group.name}',
+          cents: -summary.myNetCents,
+          color: chartColorForIndex(colorIndex++),
+          currencyCode: summary.group.currencyCode,
+        ),
+      );
     }
     showBreakdownSheet(
       context,
@@ -131,88 +132,13 @@ class _BalanceSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: Row(
-        children: [
-          Expanded(
-            child: _SummaryHalf(
-              label: 'You are owed',
-              amount: formatCents(data.totalOwedToMeCents, currencyCode),
-              backgroundColor: AppColors.primary,
-              labelColor: Colors.white.withValues(alpha: 0.88),
-              amountColor: Colors.white,
-              onTap: () => _showOwedBreakdown(context),
-            ),
-          ),
-          Expanded(
-            child: _SummaryHalf(
-              label: 'You owe',
-              amount: formatCents(data.totalIOweCents, currencyCode),
-              backgroundColor: AppColors.secondary,
-              labelColor: Colors.white.withValues(alpha: 0.88),
-              amountColor: Colors.white,
-              onTap: () => _showOweBreakdown(context),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SummaryHalf extends StatelessWidget {
-  const _SummaryHalf({
-    required this.label,
-    required this.amount,
-    required this.backgroundColor,
-    required this.labelColor,
-    required this.amountColor,
-    this.onTap,
-  });
-
-  final String label;
-  final String amount;
-  final Color backgroundColor;
-  final Color labelColor;
-  final Color amountColor;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: backgroundColor,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: labelColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 6),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  amount,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: amountColor,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return SummarySplitCard(
+      owedLabel: 'You will get',
+      owedAmount: formatCents(data.totalOwedToMeCents, currencyCode),
+      oweLabel: 'You will give',
+      oweAmount: formatCents(data.totalIOweCents, currencyCode),
+      onOwedTap: _showOwedBreakdown,
+      onOweTap: _showOweBreakdown,
     );
   }
 }
@@ -234,7 +160,7 @@ class _GroupCard extends StatelessWidget {
     if (settled) {
       balanceLabel = 'settled up';
       balanceAmount = null;
-      balanceColor = AppColors.textSecondary;
+      balanceColor = Theme.of(context).colorScheme.onSurfaceVariant;
     } else if (net > 0) {
       balanceLabel = 'you will get';
       balanceAmount = formatCents(net, group.currencyCode);
@@ -245,77 +171,69 @@ class _GroupCard extends StatelessWidget {
       balanceColor = AppColors.negative;
     }
 
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => GroupDetailScreen(groupId: group.id),
+    return AppCard(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => GroupDetailScreen(groupId: group.id)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              gradient: AppGradients.emojiTile(context),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            alignment: Alignment.center,
+            child: Text(group.emoji, style: const TextStyle(fontSize: 26)),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                alignment: Alignment.center,
-                child: Text(group.emoji, style: const TextStyle(fontSize: 26)),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      group.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      '${summary.memberCount} members',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    balanceLabel,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: balanceColor,
-                      fontWeight: FontWeight.w500,
-                    ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  group.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
                   ),
-                  if (balanceAmount != null) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      balanceAmount,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: balanceColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ],
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${summary.memberCount} members',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                balanceLabel,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: balanceColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
+              if (balanceAmount != null) ...[
+                const SizedBox(height: 2),
+                Text(
+                  balanceAmount,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: balanceColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -326,19 +244,19 @@ class _EmptyGroups extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppCard(
       padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Column(
         children: [
           Container(
             width: 64,
             height: 64,
-            decoration: const BoxDecoration(
-              color: AppColors.primarySoft,
+            decoration: BoxDecoration(
+              color: AppColors.primarySoft.withValues(
+                alpha: Theme.of(context).brightness == Brightness.dark
+                    ? 0.15
+                    : 1,
+              ),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -353,10 +271,13 @@ class _EmptyGroups extends StatelessWidget {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Create a group for your trip, home,\nor friends to start splitting.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textSecondary, height: 1.4),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              height: 1.4,
+            ),
           ),
         ],
       ),

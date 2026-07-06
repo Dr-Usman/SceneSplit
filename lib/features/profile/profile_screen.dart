@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../core/constants/app_links.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/app_link_launcher.dart';
 import '../../database/app_database.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../repositories/user_repository.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/currency_picker_sheet.dart';
+import '../../shared/widgets/section_header.dart';
+import '../../shared/widgets/settings_tile.dart';
 import '../../shared/widgets/user_avatar.dart';
+import '../about/about_screen.dart';
+import '../legal/legal_document_screen.dart';
+import '../legal/legal_document_type.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -85,9 +94,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       await deleteUser(ref.read(databaseProvider), person.id);
     } on UserDeleteBlockedException catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
       }
     }
   }
@@ -132,6 +141,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
+  Future<void> _sendEmail(String subject) async {
+    final info = await PackageInfo.fromPlatform();
+    final body =
+        '\n\n---\nApp: ${AppLinks.appName} ${info.version} (${info.buildNumber})';
+    final launched = await launchEmail(subject: subject, body: body);
+    if (!launched && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not open email app')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider).value;
@@ -156,7 +177,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          _sectionLabel('YOUR NAME'),
+          const SectionHeader('YOUR NAME'),
           const SizedBox(height: 8),
           if (_editingName)
             Row(
@@ -176,8 +197,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Icon(Icons.check_rounded,
-                          color: AppColors.primary),
+                      : const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.primary,
+                        ),
                 ),
                 IconButton(
                   onPressed: () => setState(() {
@@ -204,13 +227,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
           const SizedBox(height: 24),
-          _sectionLabel('DEFAULT CURRENCY'),
+          const SectionHeader('DEFAULT CURRENCY'),
           const SizedBox(height: 8),
           Text(
             'Used for new groups and the home summary.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 8),
           CurrencyPickerField(
@@ -220,82 +243,169 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 updateCurrency(ref.read(databaseProvider), code),
           ),
           const SizedBox(height: 32),
-          Row(
-            children: [
-              Expanded(child: _sectionLabel('PEOPLE')),
-              IconButton(
-                onPressed: _addPerson,
-                icon: const Icon(Icons.person_add_alt_1_outlined),
-                tooltip: 'Add person',
-                color: AppColors.primary,
-              ),
-            ],
+          SectionHeader(
+            'PEOPLE',
+            trailing: IconButton(
+              onPressed: _addPerson,
+              icon: const Icon(Icons.person_add_alt_1_outlined),
+              tooltip: 'Add person',
+              color: AppColors.primary,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Everyone added across your groups.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 12),
-          if (allUsers.isEmpty)
-            Text(
-              'No people yet. Tap + to add someone.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-            ),
-          for (final u in allUsers)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  UserAvatar(
-                    name: u.name,
-                    colorIndex: u.colorIndex,
-                    size: 38,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
+          AppCard(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: allUsers.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      u.isCurrentUser ? '${u.name} (you)' : u.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                      'No people yet. Tap + to add someone.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      for (var i = 0; i < allUsers.length; i++) ...[
+                        _PersonRow(
+                          user: allUsers[i],
+                          onEdit: () => _editPerson(allUsers[i]),
+                          onDelete: () => _deletePerson(allUsers[i]),
+                        ),
+                        if (i < allUsers.length - 1) const Divider(height: 1),
+                      ],
+                    ],
+                  ),
+          ),
+          const SizedBox(height: 32),
+          const SectionHeader('SUPPORT & LEGAL'),
+          const SizedBox(height: 12),
+          AppCard(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                SettingsTile(
+                  icon: Icons.info_outline_rounded,
+                  title: 'About ${AppLinks.appName}',
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const AboutScreen()),
+                  ),
+                ),
+                SettingsTile(
+                  icon: Icons.privacy_tip_outlined,
+                  title: 'Privacy Policy',
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const LegalDocumentScreen(
+                        type: LegalDocumentType.privacy,
                       ),
                     ),
                   ),
-                  if (!u.isCurrentUser)
-                    PopupMenuButton<String>(
-                      onSelected: (action) {
-                        if (action == 'edit') {
-                          _editPerson(u);
-                        } else if (action == 'delete') {
-                          _deletePerson(u);
-                        }
-                      },
-                      itemBuilder: (_) => const [
-                        PopupMenuItem(value: 'edit', child: Text('Edit name')),
-                        PopupMenuItem(value: 'delete', child: Text('Delete')),
-                      ],
+                ),
+                SettingsTile(
+                  icon: Icons.description_outlined,
+                  title: 'Terms of Service',
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const LegalDocumentScreen(
+                        type: LegalDocumentType.terms,
+                      ),
                     ),
-                ],
-              ),
+                  ),
+                ),
+                SettingsTile(
+                  icon: Icons.mail_outline_rounded,
+                  title: 'Contact us',
+                  onTap: () => _sendEmail('SceneSplit Support'),
+                ),
+                SettingsTile(
+                  icon: Icons.feedback_outlined,
+                  title: 'Send feedback',
+                  onTap: () => _sendEmail('SceneSplit Feedback'),
+                ),
+                SettingsTile(
+                  icon: Icons.lightbulb_outline_rounded,
+                  title: 'Suggest a feature',
+                  onTap: () => _sendEmail('SceneSplit Feature Suggestion'),
+                ),
+                SettingsTile(
+                  icon: Icons.star_outline_rounded,
+                  title: 'Rate ${AppLinks.appName}',
+                  showDivider: false,
+                  onTap: () => requestAppReview(),
+                ),
+              ],
             ),
+          ),
+          const SizedBox(height: 20),
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              final version = snapshot.data?.version ?? '…';
+              return Text(
+                '${AppLinks.appName} v$version',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _sectionLabel(String text) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
+class _PersonRow extends StatelessWidget {
+  const _PersonRow({
+    required this.user,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final User user;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          UserAvatar(name: user.name, colorIndex: user.colorIndex, size: 38),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              user.isCurrentUser ? '${user.name} (you)' : user.name,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+            ),
           ),
+          if (!user.isCurrentUser)
+            PopupMenuButton<String>(
+              onSelected: (action) {
+                if (action == 'edit') {
+                  onEdit();
+                } else if (action == 'delete') {
+                  onDelete();
+                }
+              },
+              itemBuilder: (_) => const [
+                PopupMenuItem(value: 'edit', child: Text('Edit name')),
+                PopupMenuItem(value: 'delete', child: Text('Delete')),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }

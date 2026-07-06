@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 
 class BreakdownSlice {
@@ -18,8 +17,24 @@ class BreakdownSlice {
   });
 }
 
+/// Distinct slice colors for charts — index-based, independent of avatar colors.
+const _chartSliceColors = [
+  Color(0xFF00B5B2),
+  Color(0xFF7856E6),
+  Color(0xFFDB2777),
+  Color(0xFFD97706),
+  Color(0xFF2563EB),
+  Color(0xFF059669),
+  Color(0xFFDC2626),
+  Color(0xFF9333EA),
+  Color(0xFF0891B2),
+  Color(0xFFCA8A04),
+  Color(0xFF7C3AED),
+  Color(0xFFEA580C),
+];
+
 Color chartColorForIndex(int index) =>
-    AppColors.avatarColors[index % AppColors.avatarColors.length];
+    _chartSliceColors[index % _chartSliceColors.length];
 
 Future<void> showBreakdownSheet(
   BuildContext context, {
@@ -29,50 +44,56 @@ Future<void> showBreakdownSheet(
 }) {
   return showModalBottomSheet<void>(
     context: context,
-    backgroundColor: AppColors.surface,
+    backgroundColor: Theme.of(context).colorScheme.surface,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (sheetContext) => SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
+    builder: (sheetContext) {
+      final theme = Theme.of(sheetContext);
+      final colorScheme = theme.colorScheme;
+
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: theme.dividerColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            if (subtitle != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 16),
               Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                title,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
+                ),
               ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+              BreakdownPieChart(slices: slices),
             ],
-            const SizedBox(height: 20),
-            BreakdownPieChart(slices: slices),
-          ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 
@@ -91,8 +112,8 @@ class BreakdownPieChart extends StatelessWidget {
         child: Text(
           'No data to chart',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       );
     }
@@ -124,10 +145,7 @@ class BreakdownPieChart extends StatelessWidget {
         const SizedBox(height: 16),
         for (var i = 0; i < sorted.length; i++) ...[
           if (i > 0) const SizedBox(height: 10),
-          _LegendRow(
-            slice: sorted[i],
-            percent: sorted[i].cents / total * 100,
-          ),
+          _LegendRow(slice: sorted[i], percent: sorted[i].cents / total * 100),
         ],
       ],
     );
@@ -142,23 +160,22 @@ class _LegendRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Container(
           width: 12,
           height: 12,
-          decoration: BoxDecoration(
-            color: slice.color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: slice.color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
             slice.label,
-            style: const TextStyle(
-              fontSize: 14,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -166,9 +183,9 @@ class _LegendRow extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           formatCents(slice.cents, slice.currencyCode),
-          style: const TextStyle(
-            fontSize: 14,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(width: 8),
@@ -177,9 +194,8 @@ class _LegendRow extends StatelessWidget {
           child: Text(
             '${percent.toStringAsFixed(0)}%',
             textAlign: TextAlign.right,
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.textSecondary,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ),

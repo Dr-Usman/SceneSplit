@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_assets.dart';
+import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/database_provider.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/currency_picker_sheet.dart';
+import '../../shared/widgets/section_header.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -63,70 +66,60 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 // Logo mark
                 Center(
                   child: Container(
-                    width: 200,
-                    height: 180,
-                    padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.logoBackground,
                       borderRadius: BorderRadius.circular(28),
+                      boxShadow: AppShadows.logo(context),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.asset(AppAssets.logo, fit: BoxFit.contain),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(28),
+                      child: Container(
+                        width: 200,
+                        height: 180,
+                        padding: const EdgeInsets.all(8),
+                        color: AppColors.logoBackground,
+                        child: Image.asset(AppAssets.logo, fit: BoxFit.contain),
+                      ),
+                    ),
                   ),
                 ),
-                // const SizedBox(height: 28),
-                // Text(
-                //   'SceneSplit',
-                //   textAlign: TextAlign.center,
-                //   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                //     fontWeight: FontWeight.w800,
-                //     letterSpacing: -0.5,
-                //   ),
-                // ),
                 const SizedBox(height: 10),
                 Text(
                   'Split expenses with friends.\nNo accounts, no fuss.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 48),
-                Text(
-                  'YOUR NAME',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
+                AppCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SectionHeader('YOUR NAME'),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _nameController,
+                        textCapitalization: TextCapitalization.words,
+                        autofocus: false,
+                        decoration: const InputDecoration(
+                          hintText: 'e.g. Usman',
+                          prefixIcon: Icon(Icons.person_outline_rounded),
+                        ),
+                        onSubmitted: (_) {
+                          if (_canContinue) _getStarted();
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const SectionHeader('CURRENCY'),
+                      const SizedBox(height: 8),
+                      CurrencyPickerField(
+                        currencyCode: _currencyCode,
+                        onChanged: (code) =>
+                            setState(() => _currencyCode = code),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _nameController,
-                  textCapitalization: TextCapitalization.words,
-                  autofocus: false,
-                  decoration: const InputDecoration(
-                    hintText: 'e.g. Usman',
-                    prefixIcon: Icon(Icons.person_outline_rounded),
-                  ),
-                  onSubmitted: (_) {
-                    if (_canContinue) _getStarted();
-                  },
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'CURRENCY',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                CurrencyPickerField(
-                  currencyCode: _currencyCode,
-                  onChanged: (code) => setState(() => _currencyCode = code),
                 ),
                 const SizedBox(height: 36),
                 FilledButton(
@@ -147,7 +140,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   'Everything stays on your device.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 48),
