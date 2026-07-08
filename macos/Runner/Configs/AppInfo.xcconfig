@@ -8,7 +8,7 @@
 PRODUCT_NAME = scene_split
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.sceneSplit
+PRODUCT_BUNDLE_IDENTIFIER = com.avenzor.scenesplit
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 Avenzor. All rights reserved.

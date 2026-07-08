@@ -30,6 +30,5 @@ We may update these terms. Continued use after changes means you accept the revi
 
 ## Contact
 
-Questions about these terms? Email **support@example.com**.
+Questions about these terms? Email **dr.usman7860@gmail.com**.
 
-*(Replace this email with your support address before publishing.)*

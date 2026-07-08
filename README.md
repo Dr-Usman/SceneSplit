@@ -96,3 +96,69 @@ flutter run
 ## License
 
 MIT
+
+## CI/CD
+
+GitHub Actions workflows live in [`.github/workflows/`](.github/workflows/).
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `ci.yml` | PR and push to `main` | Format check, analyze, Drift codegen check, tests |
+| `release-android.yml` | Tag `v*` | Signed split APKs attached to GitHub Release |
+| `release-ios.yml` | Tag `v*` | Signed IPA attached to GitHub Release |
+| `release-macos.yml` | Tag `v*` | macOS `.app` zip |
+| `release-web.yml` | Tag `v*` | Web bundle zip |
+| `release-linux.yml` | Tag `v*` | Linux x64 tar.gz |
+| `release-windows.yml` | Tag `v*` | Windows x64 zip |
+
+### Releasing
+
+1. Bump `version` in `pubspec.yaml` (e.g. `1.0.1+2`).
+2. Update [`CHANGELOG.md`](CHANGELOG.md).
+3. Commit, tag, and push:
+
+```bash
+git commit -m "chore: release v1.0.1"
+git tag v1.0.1
+git push origin main
+git push origin v1.0.1
+```
+
+The tag must match the semver portion of `pubspec.yaml` (`v1.0.1` → `1.0.1+2`). Workflows upload platform artifacts to the GitHub Release. Build the Play Store AAB locally when needed:
+
+```bash
+flutter build appbundle --release
+```
+
+### Required GitHub Secrets
+
+**Android** (split APK releases):
+
+| Secret | Description |
+|--------|-------------|
+| `ANDROID_KEYSTORE_BASE64` | Base64-encoded upload keystore (`.jks`) |
+| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
+| `ANDROID_KEY_PASSWORD` | Key password |
+| `ANDROID_KEY_ALIAS` | Key alias |
+
+**iOS** (IPA releases):
+
+| Secret | Description |
+|--------|-------------|
+| `IOS_CERTIFICATE_BASE64` | Distribution `.p12` (base64) |
+| `IOS_CERTIFICATE_PASSWORD` | P12 password |
+| `IOS_PROVISIONING_PROFILE_BASE64` | App Store provisioning profile (base64) |
+| `KEYCHAIN_PASSWORD` | Temporary keychain password for CI |
+
+Local Android signing: create `android/key.properties` and place `upload-keystore.jks` in `android/` (both gitignored).
+
+### Branch protection
+
+On GitHub, go to **Settings → Branches → Add branch protection rule** for `main`:
+
+1. Enable **Require a pull request before merging** (recommended).
+2. Enable **Require status checks to pass before merging**.
+3. Search for and select the **CI** / `analyze-and-test` check from `ci.yml`.
+4. Enable **Require branches to be up to date before merging** (recommended).
+
+This blocks merges until `flutter analyze`, formatting, codegen, and tests pass.

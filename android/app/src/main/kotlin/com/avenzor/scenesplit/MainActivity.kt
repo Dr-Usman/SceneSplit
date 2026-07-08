@@ -1,4 +1,4 @@
-package com.example.scene_split
+package com.avenzor.scenesplit
 
 import io.flutter.embedding.android.FlutterActivity
 
