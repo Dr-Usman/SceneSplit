@@ -46,7 +46,11 @@ void main() {
         isTrue,
       );
       expect(
-        SplitEngineService.percentageSplitsValid({'a': 33.33, 'b': 33.33, 'c': 33.34}),
+        SplitEngineService.percentageSplitsValid({
+          'a': 33.33,
+          'b': 33.33,
+          'c': 33.34,
+        }),
         isTrue,
       );
       expect(
