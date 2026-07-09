@@ -101,7 +101,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           TextField(
             controller: _nameController,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(hintText: 'e.g. Naran Trip'),
+            decoration: const InputDecoration(hintText: 'e.g. Trip to Japan'),
           ),
           const SizedBox(height: 24),
           _sectionLabel(context, 'ICON'),

@@ -74,8 +74,9 @@ We do not use your data for marketing, profiling, or any purpose unrelated to th
 - All app data is stored in a **local database on your device** using SQLite (via the Drift package).
 - We do **not** operate cloud sync or remote backup services for your expense data.
 - SceneSplit v1 does **not** include third-party analytics, crash reporting, or advertising SDKs.
+- You may **export** a local database backup file from Profile and **import** it later on the same or another device. Backup files stay under your control (e.g. Files, Drive, email); SceneSplit does not upload them.
 
-**Your responsibility:** Because data stays on your device, you are responsible for securing your phone or tablet (passcode, biometrics, device encryption) and for any backups created by your operating system (e.g. iCloud or Google backup). Uninstalling the app removes SceneSplit’s local data from your device.
+**Your responsibility:** Because data stays on your device, you are responsible for securing your phone or tablet (passcode, biometrics, device encryption) and for any backups you create manually or via your operating system (e.g. iCloud or Google backup). Uninstalling the app removes SceneSplit’s local data from your device.
 
 ---
 

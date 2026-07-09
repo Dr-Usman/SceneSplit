@@ -4,11 +4,28 @@ import 'package:uuid/uuid.dart';
 
 import '../database/app_database.dart';
 
-final databaseProvider = Provider<AppDatabase>((ref) {
-  final db = AppDatabase();
-  ref.onDispose(db.close);
-  return db;
-});
+class DatabaseNotifier extends Notifier<AppDatabase> {
+  @override
+  AppDatabase build() {
+    final db = AppDatabase();
+    ref.onDispose(() => db.close());
+    return db;
+  }
+
+  /// Closes the current database and opens a fresh connection (e.g. after import).
+  Future<void> reopen() async {
+    try {
+      await state.close();
+    } on Object {
+      // Connection may already be closed before a restore.
+    }
+    state = AppDatabase();
+  }
+}
+
+final databaseProvider = NotifierProvider<DatabaseNotifier, AppDatabase>(
+  DatabaseNotifier.new,
+);
 
 /// The user of this device (marked isCurrentUser). Null until onboarding done.
 final currentUserProvider = StreamProvider<User?>((ref) {

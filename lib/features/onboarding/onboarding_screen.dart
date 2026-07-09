@@ -103,7 +103,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         textCapitalization: TextCapitalization.words,
                         autofocus: false,
                         decoration: const InputDecoration(
-                          hintText: 'e.g. Usman',
+                          hintText: 'e.g. John Doe',
                           prefixIcon: Icon(Icons.person_outline_rounded),
                         ),
                         onSubmitted: (_) {
