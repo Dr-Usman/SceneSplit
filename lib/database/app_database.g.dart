@@ -2651,7 +2651,7 @@ final class $$UsersTableReferences
   static MultiTypedResultKey<$GroupMembersTable, List<GroupMember>>
   _groupMembersRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.groupMembers,
-    aliasName: $_aliasNameGenerator(db.users.id, db.groupMembers.userId),
+    aliasName: 'users__id__group_members__user_id',
   );
 
   $$GroupMembersTableProcessedTableManager get groupMembersRefs {
@@ -2670,7 +2670,7 @@ final class $$UsersTableReferences
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.expenses,
-    aliasName: $_aliasNameGenerator(db.users.id, db.expenses.paidById),
+    aliasName: 'users__id__expenses__paid_by_id',
   );
 
   $$ExpensesTableProcessedTableManager get expensesRefs {
@@ -2688,7 +2688,7 @@ final class $$UsersTableReferences
   static MultiTypedResultKey<$ExpenseSplitsTable, List<ExpenseSplit>>
   _expenseSplitsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.expenseSplits,
-    aliasName: $_aliasNameGenerator(db.users.id, db.expenseSplits.userId),
+    aliasName: 'users__id__expense_splits__user_id',
   );
 
   $$ExpenseSplitsTableProcessedTableManager get expenseSplitsRefs {
@@ -3277,7 +3277,7 @@ final class $$GroupsTableReferences
   static MultiTypedResultKey<$GroupMembersTable, List<GroupMember>>
   _groupMembersRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.groupMembers,
-    aliasName: $_aliasNameGenerator(db.groups.id, db.groupMembers.groupId),
+    aliasName: 'groups__id__group_members__group_id',
   );
 
   $$GroupMembersTableProcessedTableManager get groupMembersRefs {
@@ -3296,7 +3296,7 @@ final class $$GroupsTableReferences
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.expenses,
-    aliasName: $_aliasNameGenerator(db.groups.id, db.expenses.groupId),
+    aliasName: 'groups__id__expenses__group_id',
   );
 
   $$ExpensesTableProcessedTableManager get expensesRefs {
@@ -3314,7 +3314,7 @@ final class $$GroupsTableReferences
   static MultiTypedResultKey<$SettlementsTable, List<Settlement>>
   _settlementsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.settlements,
-    aliasName: $_aliasNameGenerator(db.groups.id, db.settlements.groupId),
+    aliasName: 'groups__id__settlements__group_id',
   );
 
   $$SettlementsTableProcessedTableManager get settlementsRefs {
@@ -3767,9 +3767,8 @@ final class $$GroupMembersTableReferences
     extends BaseReferences<_$AppDatabase, $GroupMembersTable, GroupMember> {
   $$GroupMembersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $GroupsTable _groupIdTable(_$AppDatabase db) => db.groups.createAlias(
-    $_aliasNameGenerator(db.groupMembers.groupId, db.groups.id),
-  );
+  static $GroupsTable _groupIdTable(_$AppDatabase db) =>
+      db.groups.createAlias('group_members__group_id__groups__id');
 
   $$GroupsTableProcessedTableManager get groupId {
     final $_column = $_itemColumn<String>('group_id')!;
@@ -3785,9 +3784,8 @@ final class $$GroupMembersTableReferences
     );
   }
 
-  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
-    $_aliasNameGenerator(db.groupMembers.userId, db.users.id),
-  );
+  static $UsersTable _userIdTable(_$AppDatabase db) =>
+      db.users.createAlias('group_members__user_id__users__id');
 
   $$UsersTableProcessedTableManager get userId {
     final $_column = $_itemColumn<String>('user_id')!;
@@ -4163,9 +4161,8 @@ final class $$ExpensesTableReferences
     extends BaseReferences<_$AppDatabase, $ExpensesTable, Expense> {
   $$ExpensesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $GroupsTable _groupIdTable(_$AppDatabase db) => db.groups.createAlias(
-    $_aliasNameGenerator(db.expenses.groupId, db.groups.id),
-  );
+  static $GroupsTable _groupIdTable(_$AppDatabase db) =>
+      db.groups.createAlias('expenses__group_id__groups__id');
 
   $$GroupsTableProcessedTableManager get groupId {
     final $_column = $_itemColumn<String>('group_id')!;
@@ -4181,9 +4178,8 @@ final class $$ExpensesTableReferences
     );
   }
 
-  static $UsersTable _paidByIdTable(_$AppDatabase db) => db.users.createAlias(
-    $_aliasNameGenerator(db.expenses.paidById, db.users.id),
-  );
+  static $UsersTable _paidByIdTable(_$AppDatabase db) =>
+      db.users.createAlias('expenses__paid_by_id__users__id');
 
   $$UsersTableProcessedTableManager get paidById {
     final $_column = $_itemColumn<String>('paid_by_id')!;
@@ -4202,7 +4198,7 @@ final class $$ExpensesTableReferences
   static MultiTypedResultKey<$ExpenseSplitsTable, List<ExpenseSplit>>
   _expenseSplitsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.expenseSplits,
-    aliasName: $_aliasNameGenerator(db.expenses.id, db.expenseSplits.expenseId),
+    aliasName: 'expenses__id__expense_splits__expense_id',
   );
 
   $$ExpenseSplitsTableProcessedTableManager get expenseSplitsRefs {
@@ -4742,9 +4738,7 @@ final class $$ExpenseSplitsTableReferences
   );
 
   static $ExpensesTable _expenseIdTable(_$AppDatabase db) =>
-      db.expenses.createAlias(
-        $_aliasNameGenerator(db.expenseSplits.expenseId, db.expenses.id),
-      );
+      db.expenses.createAlias('expense_splits__expense_id__expenses__id');
 
   $$ExpensesTableProcessedTableManager get expenseId {
     final $_column = $_itemColumn<String>('expense_id')!;
@@ -4760,9 +4754,8 @@ final class $$ExpenseSplitsTableReferences
     );
   }
 
-  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
-    $_aliasNameGenerator(db.expenseSplits.userId, db.users.id),
-  );
+  static $UsersTable _userIdTable(_$AppDatabase db) =>
+      db.users.createAlias('expense_splits__user_id__users__id');
 
   $$UsersTableProcessedTableManager get userId {
     final $_column = $_itemColumn<String>('user_id')!;
@@ -5136,9 +5129,8 @@ final class $$SettlementsTableReferences
     extends BaseReferences<_$AppDatabase, $SettlementsTable, Settlement> {
   $$SettlementsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $GroupsTable _groupIdTable(_$AppDatabase db) => db.groups.createAlias(
-    $_aliasNameGenerator(db.settlements.groupId, db.groups.id),
-  );
+  static $GroupsTable _groupIdTable(_$AppDatabase db) =>
+      db.groups.createAlias('settlements__group_id__groups__id');
 
   $$GroupsTableProcessedTableManager get groupId {
     final $_column = $_itemColumn<String>('group_id')!;
@@ -5154,9 +5146,8 @@ final class $$SettlementsTableReferences
     );
   }
 
-  static $UsersTable _fromUserIdTable(_$AppDatabase db) => db.users.createAlias(
-    $_aliasNameGenerator(db.settlements.fromUserId, db.users.id),
-  );
+  static $UsersTable _fromUserIdTable(_$AppDatabase db) =>
+      db.users.createAlias('settlements__from_user_id__users__id');
 
   $$UsersTableProcessedTableManager get fromUserId {
     final $_column = $_itemColumn<String>('from_user_id')!;
@@ -5172,9 +5163,8 @@ final class $$SettlementsTableReferences
     );
   }
 
-  static $UsersTable _toUserIdTable(_$AppDatabase db) => db.users.createAlias(
-    $_aliasNameGenerator(db.settlements.toUserId, db.users.id),
-  );
+  static $UsersTable _toUserIdTable(_$AppDatabase db) =>
+      db.users.createAlias('settlements__to_user_id__users__id');
 
   $$UsersTableProcessedTableManager get toUserId {
     final $_column = $_itemColumn<String>('to_user_id')!;

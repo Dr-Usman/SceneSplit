@@ -1,50 +1,50 @@
 name: scene_split
-description: "A Splitwise-inspired expense splitting app"
+description: "Split expenses with friends, track balances, and settle up — offline-first Flutter app with local SQLite storage."
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.12.2
 
 dependencies:
   flutter:
     sdk: flutter
 
   # State Management
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  flutter_riverpod: ^3.3.2
+  riverpod_annotation: ^4.0.3
 
   # Database
-  drift: ^2.22.1
-  drift_flutter: ^0.2.4
-  path_provider: ^2.1.5
+  drift: ^2.34.1
+  drift_flutter: ^0.3.0
+  path_provider: ^2.1.6
 
   # UUID
-  uuid: ^4.5.1
+  uuid: ^4.5.3
 
   # Routing
-  go_router: ^14.8.1
+  go_router: ^17.3.0
 
   # UI
-  google_fonts: ^6.2.1
-  flutter_svg: ^2.0.16
+  google_fonts: ^8.1.0
+  flutter_svg: ^2.3.0
   fl_chart: ^1.2.0
-  intl: ^0.19.0
-  cupertino_icons: ^1.0.8
+  intl: ^0.20.3
+  cupertino_icons: ^1.0.9
 
   # Utils
-  collection: ^1.19.0
-  package_info_plus: ^8.3.0
-  url_launcher: ^6.3.1
-  in_app_review: ^2.0.10
+  collection: ^1.19.1
+  package_info_plus: ^10.2.0
+  url_launcher: ^6.3.2
+  in_app_review: ^2.0.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  drift_dev: ^2.22.1
-  build_runner: ^2.5.4
-  riverpod_generator: ^2.6.2
+  drift_dev: ^2.34.0
+  build_runner: ^2.15.1
+  riverpod_generator: ^4.0.4
 
 flutter:
   uses-material-design: true
