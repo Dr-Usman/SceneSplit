@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_links.dart';
@@ -16,6 +17,13 @@ Future<bool> launchEmail({required String subject, String? body}) async {
     },
   );
   return launchUrl(uri);
+}
+
+Future<bool> launchSupportEmail(String subject) async {
+  final info = await PackageInfo.fromPlatform();
+  final body =
+      '\n\n---\nApp: ${AppLinks.appName} ${info.version} (${info.buildNumber})';
+  return launchEmail(subject: subject, body: body);
 }
 
 Future<void> requestAppReview() async {

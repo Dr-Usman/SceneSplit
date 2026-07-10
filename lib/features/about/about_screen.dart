@@ -5,9 +5,23 @@ import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_links.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/app_link_launcher.dart';
+import '../../shared/widgets/app_card.dart';
+import '../../shared/widgets/settings_tile.dart';
+import '../legal/legal_document_screen.dart';
+import '../legal/legal_document_type.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
+
+  Future<void> _sendEmail(BuildContext context, String subject) async {
+    final launched = await launchSupportEmail(subject);
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open email app')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +79,58 @@ class AboutScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 32),
+              AppCard(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    SettingsTile(
+                      icon: Icons.privacy_tip_outlined,
+                      title: 'Privacy Policy',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const LegalDocumentScreen(
+                            type: LegalDocumentType.privacy,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SettingsTile(
+                      icon: Icons.description_outlined,
+                      title: 'Terms of Service',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const LegalDocumentScreen(
+                            type: LegalDocumentType.terms,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SettingsTile(
+                      icon: Icons.mail_outline_rounded,
+                      title: 'Contact us',
+                      onTap: () => _sendEmail(context, 'SceneSplit Support'),
+                    ),
+                    SettingsTile(
+                      icon: Icons.feedback_outlined,
+                      title: 'Send feedback',
+                      onTap: () => _sendEmail(context, 'SceneSplit Feedback'),
+                    ),
+                    SettingsTile(
+                      icon: Icons.lightbulb_outline_rounded,
+                      title: 'Suggest a feature',
+                      onTap: () =>
+                          _sendEmail(context, 'SceneSplit Feature Suggestion'),
+                    ),
+                    SettingsTile(
+                      icon: Icons.star_outline_rounded,
+                      title: 'Rate ${AppLinks.appName}',
+                      showDivider: false,
+                      onTap: () => requestAppReview(),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 32),
