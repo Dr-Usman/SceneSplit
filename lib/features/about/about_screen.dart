@@ -17,9 +17,9 @@ class AboutScreen extends StatelessWidget {
   Future<void> _sendEmail(BuildContext context, String subject) async {
     final launched = await launchSupportEmail(subject);
     if (!launched && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not open email app')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not open email app')));
     }
   }
 

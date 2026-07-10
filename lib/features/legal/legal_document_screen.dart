@@ -39,18 +39,14 @@ class _LegalDocumentScreenState extends State<LegalDocumentScreen> {
         fontStyle: FontStyle.italic,
       ),
       blockquoteDecoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(color: AppColors.primary, width: 3),
-        ),
+        border: Border(left: BorderSide(color: AppColors.primary, width: 3)),
       ),
       blockquotePadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
       tableHead: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
       tableBody: textTheme.bodyMedium,
       tableBorder: TableBorder.all(color: colorScheme.outlineVariant),
       horizontalRuleDecoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: colorScheme.outlineVariant),
-        ),
+        border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
       ),
       a: textTheme.bodyMedium?.copyWith(
         color: AppColors.primary,

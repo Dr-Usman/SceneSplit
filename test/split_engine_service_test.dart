@@ -49,10 +49,7 @@ void main() {
         SplitEngineService.exactSplitAssignedCents({'a': 60, 'b': 50}),
         110,
       );
-      expect(
-        SplitEngineService.exactSplitAssignedCents({'a': 30}),
-        30,
-      );
+      expect(SplitEngineService.exactSplitAssignedCents({'a': 30}), 30);
     });
 
     test('percentageSplitsValid allows small floating drift', () {
@@ -95,10 +92,7 @@ void main() {
         SplitEngineService.percentageSplitsWithinLimits({'a': 60, 'b': 50}),
         isFalse,
       );
-      expect(
-        SplitEngineService.percentageSplitTotal({'a': 60, 'b': 50}),
-        110,
-      );
+      expect(SplitEngineService.percentageSplitTotal({'a': 60, 'b': 50}), 110);
     });
   });
 }

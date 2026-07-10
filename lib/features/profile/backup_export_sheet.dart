@@ -27,8 +27,9 @@ Future<BackupExportAction?> showBackupExportSheet(
                 width: 36,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Theme.of(sheetContext).colorScheme.onSurfaceVariant
-                      .withValues(alpha: 0.35),
+                  color: Theme.of(
+                    sheetContext,
+                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.35),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -36,9 +37,9 @@ Future<BackupExportAction?> showBackupExportSheet(
             const SizedBox(height: 20),
             Text(
               'Backup ready',
-              style: Theme.of(sheetContext).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(
+                sheetContext,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 6),
             Text(
@@ -85,8 +86,9 @@ class _BackupExportOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest
-          .withValues(alpha: 0.45),
+      color: Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: InkWell(
         onTap: onTap,

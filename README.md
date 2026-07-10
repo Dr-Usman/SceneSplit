@@ -113,11 +113,40 @@ GitHub Actions workflows live in [`.github/workflows/`](.github/workflows/).
 
 ### Releasing
 
-1. Bump `version` in `pubspec.yaml` (e.g. `1.0.1+2`).
-2. Update [`CHANGELOG.md`](CHANGELOG.md).
-3. Commit, tag, and push:
+#### Pre-release checklist
+
+Run the same checks as CI before bumping the version or creating the release commit:
 
 ```bash
+# 1. Format all Dart files
+dart format .
+
+# 2. Static analysis (CI uses --fatal-infos)
+flutter analyze --fatal-infos
+
+# 3. Regenerate Drift code and confirm nothing changed
+dart run build_runner build --delete-conflicting-outputs
+git diff --exit-code lib/database/app_database.g.dart
+
+# 4. Run tests
+flutter test
+```
+
+Fix any failures before continuing. A quick one-liner that mirrors CI (except codegen diff):
+
+```bash
+dart format . && flutter analyze --fatal-infos && flutter test
+```
+
+#### Release steps
+
+1. Complete the [pre-release checklist](#pre-release-checklist) above.
+2. Bump `version` in `pubspec.yaml` (e.g. `1.0.1+2` — increment the build number after `+`).
+3. Update [`CHANGELOG.md`](CHANGELOG.md) (move items from `[Unreleased]` into the new version section).
+4. Commit, tag, and push:
+
+```bash
+git add pubspec.yaml CHANGELOG.md
 git commit -m "chore: release v1.0.1"
 git tag v1.0.1
 git push origin main

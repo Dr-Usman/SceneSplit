@@ -30,7 +30,9 @@ class BalanceHeroCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppColors.positive.withValues(alpha: isDark ? 0.25 : 0.15),
+                color: AppColors.positive.withValues(
+                  alpha: isDark ? 0.25 : 0.15,
+                ),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

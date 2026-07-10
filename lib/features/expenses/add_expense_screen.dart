@@ -477,7 +477,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     decoration: const InputDecoration(
                       suffixText: '%',
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 12,
                       ),
@@ -550,7 +550,10 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
     final pcts = _parsePercentages();
     if (pcts == null) {
-      return _splitStatusMessage('Enter valid split percentages', isError: true);
+      return _splitStatusMessage(
+        'Enter valid split percentages',
+        isError: true,
+      );
     }
 
     final total = SplitEngineService.percentageSplitTotal(pcts);
@@ -590,7 +593,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         message,
-        style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          color: color,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

@@ -187,8 +187,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                       onEdit: () => _editPerson(filteredUsers[i]),
                       onDelete: () => _deletePerson(filteredUsers[i]),
                     ),
-                    if (i < filteredUsers.length - 1)
-                      const Divider(height: 1),
+                    if (i < filteredUsers.length - 1) const Divider(height: 1),
                   ],
                 ],
               ),

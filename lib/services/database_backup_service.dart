@@ -46,7 +46,10 @@ Future<File> exportDatabaseBackup(AppDatabase db) async {
 }
 
 /// Validates a backup file without modifying the live database.
-void validateBackupFile(String backupPath, {required int expectedSchemaVersion}) {
+void validateBackupFile(
+  String backupPath, {
+  required int expectedSchemaVersion,
+}) {
   Database? backupDb;
   try {
     backupDb = sqlite3.open(backupPath, mode: OpenMode.readOnly);

@@ -237,11 +237,7 @@ class _InfoRow extends StatelessWidget {
           Text(label, style: labelStyle),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              value,
-              style: valueStyle,
-              textAlign: TextAlign.end,
-            ),
+            child: Text(value, style: valueStyle, textAlign: TextAlign.end),
           ),
         ],
       ),
