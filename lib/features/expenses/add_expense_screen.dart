@@ -654,6 +654,10 @@ class _PaidByTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? AppColors.borderDark : AppColors.border;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: InkWell(
@@ -662,10 +666,12 @@ class _PaidByTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primarySoft : AppColors.surface,
+            color: selected
+                ? AppColors.primarySoft.withValues(alpha: isDark ? 0.22 : 1)
+                : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: selected ? AppColors.primary : AppColors.border,
+              color: selected ? AppColors.primary : borderColor,
               width: selected ? 1.5 : 1,
             ),
           ),
@@ -683,8 +689,8 @@ class _PaidByTile extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: selected
-                        ? AppColors.primaryDark
-                        : AppColors.textPrimary,
+                        ? (isDark ? AppColors.primary : AppColors.primaryDark)
+                        : theme.colorScheme.onSurface,
                   ),
                 ),
               ),

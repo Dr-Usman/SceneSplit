@@ -150,6 +150,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
                   icon: Icons.notes_outlined,
                   label: 'Note',
                   value: expense.note!,
+                  multiline: true,
                 ),
               const SizedBox(height: 28),
               Text(
@@ -183,31 +184,64 @@ class _InfoRow extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
+    this.multiline = false,
   });
 
   final IconData icon;
   final String label;
   final String value;
+  final bool multiline;
 
   @override
   Widget build(BuildContext context) {
+    final labelStyle = TextStyle(
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+      fontSize: 14,
+    );
+    final valueStyle = TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+
+    if (multiline) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 20, color: AppColors.textSecondary),
+                const SizedBox(width: 12),
+                Text(label, style: labelStyle),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Text(value, style: valueStyle),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 20, color: AppColors.textSecondary),
           const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 14,
+          Text(label, style: labelStyle),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              value,
+              style: valueStyle,
+              textAlign: TextAlign.end,
             ),
-          ),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
           ),
         ],
       ),
