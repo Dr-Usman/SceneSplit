@@ -45,11 +45,25 @@ abstract class SplitEngineService {
     return {for (final e in raw.entries) e.key: e.value.toInt()};
   }
 
+  static int exactSplitAssignedCents(Map<String, int> amounts) =>
+      amounts.values.fold(0, (a, b) => a + b);
+
   static bool exactSplitsValid(int totalCents, Map<String, int> amounts) =>
-      amounts.values.fold(0, (a, b) => a + b) == totalCents;
+      exactSplitAssignedCents(amounts) == totalCents;
+
+  static double percentageSplitTotal(Map<String, double> percentages) =>
+      percentages.values.fold(0.0, (a, b) => a + b);
+
+  static bool percentageSplitsWithinLimits(Map<String, double> percentages) {
+    if (percentages.isEmpty) return false;
+    for (final pct in percentages.values) {
+      if (pct <= 0 || pct > 100) return false;
+    }
+    return percentageSplitTotal(percentages) <= 100.01;
+  }
 
   static bool percentageSplitsValid(Map<String, double> percentages) {
-    final sum = percentages.values.fold(0.0, (a, b) => a + b);
+    final sum = percentageSplitTotal(percentages);
     return (sum - 100).abs() < 0.01;
   }
 }

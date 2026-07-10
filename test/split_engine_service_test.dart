@@ -40,6 +40,21 @@ void main() {
       );
     });
 
+    test('exactSplitAssignedCents sums entered amounts', () {
+      expect(
+        SplitEngineService.exactSplitAssignedCents({'a': 60, 'b': 40}),
+        100,
+      );
+      expect(
+        SplitEngineService.exactSplitAssignedCents({'a': 60, 'b': 50}),
+        110,
+      );
+      expect(
+        SplitEngineService.exactSplitAssignedCents({'a': 30}),
+        30,
+      );
+    });
+
     test('percentageSplitsValid allows small floating drift', () {
       expect(
         SplitEngineService.percentageSplitsValid({'a': 50, 'b': 50}),
@@ -56,6 +71,33 @@ void main() {
       expect(
         SplitEngineService.percentageSplitsValid({'a': 50, 'b': 49}),
         isFalse,
+      );
+    });
+
+    test('percentageSplitsWithinLimits rejects invalid shares', () {
+      expect(
+        SplitEngineService.percentageSplitsWithinLimits({'a': 50, 'b': 50}),
+        isTrue,
+      );
+      expect(
+        SplitEngineService.percentageSplitsWithinLimits({
+          'a': 33.33,
+          'b': 33.33,
+          'c': 33.34,
+        }),
+        isTrue,
+      );
+      expect(
+        SplitEngineService.percentageSplitsWithinLimits({'a': 150}),
+        isFalse,
+      );
+      expect(
+        SplitEngineService.percentageSplitsWithinLimits({'a': 60, 'b': 50}),
+        isFalse,
+      );
+      expect(
+        SplitEngineService.percentageSplitTotal({'a': 60, 'b': 50}),
+        110,
       );
     });
   });

@@ -129,15 +129,19 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             SplitEngineService.exactSplitsValid(_amountCents!, amounts);
       case SplitType.percentage:
         final pcts = _parsePercentages();
-        return pcts != null && SplitEngineService.percentageSplitsValid(pcts);
+        return pcts != null &&
+            SplitEngineService.percentageSplitsWithinLimits(pcts) &&
+            SplitEngineService.percentageSplitsValid(pcts);
     }
   }
 
   Map<String, int>? _parseExact() {
+    final total = _amountCents;
     final result = <String, int>{};
     for (final e in _exactControllers.entries) {
       final cents = parseAmountToCents(e.value.text);
       if (cents == null || cents <= 0) continue;
+      if (total != null && cents > total) return null;
       result[e.key] = cents;
     }
     return result.isEmpty ? null : result;
@@ -149,10 +153,30 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       final text = e.value.text.trim();
       if (text.isEmpty) continue;
       final val = double.tryParse(text);
-      if (val == null || val <= 0) continue;
+      if (val == null || val <= 0 || val > 100) continue;
       result[e.key] = val;
     }
     return result.isEmpty ? null : result;
+  }
+
+  bool _hasExactFieldOverTotal() {
+    final total = _amountCents;
+    if (total == null) return false;
+    for (final c in _exactControllers.values) {
+      final cents = parseAmountToCents(c.text);
+      if (cents != null && cents > total) return true;
+    }
+    return false;
+  }
+
+  bool _hasPercentFieldOver100() {
+    for (final c in _percentControllers.values) {
+      final text = c.text.trim();
+      if (text.isEmpty) continue;
+      final val = double.tryParse(text);
+      if (val != null && val > 100) return true;
+    }
+    return false;
   }
 
   Map<String, int>? _buildSplits() {
@@ -453,7 +477,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     decoration: const InputDecoration(
                       suffixText: '%',
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 12,
                       ),
@@ -471,16 +495,107 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   }
 
   Widget _splitSummary(String symbol) {
-    final splits = _buildSplits();
-    if (splits == null) {
-      return const Padding(
-        padding: EdgeInsets.only(top: 8),
-        child: Text(
-          'Enter valid split amounts',
-          style: TextStyle(color: AppColors.negative, fontSize: 13),
-        ),
+    final amountCents = _amountCents;
+    if (amountCents == null) return const SizedBox.shrink();
+
+    switch (_splitType) {
+      case SplitType.equal:
+        return const SizedBox.shrink();
+      case SplitType.exact:
+        return _exactSplitSummary(symbol, amountCents);
+      case SplitType.percentage:
+        return _percentageSplitSummary(symbol, amountCents);
+    }
+  }
+
+  Widget _exactSplitSummary(String symbol, int amountCents) {
+    if (_hasExactFieldOverTotal()) {
+      return _splitStatusMessage(
+        'Each share must not exceed $symbol ${(amountCents / 100).toStringAsFixed(2)}',
+        isError: true,
       );
     }
+
+    final amounts = _parseExact();
+    if (amounts == null) {
+      return _splitStatusMessage('Enter valid split amounts', isError: true);
+    }
+
+    final assigned = SplitEngineService.exactSplitAssignedCents(amounts);
+    if (assigned > amountCents) {
+      final over = assigned - amountCents;
+      return _splitStatusMessage(
+        'Over by $symbol ${(over / 100).toStringAsFixed(2)}',
+        isError: true,
+      );
+    }
+    if (assigned < amountCents) {
+      final remaining = amountCents - assigned;
+      return _splitStatusMessage(
+        '$symbol ${(remaining / 100).toStringAsFixed(2)} remaining',
+        isWarning: true,
+      );
+    }
+
+    return _splitBreakdown(symbol, SplitEngineService.exactSplit(amounts));
+  }
+
+  Widget _percentageSplitSummary(String symbol, int amountCents) {
+    if (_hasPercentFieldOver100()) {
+      return _splitStatusMessage(
+        'Each share must be 100% or less',
+        isError: true,
+      );
+    }
+
+    final pcts = _parsePercentages();
+    if (pcts == null) {
+      return _splitStatusMessage('Enter valid split percentages', isError: true);
+    }
+
+    final total = SplitEngineService.percentageSplitTotal(pcts);
+    if (total > 100.01) {
+      final over = total - 100;
+      return _splitStatusMessage(
+        'Total ${total.toStringAsFixed(1)}% — reduce by ${over.toStringAsFixed(1)}%',
+        isError: true,
+      );
+    }
+    if (total < 99.99) {
+      final remaining = 100 - total;
+      return _splitStatusMessage(
+        'Total ${total.toStringAsFixed(1)}% — ${remaining.toStringAsFixed(1)}% remaining',
+        isWarning: true,
+      );
+    }
+
+    return _splitBreakdown(
+      symbol,
+      SplitEngineService.percentageSplit(amountCents, pcts),
+    );
+  }
+
+  Widget _splitStatusMessage(
+    String message, {
+    bool isError = false,
+    bool isWarning = false,
+  }) {
+    final color = isError
+        ? AppColors.negative
+        : isWarning
+        ? AppColors.textSecondary
+        : AppColors.textPrimary;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Text(
+        message,
+        style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget _splitBreakdown(String symbol, Map<String, int> splits) {
     final total = splits.values.fold(0, (a, b) => a + b);
     final members =
         ref.read(groupDetailProvider(widget.groupId)).value?.members ?? [];
