@@ -35,6 +35,10 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(
       name: 'scene_split',
       native: DriftNativeOptions(databasePath: resolveDatabasePath),
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+        driftWorker: Uri.parse('drift_worker.js'),
+      ),
     );
   }
 }

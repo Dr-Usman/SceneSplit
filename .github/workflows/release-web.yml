@@ -26,8 +26,13 @@ jobs:
             exit 1
           fi
 
+      - name: Verify Drift web assets are present
+        run: |
+          test -f web/sqlite3.wasm
+          test -f web/drift_worker.js
+
       - name: Build web release
-        run: flutter build web --release
+        run: flutter build web --release --no-wasm-dry-run
 
       - name: Package web bundle
         run: |

@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/foundation.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -33,7 +31,7 @@ Future<void> requestAppReview() async {
     return;
   }
 
-  final storeUrl = !kIsWeb && Platform.isIOS
+  final storeUrl = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS
       ? AppLinks.appStoreUrl
       : AppLinks.playStoreUrl;
   if (storeUrl.isNotEmpty) {

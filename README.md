@@ -103,9 +103,9 @@ GitHub Actions workflows live in [`.github/workflows/`](.github/workflows/).
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci.yml` | PR and push to `main` | Format check, analyze, Drift codegen check, tests |
+| `ci.yml` | PR to `main` | Format check, analyze, Drift codegen check, tests |
 | `release-android.yml` | Tag `v*` | Signed split APKs attached to GitHub Release |
-| `release-ios.yml` | Tag `v*` | Signed IPA attached to GitHub Release |
+| `release-ios.yml` | Tag `v*` (disabled) | Signed IPA — enable after iOS secrets are configured |
 | `release-macos.yml` | Tag `v*` | macOS `.app` zip |
 | `release-web.yml` | Tag `v*` | Web bundle zip |
 | `release-linux.yml` | Tag `v*` | Linux x64 tar.gz |
