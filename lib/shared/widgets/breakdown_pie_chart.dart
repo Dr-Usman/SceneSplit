@@ -147,6 +147,46 @@ class BreakdownPieChart extends StatelessWidget {
           if (i > 0) const SizedBox(height: 10),
           _LegendRow(slice: sorted[i], percent: sorted[i].cents / total * 100),
         ],
+        const SizedBox(height: 12),
+        Divider(height: 1, color: Theme.of(context).dividerColor),
+        const SizedBox(height: 12),
+        _TotalRow(
+          cents: total,
+          currencyCode: sorted.first.currencyCode,
+        ),
+      ],
+    );
+  }
+}
+
+class _TotalRow extends StatelessWidget {
+  const _TotalRow({required this.cents, required this.currencyCode});
+
+  final int cents;
+  final String currencyCode;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'Total',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: colorScheme.onSurface,
+            ),
+          ),
+        ),
+        Text(
+          formatCents(cents, currencyCode),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }

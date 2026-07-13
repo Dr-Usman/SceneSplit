@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/currencies.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
+import '../../database/app_database.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/settlement_repository.dart';
@@ -16,6 +17,7 @@ Future<void> showRecordSettlementSheet(
   required String currencyCode,
   required List<GroupMemberInfo> members,
   PairwiseDebt? prefill,
+  Settlement? existing,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -29,6 +31,7 @@ Future<void> showRecordSettlementSheet(
       currencyCode: currencyCode,
       members: members,
       prefill: prefill,
+      existing: existing,
     ),
   );
 }
@@ -39,12 +42,14 @@ class _RecordSettlementSheet extends ConsumerStatefulWidget {
     required this.currencyCode,
     required this.members,
     this.prefill,
+    this.existing,
   });
 
   final String groupId;
   final String currencyCode;
   final List<GroupMemberInfo> members;
   final PairwiseDebt? prefill;
+  final Settlement? existing;
 
   @override
   ConsumerState<_RecordSettlementSheet> createState() =>
@@ -59,10 +64,22 @@ class _RecordSettlementSheetState
   late String _toUserId;
   bool _saving = false;
 
+  bool get _isEditing => widget.existing != null;
+
   @override
   void initState() {
     super.initState();
-    if (widget.prefill != null) {
+    final existing = widget.existing;
+    if (existing != null) {
+      _fromUserId = existing.fromUserId;
+      _toUserId = existing.toUserId;
+      _amountController.text = (existing.amountCents / 100).toStringAsFixed(
+        existing.amountCents % 100 == 0 ? 0 : 2,
+      );
+      if (existing.note != null) {
+        _noteController.text = existing.note!;
+      }
+    } else if (widget.prefill != null) {
       _fromUserId = widget.prefill!.fromUserId;
       _toUserId = widget.prefill!.toUserId;
       _amountController.text = (widget.prefill!.amountCents / 100)
@@ -93,16 +110,30 @@ class _RecordSettlementSheetState
     if (cents == null) return;
 
     setState(() => _saving = true);
-    await createSettlement(
-      ref.read(databaseProvider),
-      groupId: widget.groupId,
-      fromUserId: _fromUserId,
-      toUserId: _toUserId,
-      amountCents: cents,
-      note: _noteController.text.trim().isEmpty
-          ? null
-          : _noteController.text.trim(),
-    );
+    final note = _noteController.text.trim().isEmpty
+        ? null
+        : _noteController.text.trim();
+    final db = ref.read(databaseProvider);
+
+    if (_isEditing) {
+      await updateSettlement(
+        db,
+        settlementId: widget.existing!.id,
+        fromUserId: _fromUserId,
+        toUserId: _toUserId,
+        amountCents: cents,
+        note: note,
+      );
+    } else {
+      await createSettlement(
+        db,
+        groupId: widget.groupId,
+        fromUserId: _fromUserId,
+        toUserId: _toUserId,
+        amountCents: cents,
+        note: note,
+      );
+    }
     if (mounted) Navigator.pop(context);
   }
 
@@ -133,7 +164,7 @@ class _RecordSettlementSheetState
               ),
               const SizedBox(height: 20),
               Text(
-                'Record settlement',
+                _isEditing ? 'Edit settlement' : 'Record settlement',
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
@@ -188,7 +219,7 @@ class _RecordSettlementSheetState
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Record payment'),
+                    : Text(_isEditing ? 'Save changes' : 'Record payment'),
               ),
             ],
           ),

@@ -29,6 +29,25 @@ Future<String> createSettlement(
   return id;
 }
 
+Future<void> updateSettlement(
+  AppDatabase db, {
+  required String settlementId,
+  required String fromUserId,
+  required String toUserId,
+  required int amountCents,
+  String? note,
+}) async {
+  await (db.update(db.settlements)..where((s) => s.id.equals(settlementId)))
+      .write(
+        SettlementsCompanion(
+          fromUserId: Value(fromUserId),
+          toUserId: Value(toUserId),
+          amountCents: Value(amountCents),
+          note: Value(note),
+        ),
+      );
+}
+
 Future<void> deleteSettlement(AppDatabase db, String settlementId) async {
   await (db.delete(
     db.settlements,

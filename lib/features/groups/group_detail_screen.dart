@@ -223,6 +223,13 @@ class GroupDetailScreen extends ConsumerWidget {
                     settlement: s,
                     users: users,
                     currencyCode: data.group.currencyCode,
+                    onTap: () => showRecordSettlementSheet(
+                      context,
+                      groupId: groupId,
+                      currencyCode: data.group.currencyCode,
+                      members: data.members,
+                      existing: s,
+                    ),
                     onDelete: () => _confirmDeleteSettlement(context, ref, s),
                   ),
               ],
@@ -494,12 +501,14 @@ class _SettlementTile extends StatelessWidget {
     required this.settlement,
     required this.users,
     required this.currencyCode,
+    required this.onTap,
     required this.onDelete,
   });
 
   final Settlement settlement;
   final Map<String, User> users;
   final String currencyCode;
+  final VoidCallback onTap;
   final VoidCallback onDelete;
 
   @override
@@ -529,43 +538,47 @@ class _SettlementTile extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.check_circle_outline_rounded,
-              size: 18,
-              color: AppColors.positive,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                '$from paid $to',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.check_circle_outline_rounded,
+                size: 18,
+                color: AppColors.positive,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  formatCents(settlement.amountCents, currencyCode),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  '$from paid $to',
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(
-                  date,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    formatCents(settlement.amountCents, currencyCode),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Text(
+                    date,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
