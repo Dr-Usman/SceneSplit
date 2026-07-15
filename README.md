@@ -1,32 +1,48 @@
 # SceneSplit
 
-A production-grade Flutter expense splitting app inspired by Splitwise. Split expenses with friends, track balances, and settle up easily.
+<p style="text-align: center;">
+  <img src="assets/images/logo.png" alt="SceneSplit logo" width="160" />
+</p>
+
+**Split group expenses, track who owes what, and settle up — fully offline.**
+
+SceneSplit is a Flutter expense-splitting app for trips, roommates, dinners, and events. No account, no cloud — everything stays on your device.
+
+## Screenshots
+
+| Home (light) | Home (dark) |
+|:---:|:---:|
+| <img src="docs/screenshots/home-light.jpg" alt="Home dashboard (light)" width="220" /> | <img src="docs/screenshots/home-dark.jpg" alt="Home dashboard (dark)" width="220" /> |
+| **Group detail** | **Pending summary** |
+| <img src="docs/screenshots/group-detail.jpg" alt="Group detail" width="220" /> | <img src="docs/screenshots/pending-summary.jpg" alt="Home group pending summary sheet" width="220" /> |
 
 ## Features
 
-- **People management**: Add, rename, and delete people from Profile; manage group members when creating or editing a group
-- **Groups**: Create groups with emoji icons, per-group currency, and members
-- **Expense tracking**: Add expenses with flexible splitting (equal, exact, percentage)
-- **Selective participants**: Choose specific group members for each expense
-- **Balance calculation**: Real-time balance tracking between users
-- **Settlement suggestions**: Optimized settlement recommendations using a greedy algorithm
-- **Currency**: App-wide default for home summary and new groups; each group has its own currency (visible and editable in group detail / edit group)
-- **Offline-first**: Everything stored locally with Drift (SQLite)
+- **People & groups** — Manage a global people pool from Profile; create groups with emoji icons and members
+- **Flexible splits** — Equal, exact amounts, or percentage, with live validation; choose who is included per expense
+- **Balances & settlements** — Live balances across groups, smart settlement suggestions, and editable settlement records
+- **Insights** — Group expense total and member-share pie chart on group detail
+- **Currency** — App-wide default for home summary and new groups; each group has its own currency
+- **Appearance** — System, light, or dark theme (saved and applied before first frame)
+- **Backup** — Export and import a local database backup (non-web platforms)
+- **Legal & about** — In-app privacy policy, terms of service, and app version
+- **Offline-first** — All data stored locally with Drift (SQLite); no sign-in required
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Flutter 3.41+ |
-| State Management | Riverpod 2.6 |
-| Database | Drift 2.22 (SQLite) |
-| Architecture | Feature-first + Service/Repository |
-| UUID | uuid package |
+| Framework | Flutter 3.44 / Dart 3.12 |
+| State management | Riverpod 3 |
+| Database | Drift 2.34 (SQLite) |
+| Architecture | Feature-first + service / repository |
+| Charts | fl_chart |
+| Navigation | Material navigation (`go_router` listed for future use) |
 
 ## Prerequisites
 
-- Flutter SDK >= 3.41.0
-- Dart SDK >= 3.11.0
+- Flutter SDK (3.44.5 stable or compatible)
+- Dart SDK `^3.12.2`
 
 ## Getting Started
 
@@ -42,11 +58,11 @@ flutter run
 lib/
 ├── main.dart / app.dart
 ├── core/
-│   ├── constants/     # currencies, group emojis
+│   ├── constants/     # currencies, group emojis, assets
 │   ├── theme/
 │   └── utils/         # money formatting
 ├── database/
-│   ├── tables.dart    # Users, AppSettings, Groups, GroupMembers, Expenses, etc.
+│   ├── tables.dart
 │   ├── app_database.dart
 │   └── app_database.g.dart
 ├── repositories/      # user, group, expense, settlement
@@ -58,8 +74,10 @@ lib/
 │   ├── groups/        # create, edit, detail
 │   ├── expenses/
 │   ├── settlements/
-│   └── profile/       # name, default currency, people CRUD
-└── shared/widgets/    # user_avatar, currency_picker_sheet
+│   ├── profile/       # appearance, currency, people, data & backup
+│   ├── legal/
+│   └── about/
+└── shared/widgets/
 ```
 
 ## Database Schema
@@ -69,10 +87,10 @@ All money amounts are stored as **integer cents**.
 | Table | Purpose |
 |-------|---------|
 | `Users` | Global people pool (`id`, `name`, `colorIndex`, `isCurrentUser`) |
-| `AppSettings` | Single row: app default `currencyCode` |
+| `AppSettings` | Single row: default `currencyCode`, `themeMode` |
 | `Groups` | Group name, emoji, `currencyCode` |
 | `GroupMembers` | Group ↔ user membership |
-| `Expenses` | Group expenses (`amountCents`, `paidById`, `splitType`) |
+| `Expenses` | Group expenses (`amountCents`, `paidById`, `splitType`, note, date) |
 | `ExpenseSplits` | Per-user split amounts |
 | `Settlements` | Recorded payments between members |
 
@@ -86,112 +104,20 @@ dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
+See [`AGENTS.md`](AGENTS.md) for dependency pins, architecture conventions, and codegen notes.
+
 ## Future Enhancements
 
 - Backend sync
 - Multi-currency with exchange rates
 - Receipt scanning
-- Export (PDF/CSV)
+- Export (PDF / CSV)
+- Localization
+
+## Contributing
+
+CI, PR checks, releasing, and GitHub secrets are documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
 
-MIT
-
-## CI/CD
-
-GitHub Actions workflows live in [`.github/workflows/`](.github/workflows/).
-
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `ci.yml` | PR to `main` | Format check, analyze, Drift codegen check, tests |
-| `release-android.yml` | Tag `v*` | Signed split APKs attached to GitHub Release |
-| `release-ios.yml` | Tag `v*` (disabled) | Signed IPA — enable after iOS secrets are configured |
-| `release-macos.yml` | Tag `v*` | macOS `.app` zip |
-| `release-web.yml` | Tag `v*` | Web bundle zip |
-| `release-linux.yml` | Tag `v*` | Linux x64 tar.gz |
-| `release-windows.yml` | Tag `v*` | Windows x64 zip |
-
-### Releasing
-
-#### Pre-release checklist
-
-Run the same checks as CI before bumping the version or creating the release commit:
-
-```bash
-# 1. Format all Dart files
-dart format .
-
-# 2. Static analysis (CI uses --fatal-infos)
-flutter analyze --fatal-infos
-
-# 3. Regenerate Drift code and confirm nothing changed
-dart run build_runner build --delete-conflicting-outputs
-git diff --exit-code lib/database/app_database.g.dart
-
-# 4. Run tests
-flutter test
-```
-
-Fix any failures before continuing. A quick one-liner that mirrors CI (except codegen diff):
-
-```bash
-dart format . && flutter analyze --fatal-infos && flutter test
-```
-
-#### Release steps
-
-1. Complete the [pre-release checklist](#pre-release-checklist) above.
-2. Bump `version` in `pubspec.yaml` (e.g. `1.0.1+2` — increment the build number after `+`).
-3. Update [`CHANGELOG.md`](CHANGELOG.md) (move items from `[Unreleased]` into the new version section). This file is the source of truth for both the **Git annotated tag message** and the **GitHub Release** description — write clear Added / Changed / Fixed bullets users can understand.
-4. Commit, create an annotated tag from the changelog, and push:
-
-```bash
-git add pubspec.yaml CHANGELOG.md
-git commit -m "chore: release v1.0.1"
-
-# Annotated tag (-a) with the CHANGELOG section as the tag message.
-# Do not use plain `git tag v1.0.1` — lightweight tags have no description.
-./tool/tag_release.sh 1.0.1
-
-git push origin main
-git push origin v1.0.1
-```
-
-The tag must match the semver portion of `pubspec.yaml` (`v1.0.1` → `1.0.1+2`). Release workflows extract that version’s section from `CHANGELOG.md` and publish it as the GitHub Release description (not auto-generated commit lists), then upload platform artifacts. Build the Play Store AAB locally when needed:
-
-```bash
-flutter build appbundle --release
-```
-
-### Required GitHub Secrets
-
-**Android** (split APK releases):
-
-| Secret | Description |
-|--------|-------------|
-| `ANDROID_KEYSTORE_BASE64` | Base64-encoded upload keystore (`.jks`) |
-| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
-| `ANDROID_KEY_PASSWORD` | Key password |
-| `ANDROID_KEY_ALIAS` | Key alias |
-
-**iOS** (IPA releases):
-
-| Secret | Description |
-|--------|-------------|
-| `IOS_CERTIFICATE_BASE64` | Distribution `.p12` (base64) |
-| `IOS_CERTIFICATE_PASSWORD` | P12 password |
-| `IOS_PROVISIONING_PROFILE_BASE64` | App Store provisioning profile (base64) |
-| `KEYCHAIN_PASSWORD` | Temporary keychain password for CI |
-
-Local Android signing: create `android/key.properties` and place `upload-keystore.jks` in `android/` (both gitignored).
-
-### Branch protection
-
-On GitHub, go to **Settings → Branches → Add branch protection rule** for `main`:
-
-1. Enable **Require a pull request before merging** (recommended).
-2. Enable **Require status checks to pass before merging**.
-3. Search for and select the **CI** / `analyze-and-test` check from `ci.yml`.
-4. Enable **Require branches to be up to date before merging** (recommended).
-
-This blocks merges until `flutter analyze`, formatting, codegen, and tests pass.
+[MIT](LICENSE)
