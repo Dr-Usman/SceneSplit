@@ -29,6 +29,10 @@
 #             exit 1
 #           fi
 #
+#       - name: Prepare release notes from CHANGELOG.md
+#         id: release_notes
+#         uses: ./.github/actions/release-notes
+#
 #       - name: Import code signing certificates
 #         uses: apple-actions/import-codesign-certs@v7
 #         with:
@@ -55,7 +59,7 @@
 #         uses: softprops/action-gh-release@v3
 #         with:
 #           tag_name: ${{ github.ref_name }}
-#           name: ${{ github.ref_name }}
-#           generate_release_notes: true
+#           name: ${{ steps.release_notes.outputs.release_name }}
+#           body_path: release-notes.md
 #           files: |
 #             build/ios/ipa/*.ipa

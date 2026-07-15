@@ -142,18 +142,22 @@ dart format . && flutter analyze --fatal-infos && flutter test
 
 1. Complete the [pre-release checklist](#pre-release-checklist) above.
 2. Bump `version` in `pubspec.yaml` (e.g. `1.0.1+2` — increment the build number after `+`).
-3. Update [`CHANGELOG.md`](CHANGELOG.md) (move items from `[Unreleased]` into the new version section).
-4. Commit, tag, and push:
+3. Update [`CHANGELOG.md`](CHANGELOG.md) (move items from `[Unreleased]` into the new version section). This file is the source of truth for both the **Git annotated tag message** and the **GitHub Release** description — write clear Added / Changed / Fixed bullets users can understand.
+4. Commit, create an annotated tag from the changelog, and push:
 
 ```bash
 git add pubspec.yaml CHANGELOG.md
 git commit -m "chore: release v1.0.1"
-git tag v1.0.1
+
+# Annotated tag (-a) with the CHANGELOG section as the tag message.
+# Do not use plain `git tag v1.0.1` — lightweight tags have no description.
+./tool/tag_release.sh 1.0.1
+
 git push origin main
 git push origin v1.0.1
 ```
 
-The tag must match the semver portion of `pubspec.yaml` (`v1.0.1` → `1.0.1+2`). Workflows upload platform artifacts to the GitHub Release. Build the Play Store AAB locally when needed:
+The tag must match the semver portion of `pubspec.yaml` (`v1.0.1` → `1.0.1+2`). Release workflows extract that version’s section from `CHANGELOG.md` and publish it as the GitHub Release description (not auto-generated commit lists), then upload platform artifacts. Build the Play Store AAB locally when needed:
 
 ```bash
 flutter build appbundle --release
