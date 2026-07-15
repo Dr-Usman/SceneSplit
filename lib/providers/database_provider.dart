@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -42,6 +43,31 @@ final currencyCodeProvider = StreamProvider<String>((ref) {
   final query = db.select(db.appSettings)..limit(1);
   return query.watchSingleOrNull().map((row) => row?.currencyCode ?? 'PKR');
 });
+
+/// App appearance preference (`system` / `light` / `dark`).
+final themeModeProvider = StreamProvider<ThemeMode>((ref) {
+  final db = ref.watch(databaseProvider);
+  final query = db.select(db.appSettings)..limit(1);
+  return query.watchSingleOrNull().map(
+    (row) => themeModeFromStorage(row?.themeMode),
+  );
+});
+
+ThemeMode themeModeFromStorage(String? value) {
+  return switch (value) {
+    'light' => ThemeMode.light,
+    'dark' => ThemeMode.dark,
+    _ => ThemeMode.system,
+  };
+}
+
+String themeModeToStorage(ThemeMode mode) {
+  return switch (mode) {
+    ThemeMode.light => 'light',
+    ThemeMode.dark => 'dark',
+    ThemeMode.system => 'system',
+  };
+}
 
 /// Completes onboarding: creates the device user and saves currency.
 Future<void> completeOnboarding(

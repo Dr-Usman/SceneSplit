@@ -20,6 +20,9 @@ class AppSettings extends Table {
   IntColumn get id => integer()();
   TextColumn get currencyCode => text().withDefault(const Constant('PKR'))();
 
+  /// Stored as `'system' | 'light' | 'dark'`.
+  TextColumn get themeMode => text().withDefault(const Constant('system'))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

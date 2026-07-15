@@ -7,18 +7,23 @@ import 'features/onboarding/onboarding_screen.dart';
 import 'providers/database_provider.dart';
 
 class SceneSplitApp extends ConsumerWidget {
-  const SceneSplitApp({super.key});
+  const SceneSplitApp({super.key, this.initialThemeMode});
+
+  /// Synced from DB in [main] before first paint; used until stream emits.
+  final ThemeMode? initialThemeMode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(currentUserProvider);
+    final themeAsync = ref.watch(themeModeProvider);
+    final themeMode = themeAsync.value ?? initialThemeMode ?? ThemeMode.system;
 
     return MaterialApp(
       title: 'SceneSplit',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       home: currentUser.when(
         loading: () =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),

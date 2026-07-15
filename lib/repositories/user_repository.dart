@@ -21,15 +21,44 @@ Future<void> updateCurrentUserName(AppDatabase db, String name) async {
 }
 
 Future<void> updateCurrency(AppDatabase db, String currencyCode) async {
-  await db
-      .into(db.appSettings)
-      .insert(
-        AppSettingsCompanion.insert(
-          id: const Value(1),
-          currencyCode: Value(currencyCode),
-        ),
-        mode: InsertMode.insertOrReplace,
-      );
+  await _upsertAppSettings(
+    db,
+    AppSettingsCompanion(currencyCode: Value(currencyCode)),
+  );
+}
+
+Future<void> updateThemeMode(AppDatabase db, String themeMode) async {
+  await _upsertAppSettings(
+    db,
+    AppSettingsCompanion(themeMode: Value(themeMode)),
+  );
+}
+
+/// Updates the single settings row, or inserts it when missing.
+Future<void> _upsertAppSettings(
+  AppDatabase db,
+  AppSettingsCompanion companion,
+) async {
+  final existing =
+      await (db.select(db.appSettings)
+            ..where((s) => s.id.equals(1))
+            ..limit(1))
+          .getSingleOrNull();
+  if (existing == null) {
+    await db
+        .into(db.appSettings)
+        .insert(
+          AppSettingsCompanion.insert(
+            id: const Value(1),
+            currencyCode: companion.currencyCode,
+            themeMode: companion.themeMode,
+          ),
+        );
+    return;
+  }
+  await (db.update(
+    db.appSettings,
+  )..where((s) => s.id.equals(1))).write(companion);
 }
 
 Future<void> updateUserName(AppDatabase db, String userId, String name) async {

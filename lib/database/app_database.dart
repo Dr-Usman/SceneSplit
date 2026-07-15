@@ -22,14 +22,20 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting(super.executor);
 
-  static const int databaseSchemaVersion = 1;
+  static const int databaseSchemaVersion = 2;
 
   @override
   int get schemaVersion => databaseSchemaVersion;
 
   @override
-  MigrationStrategy get migration =>
-      MigrationStrategy(onCreate: (m) async => m.createAll());
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) async => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.addColumn(appSettings, appSettings.themeMode);
+      }
+    },
+  );
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
