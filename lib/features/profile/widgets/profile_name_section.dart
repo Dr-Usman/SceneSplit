@@ -77,10 +77,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(
-                        Icons.check_rounded,
-                        color: AppColors.primary,
-                      ),
+                    : const Icon(Icons.check_rounded, color: AppColors.primary),
               ),
               IconButton(
                 onPressed: () => setState(() {
@@ -96,10 +93,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
             contentPadding: EdgeInsets.zero,
             title: Text(
               user?.name ?? '',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
             trailing: IconButton(
               icon: const Icon(Icons.edit_outlined),

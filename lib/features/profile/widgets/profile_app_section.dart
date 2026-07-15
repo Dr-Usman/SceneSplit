@@ -24,9 +24,9 @@ class ProfileAppSection extends StatelessWidget {
             title: 'About ${AppLinks.appName}',
             subtitle: 'Version, legal, and feedback',
             showDivider: false,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const AboutScreen()),
-            ),
+            onTap: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
           ),
         ),
         const SizedBox(height: 20),

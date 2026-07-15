@@ -34,18 +34,18 @@ class ProfileManageSection extends ConsumerWidget {
                 icon: Icons.people_outline_rounded,
                 title: 'People',
                 subtitle: _peopleSubtitle(peopleCount),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const PeopleScreen()),
-                ),
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const PeopleScreen())),
               ),
               SettingsTile(
                 icon: Icons.storage_outlined,
                 title: 'Data & backup',
                 subtitle: 'Export or import your data',
                 showDivider: false,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const DataScreen()),
-                ),
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const DataScreen())),
               ),
             ],
           ),

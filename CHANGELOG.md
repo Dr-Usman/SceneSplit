@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-15
+
+### Added
+
+- Appearance setting for system, light, or dark theme (persisted and applied before first frame).
+- Expense total on group detail, editable settlements, and category breakdown pie chart.
+- Web builds with Drift WASM assets; backup UI gated appropriately on web.
+
+### Changed
+
+- Profile screen split into dedicated section widgets.
+- macOS uses Swift Package Manager only (CocoaPods removed).
+- GitHub Releases and annotated tags now publish notes from `CHANGELOG.md`.
+
+### Fixed
+
+- Cold-start loader no longer flashes the light theme when dark mode is selected.
+
 ## [1.1.0] - 2026-07-10
 
 ### Added
