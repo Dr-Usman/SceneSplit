@@ -12,10 +12,7 @@ class DatabaseBackupException implements Exception {
 
 /// A SQLite backup file ready for save or share.
 class ExportedDatabaseBackup {
-  const ExportedDatabaseBackup({
-    required this.fileName,
-    required this.bytes,
-  });
+  const ExportedDatabaseBackup({required this.fileName, required this.bytes});
 
   final String fileName;
   final Uint8List bytes;

@@ -206,9 +206,9 @@ class _DataScreenState extends ConsumerState<DataScreen> {
           Text(
             kIsWeb
                 ? 'Backup export and import are available in the mobile and '
-                    'desktop apps. Your data is stored locally in this browser.'
+                      'desktop apps. Your data is stored locally in this browser.'
                 : 'Export a backup, then save it on your device or share it '
-                    'elsewhere. Import replaces everything on this device.',
+                      'elsewhere. Import replaces everything on this device.',
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

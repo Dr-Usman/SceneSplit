@@ -48,3 +48,4 @@ app.*.map.json
 /android/upload-keystore.jks
 *.jks
 *.keystore
+/marketing/promo-video

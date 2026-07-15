@@ -37,15 +37,16 @@ Future<void> updateSettlement(
   required int amountCents,
   String? note,
 }) async {
-  await (db.update(db.settlements)..where((s) => s.id.equals(settlementId)))
-      .write(
-        SettlementsCompanion(
-          fromUserId: Value(fromUserId),
-          toUserId: Value(toUserId),
-          amountCents: Value(amountCents),
-          note: Value(note),
-        ),
-      );
+  await (db.update(
+    db.settlements,
+  )..where((s) => s.id.equals(settlementId))).write(
+    SettlementsCompanion(
+      fromUserId: Value(fromUserId),
+      toUserId: Value(toUserId),
+      amountCents: Value(amountCents),
+      note: Value(note),
+    ),
+  );
 }
 
 Future<void> deleteSettlement(AppDatabase db, String settlementId) async {

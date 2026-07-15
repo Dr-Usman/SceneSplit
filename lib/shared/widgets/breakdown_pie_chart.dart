@@ -150,10 +150,7 @@ class BreakdownPieChart extends StatelessWidget {
         const SizedBox(height: 12),
         Divider(height: 1, color: Theme.of(context).dividerColor),
         const SizedBox(height: 12),
-        _TotalRow(
-          cents: total,
-          currencyCode: sorted.first.currencyCode,
-        ),
+        _TotalRow(cents: total, currencyCode: sorted.first.currencyCode),
       ],
     );
   }
