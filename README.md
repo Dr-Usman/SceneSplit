@@ -8,6 +8,8 @@
 
 SceneSplit is a Flutter expense-splitting app for trips, roommates, dinners, and events. No account, no cloud — everything stays on your device.
 
+**[Try the live demo](https://dr-usman.github.io/SceneSplit/)**
+
 ## Screenshots
 
 | Home (light) | Home (dark) |
