@@ -10,6 +10,20 @@ SceneSplit is a Flutter expense-splitting app for trips, roommates, dinners, and
 
 **[Try the live demo](https://dr-usman.github.io/SceneSplit/)**
 
+## Download
+
+Get SceneSplit from Google Play, or download the latest builds for all
+supported platforms from GitHub Releases.
+
+<p>
+  <a href="https://play.google.com/store/apps/details?id=com.avenzor.scenesplit">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get SceneSplit on Google Play" height="80" />
+  </a>
+  <a href="https://github.com/Dr-Usman/SceneSplit/releases/latest">
+    <img src="https://raw.githubusercontent.com/rubenpgrady/get-it-on-github/refs/heads/main/get-it-on-github.png" alt="Get SceneSplit on GitHub" height="80" />
+  </a>
+</p>
+
 ## Screenshots
 
 | Home (light) | Home (dark) |
