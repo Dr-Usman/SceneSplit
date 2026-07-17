@@ -35,8 +35,10 @@ jobs:
 
       - name: Package macOS app
         run: |
+          VERSION="${GITHUB_REF_NAME#v}"
           cd build/macos/Build/Products/Release
-          ditto -c -k --sequesterRsrc --keepParent scene_split.app scene-split-macos.zip
+          ditto -c -k --sequesterRsrc --keepParent scene_split.app \
+            "scene-split-macos-${VERSION}.zip"
 
       - name: Upload macOS app to GitHub Release
         uses: softprops/action-gh-release@v3
@@ -45,4 +47,4 @@ jobs:
           name: ${{ steps.release_notes.outputs.release_name }}
           body_path: release-notes.md
           files: |
-            build/macos/Build/Products/Release/scene-split-macos.zip
+            build/macos/Build/Products/Release/scene-split-macos-*.zip

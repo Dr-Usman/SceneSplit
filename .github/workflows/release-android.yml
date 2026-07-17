@@ -52,14 +52,27 @@ jobs:
             "$ANDROID_KEY_ALIAS" \
             > android/key.properties
 
-      - name: Build signed split APKs
-        run: flutter build apk --release --split-per-abi
+      - name: Build signed universal and split APKs
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ASSET_DIR="build/release-assets"
+          mkdir -p "$ASSET_DIR"
 
-      - name: Upload split APKs to GitHub Release
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk \
+            "$ASSET_DIR/scene-split-android-${VERSION}-universal.apk"
+
+          flutter build apk --release --split-per-abi
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            cp "build/app/outputs/flutter-apk/app-${abi}-release.apk" \
+              "$ASSET_DIR/scene-split-android-${VERSION}-${abi}.apk"
+          done
+
+      - name: Upload Android APKs to GitHub Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ steps.release_notes.outputs.release_name }}
           body_path: release-notes.md
           files: |
-            build/app/outputs/flutter-apk/app-*-release.apk
+            build/release-assets/scene-split-android-*.apk

@@ -40,8 +40,9 @@ jobs:
 
       - name: Package Linux bundle
         run: |
+          VERSION="${GITHUB_REF_NAME#v}"
           cd build/linux/x64/release/bundle
-          tar -czf ../../../../scene-split-linux-x64.tar.gz .
+          tar -czf "../../../../scene-split-linux-${VERSION}-x64.tar.gz" .
 
       - name: Upload Linux bundle to GitHub Release
         uses: softprops/action-gh-release@v3
@@ -50,4 +51,4 @@ jobs:
           name: ${{ steps.release_notes.outputs.release_name }}
           body_path: release-notes.md
           files: |
-            build/scene-split-linux-x64.tar.gz
+            build/scene-split-linux-*.tar.gz

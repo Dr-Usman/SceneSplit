@@ -55,6 +55,12 @@
 #       - name: Build signed IPA
 #         run: flutter build ipa --release
 #
+#       - name: Rename IPA to match release naming
+#         run: |
+#           VERSION="${GITHUB_REF_NAME#v}"
+#           IPA_FILES=(build/ios/ipa/*.ipa)
+#           cp "${IPA_FILES[0]}" "build/ios/ipa/scene-split-ios-${VERSION}.ipa"
+#
 #       - name: Upload IPA to GitHub Release
 #         uses: softprops/action-gh-release@v3
 #         with:
@@ -62,4 +68,4 @@
 #           name: ${{ steps.release_notes.outputs.release_name }}
 #           body_path: release-notes.md
 #           files: |
-#             build/ios/ipa/*.ipa
+#             build/ios/ipa/scene-split-ios-*.ipa

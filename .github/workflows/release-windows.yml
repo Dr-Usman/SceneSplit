@@ -37,8 +37,9 @@ jobs:
       - name: Package Windows build
         shell: pwsh
         run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
           Compress-Archive -Path build/windows/x64/runner/Release/* `
-            -DestinationPath scene-split-windows-x64.zip
+            -DestinationPath "scene-split-windows-$version-x64.zip"
 
       - name: Upload Windows build to GitHub Release
         uses: softprops/action-gh-release@v3
@@ -47,4 +48,4 @@ jobs:
           name: ${{ steps.release_notes.outputs.release_name }}
           body_path: release-notes.md
           files: |
-            scene-split-windows-x64.zip
+            scene-split-windows-*.zip

@@ -40,8 +40,9 @@ jobs:
 
       - name: Package web bundle
         run: |
+          VERSION="${GITHUB_REF_NAME#v}"
           cd build/web
-          zip -r ../../scene-split-web.zip .
+          zip -r "../../scene-split-web-${VERSION}.zip" .
 
       - name: Upload web bundle to GitHub Release
         uses: softprops/action-gh-release@v3
@@ -50,4 +51,4 @@ jobs:
           name: ${{ steps.release_notes.outputs.release_name }}
           body_path: release-notes.md
           files: |
-            scene-split-web.zip
+            scene-split-web-*.zip
