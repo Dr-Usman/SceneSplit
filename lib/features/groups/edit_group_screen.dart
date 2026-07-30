@@ -56,6 +56,27 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
   void _addTypedMember() {
     final name = _memberController.text.trim();
     if (name.isEmpty) return;
+    final normalized = name.toLowerCase();
+    final allUsers = ref.read(usersStreamProvider).value ?? [];
+
+    final existing = allUsers.where(
+      (u) => u.name.trim().toLowerCase() == normalized,
+    );
+    if (existing.isNotEmpty) {
+      setState(() {
+        _selectedMemberIds.add(existing.first.id);
+        _memberController.clear();
+      });
+      return;
+    }
+
+    if (_newNames.any((n) => n.trim().toLowerCase() == normalized)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('"$name" is already in the list.')),
+      );
+      return;
+    }
+
     setState(() {
       _newNames.add(name);
       _memberController.clear();
@@ -80,11 +101,17 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
         groupId: widget.groupId,
         memberUserIds: _selectedMemberIds.toList(),
         newMemberNames: _newNames,
-        colorOffset: _selectedMemberIds.length,
       );
 
       if (mounted) Navigator.of(context).pop();
     } on MemberRemovalBlockedException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+        setState(() => _saving = false);
+      }
+    } on UserNameTakenException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,

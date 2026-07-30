@@ -19,6 +19,14 @@ int? parseAmountToCents(String input) {
   return (value * 100).round();
 }
 
+/// Formats payer names for list/detail copy, e.g. "Alice", "Alice & Bob", "Alice +2".
+String formatPayersLabel(List<String> names) {
+  if (names.isEmpty) return '?';
+  if (names.length == 1) return names.first;
+  if (names.length == 2) return '${names[0]} & ${names[1]}';
+  return '${names[0]} +${names.length - 1}';
+}
+
 String _thousands(String digits) {
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {

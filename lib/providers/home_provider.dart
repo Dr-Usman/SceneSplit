@@ -36,11 +36,12 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
   final groups = ref.watch(groupsStreamProvider);
   final members = ref.watch(groupMembersStreamProvider);
   final expenses = ref.watch(expensesStreamProvider);
+  final payers = ref.watch(payersStreamProvider);
   final splits = ref.watch(splitsStreamProvider);
   final settlements = ref.watch(settlementsStreamProvider);
   final currentUser = ref.watch(currentUserProvider);
 
-  final sources = [groups, members, expenses, splits, settlements];
+  final sources = [groups, members, expenses, payers, splits, settlements];
   final loading = sources.any((s) => s.isLoading) || currentUser.isLoading;
   final error = sources
       .map((s) => s.error)
@@ -52,8 +53,14 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
   final me = currentUser.value;
   final allMembers = members.value!;
   final allExpenses = expenses.value!;
+  final allPayers = payers.value!;
   final allSplits = splits.value!;
   final allSettlements = settlements.value!;
+
+  final payersByExpense = <String, List<ExpensePayer>>{};
+  for (final p in allPayers) {
+    payersByExpense.putIfAbsent(p.expenseId, () => []).add(p);
+  }
 
   final splitsByExpense = <String, List<ExpenseSplit>>{};
   for (final s in allSplits) {
@@ -68,6 +75,9 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
     final groupExpenses = allExpenses
         .where((e) => e.groupId == group.id)
         .toList();
+    final groupPayers = [
+      for (final e in groupExpenses) ...?payersByExpense[e.id],
+    ];
     final groupSplits = [
       for (final e in groupExpenses) ...?splitsByExpense[e.id],
     ];
@@ -76,7 +86,7 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
         .toList();
 
     final net = BalanceService.netBalances(
-      expenses: groupExpenses,
+      payers: groupPayers,
       splits: groupSplits,
       settlements: groupSettlements,
     );

@@ -12,8 +12,13 @@ class GroupMemberInfo {
 
 class ExpenseWithSplits {
   final Expense expense;
+  final List<ExpensePayer> payers;
   final List<ExpenseSplit> splits;
-  const ExpenseWithSplits({required this.expense, required this.splits});
+  const ExpenseWithSplits({
+    required this.expense,
+    required this.payers,
+    required this.splits,
+  });
 }
 
 class GroupDetailData {
@@ -44,11 +49,20 @@ final groupDetailProvider =
       final members = ref.watch(groupMembersStreamProvider);
       final users = ref.watch(usersStreamProvider);
       final expenses = ref.watch(expensesStreamProvider);
+      final payers = ref.watch(payersStreamProvider);
       final splits = ref.watch(splitsStreamProvider);
       final settlements = ref.watch(settlementsStreamProvider);
       final currentUser = ref.watch(currentUserProvider);
 
-      final sources = [groups, members, users, expenses, splits, settlements];
+      final sources = [
+        groups,
+        members,
+        users,
+        expenses,
+        payers,
+        splits,
+        settlements,
+      ];
       final loading = sources.any((s) => s.isLoading) || currentUser.isLoading;
       final error = sources
           .map((s) => s.error)
@@ -79,11 +93,19 @@ final groupDetailProvider =
           expenses.value!.where((e) => e.groupId == groupId).toList()
             ..sort((a, b) => b.date.compareTo(a.date));
 
+      final payersByExpense = <String, List<ExpensePayer>>{};
+      for (final p in payers.value!) {
+        payersByExpense.putIfAbsent(p.expenseId, () => []).add(p);
+      }
+
       final splitsByExpense = <String, List<ExpenseSplit>>{};
       for (final s in splits.value!) {
         splitsByExpense.putIfAbsent(s.expenseId, () => []).add(s);
       }
 
+      final groupPayers = [
+        for (final e in groupExpenses) ...?payersByExpense[e.id],
+      ];
       final groupSplits = [
         for (final e in groupExpenses) ...?splitsByExpense[e.id],
       ];
@@ -92,7 +114,7 @@ final groupDetailProvider =
             ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
       final net = BalanceService.netBalances(
-        expenses: groupExpenses,
+        payers: groupPayers,
         splits: groupSplits,
         settlements: groupSettlements,
       );
@@ -103,7 +125,11 @@ final groupDetailProvider =
 
       final expenseList = [
         for (final e in groupExpenses)
-          ExpenseWithSplits(expense: e, splits: splitsByExpense[e.id] ?? []),
+          ExpenseWithSplits(
+            expense: e,
+            payers: payersByExpense[e.id] ?? [],
+            splits: splitsByExpense[e.id] ?? [],
+          ),
       ];
 
       final shareByUserId = <String, int>{};

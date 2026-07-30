@@ -5,6 +5,7 @@ import '../../core/theme/app_theme.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../repositories/group_repository.dart';
+import '../../repositories/user_repository.dart';
 import '../../shared/widgets/currency_picker_sheet.dart';
 import '../../shared/widgets/group_emoji_picker.dart';
 import '../../shared/widgets/user_avatar.dart';
@@ -55,6 +56,33 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   void _addTypedMember() {
     final name = _memberController.text.trim();
     if (name.isEmpty) return;
+    final normalized = name.toLowerCase();
+    final me = ref.read(currentUserProvider).value;
+    final allUsers = ref.read(usersStreamProvider).value ?? [];
+
+    final existing = allUsers.where(
+      (u) => u.name.trim().toLowerCase() == normalized,
+    );
+    if (existing.isNotEmpty) {
+      final user = existing.first;
+      setState(() {
+        if (user.isCurrentUser || user.id == me?.id) {
+          _includeMe = true;
+        } else {
+          _selectedUserIds.add(user.id);
+        }
+        _memberController.clear();
+      });
+      return;
+    }
+
+    if (_newNames.any((n) => n.trim().toLowerCase() == normalized)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('"$name" is already in the list.')),
+      );
+      return;
+    }
+
     setState(() {
       _newNames.add(name);
       _memberController.clear();
@@ -68,16 +96,25 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     setState(() => _saving = true);
     final db = ref.read(databaseProvider);
 
-    await createGroup(
-      db,
-      name: _nameController.text.trim(),
-      emoji: _emoji,
-      currencyCode: _currencyCode,
-      existingUserIds: [if (_includeMe) me.id, ..._selectedUserIds],
-      newMemberNames: _newNames,
-    );
+    try {
+      await createGroup(
+        db,
+        name: _nameController.text.trim(),
+        emoji: _emoji,
+        currencyCode: _currencyCode,
+        existingUserIds: [if (_includeMe) me.id, ..._selectedUserIds],
+        newMemberNames: _newNames,
+      );
 
-    if (mounted) Navigator.of(context).pop();
+      if (mounted) Navigator.of(context).pop();
+    } on UserNameTakenException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+        setState(() => _saving = false);
+      }
+    }
   }
 
   @override

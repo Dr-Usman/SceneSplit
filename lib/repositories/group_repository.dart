@@ -42,17 +42,8 @@ Future<String> createGroup(
 
     final memberIds = [...existingUserIds];
 
-    for (var i = 0; i < newMemberNames.length; i++) {
-      final userId = _uuid.v4();
-      await db
-          .into(db.users)
-          .insert(
-            UsersCompanion.insert(
-              id: userId,
-              name: newMemberNames[i],
-              colorIndex: Value((existingUserIds.length + i) % 8),
-            ),
-          );
+    for (final memberName in newMemberNames) {
+      final userId = await createUser(db, memberName);
       memberIds.add(userId);
     }
 
@@ -96,22 +87,12 @@ Future<void> syncGroupMembers(
   required String groupId,
   required List<String> memberUserIds,
   required List<String> newMemberNames,
-  required int colorOffset,
 }) async {
   await db.transaction(() async {
     final allIds = [...memberUserIds];
 
-    for (var i = 0; i < newMemberNames.length; i++) {
-      final userId = _uuid.v4();
-      await db
-          .into(db.users)
-          .insert(
-            UsersCompanion.insert(
-              id: userId,
-              name: newMemberNames[i],
-              colorIndex: Value((colorOffset + i) % 8),
-            ),
-          );
+    for (final memberName in newMemberNames) {
+      final userId = await createUser(db, memberName);
       allIds.add(userId);
     }
 
@@ -159,6 +140,9 @@ Future<void> deleteGroup(AppDatabase db, String groupId) async {
       db.expenses,
     )..where((e) => e.groupId.equals(groupId))).get();
     for (final e in expenses) {
+      await (db.delete(
+        db.expensePayers,
+      )..where((p) => p.expenseId.equals(e.id))).go();
       await (db.delete(
         db.expenseSplits,
       )..where((s) => s.expenseId.equals(e.id))).go();

@@ -53,11 +53,20 @@ class Expenses extends Table {
   TextColumn get groupId => text().references(Groups, #id)();
   TextColumn get title => text().withLength(min: 1, max: 100)();
   IntColumn get amountCents => integer()();
-  TextColumn get paidById => text().references(Users, #id)();
   TextColumn get splitType => text().withDefault(const Constant('equal'))();
   TextColumn get note => text().nullable()();
   DateTimeColumn get date => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+class ExpensePayers extends Table {
+  TextColumn get id => text()();
+  TextColumn get expenseId => text().references(Expenses, #id)();
+  TextColumn get userId => text().references(Users, #id)();
+  IntColumn get amountCents => integer()();
 
   @override
   Set<Column> get primaryKey => {id};

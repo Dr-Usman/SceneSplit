@@ -29,12 +29,21 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
     setState(() => _saving = true);
-    await updateCurrentUserName(ref.read(databaseProvider), name);
-    if (mounted) {
-      setState(() {
-        _saving = false;
-        _editingName = false;
-      });
+    try {
+      await updateCurrentUserName(ref.read(databaseProvider), name);
+      if (mounted) {
+        setState(() {
+          _saving = false;
+          _editingName = false;
+        });
+      }
+    } on UserNameTakenException catch (e) {
+      if (mounted) {
+        setState(() => _saving = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+      }
     }
   }
 
@@ -57,7 +66,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
           ),
         ),
         const SizedBox(height: 24),
-        const SectionHeader('YOUR NAME'),
+        const SectionHeader('Your name'),
         const SizedBox(height: 8),
         if (_editingName)
           Row(
