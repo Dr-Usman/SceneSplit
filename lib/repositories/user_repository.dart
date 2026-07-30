@@ -34,8 +34,7 @@ Future<bool> userNameExists(
   if (normalized.isEmpty) return false;
   final users = await db.select(db.users).get();
   return users.any(
-    (u) =>
-        u.id != excludeUserId && u.name.trim().toLowerCase() == normalized,
+    (u) => u.id != excludeUserId && u.name.trim().toLowerCase() == normalized,
   );
 }
 
@@ -44,11 +43,8 @@ Future<void> updateCurrentUserName(AppDatabase db, String name) async {
   final me = await (db.select(
     db.users,
   )..where((u) => u.isCurrentUser.equals(true))).getSingleOrNull();
-  if (me != null &&
-      await userNameExists(db, trimmed, excludeUserId: me.id)) {
-    throw UserNameTakenException(
-      'Someone named "$trimmed" already exists.',
-    );
+  if (me != null && await userNameExists(db, trimmed, excludeUserId: me.id)) {
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
   }
   await (db.update(db.users)..where((u) => u.isCurrentUser.equals(true))).write(
     UsersCompanion(name: Value(trimmed)),
@@ -99,9 +95,7 @@ Future<void> _upsertAppSettings(
 Future<void> updateUserName(AppDatabase db, String userId, String name) async {
   final trimmed = name.trim();
   if (await userNameExists(db, trimmed, excludeUserId: userId)) {
-    throw UserNameTakenException(
-      'Someone named "$trimmed" already exists.',
-    );
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
   }
   await (db.update(db.users)..where((u) => u.id.equals(userId))).write(
     UsersCompanion(name: Value(trimmed)),
@@ -111,9 +105,7 @@ Future<void> updateUserName(AppDatabase db, String userId, String name) async {
 Future<String> createUser(AppDatabase db, String name) async {
   final trimmed = name.trim();
   if (await userNameExists(db, trimmed)) {
-    throw UserNameTakenException(
-      'Someone named "$trimmed" already exists.',
-    );
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
   }
   final existing = await db.select(db.users).get();
   final userId = _uuid.v4();
@@ -142,8 +134,7 @@ Future<bool> userHasFinancialActivity(
     if (expenseIds.isNotEmpty) {
       final paidInGroup =
           await (db.select(db.expensePayers)..where(
-                (p) =>
-                    p.userId.equals(userId) & p.expenseId.isIn(expenseIds),
+                (p) => p.userId.equals(userId) & p.expenseId.isIn(expenseIds),
               ))
               .getSingleOrNull();
       if (paidInGroup != null) return true;

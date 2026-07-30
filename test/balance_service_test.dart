@@ -52,12 +52,7 @@ void main() {
     test('credits payer and debits participants', () {
       final net = BalanceService.netBalances(
         payers: [
-          payer(
-            id: 'p1',
-            expenseId: 'e1',
-            userId: 'alice',
-            amountCents: 100,
-          ),
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 100),
         ],
         splits: [
           split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 50),
@@ -74,18 +69,8 @@ void main() {
       // $100 bill: Alice paid $60, Bob paid $40; equal split three ways.
       final net = BalanceService.netBalances(
         payers: [
-          payer(
-            id: 'p1',
-            expenseId: 'e1',
-            userId: 'alice',
-            amountCents: 60,
-          ),
-          payer(
-            id: 'p2',
-            expenseId: 'e1',
-            userId: 'bob',
-            amountCents: 40,
-          ),
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 60),
+          payer(id: 'p2', expenseId: 'e1', userId: 'bob', amountCents: 40),
         ],
         splits: [
           split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 34),
@@ -103,12 +88,7 @@ void main() {
     test('applies settlements between users', () {
       final net = BalanceService.netBalances(
         payers: [
-          payer(
-            id: 'p1',
-            expenseId: 'e1',
-            userId: 'alice',
-            amountCents: 100,
-          ),
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 100),
         ],
         splits: [
           split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 50),

@@ -1,0 +1,13 @@
+---
+description: Pre-PR checklist — format, analyze, changelog
+alwaysApply: true
+---
+
+# Pull requests
+
+Before creating or updating a pull request:
+
+1. Run `dart format lib test` and `flutter analyze`. Fix failures; do not leave format drift.
+2. Run `flutter test` (or focused tests) when logic changed.
+3. Update `CHANGELOG.md` under `## [Unreleased]` for user-facing or notable changes (Added / Changed / Fixed / Removed). Skip pure internal refactors with no user or ops impact.
+4. Only then push and open/update the PR.

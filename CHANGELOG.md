@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Multi-payer expenses: a bill can be paid by more than one person (equal or exact amounts), with balances credited from each payer.
+- Shared member select tiles on Add expense for Paid by and Split.
+- Case-insensitive duplicate name prevention when adding or renaming people.
+- Responsive desktop layout for onboarding on web.
+- App download links and refreshed README screenshots; project LICENSE.
+- Manual `workflow_dispatch` triggers on release workflows; iOS release job restored for manual runs.
+- Deploy tagged web releases to GitHub Pages.
+
+### Changed
+
+- Expense schema migrates from single `paidById` to an `ExpensePayers` table (schema v3).
+- Section headers use title case with a short accent and optional subtitles.
+- Standardized GitHub Release asset names and refreshed web favicons / PWA icons.
+- Moved CI and release contributor notes into `CONTRIBUTING.md`.
+
 ## [1.2.0] - 2026-07-15
 
 ### Added

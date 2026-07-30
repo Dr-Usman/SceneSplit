@@ -188,9 +188,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final total = _amountCents;
     final result = <String, int>{};
     for (final id in _payerIds) {
-      final cents = parseAmountToCents(
-        _payerExactControllers[id]?.text ?? '',
-      );
+      final cents = parseAmountToCents(_payerExactControllers[id]?.text ?? '');
       if (cents == null || cents <= 0) continue;
       if (total != null && cents > total) return null;
       result[id] = cents;
@@ -224,9 +222,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     final total = _amountCents;
     if (total == null) return false;
     for (final id in _payerIds) {
-      final cents = parseAmountToCents(
-        _payerExactControllers[id]?.text ?? '',
-      );
+      final cents = parseAmountToCents(_payerExactControllers[id]?.text ?? '');
       if (cents != null && cents > total) return true;
     }
     return false;
@@ -335,9 +331,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     setState(() {
       _paidByMode = mode;
       if (mode == PaidByMode.single) {
-        _paidById ??= _payerIds.isNotEmpty
-            ? _payerIds.first
-            : null;
+        _paidById ??= _payerIds.isNotEmpty ? _payerIds.first : null;
         if (_paidById != null) {
           _payerIds
             ..clear()
@@ -375,10 +369,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
           body: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
             children: [
-              _sectionLabel(
-                'Amount',
-                subtitle: 'Total bill amount',
-              ),
+              _sectionLabel('Amount', subtitle: 'Total bill amount'),
               const SizedBox(height: 8),
               TextField(
                 controller: _amountController,
@@ -430,10 +421,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              _sectionLabel(
-                'Paid by',
-                subtitle: 'Who covered this bill',
-              ),
+              _sectionLabel('Paid by', subtitle: 'Who covered this bill'),
               const SizedBox(height: 8),
               SegmentedButton<PaidByMode>(
                 segments: const [
@@ -452,10 +440,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 12),
               ..._buildPaidBySection(members, symbol),
               const SizedBox(height: 20),
-              _sectionLabel(
-                'Split',
-                subtitle: 'How to divide the cost',
-              ),
+              _sectionLabel('Split', subtitle: 'How to divide the cost'),
               const SizedBox(height: 8),
               SegmentedButton<SplitType>(
                 segments: const [
@@ -535,18 +520,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
         const SizedBox(height: 8),
         SegmentedButton<PayerAmountMode>(
           segments: const [
-            ButtonSegment(
-              value: PayerAmountMode.equal,
-              label: Text('Equal'),
-            ),
-            ButtonSegment(
-              value: PayerAmountMode.exact,
-              label: Text('Exact'),
-            ),
+            ButtonSegment(value: PayerAmountMode.equal, label: Text('Equal')),
+            ButtonSegment(value: PayerAmountMode.exact, label: Text('Exact')),
           ],
           selected: {_payerAmountMode},
-          onSelectionChanged: (s) =>
-              setState(() => _payerAmountMode = s.first),
+          onSelectionChanged: (s) => setState(() => _payerAmountMode = s.first),
         ),
         const SizedBox(height: 12),
         ..._buildPayerAmountSection(members, symbol),
@@ -972,4 +950,3 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     );
   }
 }
-

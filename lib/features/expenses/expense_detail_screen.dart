@@ -183,7 +183,9 @@ class ExpenseDetailScreen extends ConsumerWidget {
                   name: users[split.userId]?.name ?? '?',
                   colorIndex: users[split.userId]?.colorIndex ?? 0,
                   amount: formatCents(split.amountCents, currencyCode),
-                  subtitle: payerIds.contains(split.userId) ? 'also paid' : null,
+                  subtitle: payerIds.contains(split.userId)
+                      ? 'also paid'
+                      : null,
                 ),
                 const SizedBox(height: 8),
               ],

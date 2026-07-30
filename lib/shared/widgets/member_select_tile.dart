@@ -80,11 +80,7 @@ class MemberSelectTile extends StatelessWidget {
                     size: 22,
                   )
                 else
-                  Icon(
-                    Icons.circle_outlined,
-                    color: borderColor,
-                    size: 22,
-                  ),
+                  Icon(Icons.circle_outlined, color: borderColor, size: 22),
               ],
             ),
           ),
