@@ -1,6 +1,7 @@
 name: Release Web
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'

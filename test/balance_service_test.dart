@@ -5,20 +5,17 @@ import 'package:scene_split/services/balance_service.dart';
 void main() {
   final now = DateTime(2026, 7, 14);
 
-  Expense expense({
+  ExpensePayer payer({
     required String id,
+    required String expenseId,
+    required String userId,
     required int amountCents,
-    required String paidById,
   }) {
-    return Expense(
+    return ExpensePayer(
       id: id,
-      groupId: 'g1',
-      title: 'Test',
+      expenseId: expenseId,
+      userId: userId,
       amountCents: amountCents,
-      paidById: paidById,
-      splitType: 'equal',
-      date: now,
-      createdAt: now,
     );
   }
 
@@ -54,7 +51,9 @@ void main() {
   group('BalanceService.netBalances', () {
     test('credits payer and debits participants', () {
       final net = BalanceService.netBalances(
-        expenses: [expense(id: 'e1', amountCents: 100, paidById: 'alice')],
+        payers: [
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 100),
+        ],
         splits: [
           split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 50),
           split(id: 'sp2', expenseId: 'e1', userId: 'bob', amountCents: 50),
@@ -66,9 +65,31 @@ void main() {
       expect(net['bob'], -50);
     });
 
+    test('credits multiple payers independently of splits', () {
+      // $100 bill: Alice paid $60, Bob paid $40; equal split three ways.
+      final net = BalanceService.netBalances(
+        payers: [
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 60),
+          payer(id: 'p2', expenseId: 'e1', userId: 'bob', amountCents: 40),
+        ],
+        splits: [
+          split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 34),
+          split(id: 'sp2', expenseId: 'e1', userId: 'bob', amountCents: 33),
+          split(id: 'sp3', expenseId: 'e1', userId: 'charlie', amountCents: 33),
+        ],
+        settlements: const [],
+      );
+
+      expect(net['alice'], 26);
+      expect(net['bob'], 7);
+      expect(net['charlie'], -33);
+    });
+
     test('applies settlements between users', () {
       final net = BalanceService.netBalances(
-        expenses: [expense(id: 'e1', amountCents: 100, paidById: 'alice')],
+        payers: [
+          payer(id: 'p1', expenseId: 'e1', userId: 'alice', amountCents: 100),
+        ],
         splits: [
           split(id: 'sp1', expenseId: 'e1', userId: 'alice', amountCents: 50),
           split(id: 'sp2', expenseId: 'e1', userId: 'bob', amountCents: 50),

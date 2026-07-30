@@ -14,9 +14,40 @@ class UserDeleteBlockedException implements Exception {
   String toString() => message;
 }
 
+class UserNameTakenException implements Exception {
+  UserNameTakenException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+/// Case-insensitive name match among existing users.
+/// Pass [excludeUserId] when renaming so the current user is ignored.
+Future<bool> userNameExists(
+  AppDatabase db,
+  String name, {
+  String? excludeUserId,
+}) async {
+  final normalized = name.trim().toLowerCase();
+  if (normalized.isEmpty) return false;
+  final users = await db.select(db.users).get();
+  return users.any(
+    (u) => u.id != excludeUserId && u.name.trim().toLowerCase() == normalized,
+  );
+}
+
 Future<void> updateCurrentUserName(AppDatabase db, String name) async {
+  final trimmed = name.trim();
+  final me = await (db.select(
+    db.users,
+  )..where((u) => u.isCurrentUser.equals(true))).getSingleOrNull();
+  if (me != null && await userNameExists(db, trimmed, excludeUserId: me.id)) {
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+  }
   await (db.update(db.users)..where((u) => u.isCurrentUser.equals(true))).write(
-    UsersCompanion(name: Value(name)),
+    UsersCompanion(name: Value(trimmed)),
   );
 }
 
@@ -62,12 +93,20 @@ Future<void> _upsertAppSettings(
 }
 
 Future<void> updateUserName(AppDatabase db, String userId, String name) async {
+  final trimmed = name.trim();
+  if (await userNameExists(db, trimmed, excludeUserId: userId)) {
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+  }
   await (db.update(db.users)..where((u) => u.id.equals(userId))).write(
-    UsersCompanion(name: Value(name)),
+    UsersCompanion(name: Value(trimmed)),
   );
 }
 
 Future<String> createUser(AppDatabase db, String name) async {
+  final trimmed = name.trim();
+  if (await userNameExists(db, trimmed)) {
+    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+  }
   final existing = await db.select(db.users).get();
   final userId = _uuid.v4();
   await db
@@ -75,7 +114,7 @@ Future<String> createUser(AppDatabase db, String name) async {
       .insert(
         UsersCompanion.insert(
           id: userId,
-          name: name,
+          name: trimmed,
           colorIndex: Value(existing.length % 8),
         ),
       );
@@ -88,18 +127,18 @@ Future<bool> userHasFinancialActivity(
   String? groupId,
 }) async {
   if (groupId != null) {
-    final paidInGroup =
-        await (db.select(db.expenses)..where(
-              (e) => e.groupId.equals(groupId) & e.paidById.equals(userId),
-            ))
-            .getSingleOrNull();
-    if (paidInGroup != null) return true;
-
     final groupExpenses = await (db.select(
       db.expenses,
     )..where((e) => e.groupId.equals(groupId))).get();
     final expenseIds = groupExpenses.map((e) => e.id).toList();
     if (expenseIds.isNotEmpty) {
+      final paidInGroup =
+          await (db.select(db.expensePayers)..where(
+                (p) => p.userId.equals(userId) & p.expenseId.isIn(expenseIds),
+              ))
+              .getSingleOrNull();
+      if (paidInGroup != null) return true;
+
       final splitInGroup =
           await (db.select(db.expenseSplits)..where(
                 (s) => s.userId.equals(userId) & s.expenseId.isIn(expenseIds),
@@ -121,8 +160,8 @@ Future<bool> userHasFinancialActivity(
   }
 
   final paid = await (db.select(
-    db.expenses,
-  )..where((e) => e.paidById.equals(userId))).getSingleOrNull();
+    db.expensePayers,
+  )..where((p) => p.userId.equals(userId))).getSingleOrNull();
   if (paid != null) return true;
 
   final split = await (db.select(

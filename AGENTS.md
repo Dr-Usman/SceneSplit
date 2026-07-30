@@ -54,12 +54,27 @@ flutter pub get
 # Generate code (required after Drift table/schema changes only)
 dart run build_runner build
 
+# Format
+dart format lib test
+
 # Analyze
 flutter analyze
+
+# Test
+flutter test
 
 # Run
 flutter run
 ```
+
+## Pull requests
+
+Before creating or updating a PR:
+
+1. Run `dart format lib test` and `flutter analyze` (fix any issues; leave no format drift).
+2. Run relevant tests (`flutter test` at minimum when logic changed).
+3. Update [`CHANGELOG.md`](CHANGELOG.md) under `## [Unreleased]` when the change is user-facing or otherwise notable (features, fixes, behavior changes). Skip pure internal refactors with no user/ops impact. Use Keep a Changelog sections: Added / Changed / Fixed / Removed.
+4. Do not open the PR until the above are clean.
 
 ## Code Generation
 

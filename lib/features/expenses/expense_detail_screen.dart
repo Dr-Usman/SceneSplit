@@ -48,7 +48,9 @@ class ExpenseDetailScreen extends ConsumerWidget {
         }
 
         final expense = item.expense;
-        final payer = users[expense.paidById];
+        final payerIds = {for (final p in item.payers) p.userId};
+        final sortedPayers = [...item.payers]
+          ..sort((a, b) => b.amountCents.compareTo(a.amountCents));
         final splitLabel = switch (expense.splitType) {
           'exact' => 'Exact amounts',
           'percentage' => 'By percentage',
@@ -131,11 +133,6 @@ class ExpenseDetailScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               _InfoRow(
-                icon: Icons.person_outline_rounded,
-                label: 'Paid by',
-                value: payer?.name ?? '?',
-              ),
-              _InfoRow(
                 icon: Icons.calendar_today_outlined,
                 label: 'Date',
                 value: DateFormat.yMMMd().format(expense.date),
@@ -154,6 +151,25 @@ class ExpenseDetailScreen extends ConsumerWidget {
                 ),
               const SizedBox(height: 28),
               Text(
+                'PAID BY',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: 12),
+              for (final payer in sortedPayers) ...[
+                _SplitRow(
+                  name: users[payer.userId]?.name ?? '?',
+                  colorIndex: users[payer.userId]?.colorIndex ?? 0,
+                  amount: formatCents(payer.amountCents, currencyCode),
+                  subtitle: 'paid',
+                ),
+                const SizedBox(height: 8),
+              ],
+              const SizedBox(height: 20),
+              Text(
                 'SPLIT BREAKDOWN',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
@@ -167,7 +183,9 @@ class ExpenseDetailScreen extends ConsumerWidget {
                   name: users[split.userId]?.name ?? '?',
                   colorIndex: users[split.userId]?.colorIndex ?? 0,
                   amount: formatCents(split.amountCents, currencyCode),
-                  isPayer: split.userId == expense.paidById,
+                  subtitle: payerIds.contains(split.userId)
+                      ? 'also paid'
+                      : null,
                 ),
                 const SizedBox(height: 8),
               ],
@@ -250,13 +268,13 @@ class _SplitRow extends StatelessWidget {
     required this.name,
     required this.colorIndex,
     required this.amount,
-    required this.isPayer,
+    this.subtitle,
   });
 
   final String name;
   final int colorIndex;
   final String amount;
-  final bool isPayer;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -269,10 +287,10 @@ class _SplitRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
-              if (isPayer)
-                const Text(
-                  'paid',
-                  style: TextStyle(
+              if (subtitle != null)
+                Text(
+                  subtitle!,
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,

@@ -26,6 +26,11 @@ final expensesStreamProvider = StreamProvider<List<Expense>>((ref) {
   return db.select(db.expenses).watch();
 });
 
+final payersStreamProvider = StreamProvider<List<ExpensePayer>>((ref) {
+  final db = ref.watch(databaseProvider);
+  return db.select(db.expensePayers).watch();
+});
+
 final splitsStreamProvider = StreamProvider<List<ExpenseSplit>>((ref) {
   final db = ref.watch(databaseProvider);
   return db.select(db.expenseSplits).watch();

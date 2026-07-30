@@ -10,7 +10,7 @@ Future<String> createExpense(
   required String groupId,
   required String title,
   required int amountCents,
-  required String paidById,
+  required Map<String, int> payersCents,
   required String splitType,
   required Map<String, int> splitsCents,
   String? note,
@@ -28,12 +28,24 @@ Future<String> createExpense(
             groupId: groupId,
             title: title,
             amountCents: amountCents,
-            paidById: paidById,
             splitType: Value(splitType),
             note: Value(note),
             date: Value(expenseDate),
           ),
         );
+
+    for (final entry in payersCents.entries) {
+      await db
+          .into(db.expensePayers)
+          .insert(
+            ExpensePayersCompanion.insert(
+              id: _uuid.v4(),
+              expenseId: expenseId,
+              userId: entry.key,
+              amountCents: entry.value,
+            ),
+          );
+    }
 
     for (final entry in splitsCents.entries) {
       await db
@@ -55,6 +67,9 @@ Future<String> createExpense(
 Future<void> deleteExpense(AppDatabase db, String expenseId) async {
   await db.transaction(() async {
     await (db.delete(
+      db.expensePayers,
+    )..where((p) => p.expenseId.equals(expenseId))).go();
+    await (db.delete(
       db.expenseSplits,
     )..where((s) => s.expenseId.equals(expenseId))).go();
     await (db.delete(db.expenses)..where((e) => e.id.equals(expenseId))).go();
@@ -66,7 +81,7 @@ Future<void> updateExpense(
   required String expenseId,
   required String title,
   required int amountCents,
-  required String paidById,
+  required Map<String, int> payersCents,
   required String splitType,
   required Map<String, int> splitsCents,
   String? note,
@@ -77,12 +92,26 @@ Future<void> updateExpense(
       ExpensesCompanion(
         title: Value(title),
         amountCents: Value(amountCents),
-        paidById: Value(paidById),
         splitType: Value(splitType),
         note: Value(note),
         date: date != null ? Value(date) : const Value.absent(),
       ),
     );
+    await (db.delete(
+      db.expensePayers,
+    )..where((p) => p.expenseId.equals(expenseId))).go();
+    for (final entry in payersCents.entries) {
+      await db
+          .into(db.expensePayers)
+          .insert(
+            ExpensePayersCompanion.insert(
+              id: _uuid.v4(),
+              expenseId: expenseId,
+              userId: entry.key,
+              amountCents: entry.value,
+            ),
+          );
+    }
     await (db.delete(
       db.expenseSplits,
     )..where((s) => s.expenseId.equals(expenseId))).go();

@@ -30,7 +30,15 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
       hint: 'e.g. Alice',
     );
     if (name == null || name.isEmpty || !mounted) return;
-    await createUser(ref.read(databaseProvider), name);
+    try {
+      await createUser(ref.read(databaseProvider), name);
+    } on UserNameTakenException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    }
   }
 
   Future<void> _editPerson(User person) async {
@@ -43,7 +51,15 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     if (name == null || name.isEmpty || name == person.name || !mounted) {
       return;
     }
-    await updateUserName(ref.read(databaseProvider), person.id, name);
+    try {
+      await updateUserName(ref.read(databaseProvider), person.id, name);
+    } on UserNameTakenException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    }
   }
 
   Future<void> _deletePerson(User person) async {

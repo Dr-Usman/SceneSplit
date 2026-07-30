@@ -4,18 +4,18 @@ import '../database/app_database.dart';
 abstract class BalanceService {
   /// Net balance per user: positive = others owe them, negative = they owe.
   ///
-  /// An expense credits the payer with the full amount and debits each
+  /// An expense credits each payer with their paid amount and debits each
   /// participant with their share. A settlement from A to B credits A
   /// (paying back debt) and debits B.
   static Map<String, int> netBalances({
-    required List<Expense> expenses,
+    required List<ExpensePayer> payers,
     required List<ExpenseSplit> splits,
     required List<Settlement> settlements,
   }) {
     final net = <String, int>{};
 
-    for (final e in expenses) {
-      net[e.paidById] = (net[e.paidById] ?? 0) + e.amountCents;
+    for (final p in payers) {
+      net[p.userId] = (net[p.userId] ?? 0) + p.amountCents;
     }
     for (final s in splits) {
       net[s.userId] = (net[s.userId] ?? 0) - s.amountCents;

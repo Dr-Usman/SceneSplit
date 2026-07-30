@@ -436,7 +436,10 @@ class _ExpenseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expense = item.expense;
-    final payer = users[expense.paidById]?.name ?? '?';
+    final payerNames = [
+      for (final p in item.payers) users[p.userId]?.name ?? '?',
+    ];
+    final payer = formatPayersLabel(payerNames);
     final date = DateFormat.MMMd().format(expense.date);
 
     return Dismissible(
