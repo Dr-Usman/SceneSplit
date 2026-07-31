@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-07-31
+
 ### Added
 
 - Multi-payer expenses: a bill can be paid by more than one person (equal or exact amounts), with balances credited from each payer.
