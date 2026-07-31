@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
@@ -17,6 +18,8 @@ class BalanceHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     final settled = netCents == 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -47,7 +50,7 @@ class BalanceHeroCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'You are all settled up',
+                    l10n.sharedSettledTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.positive,
@@ -56,7 +59,7 @@ class BalanceHeroCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'No outstanding balances in this group',
+                    l10n.sharedSettledSubtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
@@ -76,13 +79,13 @@ class BalanceHeroCard extends StatelessWidget {
     final Color tintColor;
 
     if (netCents > 0) {
-      label = 'You get';
-      amount = formatCents(netCents, currencyCode);
+      label = l10n.sharedYouGet;
+      amount = formatCents(netCents, currencyCode, locale: locale);
       amountColor = AppColors.positive;
       tintColor = AppColors.positive.withValues(alpha: isDark ? 0.12 : 0.08);
     } else {
-      label = 'You will give';
-      amount = formatCents(netCents, currencyCode);
+      label = l10n.sharedYouWillGive;
+      amount = formatCents(netCents, currencyCode, locale: locale);
       amountColor = AppColors.negative;
       tintColor = AppColors.negative.withValues(alpha: isDark ? 0.12 : 0.08);
     }

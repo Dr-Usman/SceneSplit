@@ -53,6 +53,19 @@ final themeModeProvider = StreamProvider<ThemeMode>((ref) {
   );
 });
 
+/// Stored locale preference (`system` or BCP-47 tag).
+final localeCodeProvider = StreamProvider<String>((ref) {
+  final db = ref.watch(databaseProvider);
+  final query = db.select(db.appSettings)..limit(1);
+  return query.watchSingleOrNull().map((row) => row?.localeCode ?? 'system');
+});
+
+/// Resolved [Locale] for [MaterialApp], or `null` to follow the device.
+final resolvedLocaleProvider = Provider<Locale?>((ref) {
+  final code = ref.watch(localeCodeProvider).value;
+  return localeFromStorage(code);
+});
+
 ThemeMode themeModeFromStorage(String? value) {
   return switch (value) {
     'light' => ThemeMode.light,
@@ -67,6 +80,22 @@ String themeModeToStorage(ThemeMode mode) {
     ThemeMode.dark => 'dark',
     ThemeMode.system => 'system',
   };
+}
+
+/// Parses a stored locale code into a [Locale], or `null` for system default.
+Locale? localeFromStorage(String? value) {
+  if (value == null || value.isEmpty || value == 'system') return null;
+  final normalized = value.replaceAll('-', '_');
+  final parts = normalized.split('_');
+  if (parts.length == 1) return Locale(parts[0]);
+  return Locale(parts[0], parts[1]);
+}
+
+String localeToStorage(Locale? locale) {
+  if (locale == null) return 'system';
+  final country = locale.countryCode;
+  if (country == null || country.isEmpty) return locale.languageCode;
+  return '${locale.languageCode}_$country';
 }
 
 /// Completes onboarding: creates the device user and saves currency.

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/l10n/localize_error.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../providers/database_provider.dart';
 import '../../../repositories/user_repository.dart';
@@ -42,13 +44,14 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
         setState(() => _saving = false);
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final user = ref.watch(currentUserProvider).value;
 
     if (user != null && !_editingName && _nameController.text.isEmpty) {
@@ -66,7 +69,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
           ),
         ),
         const SizedBox(height: 24),
-        const SectionHeader('Your name'),
+        SectionHeader(l10n.profileYourName),
         const SizedBox(height: 8),
         if (_editingName)
           Row(

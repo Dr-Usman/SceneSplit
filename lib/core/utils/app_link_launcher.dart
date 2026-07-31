@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_links.dart';
+import '../l10n/l10n_extensions.dart';
 
 Future<bool> launchEmail({required String subject, String? body}) async {
   final uri = Uri(
@@ -17,11 +20,37 @@ Future<bool> launchEmail({required String subject, String? body}) async {
   return launchUrl(uri);
 }
 
-Future<bool> launchSupportEmail(String subject) async {
+Future<bool> launchSupportEmail(String subject, AppLocalizations l10n) async {
   final info = await PackageInfo.fromPlatform();
-  final body =
-      '\n\n---\nApp: ${AppLinks.appName} ${info.version} (${info.buildNumber})';
+  final body = l10n.supportEmailBodyFooter(
+    AppLinks.appName,
+    info.version,
+    info.buildNumber,
+  );
   return launchEmail(subject: subject, body: body);
+}
+
+/// Opens the system share sheet with a localized pitch and store/web links.
+Future<bool> shareApp(BuildContext context) async {
+  final l10n = context.l10n;
+  final links = AppLinks.shareStoreUrls.join('\n');
+  if (links.isEmpty) return false;
+
+  final box = context.findRenderObject() as RenderBox?;
+  final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+
+  try {
+    final result = await SharePlus.instance.share(
+      ShareParams(
+        text: l10n.aboutShareAppMessage(AppLinks.appName, links),
+        subject: l10n.aboutShareAppSubject(AppLinks.appName),
+        sharePositionOrigin: origin,
+      ),
+    );
+    return result.status != ShareResultStatus.unavailable;
+  } on Object {
+    return false;
+  }
 }
 
 Future<void> requestAppReview() async {

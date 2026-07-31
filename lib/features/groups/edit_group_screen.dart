@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
@@ -72,7 +74,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
 
     if (_newNames.any((n) => n.trim().toLowerCase() == normalized)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('"$name" is already in the list.')),
+        SnackBar(content: Text(context.l10n.commonNameAlreadyInList(name))),
       );
       return;
     }
@@ -108,14 +110,14 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
         setState(() => _saving = false);
       }
     } on UserNameTakenException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
         setState(() => _saving = false);
       }
     }
@@ -131,16 +133,13 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       final db = ref.read(databaseProvider);
       if (!await canRemoveMemberFromGroup(db, userId, widget.groupId)) {
         if (!mounted) return;
-        final who = isCurrentUser ? 'You' : (userName ?? 'This member');
-        final verb = isCurrentUser ? 'have' : 'has';
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '$who $verb expenses or settlements in this group '
-              'and cannot be removed.',
-            ),
-          ),
-        );
+        final l10n = context.l10n;
+        final message = isCurrentUser
+            ? l10n.groupsRemovalBlockedYou
+            : l10n.groupsRemovalBlockedOther(userName ?? l10n.groupsThisMember);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
         return;
       }
     }
@@ -156,6 +155,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final detail = ref.watch(groupDetailProvider(widget.groupId));
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
     final me = ref.watch(currentUserProvider).value;
@@ -165,7 +165,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('Error: $e')),
+        body: Center(child: Text(l10n.commonErrorWithDetail('$e'))),
       ),
       data: (data) {
         _init(data);
@@ -175,37 +175,39 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
             .toList();
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Edit group')),
+          appBar: AppBar(title: Text(l10n.groupsEditGroup)),
           body: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
             children: [
-              _sectionLabel('GROUP NAME'),
+              _sectionLabel(l10n.groupsGroupName),
               const SizedBox(height: 8),
               TextField(
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
               ),
               const SizedBox(height: 24),
-              _sectionLabel('ICON'),
+              _sectionLabel(l10n.groupsIcon),
               const SizedBox(height: 12),
               GroupEmojiPicker(
                 selectedEmoji: _emoji,
                 onChanged: (emoji) => setState(() => _emoji = emoji),
               ),
               const SizedBox(height: 24),
-              _sectionLabel('CURRENCY'),
+              _sectionLabel(l10n.groupsCurrency),
               const SizedBox(height: 8),
               CurrencyPickerField(
                 currencyCode: _currencyCode,
                 onChanged: (code) => setState(() => _currencyCode = code),
               ),
               const SizedBox(height: 24),
-              _sectionLabel('MEMBERS'),
+              _sectionLabel(l10n.groupsMembers),
               const SizedBox(height: 8),
               for (final m in data.members)
                 _MemberTile(
                   name: m.user.name,
-                  label: m.user.id == me?.id ? '${m.user.name} (you)' : null,
+                  label: m.user.id == me?.id
+                      ? l10n.commonYouSuffix(m.user.name)
+                      : null,
                   colorIndex: m.user.colorIndex,
                   trailing: Checkbox(
                     value: _selectedMemberIds.contains(m.user.id),
@@ -247,9 +249,9 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                     child: TextField(
                       controller: _memberController,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
-                        hintText: 'Add member by name',
-                        prefixIcon: Icon(Icons.person_add_alt_outlined),
+                      decoration: InputDecoration(
+                        hintText: l10n.groupsAddMemberHint,
+                        prefixIcon: const Icon(Icons.person_add_alt_outlined),
                       ),
                       onSubmitted: (_) => _addTypedMember(),
                     ),
@@ -286,7 +288,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Save changes'),
+                    : Text(l10n.groupsSaveChanges),
               ),
             ],
           ),

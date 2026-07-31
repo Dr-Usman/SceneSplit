@@ -18,7 +18,8 @@
 | google_fonts | ^8.1.0 | |
 | flutter_svg | ^2.3.0 | |
 | fl_chart | ^1.2.0 | |
-| intl | ^0.20.3 | |
+| intl | ^0.20.2 | Pinned by `flutter_localizations` |
+| flutter_localizations | sdk | Official gen-l10n |
 | cupertino_icons | ^1.0.9 | |
 | collection | ^1.19.1 | |
 | package_info_plus | ^10.2.0 | |
@@ -78,10 +79,22 @@ Before creating or updating a PR:
 
 ## Code Generation
 
-Generated file:
-- `lib/database/app_database.g.dart`
+Generated files:
+- `lib/database/app_database.g.dart` — Drift
+- `lib/l10n/app_localizations*.dart` — Flutter gen-l10n from `lib/l10n/*.arb`
 
-Re-run `build_runner` only after changes to `lib/database/tables.dart` or `@DriftDatabase` annotations. Repository and UI changes do not require codegen.
+Re-run `dart run build_runner build` only after changes to `lib/database/tables.dart` or `@DriftDatabase` annotations.
+ARB changes regenerate via `flutter gen-l10n` (also runs automatically on `flutter pub get` / build when `flutter: generate: true`).
+
+## Localization
+
+- Stack: Flutter **gen-l10n** + ARB in `lib/l10n/` (`l10n.yaml`). Access via `context.l10n` (`lib/core/l10n/l10n_extensions.dart`).
+- Supported locales: `en`, `es`, `fr`, `de`, `pt`/`pt_BR`, `hi`, `ar`, `ja`.
+- User preference: `AppSettings.localeCode` (`system` or BCP-47); Profile → Language. `null` MaterialApp locale follows the device.
+- Never hardcode user-facing English in UI — add keys to `app_en.arb` first, then translate sibling ARBs (same key set).
+- Domain exceptions stay typed (`UserNameTakenException`, etc.); map to copy with `localizeError(context, e)`.
+- Legal markdown in `assets/legal/` remains English; screen chrome (titles/errors) is localized.
+- Money: `formatCents(cents, currencyCode, {locale})` / `parseAmountToCents(input, {locale})`.
 
 ## Architecture
 
@@ -92,11 +105,12 @@ Feature-first + service/repository:
 - `lib/providers/` — Riverpod 3 manual providers (`StreamProvider`, `Provider`, `Provider.family`)
 - `lib/features/` — UI screens by feature
 - `lib/shared/widgets/` — Reusable widgets (`user_avatar`, `currency_picker_sheet`)
+- `lib/l10n/` — ARB sources + generated `AppLocalizations`
 
 ## Conventions
 
 - All primary keys are UUIDs (not auto-increment)
-- Money stored as integer cents (`amountCents`); format with `formatCents(cents, currencyCode)`
+- Money stored as integer cents (`amountCents`); format with `formatCents(cents, currencyCode, locale: …)`
 - Drift Companions: optional/nullable fields use `Value()` or `Value.absent()`
 - `withCheck` constraints are not supported in this Drift version
 - No freezed, json_serializable, or `@riverpod` codegen in `lib/` today
@@ -109,3 +123,4 @@ Feature-first + service/repository:
 - **Remove member from group** — blocked if user has financial activity in that group.
 - **App default currency** (`AppSettings.currencyCode`) — set in onboarding/profile; used for home summary and as default when creating groups.
 - **Group currency** (`Groups.currencyCode`) — set at group creation, editable in edit group; all amounts in group detail use this code.
+- **App language** (`AppSettings.localeCode`) — `system` or BCP-47; set in Profile.

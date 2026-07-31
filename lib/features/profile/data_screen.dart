@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/localize_error.dart';
 import '../../database/app_database.dart';
 import '../../providers/database_provider.dart';
 import '../../services/database_backup_service.dart';
@@ -46,12 +48,12 @@ class _DataScreenState extends ConsumerState<DataScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     } on Object {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not export backup.')),
+          SnackBar(content: Text(context.l10n.dataCouldNotExport)),
         );
       }
     } finally {
@@ -62,25 +64,26 @@ class _DataScreenState extends ConsumerState<DataScreen> {
   Future<void> _saveBackupFile(ExportedDatabaseBackup backup) async {
     try {
       final saved = await FilePicker.saveFile(
-        dialogTitle: 'Save backup',
+        dialogTitle: context.l10n.dataSaveBackupDialog,
         fileName: backup.fileName,
         bytes: backup.bytes,
       );
       if (saved != null && mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('Backup saved.')));
+        ).showSnackBar(SnackBar(content: Text(context.l10n.dataBackupSaved)));
       }
     } on Object {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('Could not save backup.')));
+        ).showSnackBar(SnackBar(content: Text(context.l10n.dataCouldNotSave)));
       }
     }
   }
 
   Future<void> _shareBackupFile(ExportedDatabaseBackup backup) async {
+    final l10n = context.l10n;
     try {
       final box = context.findRenderObject() as RenderBox?;
       final origin = box != null
@@ -96,16 +99,16 @@ class _DataScreenState extends ConsumerState<DataScreen> {
               mimeType: 'application/x-sqlite3',
             ),
           ],
-          subject: 'SceneSplit backup',
-          text: 'SceneSplit database backup',
+          subject: l10n.dataShareSubject,
+          text: l10n.dataShareText,
           sharePositionOrigin: origin,
         ),
       );
     } on Object {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not share backup.')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.dataCouldNotShare)));
       }
     }
   }
@@ -116,25 +119,22 @@ class _DataScreenState extends ConsumerState<DataScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Import backup?'),
-        content: const Text(
-          'Importing a backup will replace all data currently in '
-          'SceneSplit on this device. This cannot be undone.',
-        ),
+        title: Text(ctx.l10n.dataImportTitle),
+        content: Text(ctx.l10n.dataImportBody),
         actions: [
           Row(
             children: [
               Expanded(
                 child: TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('Cancel'),
+                  child: Text(ctx.l10n.commonCancel),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: FilledButton(
                   onPressed: () => Navigator.pop(ctx, true),
-                  child: const Text('Import'),
+                  child: Text(ctx.l10n.commonImport),
                 ),
               ),
             ],
@@ -173,20 +173,20 @@ class _DataScreenState extends ConsumerState<DataScreen> {
         rethrow;
       }
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Backup imported successfully.')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.dataImportSuccess)));
       }
     } on DatabaseBackupException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     } on Object {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not import backup.')),
+          SnackBar(content: Text(context.l10n.dataCouldNotImport)),
         );
       }
     } finally {
@@ -196,19 +196,16 @@ class _DataScreenState extends ConsumerState<DataScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Data & backup')),
+      appBar: AppBar(title: Text(l10n.dataTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
           Text(
-            kIsWeb
-                ? 'Backup export and import are available in the mobile and '
-                      'desktop apps. Your data is stored locally in this browser.'
-                : 'Export a backup, then save it on your device or share it '
-                      'elsewhere. Import replaces everything on this device.',
+            kIsWeb ? l10n.dataWebBlurb : l10n.dataNativeBlurb,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -221,14 +218,14 @@ class _DataScreenState extends ConsumerState<DataScreen> {
                 children: [
                   SettingsTile(
                     icon: Icons.upload_file_outlined,
-                    title: 'Export backup',
+                    title: l10n.dataExportBackup,
                     onTap: () {
                       if (!_backupBusy) _exportBackup();
                     },
                   ),
                   SettingsTile(
                     icon: Icons.download_outlined,
-                    title: 'Import backup',
+                    title: l10n.dataImportBackup,
                     showDivider: false,
                     onTap: () {
                       if (!_backupBusy) _importBackup();

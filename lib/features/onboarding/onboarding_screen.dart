@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_assets.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/database_provider.dart';
@@ -130,6 +131,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildHero(BuildContext context, {required bool centered}) {
+    final l10n = context.l10n;
     final taglineStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
       color: Theme.of(context).colorScheme.onSurfaceVariant,
       height: 1.5,
@@ -162,7 +164,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Split expenses with friends.\nNo accounts, no fuss.',
+          l10n.onboardingTagline,
           textAlign: centered ? TextAlign.center : TextAlign.start,
           style: taglineStyle,
         ),
@@ -175,26 +177,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildFormCard(BuildContext context) {
+    final l10n = context.l10n;
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SectionHeader('YOUR NAME'),
+          SectionHeader(l10n.onboardingYourName),
           const SizedBox(height: 8),
           TextField(
             controller: _nameController,
             textCapitalization: TextCapitalization.words,
             autofocus: false,
-            decoration: const InputDecoration(
-              hintText: 'e.g. John Doe',
-              prefixIcon: Icon(Icons.person_outline_rounded),
+            decoration: InputDecoration(
+              hintText: l10n.onboardingNameHint,
+              prefixIcon: const Icon(Icons.person_outline_rounded),
             ),
             onSubmitted: (_) {
               if (_canContinue) _getStarted();
             },
           ),
           const SizedBox(height: 20),
-          const SectionHeader('CURRENCY'),
+          SectionHeader(l10n.onboardingCurrency),
           const SizedBox(height: 8),
           CurrencyPickerField(
             currencyCode: _currencyCode,
@@ -206,6 +209,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Widget _buildGetStartedButton() {
+    final l10n = context.l10n;
     return FilledButton(
       onPressed: _canContinue ? _getStarted : null,
       child: _saving
@@ -217,7 +221,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 color: Colors.white,
               ),
             )
-          : const Text('Get Started'),
+          : Text(l10n.onboardingGetStarted),
     );
   }
 
@@ -226,7 +230,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     required TextAlign textAlign,
   }) {
     return Text(
-      'Everything stays on your device.',
+      context.l10n.onboardingPrivacyNote,
       textAlign: textAlign,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
         color: Theme.of(context).colorScheme.onSurfaceVariant,

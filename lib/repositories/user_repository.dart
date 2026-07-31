@@ -5,22 +5,24 @@ import '../database/app_database.dart';
 
 const _uuid = Uuid();
 
-class UserDeleteBlockedException implements Exception {
-  UserDeleteBlockedException(this.message);
+enum UserDeleteBlockedReason { cannotDeleteSelf, hasFinancialActivity }
 
-  final String message;
+class UserDeleteBlockedException implements Exception {
+  UserDeleteBlockedException(this.reason);
+
+  final UserDeleteBlockedReason reason;
 
   @override
-  String toString() => message;
+  String toString() => reason.name;
 }
 
 class UserNameTakenException implements Exception {
-  UserNameTakenException(this.message);
+  UserNameTakenException(this.name);
 
-  final String message;
+  final String name;
 
   @override
-  String toString() => message;
+  String toString() => 'UserNameTakenException($name)';
 }
 
 /// Case-insensitive name match among existing users.
@@ -44,7 +46,7 @@ Future<void> updateCurrentUserName(AppDatabase db, String name) async {
     db.users,
   )..where((u) => u.isCurrentUser.equals(true))).getSingleOrNull();
   if (me != null && await userNameExists(db, trimmed, excludeUserId: me.id)) {
-    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+    throw UserNameTakenException(trimmed);
   }
   await (db.update(db.users)..where((u) => u.isCurrentUser.equals(true))).write(
     UsersCompanion(name: Value(trimmed)),
@@ -62,6 +64,13 @@ Future<void> updateThemeMode(AppDatabase db, String themeMode) async {
   await _upsertAppSettings(
     db,
     AppSettingsCompanion(themeMode: Value(themeMode)),
+  );
+}
+
+Future<void> updateLocaleCode(AppDatabase db, String localeCode) async {
+  await _upsertAppSettings(
+    db,
+    AppSettingsCompanion(localeCode: Value(localeCode)),
   );
 }
 
@@ -83,6 +92,7 @@ Future<void> _upsertAppSettings(
             id: const Value(1),
             currencyCode: companion.currencyCode,
             themeMode: companion.themeMode,
+            localeCode: companion.localeCode,
           ),
         );
     return;
@@ -95,7 +105,7 @@ Future<void> _upsertAppSettings(
 Future<void> updateUserName(AppDatabase db, String userId, String name) async {
   final trimmed = name.trim();
   if (await userNameExists(db, trimmed, excludeUserId: userId)) {
-    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+    throw UserNameTakenException(trimmed);
   }
   await (db.update(db.users)..where((u) => u.id.equals(userId))).write(
     UsersCompanion(name: Value(trimmed)),
@@ -105,7 +115,7 @@ Future<void> updateUserName(AppDatabase db, String userId, String name) async {
 Future<String> createUser(AppDatabase db, String name) async {
   final trimmed = name.trim();
   if (await userNameExists(db, trimmed)) {
-    throw UserNameTakenException('Someone named "$trimmed" already exists.');
+    throw UserNameTakenException(trimmed);
   }
   final existing = await db.select(db.users).get();
   final userId = _uuid.v4();
@@ -190,12 +200,12 @@ Future<void> deleteUser(AppDatabase db, String userId) async {
   if (user == null) return;
 
   if (user.isCurrentUser) {
-    throw UserDeleteBlockedException('You cannot delete yourself.');
+    throw UserDeleteBlockedException(UserDeleteBlockedReason.cannotDeleteSelf);
   }
 
   if (await userHasFinancialActivity(db, userId)) {
     throw UserDeleteBlockedException(
-      'This person has expenses or settlements and cannot be deleted.',
+      UserDeleteBlockedReason.hasFinancialActivity,
     );
   }
 

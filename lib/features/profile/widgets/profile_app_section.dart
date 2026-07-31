@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../core/constants/app_links.dart';
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -12,17 +13,18 @@ class ProfileAppSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SectionHeader('APP'),
+        SectionHeader(l10n.profileApp),
         const SizedBox(height: 12),
         AppCard(
           padding: EdgeInsets.zero,
           child: SettingsTile(
             icon: Icons.info_outline_rounded,
-            title: 'About ${AppLinks.appName}',
-            subtitle: 'Version, legal, and feedback',
+            title: l10n.profileAboutApp(AppLinks.appName),
+            subtitle: l10n.profileAboutSubtitle,
             showDivider: false,
             onTap: () => Navigator.of(
               context,
@@ -36,7 +38,7 @@ class ProfileAppSection extends StatelessWidget {
             final version = snapshot.data?.version ?? '…';
             final buildNumber = snapshot.data?.buildNumber ?? '…';
             return Text(
-              '${AppLinks.appName} v$version ($buildNumber)',
+              l10n.profileVersionFooter(AppLinks.appName, version, buildNumber),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,

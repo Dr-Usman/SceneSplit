@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../database/app_database.dart';
 import '../../../shared/widgets/user_avatar.dart';
 
@@ -17,6 +18,7 @@ class PersonRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -25,7 +27,7 @@ class PersonRow extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              user.isCurrentUser ? '${user.name} (you)' : user.name,
+              user.isCurrentUser ? l10n.commonYouSuffix(user.name) : user.name,
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
             ),
           ),
@@ -38,9 +40,9 @@ class PersonRow extends StatelessWidget {
                   onDelete();
                 }
               },
-              itemBuilder: (_) => const [
-                PopupMenuItem(value: 'edit', child: Text('Edit name')),
-                PopupMenuItem(value: 'delete', child: Text('Delete')),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: 'edit', child: Text(l10n.peopleEditName)),
+                PopupMenuItem(value: 'delete', child: Text(l10n.commonDelete)),
               ],
             ),
         ],
@@ -55,6 +57,7 @@ Future<String?> showPersonNameDialog(
   required String hint,
   String? initialValue,
 }) {
+  final l10n = context.l10n;
   final controller = TextEditingController(text: initialValue);
   return showDialog<String>(
     context: context,
@@ -73,14 +76,14 @@ Future<String?> showPersonNameDialog(
             Expanded(
               child: TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancel'),
+                child: Text(l10n.commonCancel),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: FilledButton(
                 onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-                child: const Text('Save'),
+                child: Text(l10n.commonSave),
               ),
             ),
           ],

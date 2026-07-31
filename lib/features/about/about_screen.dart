@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_links.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/app_link_launcher.dart';
@@ -15,18 +16,20 @@ class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
   Future<void> _sendEmail(BuildContext context, String subject) async {
-    final launched = await launchSupportEmail(subject);
+    final launched = await launchSupportEmail(subject, context.l10n);
     if (!launched && context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Could not open email app')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.aboutCouldNotOpenEmail)),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('About')),
+      appBar: AppBar(title: Text(l10n.aboutTitle)),
       body: FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (context, snapshot) {
@@ -66,7 +69,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Version $version ($build)',
+                l10n.aboutVersion(version, build),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -74,7 +77,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Split expenses with friends.\nOffline-first. No account required.',
+                l10n.aboutTagline,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -88,7 +91,7 @@ class AboutScreen extends StatelessWidget {
                   children: [
                     SettingsTile(
                       icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy Policy',
+                      title: l10n.aboutPrivacyPolicy,
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const LegalDocumentScreen(
@@ -99,7 +102,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     SettingsTile(
                       icon: Icons.description_outlined,
-                      title: 'Terms of Service',
+                      title: l10n.aboutTermsOfService,
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const LegalDocumentScreen(
@@ -110,32 +113,48 @@ class AboutScreen extends StatelessWidget {
                     ),
                     SettingsTile(
                       icon: Icons.mail_outline_rounded,
-                      title: 'Contact us',
-                      onTap: () => _sendEmail(context, 'SceneSplit Support'),
+                      title: l10n.aboutContactUs,
+                      onTap: () =>
+                          _sendEmail(context, l10n.aboutEmailSupportSubject),
                     ),
                     SettingsTile(
                       icon: Icons.feedback_outlined,
-                      title: 'Send feedback',
-                      onTap: () => _sendEmail(context, 'SceneSplit Feedback'),
+                      title: l10n.aboutSendFeedback,
+                      onTap: () =>
+                          _sendEmail(context, l10n.aboutEmailFeedbackSubject),
                     ),
                     SettingsTile(
                       icon: Icons.lightbulb_outline_rounded,
-                      title: 'Suggest a feature',
+                      title: l10n.aboutSuggestFeature,
                       onTap: () =>
-                          _sendEmail(context, 'SceneSplit Feature Suggestion'),
+                          _sendEmail(context, l10n.aboutEmailFeatureSubject),
                     ),
                     SettingsTile(
                       icon: Icons.star_outline_rounded,
-                      title: 'Rate ${AppLinks.appName}',
-                      showDivider: false,
+                      title: l10n.aboutRateApp(AppLinks.appName),
                       onTap: () => requestAppReview(),
+                    ),
+                    SettingsTile(
+                      icon: Icons.ios_share_rounded,
+                      title: l10n.aboutShareApp,
+                      showDivider: false,
+                      onTap: () async {
+                        final shared = await shareApp(context);
+                        if (!shared && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(context.l10n.aboutCouldNotShare),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 32),
               Text(
-                '© ${DateTime.now().year} ${AppLinks.appName}',
+                l10n.aboutCopyright(DateTime.now().year, AppLinks.appName),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,

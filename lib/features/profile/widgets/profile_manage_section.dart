@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/l10n/l10n_extensions.dart';
 import '../../../providers/data_providers.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/section_header.dart';
@@ -11,20 +12,15 @@ import '../people_screen.dart';
 class ProfileManageSection extends ConsumerWidget {
   const ProfileManageSection({super.key});
 
-  String _peopleSubtitle(int count) {
-    if (count == 0) return 'No people yet';
-    if (count == 1) return '1 person';
-    return '$count people';
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final peopleCount = ref.watch(usersStreamProvider).value?.length ?? 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SectionHeader('MANAGE'),
+        SectionHeader(l10n.profileManage),
         const SizedBox(height: 12),
         AppCard(
           padding: EdgeInsets.zero,
@@ -32,16 +28,16 @@ class ProfileManageSection extends ConsumerWidget {
             children: [
               SettingsTile(
                 icon: Icons.people_outline_rounded,
-                title: 'People',
-                subtitle: _peopleSubtitle(peopleCount),
+                title: l10n.profilePeople,
+                subtitle: l10n.profilePeopleCount(peopleCount),
                 onTap: () => Navigator.of(
                   context,
                 ).push(MaterialPageRoute(builder: (_) => const PeopleScreen())),
               ),
               SettingsTile(
                 icon: Icons.storage_outlined,
-                title: 'Data & backup',
-                subtitle: 'Export or import your data',
+                title: l10n.profileDataBackup,
+                subtitle: l10n.profileDataBackupSubtitle,
                 showDivider: false,
                 onTap: () => Navigator.of(
                   context,

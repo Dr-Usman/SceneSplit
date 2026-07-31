@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/constants/group_emojis.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 
 bool isValidSingleEmoji(String input) {
@@ -11,11 +12,12 @@ bool isValidSingleEmoji(String input) {
 }
 
 Future<String?> showCustomEmojiDialog(BuildContext context, {String? initial}) {
+  final l10n = context.l10n;
   final controller = TextEditingController(text: initial ?? '');
   return showDialog<String>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Custom emoji'),
+      title: Text(l10n.sharedCustomEmoji),
       content: TextField(
         controller: controller,
         autofocus: true,
@@ -34,7 +36,7 @@ Future<String?> showCustomEmojiDialog(BuildContext context, {String? initial}) {
             Expanded(
               child: TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancel'),
+                child: Text(l10n.commonCancel),
               ),
             ),
             const SizedBox(width: 12),
@@ -46,7 +48,7 @@ Future<String?> showCustomEmojiDialog(BuildContext context, {String? initial}) {
                     Navigator.pop(ctx, value);
                   }
                 },
-                child: const Text('Save'),
+                child: Text(l10n.commonSave),
               ),
             ),
           ],

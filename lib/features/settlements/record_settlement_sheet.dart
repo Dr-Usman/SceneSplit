@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/currencies.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
@@ -139,6 +140,7 @@ class _RecordSettlementSheetState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final symbol = currencyByCode(widget.currencyCode).symbol;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
 
@@ -164,13 +166,15 @@ class _RecordSettlementSheetState
               ),
               const SizedBox(height: 20),
               Text(
-                _isEditing ? 'Edit settlement' : 'Record settlement',
+                _isEditing
+                    ? l10n.settlementsEditTitle
+                    : l10n.settlementsRecordTitle,
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 20),
-              _label('FROM (PAYS)'),
+              _label(l10n.settlementsFromPays),
               const SizedBox(height: 8),
               _userDropdown(
                 value: _fromUserId,
@@ -178,7 +182,7 @@ class _RecordSettlementSheetState
                 onChanged: (v) => setState(() => _fromUserId = v!),
               ),
               const SizedBox(height: 16),
-              _label('TO (RECEIVES)'),
+              _label(l10n.settlementsToReceives),
               const SizedBox(height: 8),
               _userDropdown(
                 value: _toUserId,
@@ -186,7 +190,7 @@ class _RecordSettlementSheetState
                 onChanged: (v) => setState(() => _toUserId = v!),
               ),
               const SizedBox(height: 16),
-              _label('AMOUNT'),
+              _label(l10n.settlementsAmount),
               const SizedBox(height: 8),
               TextField(
                 controller: _amountController,
@@ -199,13 +203,11 @@ class _RecordSettlementSheetState
                 decoration: InputDecoration(prefixText: '$symbol '),
               ),
               const SizedBox(height: 16),
-              _label('NOTE (OPTIONAL)'),
+              _label(l10n.settlementsNoteOptional),
               const SizedBox(height: 8),
               TextField(
                 controller: _noteController,
-                decoration: const InputDecoration(
-                  hintText: 'Cash, bank transfer…',
-                ),
+                decoration: InputDecoration(hintText: l10n.settlementsNoteHint),
               ),
               const SizedBox(height: 28),
               FilledButton(
@@ -219,7 +221,11 @@ class _RecordSettlementSheetState
                           color: Colors.white,
                         ),
                       )
-                    : Text(_isEditing ? 'Save changes' : 'Record payment'),
+                    : Text(
+                        _isEditing
+                            ? l10n.settlementsSaveChanges
+                            : l10n.settlementsRecordPayment,
+                      ),
               ),
             ],
           ),

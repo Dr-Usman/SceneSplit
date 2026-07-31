@@ -1,13 +1,24 @@
 import 'dart:typed_data';
 
+/// Why a backup file cannot be validated or restored.
+enum DatabaseBackupErrorCode {
+  corrupt,
+  versionMismatch,
+  notSceneSplit,
+  exportUnavailableOnWeb,
+  importUnavailableOnWeb,
+  unknown,
+}
+
 /// Thrown when a backup file cannot be validated or restored.
 class DatabaseBackupException implements Exception {
-  DatabaseBackupException(this.message);
+  DatabaseBackupException(this.code, [this.message]);
 
-  final String message;
+  final DatabaseBackupErrorCode code;
+  final String? message;
 
   @override
-  String toString() => message;
+  String toString() => message ?? code.name;
 }
 
 /// A SQLite backup file ready for save or share.
