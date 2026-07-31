@@ -1,0 +1,447 @@
+{
+  "@@locale": "en",
+
+  "commonSomethingWentWrong": "Something went wrong: {error}",
+  "@commonSomethingWentWrong": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "commonErrorWithDetail": "Error: {error}",
+  "@commonErrorWithDetail": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "commonCancel": "Cancel",
+  "commonDelete": "Delete",
+  "commonSave": "Save",
+  "commonEdit": "Edit",
+  "commonImport": "Import",
+  "commonYouSuffix": "{name} (you)",
+  "@commonYouSuffix": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "commonNameAlreadyInList": "\"{name}\" is already in the list.",
+  "@commonNameAlreadyInList": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "commonUnknown": "Unknown",
+
+  "onboardingTagline": "Split expenses with friends.\nNo accounts, no fuss.",
+  "onboardingYourName": "YOUR NAME",
+  "onboardingNameHint": "e.g. John Doe",
+  "onboardingCurrency": "CURRENCY",
+  "onboardingGetStarted": "Get Started",
+  "onboardingPrivacyNote": "Everything stays on your device.",
+
+  "homeNewGroup": "New group",
+  "homeGroupsHeader": "GROUPS",
+  "homeYouGetByGroup": "You get by group",
+  "homeYouWillGiveByGroup": "You will give by group",
+  "homeBreakdownSubtitle": "Amounts shown in each group's currency",
+  "homeYouWillGet": "You will get",
+  "homeYouWillGive": "You will give",
+  "homeSettledUp": "settled up",
+  "homeCardYouWillGet": "you will get",
+  "homeCardYouWillGive": "you will give",
+  "homeMemberCount": "{count, plural, =1{1 member} other{{count} members}}",
+  "@homeMemberCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "homeEmptyTitle": "No groups yet",
+  "homeEmptyBody": "Create a group for your trip, home,\nor friends to start splitting.",
+
+  "groupsNewGroup": "New group",
+  "groupsEditGroup": "Edit group",
+  "groupsGroupName": "GROUP NAME",
+  "groupsNameHint": "e.g. Trip to Japan",
+  "groupsIcon": "ICON",
+  "groupsCurrency": "CURRENCY",
+  "groupsMembers": "MEMBERS",
+  "groupsAddMemberHint": "Add member by name",
+  "groupsCreateGroup": "Create group",
+  "groupsSaveChanges": "Save changes",
+  "groupsRemovalBlockedYou": "You have expenses or settlements in this group and cannot be removed.",
+  "groupsRemovalBlockedOther": "{name} has expenses or settlements in this group and cannot be removed.",
+  "@groupsRemovalBlockedOther": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "groupsThisMember": "This member",
+  "groupsCurrencySubtitle": "{symbol} — {name} ({code})",
+  "@groupsCurrencySubtitle": {
+    "placeholders": {
+      "symbol": {"type": "String"},
+      "name": {"type": "String"},
+      "code": {"type": "String"}
+    }
+  },
+  "groupsDeleteGroup": "Delete group",
+  "groupsAddExpense": "Add expense",
+  "groupsExpenseBreakdown": "EXPENSE BREAKDOWN",
+  "groupsMembersHeader": "MEMBERS ({count})",
+  "@groupsMembersHeader": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsManage": "Manage",
+  "groupsWhoOwesWhom": "WHO OWES WHOM",
+  "groupsSettleUp": "Settle up",
+  "groupsSettlements": "SETTLEMENTS",
+  "groupsExpenses": "EXPENSES",
+  "groupsDeleteExpenseTitle": "Delete expense?",
+  "groupsDeleteExpenseBody": "Remove \"{title}\" from this group?",
+  "@groupsDeleteExpenseBody": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "groupsDeleteGroupTitle": "Delete group?",
+  "groupsDeleteGroupBody": "Delete \"{name}\" and all its expenses? This cannot be undone.",
+  "@groupsDeleteGroupBody": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "groupsDeleteSettlementTitle": "Delete settlement?",
+  "groupsDeleteSettlementBody": "Remove this recorded payment?",
+  "groupsOwesTemplate": "{from} owes {to}",
+  "@groupsOwesTemplate": {
+    "placeholders": {
+      "from": {"type": "String"},
+      "to": {"type": "String"}
+    }
+  },
+  "groupsPayerPaidDate": "{payer} paid · {date}",
+  "@groupsPayerPaidDate": {
+    "placeholders": {
+      "payer": {"type": "String"},
+      "date": {"type": "String"}
+    }
+  },
+  "groupsSettlementPaid": "{from} paid {to}",
+  "@groupsSettlementPaid": {
+    "placeholders": {
+      "from": {"type": "String"},
+      "to": {"type": "String"}
+    }
+  },
+  "groupsEmptyExpensesTitle": "No expenses yet",
+  "groupsEmptyExpensesBody": "Tap \"Add expense\" to split your first bill.",
+
+  "expensesEditTitle": "Edit expense",
+  "expensesAddTitle": "Add expense",
+  "expensesDetailTitle": "Expense",
+  "expensesNotFound": "Expense not found",
+  "expensesAmount": "Amount",
+  "expensesAmountSubtitle": "Total bill amount",
+  "expensesDescription": "Description",
+  "expensesDescriptionHint": "e.g. Dinner, Groceries, Taxi",
+  "expensesDate": "Date",
+  "expensesPaidBy": "Paid by",
+  "expensesPaidBySubtitle": "Who covered this bill",
+  "expensesPaidByHeader": "PAID BY",
+  "expensesPayerSingle": "Single",
+  "expensesPayerMultiple": "Multiple",
+  "expensesSplit": "Split",
+  "expensesSplitSubtitle": "How to divide the cost",
+  "expensesSplitEqual": "Equal",
+  "expensesSplitExact": "Exact",
+  "expensesSplitPercent": "%",
+  "expensesSplitExactAmounts": "Exact amounts",
+  "expensesSplitByPercentage": "By percentage",
+  "expensesSplitEqually": "Split equally",
+  "expensesSplitBreakdown": "SPLIT BREAKDOWN",
+  "expensesNote": "Note",
+  "expensesNoteHint": "Optional note",
+  "expensesSaveChanges": "Save changes",
+  "expensesSaveExpense": "Save expense",
+  "expensesSubtitlePaid": "paid",
+  "expensesSubtitleAlsoPaid": "also paid",
+  "expensesPaymentExceeds": "Each payment must not exceed {amount}",
+  "@expensesPaymentExceeds": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesEnterValidPayments": "Enter valid payment amounts",
+  "expensesOverBy": "Over by {amount}",
+  "@expensesOverBy": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesAmountRemaining": "{amount} remaining",
+  "@expensesAmountRemaining": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesPaymentsTotal": "Payments total {amount}",
+  "@expensesPaymentsTotal": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesShareExceeds": "Each share must not exceed {amount}",
+  "@expensesShareExceeds": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesEnterValidSplits": "Enter valid split amounts",
+  "expensesPercentOver100": "Each share must be 100% or less",
+  "expensesEnterValidPercents": "Enter valid split percentages",
+  "expensesPercentReduce": "Total {total}% — reduce by {over}%",
+  "@expensesPercentReduce": {
+    "placeholders": {
+      "total": {"type": "String"},
+      "over": {"type": "String"}
+    }
+  },
+  "expensesPercentRemaining": "Total {total}% — {remaining}% remaining",
+  "@expensesPercentRemaining": {
+    "placeholders": {
+      "total": {"type": "String"},
+      "remaining": {"type": "String"}
+    }
+  },
+  "expensesPayerLine": "{name}: {amount}",
+  "@expensesPayerLine": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "String"}
+    }
+  },
+  "expensesPreviewTotal": "Total: {amount}",
+  "@expensesPreviewTotal": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+
+  "settlementsEditTitle": "Edit settlement",
+  "settlementsRecordTitle": "Record settlement",
+  "settlementsFromPays": "FROM (PAYS)",
+  "settlementsToReceives": "TO (RECEIVES)",
+  "settlementsAmount": "AMOUNT",
+  "settlementsNoteOptional": "NOTE (OPTIONAL)",
+  "settlementsNoteHint": "Cash, bank transfer…",
+  "settlementsSaveChanges": "Save changes",
+  "settlementsRecordPayment": "Record payment",
+
+  "profileTitle": "Profile",
+  "profileYourName": "Your name",
+  "profileLanguage": "LANGUAGE",
+  "profileLanguageHint": "Follows your device unless you choose a language.",
+  "profileLanguageSystem": "System",
+  "profileAppearance": "APPEARANCE",
+  "profileAppearanceHint": "Follows your device unless you choose Light or Dark.",
+  "profileThemeSystem": "System",
+  "profileThemeLight": "Light",
+  "profileThemeDark": "Dark",
+  "profileDefaultCurrencyHeader": "DEFAULT CURRENCY",
+  "profileDefaultCurrencyHint": "Used for new groups and the home summary.",
+  "profileDefaultCurrencySheet": "Default currency",
+  "profileManage": "MANAGE",
+  "profilePeople": "People",
+  "profilePeopleCount": "{count, plural, =0{No people yet} =1{1 person} other{{count} people}}",
+  "@profilePeopleCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "profileDataBackup": "Data & backup",
+  "profileDataBackupSubtitle": "Export or import your data",
+  "profileApp": "APP",
+  "profileAboutApp": "About {appName}",
+  "@profileAboutApp": {
+    "placeholders": {
+      "appName": {"type": "String"}
+    }
+  },
+  "profileAboutSubtitle": "Privacy, contact, feedback & share",
+  "profileVersionFooter": "{appName} v{version} ({build})",
+  "@profileVersionFooter": {
+    "placeholders": {
+      "appName": {"type": "String"},
+      "version": {"type": "String"},
+      "build": {"type": "String"}
+    }
+  },
+
+  "peopleTitle": "People",
+  "peopleAddPerson": "Add person",
+  "peopleAddHint": "e.g. Alice",
+  "peopleEditName": "Edit name",
+  "peopleDeleteTitle": "Delete person?",
+  "peopleDeleteBody": "Remove {name} from your people list? This cannot be undone.",
+  "@peopleDeleteBody": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleIntro": "Everyone added across your groups.",
+  "peopleSearchHint": "Search by name",
+  "peopleEmpty": "No people yet. Tap + to add someone.",
+  "peopleNoMatch": "No people match your search.",
+
+  "dataTitle": "Data & backup",
+  "dataWebBlurb": "Backup export and import are available in the mobile and desktop apps. Your data is stored locally in this browser.",
+  "dataNativeBlurb": "Export a backup, then save it on your device or share it elsewhere. Import replaces everything on this device.",
+  "dataExportBackup": "Export backup",
+  "dataImportBackup": "Import backup",
+  "dataCouldNotExport": "Could not export backup.",
+  "dataSaveBackupDialog": "Save backup",
+  "dataBackupSaved": "Backup saved.",
+  "dataCouldNotSave": "Could not save backup.",
+  "dataShareSubject": "SceneSplit backup",
+  "dataShareText": "SceneSplit database backup",
+  "dataCouldNotShare": "Could not share backup.",
+  "dataImportTitle": "Import backup?",
+  "dataImportBody": "Importing a backup will replace all data currently in SceneSplit on this device. This cannot be undone.",
+  "dataImportSuccess": "Backup imported successfully.",
+  "dataCouldNotImport": "Could not import backup.",
+  "dataBackupReady": "Backup ready",
+  "dataSaveToDevice": "Save to device",
+  "dataSaveToDeviceSubtitle": "Choose folder and filename",
+  "dataShare": "Share",
+  "dataShareSubtitle": "Send via email, Drive, AirDrop, etc.",
+
+  "aboutTitle": "About",
+  "aboutCouldNotOpenEmail": "Could not open email app",
+  "aboutVersion": "Version {version} ({build})",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {"type": "String"},
+      "build": {"type": "String"}
+    }
+  },
+  "aboutTagline": "Split expenses with friends.\nOffline-first. No account required.",
+  "aboutPrivacyPolicy": "Privacy Policy",
+  "aboutTermsOfService": "Terms of Service",
+  "aboutContactUs": "Contact us",
+  "aboutEmailSupportSubject": "SceneSplit Support",
+  "aboutSendFeedback": "Send feedback",
+  "aboutEmailFeedbackSubject": "SceneSplit Feedback",
+  "aboutSuggestFeature": "Suggest a feature",
+  "aboutEmailFeatureSubject": "SceneSplit Feature Suggestion",
+  "aboutRateApp": "Rate {appName}",
+  "@aboutRateApp": {
+    "placeholders": {
+      "appName": {"type": "String"}
+    }
+  },
+  "aboutShareApp": "Share app",
+  "aboutShareAppSubject": "Try {appName}",
+  "@aboutShareAppSubject": {
+    "placeholders": {
+      "appName": {"type": "String"}
+    }
+  },
+  "aboutShareAppMessage": "Check out {appName} — split expenses with friends. Offline-first, no account required.\n\n{links}",
+  "@aboutShareAppMessage": {
+    "placeholders": {
+      "appName": {"type": "String"},
+      "links": {"type": "String"}
+    }
+  },
+  "aboutCouldNotShare": "Could not share the app.",
+  "aboutCopyright": "© {year} {appName}",
+  "@aboutCopyright": {
+    "placeholders": {
+      "year": {"type": "int"},
+      "appName": {"type": "String"}
+    }
+  },
+
+  "legalPrivacyTitle": "Privacy Policy",
+  "legalTermsTitle": "Terms of Service",
+  "legalLoadError": "Could not load document: {error}",
+  "@legalLoadError": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+
+  "sharedSettledTitle": "You are all settled up",
+  "sharedSettledSubtitle": "No outstanding balances in this group",
+  "sharedYouGet": "You get",
+  "sharedYouWillGive": "You will give",
+  "sharedNoChartData": "No data to chart",
+  "sharedTotal": "Total",
+  "sharedPercentLabel": "{percent}%",
+  "@sharedPercentLabel": {
+    "placeholders": {
+      "percent": {"type": "String"}
+    }
+  },
+  "sharedChooseLanguage": "Choose language",
+  "sharedChooseCurrency": "Choose currency",
+  "sharedCurrencySearchHint": "Search by name, code, or symbol",
+  "sharedNoCurrenciesFound": "No currencies found",
+  "sharedCurrencyFieldLabel": "{code} — {name}",
+  "@sharedCurrencyFieldLabel": {
+    "placeholders": {
+      "code": {"type": "String"},
+      "name": {"type": "String"}
+    }
+  },
+  "sharedCustomEmoji": "Custom emoji",
+
+  "moneyTwoPayers": "{a} & {b}",
+  "@moneyTwoPayers": {
+    "placeholders": {
+      "a": {"type": "String"},
+      "b": {"type": "String"}
+    }
+  },
+  "moneyManyPayers": "{name} +{count}",
+  "@moneyManyPayers": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+
+  "supportEmailBodyFooter": "\n\n---\nApp: {appName} {version} ({build})",
+  "@supportEmailBodyFooter": {
+    "placeholders": {
+      "appName": {"type": "String"},
+      "version": {"type": "String"},
+      "build": {"type": "String"}
+    }
+  },
+
+  "errorUserNameTaken": "Someone named \"{name}\" already exists.",
+  "@errorUserNameTaken": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "errorCannotDeleteSelf": "You cannot delete yourself.",
+  "errorUserHasFinancialActivity": "This person has expenses or settlements and cannot be deleted.",
+  "errorBackupCorrupt": "Could not open backup file. It may be corrupt or not a SQLite database.",
+  "errorBackupVersionMismatch": "This backup is from a different app version and cannot be imported.",
+  "errorBackupNotSceneSplit": "This file does not look like a SceneSplit backup.",
+  "errorBackupExportWeb": "Backup export is not available on web. Use the mobile or desktop app to export backups.",
+  "errorBackupImportWeb": "Backup import is not available on web. Use the mobile or desktop app to import backups.",
+
+  "languageEnglish": "English",
+  "languageSpanish": "Español",
+  "languageFrench": "Français",
+  "languageGerman": "Deutsch",
+  "languagePortuguese": "Português (Brasil)",
+  "languageHindi": "हिन्दी",
+  "languageArabic": "العربية",
+  "languageJapanese": "日本語"
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/app_links.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
@@ -19,13 +21,14 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final homeData = ref.watch(homeDataProvider);
     final currencyCode = ref.watch(currencyCodeProvider).value ?? 'PKR';
     final user = ref.watch(currentUserProvider).value;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SceneSplit'),
+        title: Text(AppLinks.appName),
         actions: [
           if (user != null)
             Padding(
@@ -54,20 +57,21 @@ class HomeScreen extends ConsumerWidget {
           context,
         ).push(MaterialPageRoute(builder: (_) => const CreateGroupScreen())),
         icon: const Icon(Icons.add_rounded),
-        label: const Text('New group'),
+        label: Text(l10n.homeNewGroup),
       ),
       body: homeData.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Something went wrong: $e')),
+        error: (e, _) =>
+            Center(child: Text(l10n.commonSomethingWentWrong('$e'))),
         data: (data) => ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
           children: [
             _BalanceSummaryCard(data: data, currencyCode: currencyCode),
             const SizedBox(height: 28),
-            const SectionHeader('GROUPS'),
+            SectionHeader(l10n.homeGroupsHeader),
             const SizedBox(height: 12),
             if (data.groups.isEmpty)
-              const _EmptyGroups()
+              _EmptyGroups()
             else
               for (final summary in data.groups) ...[
                 _GroupCard(summary: summary),
@@ -87,6 +91,7 @@ class _BalanceSummaryCard extends StatelessWidget {
   final String currencyCode;
 
   void _showOwedBreakdown(BuildContext context) {
+    final l10n = context.l10n;
     final slices = <BreakdownSlice>[];
     var colorIndex = 0;
     for (final summary in data.groups) {
@@ -102,13 +107,14 @@ class _BalanceSummaryCard extends StatelessWidget {
     }
     showBreakdownSheet(
       context,
-      title: 'You get by group',
-      subtitle: 'Amounts shown in each group\'s currency',
+      title: l10n.homeYouGetByGroup,
+      subtitle: l10n.homeBreakdownSubtitle,
       slices: slices,
     );
   }
 
   void _showOweBreakdown(BuildContext context) {
+    final l10n = context.l10n;
     final slices = <BreakdownSlice>[];
     var colorIndex = 0;
     for (final summary in data.groups) {
@@ -124,19 +130,25 @@ class _BalanceSummaryCard extends StatelessWidget {
     }
     showBreakdownSheet(
       context,
-      title: 'You will give by group',
-      subtitle: 'Amounts shown in each group\'s currency',
+      title: l10n.homeYouWillGiveByGroup,
+      subtitle: l10n.homeBreakdownSubtitle,
       slices: slices,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     return SummarySplitCard(
-      owedLabel: 'You will get',
-      owedAmount: formatCents(data.totalOwedToMeCents, currencyCode),
-      oweLabel: 'You will give',
-      oweAmount: formatCents(data.totalIOweCents, currencyCode),
+      owedLabel: l10n.homeYouWillGet,
+      owedAmount: formatCents(
+        data.totalOwedToMeCents,
+        currencyCode,
+        locale: locale,
+      ),
+      oweLabel: l10n.homeYouWillGive,
+      oweAmount: formatCents(data.totalIOweCents, currencyCode, locale: locale),
       onOwedTap: _showOwedBreakdown,
       onOweTap: _showOweBreakdown,
     );
@@ -150,6 +162,8 @@ class _GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     final group = summary.group;
     final net = summary.myNetCents;
     final settled = net == 0;
@@ -158,16 +172,16 @@ class _GroupCard extends StatelessWidget {
     final String? balanceAmount;
     final Color balanceColor;
     if (settled) {
-      balanceLabel = 'settled up';
+      balanceLabel = l10n.homeSettledUp;
       balanceAmount = null;
       balanceColor = Theme.of(context).colorScheme.onSurfaceVariant;
     } else if (net > 0) {
-      balanceLabel = 'you will get';
-      balanceAmount = formatCents(net, group.currencyCode);
+      balanceLabel = l10n.homeCardYouWillGet;
+      balanceAmount = formatCents(net, group.currencyCode, locale: locale);
       balanceColor = AppColors.positive;
     } else {
-      balanceLabel = 'you will give';
-      balanceAmount = formatCents(net, group.currencyCode);
+      balanceLabel = l10n.homeCardYouWillGive;
+      balanceAmount = formatCents(net, group.currencyCode, locale: locale);
       balanceColor = AppColors.negative;
     }
 
@@ -201,7 +215,7 @@ class _GroupCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  '${summary.memberCount} members',
+                  l10n.homeMemberCount(summary.memberCount),
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -244,6 +258,7 @@ class _EmptyGroups extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AppCard(
       padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Column(
@@ -266,13 +281,13 @@ class _EmptyGroups extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'No groups yet',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          Text(
+            l10n.homeEmptyTitle,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
           Text(
-            'Create a group for your trip, home,\nor friends to start splitting.',
+            l10n.homeEmptyBody,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurfaceVariant,

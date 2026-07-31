@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -15,58 +16,63 @@ Future<BackupExportAction?> showBackupExportSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
     ),
-    builder: (sheetContext) => SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Container(
-                width: 36,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    sheetContext,
-                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.35),
-                  borderRadius: BorderRadius.circular(2),
+    builder: (sheetContext) {
+      final l10n = sheetContext.l10n;
+
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      sheetContext,
+                    ).colorScheme.onSurfaceVariant.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Backup ready',
-              style: Theme.of(
-                sheetContext,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              fileName,
-              style: Theme.of(sheetContext).textTheme.bodySmall?.copyWith(
-                color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+              const SizedBox(height: 20),
+              Text(
+                l10n.dataBackupReady,
+                style: Theme.of(
+                  sheetContext,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
-            ),
-            const SizedBox(height: 20),
-            _BackupExportOption(
-              icon: Icons.save_outlined,
-              title: 'Save to device',
-              subtitle: 'Choose folder and filename',
-              onTap: () => Navigator.pop(sheetContext, BackupExportAction.save),
-            ),
-            const SizedBox(height: 8),
-            _BackupExportOption(
-              icon: Icons.share_outlined,
-              title: 'Share',
-              subtitle: 'Send via email, Drive, AirDrop, etc.',
-              onTap: () =>
-                  Navigator.pop(sheetContext, BackupExportAction.share),
-            ),
-          ],
+              const SizedBox(height: 6),
+              Text(
+                fileName,
+                style: Theme.of(sheetContext).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 20),
+              _BackupExportOption(
+                icon: Icons.save_outlined,
+                title: l10n.dataSaveToDevice,
+                subtitle: l10n.dataSaveToDeviceSubtitle,
+                onTap: () =>
+                    Navigator.pop(sheetContext, BackupExportAction.save),
+              ),
+              const SizedBox(height: 8),
+              _BackupExportOption(
+                icon: Icons.share_outlined,
+                title: l10n.dataShare,
+                subtitle: l10n.dataShareSubtitle,
+                onTap: () =>
+                    Navigator.pop(sheetContext, BackupExportAction.share),
+              ),
+            ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 

@@ -23,7 +23,7 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting(super.executor);
 
-  static const int databaseSchemaVersion = 3;
+  static const int databaseSchemaVersion = 4;
 
   @override
   int get schemaVersion => databaseSchemaVersion;
@@ -46,6 +46,9 @@ FROM expenses
         // Recreate expenses without paid_by_id (copies columns present in
         // the new Dart schema only).
         await m.alterTable(TableMigration(expenses));
+      }
+      if (from < 4) {
+        await m.addColumn(appSettings, appSettings.localeCode);
       }
     },
   );

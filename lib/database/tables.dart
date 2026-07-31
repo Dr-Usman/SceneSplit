@@ -23,6 +23,9 @@ class AppSettings extends Table {
   /// Stored as `'system' | 'light' | 'dark'`.
   TextColumn get themeMode => text().withDefault(const Constant('system'))();
 
+  /// Stored as `'system'` or a BCP-47 tag (`en`, `es`, `pt_BR`, …).
+  TextColumn get localeCode => text().withDefault(const Constant('system'))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/app_link_launcher.dart';
 import 'legal_document_type.dart';
@@ -59,10 +60,11 @@ class _LegalDocumentScreenState extends State<LegalDocumentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.type.title)),
+      appBar: AppBar(title: Text(widget.type.title(l10n))),
       body: FutureBuilder<String>(
         future: _content,
         builder: (context, snapshot) {
@@ -74,7 +76,7 @@ class _LegalDocumentScreenState extends State<LegalDocumentScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  'Could not load document: ${snapshot.error}',
+                  l10n.legalLoadError('${snapshot.error}'),
                   textAlign: TextAlign.center,
                 ),
               ),

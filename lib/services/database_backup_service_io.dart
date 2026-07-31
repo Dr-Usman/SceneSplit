@@ -47,9 +47,7 @@ void validateBackupFile(
   try {
     backupDb = sqlite3.open(backupPath, mode: OpenMode.readOnly);
   } on Object {
-    throw DatabaseBackupException(
-      'Could not open backup file. It may be corrupt or not a SQLite database.',
-    );
+    throw DatabaseBackupException(DatabaseBackupErrorCode.corrupt);
   }
 
   try {
@@ -59,9 +57,7 @@ void validateBackupFile(
         : 0;
 
     if (userVersion != expectedSchemaVersion) {
-      throw DatabaseBackupException(
-        'This backup is from a different app version and cannot be imported.',
-      );
+      throw DatabaseBackupException(DatabaseBackupErrorCode.versionMismatch);
     }
 
     final tableRows = backupDb.select(
@@ -73,9 +69,7 @@ void validateBackupFile(
 
     for (final table in _requiredTables) {
       if (!tableNames.contains(table)) {
-        throw DatabaseBackupException(
-          'This file does not look like a SceneSplit backup.',
-        );
+        throw DatabaseBackupException(DatabaseBackupErrorCode.notSceneSplit);
       }
     }
   } finally {

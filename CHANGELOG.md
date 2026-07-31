@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- App localization (Flutter gen-l10n) for English, Spanish, French, German, Portuguese (Brazil), Hindi, Arabic, and Japanese, with a Profile language override (or follow the device).
+- Share app action (Profile and About) via `share_plus` with localized pitch plus Play Store / web links.
 - Multi-payer expenses: a bill can be paid by more than one person (equal or exact amounts), with balances credited from each payer.
 - Shared member select tiles on Add expense for Paid by and Split.
 - Case-insensitive duplicate name prevention when adding or renaming people.
@@ -20,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Expense schema migrates from single `paidById` to an `ExpensePayers` table (schema v3).
+- App settings schema v4 adds persisted `localeCode`.
+- Money formatting/parsing is locale-aware via `intl`.
 - Section headers use title case with a short accent and optional subtitles.
 - Standardized GitHub Release asset names and refreshed web favicons / PWA icons.
 - Moved CI and release contributor notes into `CONTRIBUTING.md`.

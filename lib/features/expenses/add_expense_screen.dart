@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants/currencies.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../providers/database_provider.dart';
@@ -356,20 +357,27 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('Error: $e')),
+        body: Center(child: Text(context.l10n.commonErrorWithDetail('$e'))),
       ),
       data: (data) {
         _initMembers(data.members);
         final members = data.members;
+        final l10n = context.l10n;
+        final locale = Localizations.localeOf(context).toString();
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.isEditing ? 'Edit expense' : 'Add expense'),
+            title: Text(
+              widget.isEditing ? l10n.expensesEditTitle : l10n.expensesAddTitle,
+            ),
           ),
           body: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
             children: [
-              _sectionLabel('Amount', subtitle: 'Total bill amount'),
+              _sectionLabel(
+                l10n.expensesAmount,
+                subtitle: l10n.expensesAmountSubtitle,
+              ),
               const SizedBox(height: 8),
               TextField(
                 controller: _amountController,
@@ -397,18 +405,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 onChanged: (_) => setState(() {}),
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Description'),
+              _sectionLabel(l10n.expensesDescription),
               const SizedBox(height: 8),
               TextField(
                 controller: _titleController,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  hintText: 'e.g. Dinner, Groceries, Taxi',
+                decoration: InputDecoration(
+                  hintText: l10n.expensesDescriptionHint,
                 ),
                 onChanged: (_) => setState(() {}),
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Date'),
+              _sectionLabel(l10n.expensesDate),
               const SizedBox(height: 8),
               InkWell(
                 borderRadius: BorderRadius.circular(14),
@@ -417,49 +425,69 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.calendar_today_outlined),
                   ),
-                  child: Text(DateFormat.yMMMd().format(_date)),
+                  child: Text(DateFormat.yMMMd(locale).format(_date)),
                 ),
               ),
               const SizedBox(height: 20),
-              _sectionLabel('Paid by', subtitle: 'Who covered this bill'),
+              _sectionLabel(
+                l10n.expensesPaidBy,
+                subtitle: l10n.expensesPaidBySubtitle,
+              ),
               const SizedBox(height: 8),
               SegmentedButton<PaidByMode>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: PaidByMode.single,
-                    label: Text('Single'),
+                    label: Text(l10n.expensesPayerSingle),
                   ),
                   ButtonSegment(
                     value: PaidByMode.multiple,
-                    label: Text('Multiple'),
+                    label: Text(l10n.expensesPayerMultiple),
                   ),
                 ],
                 selected: {_paidByMode},
                 onSelectionChanged: (s) => _setPaidByMode(s.first),
               ),
               const SizedBox(height: 12),
-              ..._buildPaidBySection(members, symbol),
+              ..._buildPaidBySection(
+                members,
+                widget.currencyCode,
+                Localizations.localeOf(context).toString(),
+                context.l10n,
+              ),
               const SizedBox(height: 20),
-              _sectionLabel('Split', subtitle: 'How to divide the cost'),
+              _sectionLabel(
+                l10n.expensesSplit,
+                subtitle: l10n.expensesSplitSubtitle,
+              ),
               const SizedBox(height: 8),
               SegmentedButton<SplitType>(
-                segments: const [
-                  ButtonSegment(value: SplitType.equal, label: Text('Equal')),
-                  ButtonSegment(value: SplitType.exact, label: Text('Exact')),
-                  ButtonSegment(value: SplitType.percentage, label: Text('%')),
+                segments: [
+                  ButtonSegment(
+                    value: SplitType.equal,
+                    label: Text(l10n.expensesSplitEqual),
+                  ),
+                  ButtonSegment(
+                    value: SplitType.exact,
+                    label: Text(l10n.expensesSplitExact),
+                  ),
+                  ButtonSegment(
+                    value: SplitType.percentage,
+                    label: Text(l10n.expensesSplitPercent),
+                  ),
                 ],
                 selected: {_splitType},
                 onSelectionChanged: (s) => setState(() => _splitType = s.first),
               ),
               const SizedBox(height: 16),
-              ..._buildSplitSection(members, symbol),
+              ..._buildSplitSection(members, widget.currencyCode, locale, l10n),
               const SizedBox(height: 20),
-              _sectionLabel('Note'),
+              _sectionLabel(l10n.expensesNote),
               const SizedBox(height: 8),
               TextField(
                 controller: _noteController,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(hintText: 'Optional note'),
+                decoration: InputDecoration(hintText: l10n.expensesNoteHint),
               ),
               const SizedBox(height: 32),
               FilledButton(
@@ -473,7 +501,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : Text(widget.isEditing ? 'Save changes' : 'Save expense'),
+                    : Text(
+                        widget.isEditing
+                            ? l10n.expensesSaveChanges
+                            : l10n.expensesSaveExpense,
+                      ),
               ),
             ],
           ),
@@ -484,7 +516,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
   List<Widget> _buildPaidBySection(
     List<GroupMemberInfo> members,
-    String symbol,
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
   ) {
     if (_paidByMode == PaidByMode.single) {
       return [
@@ -519,23 +553,37 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       if (_payerIds.isNotEmpty) ...[
         const SizedBox(height: 8),
         SegmentedButton<PayerAmountMode>(
-          segments: const [
-            ButtonSegment(value: PayerAmountMode.equal, label: Text('Equal')),
-            ButtonSegment(value: PayerAmountMode.exact, label: Text('Exact')),
+          segments: [
+            ButtonSegment(
+              value: PayerAmountMode.equal,
+              label: Text(context.l10n.expensesSplitEqual),
+            ),
+            ButtonSegment(
+              value: PayerAmountMode.exact,
+              label: Text(context.l10n.expensesSplitExact),
+            ),
           ],
           selected: {_payerAmountMode},
           onSelectionChanged: (s) => setState(() => _payerAmountMode = s.first),
         ),
         const SizedBox(height: 12),
-        ..._buildPayerAmountSection(members, symbol),
+        ..._buildPayerAmountSection(
+          members,
+          widget.currencyCode,
+          Localizations.localeOf(context).toString(),
+          context.l10n,
+        ),
       ],
     ];
   }
 
   List<Widget> _buildPayerAmountSection(
     List<GroupMemberInfo> members,
-    String symbol,
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
   ) {
+    final symbol = currencyByCode(currencyCode).symbol;
     final selected = members.where((m) => _payerIds.contains(m.user.id));
 
     switch (_payerAmountMode) {
@@ -563,7 +611,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 Text(
                   amounts == null
                       ? '—'
-                      : '$symbol ${(amounts[m.user.id]! / 100).toStringAsFixed(2)}',
+                      : formatCents(
+                          amounts[m.user.id]!,
+                          currencyCode,
+                          locale: locale,
+                        ),
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ],
@@ -614,49 +666,67 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             ),
             const SizedBox(height: 8),
           ],
-          if (_amountCents != null) _payerExactSummary(symbol, _amountCents!),
+          if (_amountCents != null)
+            _payerExactSummary(currencyCode, locale, l10n, _amountCents!),
         ];
     }
   }
 
-  Widget _payerExactSummary(String symbol, int amountCents) {
+  Widget _payerExactSummary(
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
+    int amountCents,
+  ) {
     if (_hasPayerExactFieldOverTotal()) {
       return _splitStatusMessage(
-        'Each payment must not exceed $symbol ${(amountCents / 100).toStringAsFixed(2)}',
+        l10n.expensesPaymentExceeds(
+          formatCents(amountCents, currencyCode, locale: locale),
+        ),
         isError: true,
       );
     }
 
     final amounts = _parsePayerExact();
     if (amounts == null) {
-      return _splitStatusMessage('Enter valid payment amounts', isError: true);
+      return _splitStatusMessage(
+        l10n.expensesEnterValidPayments,
+        isError: true,
+      );
     }
 
     final assigned = SplitEngineService.exactSplitAssignedCents(amounts);
     if (assigned > amountCents) {
       final over = assigned - amountCents;
       return _splitStatusMessage(
-        'Over by $symbol ${(over / 100).toStringAsFixed(2)}',
+        l10n.expensesOverBy(formatCents(over, currencyCode, locale: locale)),
         isError: true,
       );
     }
     if (assigned < amountCents) {
       final remaining = amountCents - assigned;
       return _splitStatusMessage(
-        '$symbol ${(remaining / 100).toStringAsFixed(2)} remaining',
+        l10n.expensesAmountRemaining(
+          formatCents(remaining, currencyCode, locale: locale),
+        ),
         isWarning: true,
       );
     }
 
     return _splitStatusMessage(
-      'Payments total $symbol ${(amountCents / 100).toStringAsFixed(2)}',
+      l10n.expensesPaymentsTotal(
+        formatCents(amountCents, currencyCode, locale: locale),
+      ),
     );
   }
 
   List<Widget> _buildSplitSection(
     List<GroupMemberInfo> members,
-    String symbol,
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
   ) {
+    final symbol = currencyByCode(currencyCode).symbol;
     switch (_splitType) {
       case SplitType.equal:
         return [
@@ -717,7 +787,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             ),
             const SizedBox(height: 8),
           ],
-          if (_amountCents != null) _splitSummary(symbol),
+          if (_amountCents != null) _splitSummary(currencyCode, locale, l10n),
         ];
 
       case SplitType.percentage:
@@ -762,12 +832,16 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             ),
             const SizedBox(height: 8),
           ],
-          if (_amountCents != null) _splitSummary(symbol),
+          if (_amountCents != null) _splitSummary(currencyCode, locale, l10n),
         ];
     }
   }
 
-  Widget _splitSummary(String symbol) {
+  Widget _splitSummary(
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
+  ) {
     final amountCents = _amountCents;
     if (amountCents == null) return const SizedBox.shrink();
 
@@ -775,56 +849,72 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       case SplitType.equal:
         return const SizedBox.shrink();
       case SplitType.exact:
-        return _exactSplitSummary(symbol, amountCents);
+        return _exactSplitSummary(currencyCode, locale, l10n, amountCents);
       case SplitType.percentage:
-        return _percentageSplitSummary(symbol, amountCents);
+        return _percentageSplitSummary(currencyCode, locale, l10n, amountCents);
     }
   }
 
-  Widget _exactSplitSummary(String symbol, int amountCents) {
+  Widget _exactSplitSummary(
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
+    int amountCents,
+  ) {
     if (_hasExactFieldOverTotal()) {
       return _splitStatusMessage(
-        'Each share must not exceed $symbol ${(amountCents / 100).toStringAsFixed(2)}',
+        l10n.expensesShareExceeds(
+          formatCents(amountCents, currencyCode, locale: locale),
+        ),
         isError: true,
       );
     }
 
     final amounts = _parseExact();
     if (amounts == null) {
-      return _splitStatusMessage('Enter valid split amounts', isError: true);
+      return _splitStatusMessage(l10n.expensesEnterValidSplits, isError: true);
     }
 
     final assigned = SplitEngineService.exactSplitAssignedCents(amounts);
     if (assigned > amountCents) {
       final over = assigned - amountCents;
       return _splitStatusMessage(
-        'Over by $symbol ${(over / 100).toStringAsFixed(2)}',
+        l10n.expensesOverBy(formatCents(over, currencyCode, locale: locale)),
         isError: true,
       );
     }
     if (assigned < amountCents) {
       final remaining = amountCents - assigned;
       return _splitStatusMessage(
-        '$symbol ${(remaining / 100).toStringAsFixed(2)} remaining',
+        l10n.expensesAmountRemaining(
+          formatCents(remaining, currencyCode, locale: locale),
+        ),
         isWarning: true,
       );
     }
 
-    return _splitBreakdown(symbol, SplitEngineService.exactSplit(amounts));
+    return _splitBreakdown(
+      currencyCode,
+      locale,
+      l10n,
+      SplitEngineService.exactSplit(amounts),
+    );
   }
 
-  Widget _percentageSplitSummary(String symbol, int amountCents) {
+  Widget _percentageSplitSummary(
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
+    int amountCents,
+  ) {
     if (_hasPercentFieldOver100()) {
-      return _splitStatusMessage(
-        'Each share must be 100% or less',
-        isError: true,
-      );
+      return _splitStatusMessage(l10n.expensesPercentOver100, isError: true);
     }
 
     final pcts = _parsePercentages();
     if (pcts == null) {
       return _splitStatusMessage(
-        'Enter valid split percentages',
+        l10n.expensesEnterValidPercents,
         isError: true,
       );
     }
@@ -833,20 +923,28 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     if (total > 100.01) {
       final over = total - 100;
       return _splitStatusMessage(
-        'Total ${total.toStringAsFixed(1)}% — reduce by ${over.toStringAsFixed(1)}%',
+        l10n.expensesPercentReduce(
+          total.toStringAsFixed(1),
+          over.toStringAsFixed(1),
+        ),
         isError: true,
       );
     }
     if (total < 99.99) {
       final remaining = 100 - total;
       return _splitStatusMessage(
-        'Total ${total.toStringAsFixed(1)}% — ${remaining.toStringAsFixed(1)}% remaining',
+        l10n.expensesPercentRemaining(
+          total.toStringAsFixed(1),
+          remaining.toStringAsFixed(1),
+        ),
         isWarning: true,
       );
     }
 
     return _splitBreakdown(
-      symbol,
+      currencyCode,
+      locale,
+      l10n,
       SplitEngineService.percentageSplit(amountCents, pcts),
     );
   }
@@ -875,7 +973,12 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     );
   }
 
-  Widget _splitBreakdown(String symbol, Map<String, int> splits) {
+  Widget _splitBreakdown(
+    String currencyCode,
+    String locale,
+    AppLocalizations l10n,
+    Map<String, int> splits,
+  ) {
     final total = splits.values.fold(0, (a, b) => a + b);
     final members =
         ref.read(groupDetailProvider(widget.groupId)).value?.members ?? [];
@@ -895,13 +998,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Text(
-                '${userMap[e.key] ?? '?'}: $symbol ${(e.value / 100).toStringAsFixed(2)}',
+                l10n.expensesPayerLine(
+                  userMap[e.key] ?? '?',
+                  formatCents(e.value, currencyCode, locale: locale),
+                ),
                 style: const TextStyle(fontSize: 13),
               ),
             ),
           Divider(height: 16, color: Theme.of(context).dividerTheme.color),
           Text(
-            'Total: $symbol ${(total / 100).toStringAsFixed(2)}',
+            l10n.expensesPreviewTotal(
+              formatCents(total, currencyCode, locale: locale),
+            ),
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
           ),
         ],

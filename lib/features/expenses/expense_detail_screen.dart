@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../providers/data_providers.dart';
@@ -25,6 +26,8 @@ class ExpenseDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     final detail = ref.watch(groupDetailProvider(groupId));
     final users = ref.watch(userByIdProvider);
 
@@ -33,7 +36,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('Error: $e')),
+        body: Center(child: Text(l10n.commonErrorWithDetail('$e'))),
       ),
       data: (data) {
         final item = data.expenses.cast<ExpenseWithSplits?>().firstWhere(
@@ -43,7 +46,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
         if (item == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(child: Text('Expense not found')),
+            body: Center(child: Text(l10n.expensesNotFound)),
           );
         }
 
@@ -52,14 +55,14 @@ class ExpenseDetailScreen extends ConsumerWidget {
         final sortedPayers = [...item.payers]
           ..sort((a, b) => b.amountCents.compareTo(a.amountCents));
         final splitLabel = switch (expense.splitType) {
-          'exact' => 'Exact amounts',
-          'percentage' => 'By percentage',
-          _ => 'Split equally',
+          'exact' => l10n.expensesSplitExactAmounts,
+          'percentage' => l10n.expensesSplitByPercentage,
+          _ => l10n.expensesSplitEqually,
         };
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Expense'),
+            title: Text(l10n.expensesDetailTitle),
             actions: [
               PopupMenuButton<String>(
                 onSelected: (action) async {
@@ -77,21 +80,21 @@ class ExpenseDetailScreen extends ConsumerWidget {
                     final ok = await showDialog<bool>(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: const Text('Delete expense?'),
+                        title: Text(l10n.groupsDeleteExpenseTitle),
                         content: Text(
-                          'Remove "${expense.title}" from this group?',
+                          l10n.groupsDeleteExpenseBody(expense.title),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(ctx, false),
-                            child: const Text('Cancel'),
+                            child: Text(l10n.commonCancel),
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(ctx, true),
                             style: TextButton.styleFrom(
                               foregroundColor: AppColors.negative,
                             ),
-                            child: const Text('Delete'),
+                            child: Text(l10n.commonDelete),
                           ),
                         ],
                       ),
@@ -105,9 +108,12 @@ class ExpenseDetailScreen extends ConsumerWidget {
                     }
                   }
                 },
-                itemBuilder: (_) => const [
-                  PopupMenuItem(value: 'edit', child: Text('Edit')),
-                  PopupMenuItem(value: 'delete', child: Text('Delete')),
+                itemBuilder: (_) => [
+                  PopupMenuItem(value: 'edit', child: Text(l10n.commonEdit)),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text(l10n.commonDelete),
+                  ),
                 ],
               ),
             ],
@@ -116,7 +122,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
             children: [
               Text(
-                formatCents(expense.amountCents, currencyCode),
+                formatCents(expense.amountCents, currencyCode, locale: locale),
                 style: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.w800,
@@ -134,24 +140,24 @@ class ExpenseDetailScreen extends ConsumerWidget {
               const SizedBox(height: 20),
               _InfoRow(
                 icon: Icons.calendar_today_outlined,
-                label: 'Date',
-                value: DateFormat.yMMMd().format(expense.date),
+                label: l10n.expensesDate,
+                value: DateFormat.yMMMd(locale).format(expense.date),
               ),
               _InfoRow(
                 icon: Icons.call_split_rounded,
-                label: 'Split',
+                label: l10n.expensesSplit,
                 value: splitLabel,
               ),
               if (expense.note != null && expense.note!.isNotEmpty)
                 _InfoRow(
                   icon: Icons.notes_outlined,
-                  label: 'Note',
+                  label: l10n.expensesNote,
                   value: expense.note!,
                   multiline: true,
                 ),
               const SizedBox(height: 28),
               Text(
-                'PAID BY',
+                l10n.expensesPaidByHeader,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -163,14 +169,18 @@ class ExpenseDetailScreen extends ConsumerWidget {
                 _SplitRow(
                   name: users[payer.userId]?.name ?? '?',
                   colorIndex: users[payer.userId]?.colorIndex ?? 0,
-                  amount: formatCents(payer.amountCents, currencyCode),
-                  subtitle: 'paid',
+                  amount: formatCents(
+                    payer.amountCents,
+                    currencyCode,
+                    locale: locale,
+                  ),
+                  subtitle: l10n.expensesSubtitlePaid,
                 ),
                 const SizedBox(height: 8),
               ],
               const SizedBox(height: 20),
               Text(
-                'SPLIT BREAKDOWN',
+                l10n.expensesSplitBreakdown,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -182,9 +192,13 @@ class ExpenseDetailScreen extends ConsumerWidget {
                 _SplitRow(
                   name: users[split.userId]?.name ?? '?',
                   colorIndex: users[split.userId]?.colorIndex ?? 0,
-                  amount: formatCents(split.amountCents, currencyCode),
+                  amount: formatCents(
+                    split.amountCents,
+                    currencyCode,
+                    locale: locale,
+                  ),
                   subtitle: payerIds.contains(split.userId)
-                      ? 'also paid'
+                      ? l10n.expensesSubtitleAlsoPaid
                       : null,
                 ),
                 const SizedBox(height: 8),

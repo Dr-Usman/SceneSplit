@@ -7,12 +7,13 @@ import 'user_repository.dart';
 const _uuid = Uuid();
 
 class MemberRemovalBlockedException implements Exception {
-  MemberRemovalBlockedException(this.message);
+  MemberRemovalBlockedException(this.name);
 
-  final String message;
+  /// Display name of the blocked member, if known.
+  final String? name;
 
   @override
-  String toString() => message;
+  String toString() => 'MemberRemovalBlockedException($name)';
 }
 
 /// Creates a group with the given members. [existingUserIds] are users
@@ -121,10 +122,7 @@ Future<void> syncGroupMembers(
           final user = await (db.select(
             db.users,
           )..where((u) => u.id.equals(member.userId))).getSingleOrNull();
-          final name = user?.name ?? 'This member';
-          throw MemberRemovalBlockedException(
-            '$name has expenses or settlements in this group and cannot be removed.',
-          );
+          throw MemberRemovalBlockedException(user?.name);
         }
         await (db.delete(
           db.groupMembers,

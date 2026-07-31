@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/localize_error.dart';
 import '../../database/app_database.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
@@ -24,10 +27,11 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
   }
 
   Future<void> _addPerson() async {
+    final l10n = context.l10n;
     final name = await showPersonNameDialog(
       context,
-      title: 'Add person',
-      hint: 'e.g. Alice',
+      title: l10n.peopleAddPerson,
+      hint: l10n.peopleAddHint,
     );
     if (name == null || name.isEmpty || !mounted) return;
     try {
@@ -36,15 +40,16 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     }
   }
 
   Future<void> _editPerson(User person) async {
+    final l10n = context.l10n;
     final name = await showPersonNameDialog(
       context,
-      title: 'Edit name',
+      title: l10n.peopleEditName,
       hint: person.name,
       initialValue: person.name,
     );
@@ -57,7 +62,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     }
   }
@@ -66,25 +71,22 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete person?'),
-        content: Text(
-          'Remove ${person.name} from your people list? '
-          'This cannot be undone.',
-        ),
+        title: Text(ctx.l10n.peopleDeleteTitle),
+        content: Text(ctx.l10n.peopleDeleteBody(person.name)),
         actions: [
           Row(
             children: [
               Expanded(
                 child: TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('Cancel'),
+                  child: Text(ctx.l10n.commonCancel),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: FilledButton(
                   onPressed: () => Navigator.pop(ctx, true),
-                  child: const Text('Delete'),
+                  child: Text(ctx.l10n.commonDelete),
                 ),
               ),
             ],
@@ -100,7 +102,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
       }
     }
   }
@@ -117,18 +119,19 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
     final filteredUsers = _filteredUsers(allUsers);
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('People'),
+        title: Text(l10n.peopleTitle),
         actions: [
           IconButton(
             onPressed: _addPerson,
             icon: const Icon(Icons.person_add_alt_1_outlined),
-            tooltip: 'Add person',
+            tooltip: l10n.peopleAddPerson,
           ),
         ],
       ),
@@ -136,7 +139,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
           Text(
-            'Everyone added across your groups.',
+            l10n.peopleIntro,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -145,7 +148,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Search by name',
+              hintText: l10n.peopleSearchHint,
               prefixIcon: const Icon(Icons.search_rounded),
               suffixIcon: _searchController.text.isEmpty
                   ? null
@@ -165,7 +168,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
             AppCard(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Text(
-                'No people yet. Tap + to add someone.',
+                l10n.peopleEmpty,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -183,7 +186,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'No people match your search.',
+                      l10n.peopleNoMatch,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),

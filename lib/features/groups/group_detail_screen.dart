@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants/currencies.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
@@ -30,6 +31,8 @@ class GroupDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     final detail = ref.watch(groupDetailProvider(groupId));
     final users = ref.watch(userByIdProvider);
 
@@ -38,7 +41,7 @@ class GroupDetailScreen extends ConsumerWidget {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, _) => Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('Something went wrong: $e')),
+        body: Center(child: Text(l10n.commonSomethingWentWrong('$e'))),
       ),
       data: (data) {
         final currency = currencyByCode(data.group.currencyCode);
@@ -64,7 +67,11 @@ class GroupDetailScreen extends ConsumerWidget {
                   ],
                 ),
                 Text(
-                  '${currency.symbol} — ${currency.name} (${currency.code})',
+                  l10n.groupsCurrencySubtitle(
+                    currency.symbol,
+                    currency.name,
+                    currency.code,
+                  ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -84,9 +91,15 @@ class GroupDetailScreen extends ConsumerWidget {
                     await _confirmDeleteGroup(context, ref, data.group);
                   }
                 },
-                itemBuilder: (_) => const [
-                  PopupMenuItem(value: 'edit', child: Text('Edit group')),
-                  PopupMenuItem(value: 'delete', child: Text('Delete group')),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: 'edit',
+                    child: Text(l10n.groupsEditGroup),
+                  ),
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text(l10n.groupsDeleteGroup),
+                  ),
                 ],
               ),
             ],
@@ -101,7 +114,7 @@ class GroupDetailScreen extends ConsumerWidget {
               ),
             ),
             icon: const Icon(Icons.add_rounded),
-            label: const Text('Add expense'),
+            label: Text(l10n.groupsAddExpense),
           ),
           body: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
@@ -112,14 +125,16 @@ class GroupDetailScreen extends ConsumerWidget {
               ),
               if (data.memberShareCents.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                const SectionHeader('EXPENSE BREAKDOWN'),
+                SectionHeader(l10n.groupsExpenseBreakdown),
                 const SizedBox(height: 10),
                 AppCard(
                   child: BreakdownPieChart(
                     slices: [
                       for (var i = 0; i < shareEntries.length; i++)
                         BreakdownSlice(
-                          label: users[shareEntries[i].key]?.name ?? 'Unknown',
+                          label:
+                              users[shareEntries[i].key]?.name ??
+                              l10n.commonUnknown,
                           cents: shareEntries[i].value,
                           color: chartColorForIndex(i),
                           currencyCode: data.group.currencyCode,
@@ -130,14 +145,14 @@ class GroupDetailScreen extends ConsumerWidget {
               ],
               const SizedBox(height: 24),
               SectionHeader(
-                'MEMBERS (${data.members.length})',
+                l10n.groupsMembersHeader(data.members.length),
                 trailing: TextButton(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => EditGroupScreen(groupId: groupId),
                     ),
                   ),
-                  child: const Text('Manage'),
+                  child: Text(l10n.groupsManage),
                 ),
               ),
               const SizedBox(height: 10),
@@ -175,7 +190,7 @@ class GroupDetailScreen extends ConsumerWidget {
               if (data.debts.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 SectionHeader(
-                  'WHO OWES WHOM',
+                  l10n.groupsWhoOwesWhom,
                   trailing: TextButton.icon(
                     onPressed: () => showRecordSettlementSheet(
                       context,
@@ -184,7 +199,7 @@ class GroupDetailScreen extends ConsumerWidget {
                       members: data.members,
                     ),
                     icon: const Icon(Icons.handshake_outlined, size: 18),
-                    label: const Text('Settle up'),
+                    label: Text(l10n.groupsSettleUp),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -200,6 +215,7 @@ class GroupDetailScreen extends ConsumerWidget {
                           debt: data.debts[i],
                           users: users,
                           currencyCode: data.group.currencyCode,
+                          locale: locale,
                           onTap: () => showRecordSettlementSheet(
                             context,
                             groupId: groupId,
@@ -216,13 +232,14 @@ class GroupDetailScreen extends ConsumerWidget {
               ],
               if (data.settlements.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                const SectionHeader('SETTLEMENTS'),
+                SectionHeader(l10n.groupsSettlements),
                 const SizedBox(height: 10),
                 for (final s in data.settlements)
                   _SettlementTile(
                     settlement: s,
                     users: users,
                     currencyCode: data.group.currencyCode,
+                    locale: locale,
                     onTap: () => showRecordSettlementSheet(
                       context,
                       groupId: groupId,
@@ -234,16 +251,18 @@ class GroupDetailScreen extends ConsumerWidget {
                   ),
               ],
               const SizedBox(height: 28),
-              const SectionHeader('EXPENSES'),
+              SectionHeader(l10n.groupsExpenses),
               const SizedBox(height: 12),
               if (data.expenses.isEmpty)
-                const _EmptyExpenses()
+                _EmptyExpenses(l10n: l10n)
               else
                 for (final item in data.expenses) ...[
                   _ExpenseTile(
                     item: item,
                     users: users,
                     currencyCode: data.group.currencyCode,
+                    locale: locale,
+                    l10n: l10n,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ExpenseDetailScreen(
@@ -269,20 +288,21 @@ class GroupDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     Expense expense,
   ) async {
+    final l10n = context.l10n;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete expense?'),
-        content: Text('Remove "${expense.title}" from this group?'),
+        title: Text(l10n.groupsDeleteExpenseTitle),
+        content: Text(l10n.groupsDeleteExpenseBody(expense.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: const Text('Delete'),
+            child: Text(l10n.commonDelete),
           ),
         ],
       ),
@@ -297,22 +317,21 @@ class GroupDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     Group group,
   ) async {
+    final l10n = context.l10n;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete group?'),
-        content: Text(
-          'Delete "${group.name}" and all its expenses? This cannot be undone.',
-        ),
+        title: Text(l10n.groupsDeleteGroupTitle),
+        content: Text(l10n.groupsDeleteGroupBody(group.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: const Text('Delete'),
+            child: Text(l10n.commonDelete),
           ),
         ],
       ),
@@ -328,20 +347,21 @@ class GroupDetailScreen extends ConsumerWidget {
     WidgetRef ref,
     Settlement settlement,
   ) async {
+    final l10n = context.l10n;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete settlement?'),
-        content: const Text('Remove this recorded payment?'),
+        title: Text(l10n.groupsDeleteSettlementTitle),
+        content: Text(l10n.groupsDeleteSettlementBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: const Text('Delete'),
+            child: Text(l10n.commonDelete),
           ),
         ],
       ),
@@ -357,16 +377,19 @@ class _DebtTile extends StatelessWidget {
     required this.debt,
     required this.users,
     required this.currencyCode,
+    required this.locale,
     this.onTap,
   });
 
   final PairwiseDebt debt;
   final Map<String, User> users;
   final String currencyCode;
+  final String locale;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final from = users[debt.fromUserId]?.name ?? '?';
     final to = users[debt.toUserId]?.name ?? '?';
     final onSurface = Theme.of(context).colorScheme.onSurface;
@@ -385,22 +408,13 @@ class _DebtTile extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text.rich(
-                TextSpan(
-                  style: descriptionStyle,
-                  children: [
-                    TextSpan(text: from),
-                    const TextSpan(text: ' owes '),
-                    TextSpan(
-                      text: to,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
+              child: Text(
+                l10n.groupsOwesTemplate(from, to),
+                style: descriptionStyle,
               ),
             ),
             Text(
-              formatCents(debt.amountCents, currencyCode),
+              formatCents(debt.amountCents, currencyCode, locale: locale),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
@@ -423,6 +437,8 @@ class _ExpenseTile extends StatelessWidget {
     required this.item,
     required this.users,
     required this.currencyCode,
+    required this.locale,
+    required this.l10n,
     required this.onTap,
     required this.onDelete,
   });
@@ -430,6 +446,8 @@ class _ExpenseTile extends StatelessWidget {
   final ExpenseWithSplits item;
   final Map<String, User> users;
   final String currencyCode;
+  final String locale;
+  final AppLocalizations l10n;
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
@@ -439,8 +457,8 @@ class _ExpenseTile extends StatelessWidget {
     final payerNames = [
       for (final p in item.payers) users[p.userId]?.name ?? '?',
     ];
-    final payer = formatPayersLabel(payerNames);
-    final date = DateFormat.MMMd().format(expense.date);
+    final payer = formatPayersLabel(payerNames, l10n);
+    final date = DateFormat.MMMd(locale).format(expense.date);
 
     return Dismissible(
       key: ValueKey(expense.id),
@@ -479,7 +497,7 @@ class _ExpenseTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$payer paid · $date',
+                    l10n.groupsPayerPaidDate(payer, date),
                     style: TextStyle(
                       fontSize: 13,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -489,7 +507,7 @@ class _ExpenseTile extends StatelessWidget {
               ),
             ),
             Text(
-              formatCents(expense.amountCents, currencyCode),
+              formatCents(expense.amountCents, currencyCode, locale: locale),
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
           ],
@@ -504,6 +522,7 @@ class _SettlementTile extends StatelessWidget {
     required this.settlement,
     required this.users,
     required this.currencyCode,
+    required this.locale,
     required this.onTap,
     required this.onDelete,
   });
@@ -511,14 +530,16 @@ class _SettlementTile extends StatelessWidget {
   final Settlement settlement;
   final Map<String, User> users;
   final String currencyCode;
+  final String locale;
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final from = users[settlement.fromUserId]?.name ?? '?';
     final to = users[settlement.toUserId]?.name ?? '?';
-    final date = DateFormat.MMMd().format(settlement.createdAt);
+    final date = DateFormat.MMMd(locale).format(settlement.createdAt);
 
     return Dismissible(
       key: ValueKey(settlement.id),
@@ -554,7 +575,7 @@ class _SettlementTile extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  '$from paid $to',
+                  l10n.groupsSettlementPaid(from, to),
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -565,7 +586,11 @@ class _SettlementTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    formatCents(settlement.amountCents, currencyCode),
+                    formatCents(
+                      settlement.amountCents,
+                      currencyCode,
+                      locale: locale,
+                    ),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -589,7 +614,9 @@ class _SettlementTile extends StatelessWidget {
 }
 
 class _EmptyExpenses extends StatelessWidget {
-  const _EmptyExpenses();
+  const _EmptyExpenses({required this.l10n});
+
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -600,13 +627,13 @@ class _EmptyExpenses extends StatelessWidget {
         children: [
           Icon(Icons.receipt_long_outlined, size: 40, color: onVariant),
           const SizedBox(height: 12),
-          const Text(
-            'No expenses yet',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          Text(
+            l10n.groupsEmptyExpensesTitle,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 4),
           Text(
-            'Tap "Add expense" to split your first bill.',
+            l10n.groupsEmptyExpensesBody,
             style: TextStyle(color: onVariant),
           ),
         ],

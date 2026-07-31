@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/currencies.dart';
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 
 Future<String?> showCurrencyPickerSheet(
   BuildContext context, {
   required String selected,
-  String title = 'Choose currency',
+  String? title,
 }) async {
   return showModalBottomSheet<String>(
     context: context,
@@ -42,7 +43,7 @@ class _CurrencyPickerSheet extends StatefulWidget {
     required this.scrollController,
   });
 
-  final String title;
+  final String? title;
   final String selected;
   final ScrollController scrollController;
 
@@ -72,6 +73,7 @@ class _CurrencyPickerSheetState extends State<_CurrencyPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final filtered = _filteredCurrencies;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -95,7 +97,7 @@ class _CurrencyPickerSheetState extends State<_CurrencyPickerSheet> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  widget.title,
+                  widget.title ?? l10n.sharedChooseCurrency,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.3,
@@ -105,7 +107,7 @@ class _CurrencyPickerSheetState extends State<_CurrencyPickerSheet> {
                 TextField(
                   controller: _queryController,
                   decoration: InputDecoration(
-                    hintText: 'Search by name, code, or symbol',
+                    hintText: l10n.sharedCurrencySearchHint,
                     prefixIcon: const Icon(Icons.search_rounded),
                     suffixIcon: _queryController.text.isEmpty
                         ? null
@@ -137,7 +139,7 @@ class _CurrencyPickerSheetState extends State<_CurrencyPickerSheet> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'No currencies found',
+                          l10n.sharedNoCurrenciesFound,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -292,15 +294,16 @@ class CurrencyPickerField extends StatelessWidget {
     super.key,
     required this.currencyCode,
     required this.onChanged,
-    this.sheetTitle = 'Choose currency',
+    this.sheetTitle,
   });
 
   final String currencyCode;
   final ValueChanged<String> onChanged;
-  final String sheetTitle;
+  final String? sheetTitle;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final currency = currencyByCode(currencyCode);
     return InkWell(
       borderRadius: BorderRadius.circular(14),
@@ -308,7 +311,7 @@ class CurrencyPickerField extends StatelessWidget {
         final picked = await showCurrencyPickerSheet(
           context,
           selected: currencyCode,
-          title: sheetTitle,
+          title: sheetTitle ?? l10n.sharedChooseCurrency,
         );
         if (picked != null) onChanged(picked);
       },
@@ -318,7 +321,7 @@ class CurrencyPickerField extends StatelessWidget {
           suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
         ),
         child: Text(
-          '${currency.code} — ${currency.name}',
+          l10n.sharedCurrencyFieldLabel(currency.code, currency.name),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),

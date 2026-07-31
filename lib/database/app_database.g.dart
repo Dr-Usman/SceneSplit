@@ -410,8 +410,25 @@ class $AppSettingsTable extends AppSettings
     requiredDuringInsert: false,
     defaultValue: const Constant('system'),
   );
+  static const VerificationMeta _localeCodeMeta = const VerificationMeta(
+    'localeCode',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, currencyCode, themeMode];
+  late final GeneratedColumn<String> localeCode = GeneratedColumn<String>(
+    'locale_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('system'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    currencyCode,
+    themeMode,
+    localeCode,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -442,6 +459,12 @@ class $AppSettingsTable extends AppSettings
         themeMode.isAcceptableOrUnknown(data['theme_mode']!, _themeModeMeta),
       );
     }
+    if (data.containsKey('locale_code')) {
+      context.handle(
+        _localeCodeMeta,
+        localeCode.isAcceptableOrUnknown(data['locale_code']!, _localeCodeMeta),
+      );
+    }
     return context;
   }
 
@@ -463,6 +486,10 @@ class $AppSettingsTable extends AppSettings
         DriftSqlType.string,
         data['${effectivePrefix}theme_mode'],
       )!,
+      localeCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}locale_code'],
+      )!,
     );
   }
 
@@ -478,10 +505,14 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
 
   /// Stored as `'system' | 'light' | 'dark'`.
   final String themeMode;
+
+  /// Stored as `'system'` or a BCP-47 tag (`en`, `es`, `pt_BR`, …).
+  final String localeCode;
   const AppSetting({
     required this.id,
     required this.currencyCode,
     required this.themeMode,
+    required this.localeCode,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -489,6 +520,7 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
     map['id'] = Variable<int>(id);
     map['currency_code'] = Variable<String>(currencyCode);
     map['theme_mode'] = Variable<String>(themeMode);
+    map['locale_code'] = Variable<String>(localeCode);
     return map;
   }
 
@@ -497,6 +529,7 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
       id: Value(id),
       currencyCode: Value(currencyCode),
       themeMode: Value(themeMode),
+      localeCode: Value(localeCode),
     );
   }
 
@@ -509,6 +542,7 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
       id: serializer.fromJson<int>(json['id']),
       currencyCode: serializer.fromJson<String>(json['currencyCode']),
       themeMode: serializer.fromJson<String>(json['themeMode']),
+      localeCode: serializer.fromJson<String>(json['localeCode']),
     );
   }
   @override
@@ -518,15 +552,21 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
       'id': serializer.toJson<int>(id),
       'currencyCode': serializer.toJson<String>(currencyCode),
       'themeMode': serializer.toJson<String>(themeMode),
+      'localeCode': serializer.toJson<String>(localeCode),
     };
   }
 
-  AppSetting copyWith({int? id, String? currencyCode, String? themeMode}) =>
-      AppSetting(
-        id: id ?? this.id,
-        currencyCode: currencyCode ?? this.currencyCode,
-        themeMode: themeMode ?? this.themeMode,
-      );
+  AppSetting copyWith({
+    int? id,
+    String? currencyCode,
+    String? themeMode,
+    String? localeCode,
+  }) => AppSetting(
+    id: id ?? this.id,
+    currencyCode: currencyCode ?? this.currencyCode,
+    themeMode: themeMode ?? this.themeMode,
+    localeCode: localeCode ?? this.localeCode,
+  );
   AppSetting copyWithCompanion(AppSettingsCompanion data) {
     return AppSetting(
       id: data.id.present ? data.id.value : this.id,
@@ -534,6 +574,9 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
           ? data.currencyCode.value
           : this.currencyCode,
       themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
+      localeCode: data.localeCode.present
+          ? data.localeCode.value
+          : this.localeCode,
     );
   }
 
@@ -542,45 +585,52 @@ class AppSetting extends DataClass implements Insertable<AppSetting> {
     return (StringBuffer('AppSetting(')
           ..write('id: $id, ')
           ..write('currencyCode: $currencyCode, ')
-          ..write('themeMode: $themeMode')
+          ..write('themeMode: $themeMode, ')
+          ..write('localeCode: $localeCode')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, currencyCode, themeMode);
+  int get hashCode => Object.hash(id, currencyCode, themeMode, localeCode);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppSetting &&
           other.id == this.id &&
           other.currencyCode == this.currencyCode &&
-          other.themeMode == this.themeMode);
+          other.themeMode == this.themeMode &&
+          other.localeCode == this.localeCode);
 }
 
 class AppSettingsCompanion extends UpdateCompanion<AppSetting> {
   final Value<int> id;
   final Value<String> currencyCode;
   final Value<String> themeMode;
+  final Value<String> localeCode;
   const AppSettingsCompanion({
     this.id = const Value.absent(),
     this.currencyCode = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.localeCode = const Value.absent(),
   });
   AppSettingsCompanion.insert({
     this.id = const Value.absent(),
     this.currencyCode = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.localeCode = const Value.absent(),
   });
   static Insertable<AppSetting> custom({
     Expression<int>? id,
     Expression<String>? currencyCode,
     Expression<String>? themeMode,
+    Expression<String>? localeCode,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (currencyCode != null) 'currency_code': currencyCode,
       if (themeMode != null) 'theme_mode': themeMode,
+      if (localeCode != null) 'locale_code': localeCode,
     });
   }
 
@@ -588,11 +638,13 @@ class AppSettingsCompanion extends UpdateCompanion<AppSetting> {
     Value<int>? id,
     Value<String>? currencyCode,
     Value<String>? themeMode,
+    Value<String>? localeCode,
   }) {
     return AppSettingsCompanion(
       id: id ?? this.id,
       currencyCode: currencyCode ?? this.currencyCode,
       themeMode: themeMode ?? this.themeMode,
+      localeCode: localeCode ?? this.localeCode,
     );
   }
 
@@ -608,6 +660,9 @@ class AppSettingsCompanion extends UpdateCompanion<AppSetting> {
     if (themeMode.present) {
       map['theme_mode'] = Variable<String>(themeMode.value);
     }
+    if (localeCode.present) {
+      map['locale_code'] = Variable<String>(localeCode.value);
+    }
     return map;
   }
 
@@ -616,7 +671,8 @@ class AppSettingsCompanion extends UpdateCompanion<AppSetting> {
     return (StringBuffer('AppSettingsCompanion(')
           ..write('id: $id, ')
           ..write('currencyCode: $currencyCode, ')
-          ..write('themeMode: $themeMode')
+          ..write('themeMode: $themeMode, ')
+          ..write('localeCode: $localeCode')
           ..write(')'))
         .toString();
   }
@@ -3451,12 +3507,14 @@ typedef $$AppSettingsTableCreateCompanionBuilder =
       Value<int> id,
       Value<String> currencyCode,
       Value<String> themeMode,
+      Value<String> localeCode,
     });
 typedef $$AppSettingsTableUpdateCompanionBuilder =
     AppSettingsCompanion Function({
       Value<int> id,
       Value<String> currencyCode,
       Value<String> themeMode,
+      Value<String> localeCode,
     });
 
 class $$AppSettingsTableFilterComposer
@@ -3480,6 +3538,11 @@ class $$AppSettingsTableFilterComposer
 
   ColumnFilters<String> get themeMode => $composableBuilder(
     column: $table.themeMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3507,6 +3570,11 @@ class $$AppSettingsTableOrderingComposer
     column: $table.themeMode,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AppSettingsTableAnnotationComposer
@@ -3528,6 +3596,11 @@ class $$AppSettingsTableAnnotationComposer
 
   GeneratedColumn<String> get themeMode =>
       $composableBuilder(column: $table.themeMode, builder: (column) => column);
+
+  GeneratedColumn<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
+    builder: (column) => column,
+  );
 }
 
 class $$AppSettingsTableTableManager
@@ -3564,20 +3637,24 @@ class $$AppSettingsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> currencyCode = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
+                Value<String> localeCode = const Value.absent(),
               }) => AppSettingsCompanion(
                 id: id,
                 currencyCode: currencyCode,
                 themeMode: themeMode,
+                localeCode: localeCode,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> currencyCode = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
+                Value<String> localeCode = const Value.absent(),
               }) => AppSettingsCompanion.insert(
                 id: id,
                 currencyCode: currencyCode,
                 themeMode: themeMode,
+                localeCode: localeCode,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

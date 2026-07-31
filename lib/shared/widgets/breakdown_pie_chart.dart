@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
 import '../../core/utils/money.dart';
 
 class BreakdownSlice {
@@ -104,13 +105,15 @@ class BreakdownPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final locale = Localizations.localeOf(context).toString();
     final total = slices.fold<int>(0, (sum, s) => sum + s.cents);
     if (total <= 0 || slices.isEmpty) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 32),
         alignment: Alignment.center,
         child: Text(
-          'No data to chart',
+          l10n.sharedNoChartData,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
@@ -145,22 +148,39 @@ class BreakdownPieChart extends StatelessWidget {
         const SizedBox(height: 16),
         for (var i = 0; i < sorted.length; i++) ...[
           if (i > 0) const SizedBox(height: 10),
-          _LegendRow(slice: sorted[i], percent: sorted[i].cents / total * 100),
+          _LegendRow(
+            slice: sorted[i],
+            percent: sorted[i].cents / total * 100,
+            locale: locale,
+            l10n: l10n,
+          ),
         ],
         const SizedBox(height: 12),
         Divider(height: 1, color: Theme.of(context).dividerColor),
         const SizedBox(height: 12),
-        _TotalRow(cents: total, currencyCode: sorted.first.currencyCode),
+        _TotalRow(
+          cents: total,
+          currencyCode: sorted.first.currencyCode,
+          locale: locale,
+          l10n: l10n,
+        ),
       ],
     );
   }
 }
 
 class _TotalRow extends StatelessWidget {
-  const _TotalRow({required this.cents, required this.currencyCode});
+  const _TotalRow({
+    required this.cents,
+    required this.currencyCode,
+    required this.locale,
+    required this.l10n,
+  });
 
   final int cents;
   final String currencyCode;
+  final String locale;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +190,7 @@ class _TotalRow extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            'Total',
+            l10n.sharedTotal,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w700,
               color: colorScheme.onSurface,
@@ -178,7 +198,7 @@ class _TotalRow extends StatelessWidget {
           ),
         ),
         Text(
-          formatCents(cents, currencyCode),
+          formatCents(cents, currencyCode, locale: locale),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w800,
             color: colorScheme.onSurface,
@@ -190,10 +210,17 @@ class _TotalRow extends StatelessWidget {
 }
 
 class _LegendRow extends StatelessWidget {
-  const _LegendRow({required this.slice, required this.percent});
+  const _LegendRow({
+    required this.slice,
+    required this.percent,
+    required this.locale,
+    required this.l10n,
+  });
 
   final BreakdownSlice slice;
   final double percent;
+  final String locale;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +246,7 @@ class _LegendRow extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          formatCents(slice.cents, slice.currencyCode),
+          formatCents(slice.cents, slice.currencyCode, locale: locale),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: colorScheme.onSurface,
@@ -229,7 +256,7 @@ class _LegendRow extends StatelessWidget {
         SizedBox(
           width: 44,
           child: Text(
-            '${percent.toStringAsFixed(0)}%',
+            l10n.sharedPercentLabel(percent.toStringAsFixed(0)),
             textAlign: TextAlign.right,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,

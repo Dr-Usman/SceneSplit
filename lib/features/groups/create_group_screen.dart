@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/l10n/l10n_extensions.dart';
+import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
@@ -78,7 +80,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
     if (_newNames.any((n) => n.trim().toLowerCase() == normalized)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('"$name" is already in the list.')),
+        SnackBar(content: Text(context.l10n.commonNameAlreadyInList(name))),
       );
       return;
     }
@@ -111,7 +113,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(e.message)));
+        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
         setState(() => _saving = false);
       }
     }
@@ -119,6 +121,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final me = ref.watch(currentUserProvider).value;
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
     final otherUsers = allUsers.where((u) => !u.isCurrentUser).toList();
@@ -129,38 +132,38 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('New group')),
+      appBar: AppBar(title: Text(l10n.groupsNewGroup)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
-          _sectionLabel(context, 'GROUP NAME'),
+          _sectionLabel(context, l10n.groupsGroupName),
           const SizedBox(height: 8),
           TextField(
             controller: _nameController,
             textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(hintText: 'e.g. Trip to Japan'),
+            decoration: InputDecoration(hintText: l10n.groupsNameHint),
           ),
           const SizedBox(height: 24),
-          _sectionLabel(context, 'ICON'),
+          _sectionLabel(context, l10n.groupsIcon),
           const SizedBox(height: 12),
           GroupEmojiPicker(
             selectedEmoji: _emoji,
             onChanged: (emoji) => setState(() => _emoji = emoji),
           ),
           const SizedBox(height: 24),
-          _sectionLabel(context, 'CURRENCY'),
+          _sectionLabel(context, l10n.groupsCurrency),
           const SizedBox(height: 8),
           CurrencyPickerField(
             currencyCode: _currencyCode,
             onChanged: (code) => setState(() => _currencyCode = code),
           ),
           const SizedBox(height: 24),
-          _sectionLabel(context, 'MEMBERS'),
+          _sectionLabel(context, l10n.groupsMembers),
           const SizedBox(height: 8),
           if (me != null)
             _MemberTile(
               name: me.name,
-              label: '${me.name} (you)',
+              label: l10n.commonYouSuffix(me.name),
               colorIndex: me.colorIndex,
               trailing: Checkbox(
                 value: _includeMe,
@@ -201,9 +204,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 child: TextField(
                   controller: _memberController,
                   textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                    hintText: 'Add member by name',
-                    prefixIcon: Icon(Icons.person_add_alt_outlined),
+                  decoration: InputDecoration(
+                    hintText: l10n.groupsAddMemberHint,
+                    prefixIcon: const Icon(Icons.person_add_alt_outlined),
                   ),
                   onSubmitted: (_) => _addTypedMember(),
                 ),
@@ -240,7 +243,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       color: Colors.white,
                     ),
                   )
-                : const Text('Create group'),
+                : Text(l10n.groupsCreateGroup),
           ),
         ],
       ),
