@@ -37,9 +37,7 @@ Future<bool> shareApp(BuildContext context) async {
   if (links.isEmpty) return false;
 
   final box = context.findRenderObject() as RenderBox?;
-  final origin = box != null
-      ? box.localToGlobal(Offset.zero) & box.size
-      : null;
+  final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
   try {
     final result = await SharePlus.instance.share(

@@ -196,8 +196,9 @@ class _LanguageTile extends StatelessWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest
-                        .withValues(alpha: isDark ? 0.5 : 1),
+                    color: theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: isDark ? 0.5 : 1,
+                    ),
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,

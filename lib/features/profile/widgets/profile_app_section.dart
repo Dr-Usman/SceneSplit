@@ -26,9 +26,9 @@ class ProfileAppSection extends StatelessWidget {
             title: l10n.profileAboutApp(AppLinks.appName),
             subtitle: l10n.profileAboutSubtitle,
             showDivider: false,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const AboutScreen()),
-            ),
+            onTap: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
           ),
         ),
         const SizedBox(height: 20),
