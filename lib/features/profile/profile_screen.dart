@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets/profile_app_section.dart';
 import 'widgets/profile_appearance_section.dart';
 import 'widgets/profile_currency_section.dart';
+import 'widgets/profile_dev_section.dart';
 import 'widgets/profile_language_section.dart';
 import 'widgets/profile_manage_section.dart';
 import 'widgets/profile_name_section.dart';
@@ -27,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
           ProfileCurrencySection(),
           SizedBox(height: 32),
           ProfileManageSection(),
+          ProfileDevSection(),
           SizedBox(height: 32),
           ProfileAppSection(),
         ],

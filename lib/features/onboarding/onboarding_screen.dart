@@ -5,6 +5,7 @@ import '../../core/constants/app_assets.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/database_provider.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/currency_picker_sheet.dart';
@@ -44,10 +45,22 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Future<void> _getStarted() async {
     setState(() => _saving = true);
     final db = ref.read(databaseProvider);
-    await completeOnboarding(
+    final name = _nameController.text.trim();
+    final userId = await completeOnboarding(
       db,
-      name: _nameController.text.trim(),
+      name: name,
       currencyCode: _currencyCode,
+    );
+    final analytics = ref.read(analyticsServiceProvider);
+    await analytics.identifyUser(
+      userId,
+      name: name,
+      currencyCode: _currencyCode,
+    );
+    await analytics.trackSignUpCompleted(
+      userId: userId,
+      name: name,
+      defaultCurrency: _currencyCode,
     );
     // currentUserProvider stream will flip the app to home automatically.
   }

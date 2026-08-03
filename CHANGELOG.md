@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Debug-only demo data seeder (`lib/dev/demo_seed.dart`) with Profile “Load demo data” and optional `--dart-define=SEED_DEMO=true` for empty databases.
+- Play Store marketing assets under `store/play/` (feature graphic, light/dark screenshots, AI phone mockups).
+- Mixpanel product analytics with typed `AnalyticsService` events (`app_opened`, `sign_up_completed`, `group_created`, `expense_created`, `language_changed`) and local-user identify (id + name); `locale_code` on People / super properties.
+
+### Changed
+
+- Privacy Policy updated to disclose Mixpanel product analytics.
+- Letter-based currency symbols (e.g. Rs, CHF) format with a space before the amount; glyph symbols ($ €) stay tight.
+
+### Fixed
+
+- Home “You will get / You will give” summary halves stay equal height when one amount is much longer.
+
+
 ## [1.3.0] - 2026-07-31
 
 ### Added

@@ -30,7 +30,9 @@ supported platforms from GitHub Releases.
 |:---:|:---:|
 | <img src="docs/screenshots/home-light.jpg" alt="Home dashboard (light)" width="220" /> | <img src="docs/screenshots/home-dark.jpg" alt="Home dashboard (dark)" width="220" /> |
 | **Group detail** | **Pending summary** |
-| <img src="docs/screenshots/group-detail.jpg" alt="Group detail" width="220" /> | <img src="docs/screenshots/pending-summary.jpg" alt="Home group pending summary sheet" width="220" /> |
+| <img src="docs/screenshots/group-detail.jpg" alt="Group detail with balances and donut chart" width="220" /> | <img src="docs/screenshots/pending-summary.jpg" alt="Home group pending summary sheet" width="220" /> |
+
+Play Store feature graphic, device captures, and phone mockups: see [`store/play/README.md`](store/play/README.md) (binaries are local / gitignored).
 
 ## Features
 

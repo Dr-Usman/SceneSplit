@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../repositories/group_repository.dart';
@@ -99,14 +100,23 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final db = ref.read(databaseProvider);
 
     try {
-      await createGroup(
+      final groupName = _nameController.text.trim();
+      final groupId = await createGroup(
         db,
-        name: _nameController.text.trim(),
+        name: groupName,
         emoji: _emoji,
         currencyCode: _currencyCode,
         existingUserIds: [if (_includeMe) me.id, ..._selectedUserIds],
         newMemberNames: _newNames,
       );
+      await ref
+          .read(analyticsServiceProvider)
+          .trackGroupCreated(
+            groupId: groupId,
+            groupName: groupName,
+            currencyCode: _currencyCode,
+            memberCount: _memberCount,
+          );
 
       if (mounted) Navigator.of(context).pop();
     } on UserNameTakenException catch (e) {

@@ -6,14 +6,31 @@ import '../../l10n/app_localizations.dart';
 /// Formats integer cents using locale-aware grouping and symbol placement.
 String formatCents(int cents, String currencyCode, {String? locale}) {
   final currency = currencyByCode(currencyCode);
+  final symbol = currency.symbol.trim();
   final value = cents.abs() / 100;
   final format = NumberFormat.currency(
     locale: locale,
     name: currencyCode,
-    symbol: currency.symbol,
+    symbol: symbol,
     decimalDigits: value.truncateToDouble() == value ? 0 : 2,
   );
-  return format.format(value);
+  return _ensureLetterSymbolSpacing(format.format(value), symbol);
+}
+
+/// Letter-based symbols (Rs, CHF, د.إ) need a gap from the amount; glyphs ($ €)
+/// stay tight. Only inserts a space when symbol and digits are adjacent.
+String _ensureLetterSymbolSpacing(String formatted, String symbol) {
+  if (symbol.isEmpty || !_isLetterBasedSymbol(symbol)) return formatted;
+
+  final escaped = RegExp.escape(symbol);
+  return formatted
+      .replaceFirstMapped(RegExp('^$escaped(?=\\d)'), (_) => '$symbol ')
+      .replaceFirstMapped(RegExp('(?<=\\d)$escaped\$'), (_) => ' $symbol');
+}
+
+bool _isLetterBasedSymbol(String symbol) {
+  // Latin (Rs, CHF) or Arabic-script currency labels — not $ € £ ¥ ₹ ₺.
+  return RegExp(r'[A-Za-z\u0600-\u06FF]').hasMatch(symbol);
 }
 
 /// Parses a localized amount string into integer cents.

@@ -49,3 +49,8 @@ app.*.map.json
 *.jks
 *.keystore
 /marketing/promo-video
+
+# Play Store binaries (docs: store/play/README.md)
+/store/play/screenshots/
+/store/play/mockups/
+/store/play/feature-graphic.png
