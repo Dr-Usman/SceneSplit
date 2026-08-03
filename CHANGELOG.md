@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Privacy Policy updated to disclose Mixpanel product analytics.
+- Letter-based currency symbols (e.g. Rs, CHF) format with a space before the amount; glyph symbols ($ €) stay tight.
+
+### Fixed
+
+- Home “You will get / You will give” summary halves stay equal height when one amount is much longer.
 
 
 ## [1.3.0] - 2026-07-31

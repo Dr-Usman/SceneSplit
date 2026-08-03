@@ -24,14 +24,8 @@ String _ensureLetterSymbolSpacing(String formatted, String symbol) {
 
   final escaped = RegExp.escape(symbol);
   return formatted
-      .replaceFirstMapped(
-        RegExp('^$escaped(?=\\d)'),
-        (_) => '$symbol ',
-      )
-      .replaceFirstMapped(
-        RegExp('(?<=\\d)$escaped\$'),
-        (_) => ' $symbol',
-      );
+      .replaceFirstMapped(RegExp('^$escaped(?=\\d)'), (_) => '$symbol ')
+      .replaceFirstMapped(RegExp('(?<=\\d)$escaped\$'), (_) => ' $symbol');
 }
 
 bool _isLetterBasedSymbol(String symbol) {
