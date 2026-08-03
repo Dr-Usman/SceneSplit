@@ -99,17 +99,19 @@ String localeToStorage(Locale? locale) {
 }
 
 /// Completes onboarding: creates the device user and saves currency.
-Future<void> completeOnboarding(
+/// Returns the new current user id.
+Future<String> completeOnboarding(
   AppDatabase db, {
   required String name,
   required String currencyCode,
 }) async {
+  final userId = const Uuid().v4();
   await db.transaction(() async {
     await db
         .into(db.users)
         .insert(
           UsersCompanion.insert(
-            id: const Uuid().v4(),
+            id: userId,
             name: name,
             isCurrentUser: const Value(true),
           ),
@@ -124,4 +126,5 @@ Future<void> completeOnboarding(
           mode: InsertMode.insertOrReplace,
         );
   });
+  return userId;
 }
