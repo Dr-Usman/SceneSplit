@@ -7,6 +7,7 @@ import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/expense_repository.dart';
@@ -313,6 +314,18 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
         note: note,
         date: _date,
       );
+      final groupName =
+          ref.read(groupDetailProvider(widget.groupId)).value?.group.name ?? '';
+      await ref
+          .read(analyticsServiceProvider)
+          .trackExpenseCreated(
+            groupId: widget.groupId,
+            groupName: groupName,
+            splitType: _splitType.name,
+            paidByMode: _paidByMode.name,
+            amountCents: _amountCents!,
+            memberCount: splits.length,
+          );
     }
 
     if (mounted) Navigator.of(context).pop();

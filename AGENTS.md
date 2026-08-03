@@ -91,6 +91,7 @@ ARB changes regenerate via `flutter gen-l10n` (also runs automatically on `flutt
 - Stack: Flutter **gen-l10n** + ARB in `lib/l10n/` (`l10n.yaml`). Access via `context.l10n` (`lib/core/l10n/l10n_extensions.dart`).
 - Supported locales: `en`, `es`, `fr`, `de`, `pt`/`pt_BR`, `hi`, `ar`, `ja`.
 - User preference: `AppSettings.localeCode` (`system` or BCP-47); Profile → Language. `null` MaterialApp locale follows the device.
+- Product analytics: Mixpanel via `AnalyticsService` (typed event methods); identifies the local current user id.
 - Demo data (debug): `lib/dev/demo_seed.dart` — Profile → Load demo data, or `flutter run --dart-define=SEED_DEMO=true`. Play Store assets live in `store/play/`.
 - Never hardcode user-facing English in UI — add keys to `app_en.arb` first, then translate sibling ARBs (same key set).
 - Domain exceptions stay typed (`UserNameTakenException`, etc.); map to copy with `localizeError(context, e)`.

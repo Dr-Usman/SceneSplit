@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/l10n/l10n_extensions.dart';
+import '../../../providers/analytics_provider.dart';
 import '../../../providers/database_provider.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../shared/widgets/language_picker_sheet.dart';
@@ -30,8 +31,16 @@ class ProfileLanguageSection extends ConsumerWidget {
         LanguagePickerField(
           localeCode: stored,
           sheetTitle: l10n.sharedChooseLanguage,
-          onChanged: (code) =>
-              updateLocaleCode(ref.read(databaseProvider), code),
+          onChanged: (code) async {
+            final previous = stored;
+            await updateLocaleCode(ref.read(databaseProvider), code);
+            await ref
+                .read(analyticsServiceProvider)
+                .trackLanguageChanged(
+                  localeCode: code,
+                  previousLocaleCode: previous,
+                );
+          },
         ),
       ],
     );

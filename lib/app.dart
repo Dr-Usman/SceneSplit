@@ -7,6 +7,7 @@ import 'core/l10n/l10n_extensions.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/home_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
+import 'providers/analytics_provider.dart';
 import 'providers/database_provider.dart';
 import 'providers/demo_seed_provider.dart';
 
@@ -21,6 +22,7 @@ class SceneSplitApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(analyticsBootstrapProvider);
     ref.watch(demoSeedBootstrapProvider);
     final currentUser = ref.watch(currentUserProvider);
     final themeAsync = ref.watch(themeModeProvider);

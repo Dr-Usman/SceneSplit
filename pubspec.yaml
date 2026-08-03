@@ -47,6 +47,9 @@ dependencies:
   url_launcher: ^6.3.2
   in_app_review: ^2.0.12
 
+  # Analytics
+  mixpanel_flutter: ^2.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
