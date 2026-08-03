@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-08-03
+
 ### Added
 
 - Debug-only demo data seeder (`lib/dev/demo_seed.dart`) with Profile “Load demo data” and optional `--dart-define=SEED_DEMO=true` for empty databases.
@@ -21,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Home “You will get / You will give” summary halves stay equal height when one amount is much longer.
-
 
 ## [1.3.0] - 2026-07-31
 
