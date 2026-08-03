@@ -54,4 +54,10 @@ void main() {
     final formatted = formatCents(125000, 'USD', locale: 'en_US');
     expect(formatted.contains('1,250') || formatted.contains('1250'), isTrue);
   });
+
+  test('formatCents spaces letter symbols but not glyph symbols', () {
+    expect(formatCents(120000, 'PKR', locale: 'en'), 'Rs 1,200');
+    expect(formatCents(120000, 'CHF', locale: 'en'), 'CHF 1,200');
+    expect(formatCents(120000, 'USD', locale: 'en_US'), r'$1,200');
+  });
 }

@@ -30,25 +30,30 @@ class SummarySplitCard extends StatelessWidget {
         boxShadow: AppShadows.card(context),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Row(
-        children: [
-          Expanded(
-            child: _SummaryHalf(
-              label: owedLabel,
-              amount: owedAmount,
-              gradient: AppGradients.summaryOwed,
-              onTap: () => onOwedTap(context),
+      // Equal heights: long amounts scale down via FittedBox and would
+      // otherwise shrink one half, breaking the capsule look.
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: _SummaryHalf(
+                label: owedLabel,
+                amount: owedAmount,
+                gradient: AppGradients.summaryOwed,
+                onTap: () => onOwedTap(context),
+              ),
             ),
-          ),
-          Expanded(
-            child: _SummaryHalf(
-              label: oweLabel,
-              amount: oweAmount,
-              gradient: AppGradients.summaryOwe,
-              onTap: () => onOweTap(context),
+            Expanded(
+              child: _SummaryHalf(
+                label: oweLabel,
+                amount: oweAmount,
+                gradient: AppGradients.summaryOwe,
+                onTap: () => onOweTap(context),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
