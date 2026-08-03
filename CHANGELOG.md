@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Debug-only demo data seeder (`lib/dev/demo_seed.dart`) with Profile “Load demo data” and optional `--dart-define=SEED_DEMO=true` for empty databases.
+- Play Store marketing assets under `store/play/` (feature graphic, light/dark screenshots, AI phone mockups).
 - Mixpanel product analytics with typed `AnalyticsService` events (`app_opened`, `sign_up_completed`, `group_created`, `expense_created`, `language_changed`) and local-user identify (id + name); `locale_code` on People / super properties.
 
 ### Changed
