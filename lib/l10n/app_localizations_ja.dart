@@ -167,6 +167,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsExpenseBreakdown => '経費の内訳';
 
   @override
+  String groupsMemberShareTitle(String name) {
+    return '$nameの分担';
+  }
+
+  @override
   String groupsMembersHeader(int count) {
     return 'メンバー ($count)';
   }

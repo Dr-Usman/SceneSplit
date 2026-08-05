@@ -46,6 +46,7 @@
   "groupsDeleteGroup": "समूह हटाएँ",
   "groupsAddExpense": "खर्च जोड़ें",
   "groupsExpenseBreakdown": "खर्च विवरण",
+  "groupsMemberShareTitle": "{name} का हिस्सा",
   "groupsMembersHeader": "सदस्य ({count})",
   "groupsManage": "प्रबंधित करें",
   "groupsWhoOwesWhom": "किस पर कितना बकाया",

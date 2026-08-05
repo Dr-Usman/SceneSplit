@@ -87,6 +87,12 @@
   "groupsDeleteGroup": "Delete group",
   "groupsAddExpense": "Add expense",
   "groupsExpenseBreakdown": "EXPENSE BREAKDOWN",
+  "groupsMemberShareTitle": "{name}'s share",
+  "@groupsMemberShareTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
   "groupsMembersHeader": "MEMBERS ({count})",
   "@groupsMembersHeader": {
     "placeholders": {

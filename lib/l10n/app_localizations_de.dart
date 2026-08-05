@@ -171,6 +171,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsExpenseBreakdown => 'AUSGABENÜBERSICHT';
 
   @override
+  String groupsMemberShareTitle(String name) {
+    return 'Anteil von $name';
+  }
+
+  @override
   String groupsMembersHeader(int count) {
     return 'MITGLIEDER ($count)';
   }

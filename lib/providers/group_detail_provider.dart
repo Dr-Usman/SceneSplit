@@ -21,6 +21,56 @@ class ExpenseWithSplits {
   });
 }
 
+/// One expense's contribution to a member's total share.
+class MemberExpenseShare {
+  final Expense expense;
+  final int shareCents;
+  final bool alsoPaid;
+
+  const MemberExpenseShare({
+    required this.expense,
+    required this.shareCents,
+    required this.alsoPaid,
+  });
+}
+
+/// Aggregates split shares per member for charts and drill-down sheets.
+({
+  Map<String, int> shareCents,
+  Map<String, List<MemberExpenseShare>> expenseShares,
+})
+buildMemberShareBreakdown(List<ExpenseWithSplits> expenses) {
+  final shareByUserId = <String, int>{};
+  final expenseShares = <String, List<MemberExpenseShare>>{};
+
+  for (final item in expenses) {
+    final payerIds = {for (final p in item.payers) p.userId};
+    for (final split in item.splits) {
+      if (split.amountCents <= 0) continue;
+      shareByUserId[split.userId] =
+          (shareByUserId[split.userId] ?? 0) + split.amountCents;
+      expenseShares
+          .putIfAbsent(split.userId, () => [])
+          .add(
+            MemberExpenseShare(
+              expense: item.expense,
+              shareCents: split.amountCents,
+              alsoPaid: payerIds.contains(split.userId),
+            ),
+          );
+    }
+  }
+
+  shareByUserId.removeWhere((_, cents) => cents <= 0);
+  expenseShares.removeWhere((userId, _) => !shareByUserId.containsKey(userId));
+
+  for (final list in expenseShares.values) {
+    list.sort((a, b) => b.expense.date.compareTo(a.expense.date));
+  }
+
+  return (shareCents: shareByUserId, expenseShares: expenseShares);
+}
+
 class GroupDetailData {
   final Group group;
   final List<GroupMemberInfo> members;
@@ -32,6 +82,9 @@ class GroupDetailData {
   /// Total expense share per member (userId -> cents). Only entries > 0.
   final Map<String, int> memberShareCents;
 
+  /// Per-member expense rows that make up [memberShareCents].
+  final Map<String, List<MemberExpenseShare>> memberExpenseShares;
+
   const GroupDetailData({
     required this.group,
     required this.members,
@@ -40,6 +93,7 @@ class GroupDetailData {
     required this.expenses,
     required this.settlements,
     required this.memberShareCents,
+    required this.memberExpenseShares,
   });
 }
 
@@ -132,14 +186,7 @@ final groupDetailProvider =
           ),
       ];
 
-      final shareByUserId = <String, int>{};
-      for (final e in groupExpenses) {
-        for (final split in splitsByExpense[e.id] ?? []) {
-          shareByUserId[split.userId] =
-              (shareByUserId[split.userId] ?? 0) + split.amountCents as int;
-        }
-      }
-      shareByUserId.removeWhere((_, cents) => cents <= 0);
+      final breakdown = buildMemberShareBreakdown(expenseList);
 
       return AsyncValue.data(
         GroupDetailData(
@@ -149,7 +196,8 @@ final groupDetailProvider =
           myNetCents: myNet,
           expenses: expenseList,
           settlements: groupSettlements,
-          memberShareCents: shareByUserId,
+          memberShareCents: breakdown.shareCents,
+          memberExpenseShares: breakdown.expenseShares,
         ),
       );
     });

@@ -170,6 +170,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get groupsExpenseBreakdown => 'DETALHAMENTO DE DESPESAS';
 
   @override
+  String groupsMemberShareTitle(String name) {
+    return 'Parte de $name';
+  }
+
+  @override
   String groupsMembersHeader(int count) {
     return 'MEMBROS ($count)';
   }
@@ -943,6 +948,11 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get groupsExpenseBreakdown => 'DETALHAMENTO DE DESPESAS';
+
+  @override
+  String groupsMemberShareTitle(String name) {
+    return 'Parte de $name';
+  }
 
   @override
   String groupsMembersHeader(int count) {

@@ -46,6 +46,7 @@
   "groupsDeleteGroup": "グループを削除",
   "groupsAddExpense": "経費を追加",
   "groupsExpenseBreakdown": "経費の内訳",
+  "groupsMemberShareTitle": "{name}の分担",
   "groupsMembersHeader": "メンバー ({count})",
   "groupsManage": "管理",
   "groupsWhoOwesWhom": "誰が誰に払うか",

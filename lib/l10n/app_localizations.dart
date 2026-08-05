@@ -387,6 +387,12 @@ abstract class AppLocalizations {
   /// **'EXPENSE BREAKDOWN'**
   String get groupsExpenseBreakdown;
 
+  /// No description provided for @groupsMemberShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s share'**
+  String groupsMemberShareTitle(String name);
+
   /// No description provided for @groupsMembersHeader.
   ///
   /// In en, this message translates to:

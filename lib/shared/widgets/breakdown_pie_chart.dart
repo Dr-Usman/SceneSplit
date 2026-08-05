@@ -10,11 +10,15 @@ class BreakdownSlice {
   final Color color;
   final String currencyCode;
 
+  /// Optional stable id (e.g. userId) for drill-down taps.
+  final String? id;
+
   const BreakdownSlice({
     required this.label,
     required this.cents,
     required this.color,
     required this.currencyCode,
+    this.id,
   });
 }
 
@@ -99,9 +103,10 @@ Future<void> showBreakdownSheet(
 }
 
 class BreakdownPieChart extends StatelessWidget {
-  const BreakdownPieChart({super.key, required this.slices});
+  const BreakdownPieChart({super.key, required this.slices, this.onSliceTap});
 
   final List<BreakdownSlice> slices;
+  final ValueChanged<BreakdownSlice>? onSliceTap;
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +158,7 @@ class BreakdownPieChart extends StatelessWidget {
             percent: sorted[i].cents / total * 100,
             locale: locale,
             l10n: l10n,
+            onTap: onSliceTap == null ? null : () => onSliceTap!(sorted[i]),
           ),
         ],
         const SizedBox(height: 12),
@@ -215,18 +221,20 @@ class _LegendRow extends StatelessWidget {
     required this.percent,
     required this.locale,
     required this.l10n,
+    this.onTap,
   });
 
   final BreakdownSlice slice;
   final double percent;
   final String locale;
   final AppLocalizations l10n;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Row(
+    final row = Row(
       children: [
         Container(
           width: 12,
@@ -263,7 +271,26 @@ class _LegendRow extends StatelessWidget {
             ),
           ),
         ),
+        if (onTap != null) ...[
+          const SizedBox(width: 4),
+          Icon(
+            Icons.chevron_right_rounded,
+            size: 18,
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ],
       ],
+    );
+
+    if (onTap == null) return row;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: row,
+      ),
     );
   }
 }

@@ -171,6 +171,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsExpenseBreakdown => 'RÉPARTITION DES DÉPENSES';
 
   @override
+  String groupsMemberShareTitle(String name) {
+    return 'Part de $name';
+  }
+
+  @override
   String groupsMembersHeader(int count) {
     return 'MEMBRES ($count)';
   }

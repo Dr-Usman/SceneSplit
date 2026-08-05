@@ -46,6 +46,7 @@
   "groupsDeleteGroup": "حذف المجموعة",
   "groupsAddExpense": "إضافة نفقة",
   "groupsExpenseBreakdown": "تفصيل النفقات",
+  "groupsMemberShareTitle": "حصة {name}",
   "groupsMembersHeader": "الأعضاء ({count})",
   "groupsManage": "إدارة",
   "groupsWhoOwesWhom": "من يدين لمن",

@@ -46,6 +46,7 @@
   "groupsDeleteGroup": "Excluir grupo",
   "groupsAddExpense": "Adicionar despesa",
   "groupsExpenseBreakdown": "DETALHAMENTO DE DESPESAS",
+  "groupsMemberShareTitle": "Parte de {name}",
   "groupsMembersHeader": "MEMBROS ({count})",
   "groupsManage": "Gerenciar",
   "groupsWhoOwesWhom": "QUEM DEVE A QUEM",

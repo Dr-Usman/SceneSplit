@@ -17,6 +17,7 @@ import '../../services/balance_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/balance_hero_card.dart';
 import '../../shared/widgets/breakdown_pie_chart.dart';
+import '../../shared/widgets/member_expense_breakdown_sheet.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/user_avatar.dart';
 import '../expenses/add_expense_screen.dart';
@@ -132,6 +133,7 @@ class GroupDetailScreen extends ConsumerWidget {
                     slices: [
                       for (var i = 0; i < shareEntries.length; i++)
                         BreakdownSlice(
+                          id: shareEntries[i].key,
                           label:
                               users[shareEntries[i].key]?.name ??
                               l10n.commonUnknown,
@@ -140,6 +142,30 @@ class GroupDetailScreen extends ConsumerWidget {
                           currencyCode: data.group.currencyCode,
                         ),
                     ],
+                    onSliceTap: (slice) {
+                      final userId = slice.id;
+                      if (userId == null) return;
+                      final items =
+                          data.memberExpenseShares[userId] ?? const [];
+                      showMemberExpenseBreakdownSheet(
+                        context,
+                        memberName: slice.label,
+                        currencyCode: data.group.currencyCode,
+                        totalCents: slice.cents,
+                        items: items,
+                        onExpenseTap: (expenseId) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ExpenseDetailScreen(
+                                groupId: groupId,
+                                expenseId: expenseId,
+                                currencyCode: data.group.currencyCode,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],

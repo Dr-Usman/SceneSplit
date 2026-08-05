@@ -171,6 +171,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsExpenseBreakdown => 'खर्च विवरण';
 
   @override
+  String groupsMemberShareTitle(String name) {
+    return '$name का हिस्सा';
+  }
+
+  @override
   String groupsMembersHeader(int count) {
     return 'सदस्य ($count)';
   }

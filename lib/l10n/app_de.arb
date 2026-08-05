@@ -46,6 +46,7 @@
   "groupsDeleteGroup": "Gruppe löschen",
   "groupsAddExpense": "Ausgabe hinzufügen",
   "groupsExpenseBreakdown": "AUSGABENÜBERSICHT",
+  "groupsMemberShareTitle": "Anteil von {name}",
   "groupsMembersHeader": "MITGLIEDER ({count})",
   "groupsManage": "Verwalten",
   "groupsWhoOwesWhom": "WER SCHULDET WEM",
