@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Tap a member in group expense breakdown to see which expenses make up their share.
 
+### Changed
+
+- Group expense breakdown pie: tapping a slice highlights that member (and legend row) with name and percent in the center.
+
 ## [1.4.0] - 2026-08-03
 
 ### Added

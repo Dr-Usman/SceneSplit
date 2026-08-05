@@ -102,18 +102,28 @@ Future<void> showBreakdownSheet(
   );
 }
 
-class BreakdownPieChart extends StatelessWidget {
+class BreakdownPieChart extends StatefulWidget {
   const BreakdownPieChart({super.key, required this.slices, this.onSliceTap});
 
   final List<BreakdownSlice> slices;
+
+  /// Fired when a legend row is tapped (e.g. open member expense sheet).
+  /// Not called when tapping pie slices — those only highlight.
   final ValueChanged<BreakdownSlice>? onSliceTap;
+
+  @override
+  State<BreakdownPieChart> createState() => _BreakdownPieChartState();
+}
+
+class _BreakdownPieChartState extends State<BreakdownPieChart> {
+  int _touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
-    final total = slices.fold<int>(0, (sum, s) => sum + s.cents);
-    if (total <= 0 || slices.isEmpty) {
+    final total = widget.slices.fold<int>(0, (sum, s) => sum + s.cents);
+    if (total <= 0 || widget.slices.isEmpty) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 32),
         alignment: Alignment.center,
@@ -126,28 +136,83 @@ class BreakdownPieChart extends StatelessWidget {
       );
     }
 
-    final sorted = [...slices]..sort((a, b) => b.cents.compareTo(a.cents));
+    final sorted = [...widget.slices]
+      ..sort((a, b) => b.cents.compareTo(a.cents));
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final touched = _touchedIndex >= 0 && _touchedIndex < sorted.length
+        ? sorted[_touchedIndex]
+        : null;
+    final touchedPercent = touched == null ? null : touched.cents / total * 100;
 
     return Column(
       children: [
         SizedBox(
           height: 200,
-          child: PieChart(
-            PieChartData(
-              sectionsSpace: 2,
-              centerSpaceRadius: 48,
-              sections: [
-                for (var i = 0; i < sorted.length; i++)
-                  PieChartSectionData(
-                    value: sorted[i].cents.toDouble(),
-                    color: sorted[i].color,
-                    radius: 52,
-                    title: '',
-                    showTitle: false,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              PieChart(
+                PieChartData(
+                  sectionsSpace: 2,
+                  centerSpaceRadius: 48,
+                  pieTouchData: PieTouchData(
+                    touchCallback: (event, response) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            response?.touchedSection == null) {
+                          _touchedIndex = -1;
+                          return;
+                        }
+                        final index =
+                            response!.touchedSection!.touchedSectionIndex;
+                        _touchedIndex = index < 0 ? -1 : index;
+                      });
+                    },
                   ),
-              ],
-            ),
-            duration: const Duration(milliseconds: 300),
+                  sections: [
+                    for (var i = 0; i < sorted.length; i++)
+                      PieChartSectionData(
+                        value: sorted[i].cents.toDouble(),
+                        color: sorted[i].color,
+                        radius: i == _touchedIndex ? 60 : 52,
+                        title: '',
+                        showTitle: false,
+                      ),
+                  ],
+                ),
+                duration: const Duration(milliseconds: 300),
+              ),
+              if (touched != null && touchedPercent != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        touched.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        l10n.sharedPercentLabel(
+                          touchedPercent.toStringAsFixed(0),
+                        ),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ),
         const SizedBox(height: 16),
@@ -158,7 +223,10 @@ class BreakdownPieChart extends StatelessWidget {
             percent: sorted[i].cents / total * 100,
             locale: locale,
             l10n: l10n,
-            onTap: onSliceTap == null ? null : () => onSliceTap!(sorted[i]),
+            isSelected: i == _touchedIndex,
+            onTap: widget.onSliceTap == null
+                ? null
+                : () => widget.onSliceTap!(sorted[i]),
           ),
         ],
         const SizedBox(height: 12),
@@ -221,6 +289,7 @@ class _LegendRow extends StatelessWidget {
     required this.percent,
     required this.locale,
     required this.l10n,
+    this.isSelected = false,
     this.onTap,
   });
 
@@ -228,11 +297,13 @@ class _LegendRow extends StatelessWidget {
   final double percent;
   final String locale;
   final AppLocalizations l10n;
+  final bool isSelected;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final labelWeight = isSelected ? FontWeight.w800 : FontWeight.w600;
 
     final row = Row(
       children: [
@@ -246,7 +317,7 @@ class _LegendRow extends StatelessWidget {
           child: Text(
             slice.label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: labelWeight,
               color: colorScheme.onSurface,
             ),
             overflow: TextOverflow.ellipsis,
@@ -256,7 +327,7 @@ class _LegendRow extends StatelessWidget {
         Text(
           formatCents(slice.cents, slice.currencyCode, locale: locale),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w700,
+            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
             color: colorScheme.onSurface,
           ),
         ),
@@ -268,6 +339,7 @@ class _LegendRow extends StatelessWidget {
             textAlign: TextAlign.right,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
             ),
           ),
         ),
@@ -282,15 +354,27 @@ class _LegendRow extends StatelessWidget {
       ],
     );
 
-    if (onTap == null) return row;
+    final padded = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      child: row,
+    );
+
+    final decorated = isSelected
+        ? DecoratedBox(
+            decoration: BoxDecoration(
+              color: slice.color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: padded,
+          )
+        : padded;
+
+    if (onTap == null) return decorated;
 
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: row,
-      ),
+      child: decorated,
     );
   }
 }
