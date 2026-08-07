@@ -172,6 +172,25 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String groupsMemberShareExpenseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count件の支出',
+      one: '1件の支出',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsMemberShareOfAmount(String amount) {
+    return '/ $amount';
+  }
+
+  @override
+  String get groupsMemberShareTotalLabel => '分担合計';
+
+  @override
   String groupsMembersHeader(int count) {
     return 'メンバー ($count)';
   }

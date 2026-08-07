@@ -356,6 +356,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
                   showMemberExpenseBreakdownSheet(
                     context,
                     memberName: displayName,
+                    colorIndex: person.colorIndex,
                     currencyCode: currency,
                     totalCents: balance.totalShareCents,
                     items: balance.expenseShares,

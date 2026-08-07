@@ -393,6 +393,24 @@ abstract class AppLocalizations {
   /// **'{name}\'s share'**
   String groupsMemberShareTitle(String name);
 
+  /// No description provided for @groupsMemberShareExpenseCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 expense} other{{count} expenses}}'**
+  String groupsMemberShareExpenseCount(int count);
+
+  /// No description provided for @groupsMemberShareOfAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'of {amount}'**
+  String groupsMemberShareOfAmount(String amount);
+
+  /// No description provided for @groupsMemberShareTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total share'**
+  String get groupsMemberShareTotalLabel;
+
   /// No description provided for @groupsMembersHeader.
   ///
   /// In en, this message translates to:

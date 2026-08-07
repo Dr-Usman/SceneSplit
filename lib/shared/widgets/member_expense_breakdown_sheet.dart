@@ -5,14 +5,17 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../providers/group_detail_provider.dart';
+import 'user_avatar.dart';
 
 Future<void> showMemberExpenseBreakdownSheet(
   BuildContext context, {
   required String memberName,
+  required int colorIndex,
   required String currencyCode,
   required int totalCents,
   required List<MemberExpenseShare> items,
   required void Function(String expenseId) onExpenseTap,
+  double? percent,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -22,108 +25,154 @@ Future<void> showMemberExpenseBreakdownSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
     builder: (sheetContext) {
-      final theme = Theme.of(sheetContext);
-      final colorScheme = theme.colorScheme;
-      final l10n = sheetContext.l10n;
-      final locale = Localizations.localeOf(sheetContext).toString();
-      final maxHeight = MediaQuery.sizeOf(sheetContext).height * 0.7;
+      return DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.55,
+        minChildSize: 0.35,
+        maxChildSize: 0.7,
+        builder: (context, scrollController) {
+          final theme = Theme.of(context);
+          final colorScheme = theme.colorScheme;
+          final l10n = context.l10n;
+          final locale = Localizations.localeOf(context).toString();
+          final isDark = theme.brightness == Brightness.dark;
+          final summaryBg = isDark
+              ? AppColors.primary.withValues(alpha: 0.18)
+              : AppColors.primarySoft;
+          final summaryAmountColor = isDark
+              ? colorScheme.onSurface
+              : AppColors.primaryDark;
 
-      return SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: maxHeight),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: theme.dividerColor,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n.groupsMemberShareTitle(memberName),
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  formatCents(totalCents, currencyCode, locale: locale),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                if (items.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Center(
-                      child: Text(
-                        l10n.sharedNoChartData,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                        ),
+          final countLabel = l10n.groupsMemberShareExpenseCount(items.length);
+          final metaParts = <String>[countLabel];
+          if (percent != null) {
+            metaParts.add(l10n.sharedPercentLabel(percent.toStringAsFixed(0)));
+          }
+          final meta = metaParts.join(' · ');
+
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: theme.dividerColor,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                  )
-                else
-                  Flexible(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      separatorBuilder: (_, _) =>
-                          Divider(height: 1, color: theme.dividerColor),
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-                        return _MemberExpenseRow(
-                          item: item,
-                          currencyCode: currencyCode,
-                          locale: locale,
-                          alsoPaidLabel: l10n.expensesSubtitleAlsoPaid,
-                          onTap: () => onExpenseTap(item.expense.id),
-                        );
-                      },
-                    ),
                   ),
-                if (items.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Divider(height: 1, color: theme.dividerColor),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          l10n.sharedTotal,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
+                      UserAvatar(
+                        name: memberName,
+                        colorIndex: colorIndex,
+                        size: 40,
                       ),
-                      Text(
-                        formatCents(totalCents, currencyCode, locale: locale),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: colorScheme.onSurface,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.groupsMemberShareTitle(memberName),
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              meta,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: summaryBg,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.groupsMemberShareTotalLabel,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          formatCents(totalCents, currencyCode, locale: locale),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: summaryAmountColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (items.isEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          l10n.sharedNoChartData,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.separated(
+                        controller: scrollController,
+                        itemCount: items.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 10),
+                        itemBuilder: (context, index) {
+                          final item = items[index];
+                          return _MemberExpenseRow(
+                            item: item,
+                            currencyCode: currencyCode,
+                            locale: locale,
+                            ofAmountLabel: l10n.groupsMemberShareOfAmount(
+                              formatCents(
+                                item.expense.amountCents,
+                                currencyCode,
+                                locale: locale,
+                              ),
+                            ),
+                            alsoPaidLabel: l10n.expensesSubtitleAlsoPaid,
+                            onTap: () => onExpenseTap(item.expense.id),
+                          );
+                        },
+                      ),
+                    ),
                 ],
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     },
   );
@@ -134,6 +183,7 @@ class _MemberExpenseRow extends StatelessWidget {
     required this.item,
     required this.currencyCode,
     required this.locale,
+    required this.ofAmountLabel,
     required this.alsoPaidLabel,
     required this.onTap,
   });
@@ -141,70 +191,115 @@ class _MemberExpenseRow extends StatelessWidget {
   final MemberExpenseShare item;
   final String currencyCode;
   final String locale;
+  final String ofAmountLabel;
   final String alsoPaidLabel;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? AppColors.borderDark : AppColors.border;
+    final tileBg = isDark
+        ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.35)
+        : AppColors.background;
     final date = DateFormat.MMMd(locale).format(item.expense.date);
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.expense.title,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colorScheme.onSurface,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: tileBg,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: borderColor),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.expense.title,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 4,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            date,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                          if (item.alsoPaid)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                alsoPaidLabel,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    date,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      formatCents(
+                        item.shareCents,
+                        currencyCode,
+                        locale: locale,
+                      ),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                  if (item.alsoPaid) ...[
                     const SizedBox(height: 2),
                     Text(
-                      alsoPaidLabel,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
+                      ofAmountLabel,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
-            Text(
-              formatCents(item.shareCents, currencyCode, locale: locale),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: colorScheme.onSurface,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Icon(
-              Icons.chevron_right_rounded,
-              size: 18,
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ],
+          ),
         ),
       ),
     );

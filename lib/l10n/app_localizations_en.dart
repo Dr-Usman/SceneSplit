@@ -175,6 +175,25 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String groupsMemberShareExpenseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count expenses',
+      one: '1 expense',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsMemberShareOfAmount(String amount) {
+    return 'of $amount';
+  }
+
+  @override
+  String get groupsMemberShareTotalLabel => 'Total share';
+
+  @override
   String groupsMembersHeader(int count) {
     return 'MEMBERS ($count)';
   }

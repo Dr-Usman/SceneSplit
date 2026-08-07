@@ -93,6 +93,19 @@
       "name": {"type": "String"}
     }
   },
+  "groupsMemberShareExpenseCount": "{count, plural, =1{1 expense} other{{count} expenses}}",
+  "@groupsMemberShareExpenseCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsMemberShareOfAmount": "of {amount}",
+  "@groupsMemberShareOfAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "groupsMemberShareTotalLabel": "Total share",
   "groupsMembersHeader": "MEMBERS ({count})",
   "@groupsMembersHeader": {
     "placeholders": {

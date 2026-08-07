@@ -147,11 +147,19 @@ class GroupDetailScreen extends ConsumerWidget {
                       if (userId == null) return;
                       final items =
                           data.memberExpenseShares[userId] ?? const [];
+                      final totalShares = shareEntries.fold<int>(
+                        0,
+                        (sum, e) => sum + e.value,
+                      );
                       showMemberExpenseBreakdownSheet(
                         context,
                         memberName: slice.label,
+                        colorIndex: users[userId]?.colorIndex ?? 0,
                         currencyCode: data.group.currencyCode,
                         totalCents: slice.cents,
+                        percent: totalShares == 0
+                            ? null
+                            : slice.cents / totalShares * 100,
                         items: items,
                         onExpenseTap: (expenseId) {
                           Navigator.of(context).push(

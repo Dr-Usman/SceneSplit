@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Member share breakdown sheet: person header with avatar, top-only total summary, expense count/percent meta, and share-of-expense rows.
 - People list: swipe left for edit/delete with a swipe hint; person detail app bar uses an overflow menu for edit/delete; clearer person header.
 - Scene detail: swipe-to-delete hint under settlements and expenses.
 - Who-owes-whom suggestions follow shared expenses (pay the people on your bills), with only A↔B offsets — not fewest-transfer matching across the group.
