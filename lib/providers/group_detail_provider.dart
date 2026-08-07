@@ -175,7 +175,17 @@ final groupDetailProvider =
 
       final me = currentUser.value;
       final myNet = me == null ? 0 : (net[me.id] ?? 0);
-      final debts = BalanceService.simplifyDebts(net);
+      final debts = BalanceService.pairwiseDebts(
+        payersByExpense: {
+          for (final e in groupExpenses)
+            e.id: payersByExpense[e.id] ?? const [],
+        },
+        splitsByExpense: {
+          for (final e in groupExpenses)
+            e.id: splitsByExpense[e.id] ?? const [],
+        },
+        settlements: groupSettlements,
+      );
 
       final expenseList = [
         for (final e in groupExpenses)

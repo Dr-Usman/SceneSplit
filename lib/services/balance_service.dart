@@ -27,49 +27,141 @@ abstract class BalanceService {
     return net;
   }
 
-  /// Simplified pairwise debts from net balances (minimum transactions style).
-  static List<PairwiseDebt> simplifyDebts(Map<String, int> net) {
-    final creditors = <String, int>{};
-    final debtors = <String, int>{};
+  /// Bill-linked pairwise debts: participants owe payers for shared expenses,
+  /// then only A↔B amounts cancel. No third-party redirection.
+  ///
+  /// [payersByExpense] / [splitsByExpense] map expense id → rows for that
+  /// expense. Settlements reduce the `from → to` edge.
+  static List<PairwiseDebt> pairwiseDebts({
+    required Map<String, List<ExpensePayer>> payersByExpense,
+    required Map<String, List<ExpenseSplit>> splitsByExpense,
+    required List<Settlement> settlements,
+  }) {
+    // Signed edge: positive means fromUser owes toUser.
+    final edges = <String, Map<String, int>>{};
 
-    for (final e in net.entries) {
-      if (e.value > 0) creditors[e.key] = e.value;
-      if (e.value < 0) debtors[e.key] = -e.value;
+    void addEdge(String from, String to, int cents) {
+      if (from == to || cents == 0) return;
+      edges.putIfAbsent(from, () => <String, int>{});
+      edges[from]![to] = (edges[from]![to] ?? 0) + cents;
+    }
+
+    final expenseIds = {...payersByExpense.keys, ...splitsByExpense.keys};
+
+    for (final expenseId in expenseIds) {
+      final payers = payersByExpense[expenseId] ?? const [];
+      final splits = splitsByExpense[expenseId] ?? const [];
+      if (payers.isEmpty || splits.isEmpty) continue;
+
+      final shares = <String, int>{};
+      for (final s in splits) {
+        shares[s.userId] = (shares[s.userId] ?? 0) + s.amountCents;
+      }
+      final weightTotal = shares.values.fold(0, (a, b) => a + b);
+      if (weightTotal <= 0) continue;
+
+      for (final p in payers) {
+        if (p.amountCents <= 0) continue;
+        final allocation = _allocateByWeights(
+          p.amountCents,
+          shares,
+          weightTotal,
+        );
+        for (final e in allocation.entries) {
+          if (e.key != p.userId) {
+            addEdge(e.key, p.userId, e.value);
+          }
+        }
+      }
+    }
+
+    for (final s in settlements) {
+      addEdge(s.fromUserId, s.toUserId, -s.amountCents);
     }
 
     final result = <PairwiseDebt>[];
-    final creditorList = creditors.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    final debtorList = debtors.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+    final seen = <String>{};
 
-    var ci = 0;
-    var di = 0;
-    while (ci < creditorList.length && di < debtorList.length) {
-      final amount = creditorList[ci].value < debtorList[di].value
-          ? creditorList[ci].value
-          : debtorList[di].value;
-      if (amount > 0) {
-        result.add(
-          PairwiseDebt(
-            fromUserId: debtorList[di].key,
-            toUserId: creditorList[ci].key,
-            amountCents: amount,
-          ),
-        );
+    final users = <String>{
+      ...edges.keys,
+      for (final m in edges.values) ...m.keys,
+    }.toList()..sort();
+
+    for (var i = 0; i < users.length; i++) {
+      for (var j = i + 1; j < users.length; j++) {
+        final a = users[i];
+        final b = users[j];
+        final pairKey = '$a\x00$b';
+        if (!seen.add(pairKey)) continue;
+
+        final aOwesB = edges[a]?[b] ?? 0;
+        final bOwesA = edges[b]?[a] ?? 0;
+        final net = aOwesB - bOwesA;
+        if (net > 0) {
+          result.add(
+            PairwiseDebt(fromUserId: a, toUserId: b, amountCents: net),
+          );
+        } else if (net < 0) {
+          result.add(
+            PairwiseDebt(fromUserId: b, toUserId: a, amountCents: -net),
+          );
+        }
       }
-      creditorList[ci] = MapEntry(
-        creditorList[ci].key,
-        creditorList[ci].value - amount,
-      );
-      debtorList[di] = MapEntry(
-        debtorList[di].key,
-        debtorList[di].value - amount,
-      );
-      if (creditorList[ci].value == 0) ci++;
-      if (debtorList[di].value == 0) di++;
     }
+
+    result.sort((x, y) {
+      final byAmount = y.amountCents.compareTo(x.amountCents);
+      if (byAmount != 0) return byAmount;
+      final byFrom = x.fromUserId.compareTo(y.fromUserId);
+      if (byFrom != 0) return byFrom;
+      return x.toUserId.compareTo(y.toUserId);
+    });
     return result;
+  }
+
+  /// Hamilton / largest-remainder allocation of [amount] across [weights].
+  static Map<String, int> _allocateByWeights(
+    int amount,
+    Map<String, int> weights,
+    int weightTotal,
+  ) {
+    if (amount <= 0 || weightTotal <= 0 || weights.isEmpty) return {};
+
+    final ids = weights.keys.toList()..sort();
+    final floors = <String, int>{};
+    final fractions = <String, double>{};
+    var allocated = 0;
+
+    for (final id in ids) {
+      final w = weights[id]!;
+      if (w <= 0) {
+        floors[id] = 0;
+        fractions[id] = 0;
+        continue;
+      }
+      final exact = amount * w / weightTotal;
+      final floor = exact.floor();
+      floors[id] = floor;
+      fractions[id] = exact - floor;
+      allocated += floor;
+    }
+
+    var remainder = amount - allocated;
+    final byFraction = ids.toList()
+      ..sort((a, b) {
+        final byFrac = fractions[b]!.compareTo(fractions[a]!);
+        if (byFrac != 0) return byFrac;
+        return a.compareTo(b);
+      });
+
+    var i = 0;
+    while (remainder > 0 && byFraction.isNotEmpty) {
+      final id = byFraction[i % byFraction.length];
+      floors[id] = floors[id]! + 1;
+      remainder--;
+      i++;
+    }
+    return floors;
   }
 }
 
