@@ -39,11 +39,11 @@
   "onboardingGetStarted": "Get Started",
   "onboardingPrivacyNote": "Everything stays on your device.",
 
-  "homeNewGroup": "New group",
-  "homeGroupsHeader": "GROUPS",
-  "homeYouGetByGroup": "You get by group",
-  "homeYouWillGiveByGroup": "You will give by group",
-  "homeBreakdownSubtitle": "Amounts shown in each group's currency",
+  "homeNewGroup": "New scene",
+  "homeGroupsHeader": "SCENES",
+  "homeYouGetByGroup": "You get by scene",
+  "homeYouWillGiveByGroup": "You will give by scene",
+  "homeBreakdownSubtitle": "Amounts shown in each scene's currency",
   "homeYouWillGet": "You will get",
   "homeYouWillGive": "You will give",
   "homeSettledUp": "settled up",
@@ -55,21 +55,21 @@
       "count": {"type": "int"}
     }
   },
-  "homeEmptyTitle": "No groups yet",
-  "homeEmptyBody": "Create a group for your trip, home,\nor friends to start splitting.",
+  "homeEmptyTitle": "No scenes yet",
+  "homeEmptyBody": "Create a scene for a trip, dinner,\nor shared home to start splitting.",
 
-  "groupsNewGroup": "New group",
-  "groupsEditGroup": "Edit group",
-  "groupsGroupName": "GROUP NAME",
+  "groupsNewGroup": "New scene",
+  "groupsEditGroup": "Edit scene",
+  "groupsGroupName": "SCENE NAME",
   "groupsNameHint": "e.g. Trip to Japan",
   "groupsIcon": "ICON",
   "groupsCurrency": "CURRENCY",
   "groupsMembers": "MEMBERS",
   "groupsAddMemberHint": "Add member by name",
-  "groupsCreateGroup": "Create group",
+  "groupsCreateGroup": "Create scene",
   "groupsSaveChanges": "Save changes",
-  "groupsRemovalBlockedYou": "You have expenses or settlements in this group and cannot be removed.",
-  "groupsRemovalBlockedOther": "{name} has expenses or settlements in this group and cannot be removed.",
+  "groupsRemovalBlockedYou": "You have expenses or settlements in this scene and cannot be removed.",
+  "groupsRemovalBlockedOther": "{name} has expenses or settlements in this scene and cannot be removed.",
   "@groupsRemovalBlockedOther": {
     "placeholders": {
       "name": {"type": "String"}
@@ -84,7 +84,7 @@
       "code": {"type": "String"}
     }
   },
-  "groupsDeleteGroup": "Delete group",
+  "groupsDeleteGroup": "Delete scene",
   "groupsAddExpense": "Add expense",
   "groupsExpenseBreakdown": "EXPENSE BREAKDOWN",
   "groupsMemberShareTitle": "{name}'s share",
@@ -105,13 +105,13 @@
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
   "groupsDeleteExpenseTitle": "Delete expense?",
-  "groupsDeleteExpenseBody": "Remove \"{title}\" from this group?",
+  "groupsDeleteExpenseBody": "Remove \"{title}\" from this scene?",
   "@groupsDeleteExpenseBody": {
     "placeholders": {
       "title": {"type": "String"}
     }
   },
-  "groupsDeleteGroupTitle": "Delete group?",
+  "groupsDeleteGroupTitle": "Delete scene?",
   "groupsDeleteGroupBody": "Delete \"{name}\" and all its expenses? This cannot be undone.",
   "@groupsDeleteGroupBody": {
     "placeholders": {
@@ -256,7 +256,7 @@
   "profileThemeLight": "Light",
   "profileThemeDark": "Dark",
   "profileDefaultCurrencyHeader": "DEFAULT CURRENCY",
-  "profileDefaultCurrencyHint": "Used for new groups and the home summary.",
+  "profileDefaultCurrencyHint": "Used for new scenes and the home summary.",
   "profileDefaultCurrencySheet": "Default currency",
   "profileManage": "MANAGE",
   "profilePeople": "People",
@@ -296,7 +296,7 @@
       "name": {"type": "String"}
     }
   },
-  "peopleIntro": "Everyone added across your groups.",
+  "peopleIntro": "Everyone added across your scenes.",
   "peopleSearchHint": "Search by name",
   "peopleEmpty": "No people yet. Tap + to add someone.",
   "peopleNoMatch": "No people match your search.",
@@ -380,7 +380,7 @@
   },
 
   "sharedSettledTitle": "You are all settled up",
-  "sharedSettledSubtitle": "No outstanding balances in this group",
+  "sharedSettledSubtitle": "No outstanding balances in this scene",
   "sharedYouGet": "You get",
   "sharedYouWillGive": "You will give",
   "sharedNoChartData": "No data to chart",

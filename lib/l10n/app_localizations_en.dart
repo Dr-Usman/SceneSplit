@@ -66,19 +66,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingPrivacyNote => 'Everything stays on your device.';
 
   @override
-  String get homeNewGroup => 'New group';
+  String get homeNewGroup => 'New scene';
 
   @override
-  String get homeGroupsHeader => 'GROUPS';
+  String get homeGroupsHeader => 'SCENES';
 
   @override
-  String get homeYouGetByGroup => 'You get by group';
+  String get homeYouGetByGroup => 'You get by scene';
 
   @override
-  String get homeYouWillGiveByGroup => 'You will give by group';
+  String get homeYouWillGiveByGroup => 'You will give by scene';
 
   @override
-  String get homeBreakdownSubtitle => 'Amounts shown in each group\'s currency';
+  String get homeBreakdownSubtitle => 'Amounts shown in each scene\'s currency';
 
   @override
   String get homeYouWillGet => 'You will get';
@@ -107,20 +107,20 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'No groups yet';
+  String get homeEmptyTitle => 'No scenes yet';
 
   @override
   String get homeEmptyBody =>
-      'Create a group for your trip, home,\nor friends to start splitting.';
+      'Create a scene for a trip, dinner,\nor shared home to start splitting.';
 
   @override
-  String get groupsNewGroup => 'New group';
+  String get groupsNewGroup => 'New scene';
 
   @override
-  String get groupsEditGroup => 'Edit group';
+  String get groupsEditGroup => 'Edit scene';
 
   @override
-  String get groupsGroupName => 'GROUP NAME';
+  String get groupsGroupName => 'SCENE NAME';
 
   @override
   String get groupsNameHint => 'e.g. Trip to Japan';
@@ -138,18 +138,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupsAddMemberHint => 'Add member by name';
 
   @override
-  String get groupsCreateGroup => 'Create group';
+  String get groupsCreateGroup => 'Create scene';
 
   @override
   String get groupsSaveChanges => 'Save changes';
 
   @override
   String get groupsRemovalBlockedYou =>
-      'You have expenses or settlements in this group and cannot be removed.';
+      'You have expenses or settlements in this scene and cannot be removed.';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return '$name has expenses or settlements in this group and cannot be removed.';
+    return '$name has expenses or settlements in this scene and cannot be removed.';
   }
 
   @override
@@ -161,7 +161,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'Delete group';
+  String get groupsDeleteGroup => 'Delete scene';
 
   @override
   String get groupsAddExpense => 'Add expense';
@@ -199,11 +199,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return 'Remove \"$title\" from this group?';
+    return 'Remove \"$title\" from this scene?';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'Delete group?';
+  String get groupsDeleteGroupTitle => 'Delete scene?';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -446,7 +446,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileDefaultCurrencyHint =>
-      'Used for new groups and the home summary.';
+      'Used for new scenes and the home summary.';
 
   @override
   String get profileDefaultCurrencySheet => 'Default currency';
@@ -512,7 +512,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get peopleIntro => 'Everyone added across your groups.';
+  String get peopleIntro => 'Everyone added across your scenes.';
 
   @override
   String get peopleSearchHint => 'Search by name';
@@ -669,7 +669,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sharedSettledTitle => 'You are all settled up';
 
   @override
-  String get sharedSettledSubtitle => 'No outstanding balances in this group';
+  String get sharedSettledSubtitle => 'No outstanding balances in this scene';
 
   @override
   String get sharedYouGet => 'You get';

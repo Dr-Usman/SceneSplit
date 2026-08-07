@@ -66,20 +66,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPrivacyNote => 'Tout reste sur votre appareil.';
 
   @override
-  String get homeNewGroup => 'Nouveau groupe';
+  String get homeNewGroup => 'Nouvelle scène';
 
   @override
-  String get homeGroupsHeader => 'GROUPES';
+  String get homeGroupsHeader => 'SCÈNES';
 
   @override
-  String get homeYouGetByGroup => 'Vous recevrez par groupe';
+  String get homeYouGetByGroup => 'Vous recevrez par scène';
 
   @override
-  String get homeYouWillGiveByGroup => 'Vous devrez par groupe';
+  String get homeYouWillGiveByGroup => 'Vous devrez par scène';
 
   @override
   String get homeBreakdownSubtitle =>
-      'Montants affichés dans la devise de chaque groupe';
+      'Montants affichés dans la devise de chaque scène';
 
   @override
   String get homeYouWillGet => 'Vous recevrez';
@@ -108,20 +108,20 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'Aucun groupe pour l\'instant';
+  String get homeEmptyTitle => 'Aucune scène pour l\'instant';
 
   @override
   String get homeEmptyBody =>
-      'Créez un groupe pour votre voyage, votre\nfoyer ou vos amis pour commencer à partager.';
+      'Créez une scène pour un voyage, un dîner\nou un foyer partagé pour commencer à partager.';
 
   @override
-  String get groupsNewGroup => 'Nouveau groupe';
+  String get groupsNewGroup => 'Nouvelle scène';
 
   @override
-  String get groupsEditGroup => 'Modifier le groupe';
+  String get groupsEditGroup => 'Modifier la scène';
 
   @override
-  String get groupsGroupName => 'NOM DU GROUPE';
+  String get groupsGroupName => 'NOM DE LA SCÈNE';
 
   @override
   String get groupsNameHint => 'p. ex. Voyage au Japon';
@@ -139,18 +139,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsAddMemberHint => 'Ajouter un membre par nom';
 
   @override
-  String get groupsCreateGroup => 'Créer le groupe';
+  String get groupsCreateGroup => 'Créer la scène';
 
   @override
   String get groupsSaveChanges => 'Enregistrer les modifications';
 
   @override
   String get groupsRemovalBlockedYou =>
-      'Vous avez des dépenses ou des règlements dans ce groupe et ne pouvez pas être retiré.';
+      'Vous avez des dépenses ou des règlements dans cette scène et ne pouvez pas être retiré.';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return '$name a des dépenses ou des règlements dans ce groupe et ne peut pas être retiré.';
+    return '$name a des dépenses ou des règlements dans cette scène et ne peut pas être retiré.';
   }
 
   @override
@@ -162,7 +162,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'Supprimer le groupe';
+  String get groupsDeleteGroup => 'Supprimer la scène';
 
   @override
   String get groupsAddExpense => 'Ajouter une dépense';
@@ -200,11 +200,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return 'Retirer « $title » de ce groupe ?';
+    return 'Retirer « $title » de cette scène ?';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'Supprimer le groupe ?';
+  String get groupsDeleteGroupTitle => 'Supprimer la scène ?';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -451,7 +451,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileDefaultCurrencyHint =>
-      'Utilisée pour les nouveaux groupes et le résumé d\'accueil.';
+      'Utilisée pour les nouvelles scènes et le résumé d\'accueil.';
 
   @override
   String get profileDefaultCurrencySheet => 'Devise par défaut';
@@ -518,7 +518,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get peopleIntro => 'Toutes les personnes ajoutées dans vos groupes.';
+  String get peopleIntro => 'Toutes les personnes ajoutées dans vos scènes.';
 
   @override
   String get peopleSearchHint => 'Rechercher par nom';
@@ -680,7 +680,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sharedSettledTitle => 'Tout est réglé';
 
   @override
-  String get sharedSettledSubtitle => 'Aucun solde en attente dans ce groupe';
+  String get sharedSettledSubtitle => 'Aucun solde en attente dans cette scène';
 
   @override
   String get sharedYouGet => 'Vous recevez';

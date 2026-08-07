@@ -210,31 +210,31 @@ abstract class AppLocalizations {
   /// No description provided for @homeNewGroup.
   ///
   /// In en, this message translates to:
-  /// **'New group'**
+  /// **'New scene'**
   String get homeNewGroup;
 
   /// No description provided for @homeGroupsHeader.
   ///
   /// In en, this message translates to:
-  /// **'GROUPS'**
+  /// **'SCENES'**
   String get homeGroupsHeader;
 
   /// No description provided for @homeYouGetByGroup.
   ///
   /// In en, this message translates to:
-  /// **'You get by group'**
+  /// **'You get by scene'**
   String get homeYouGetByGroup;
 
   /// No description provided for @homeYouWillGiveByGroup.
   ///
   /// In en, this message translates to:
-  /// **'You will give by group'**
+  /// **'You will give by scene'**
   String get homeYouWillGiveByGroup;
 
   /// No description provided for @homeBreakdownSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Amounts shown in each group\'s currency'**
+  /// **'Amounts shown in each scene\'s currency'**
   String get homeBreakdownSubtitle;
 
   /// No description provided for @homeYouWillGet.
@@ -276,31 +276,31 @@ abstract class AppLocalizations {
   /// No description provided for @homeEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'No groups yet'**
+  /// **'No scenes yet'**
   String get homeEmptyTitle;
 
   /// No description provided for @homeEmptyBody.
   ///
   /// In en, this message translates to:
-  /// **'Create a group for your trip, home,\nor friends to start splitting.'**
+  /// **'Create a scene for a trip, dinner,\nor shared home to start splitting.'**
   String get homeEmptyBody;
 
   /// No description provided for @groupsNewGroup.
   ///
   /// In en, this message translates to:
-  /// **'New group'**
+  /// **'New scene'**
   String get groupsNewGroup;
 
   /// No description provided for @groupsEditGroup.
   ///
   /// In en, this message translates to:
-  /// **'Edit group'**
+  /// **'Edit scene'**
   String get groupsEditGroup;
 
   /// No description provided for @groupsGroupName.
   ///
   /// In en, this message translates to:
-  /// **'GROUP NAME'**
+  /// **'SCENE NAME'**
   String get groupsGroupName;
 
   /// No description provided for @groupsNameHint.
@@ -336,7 +336,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupsCreateGroup.
   ///
   /// In en, this message translates to:
-  /// **'Create group'**
+  /// **'Create scene'**
   String get groupsCreateGroup;
 
   /// No description provided for @groupsSaveChanges.
@@ -348,13 +348,13 @@ abstract class AppLocalizations {
   /// No description provided for @groupsRemovalBlockedYou.
   ///
   /// In en, this message translates to:
-  /// **'You have expenses or settlements in this group and cannot be removed.'**
+  /// **'You have expenses or settlements in this scene and cannot be removed.'**
   String get groupsRemovalBlockedYou;
 
   /// No description provided for @groupsRemovalBlockedOther.
   ///
   /// In en, this message translates to:
-  /// **'{name} has expenses or settlements in this group and cannot be removed.'**
+  /// **'{name} has expenses or settlements in this scene and cannot be removed.'**
   String groupsRemovalBlockedOther(String name);
 
   /// No description provided for @groupsThisMember.
@@ -372,7 +372,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupsDeleteGroup.
   ///
   /// In en, this message translates to:
-  /// **'Delete group'**
+  /// **'Delete scene'**
   String get groupsDeleteGroup;
 
   /// No description provided for @groupsAddExpense.
@@ -438,13 +438,13 @@ abstract class AppLocalizations {
   /// No description provided for @groupsDeleteExpenseBody.
   ///
   /// In en, this message translates to:
-  /// **'Remove \"{title}\" from this group?'**
+  /// **'Remove \"{title}\" from this scene?'**
   String groupsDeleteExpenseBody(String title);
 
   /// No description provided for @groupsDeleteGroupTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete group?'**
+  /// **'Delete scene?'**
   String get groupsDeleteGroupTitle;
 
   /// No description provided for @groupsDeleteGroupBody.
@@ -870,7 +870,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileDefaultCurrencyHint.
   ///
   /// In en, this message translates to:
-  /// **'Used for new groups and the home summary.'**
+  /// **'Used for new scenes and the home summary.'**
   String get profileDefaultCurrencyHint;
 
   /// No description provided for @profileDefaultCurrencySheet.
@@ -972,7 +972,7 @@ abstract class AppLocalizations {
   /// No description provided for @peopleIntro.
   ///
   /// In en, this message translates to:
-  /// **'Everyone added across your groups.'**
+  /// **'Everyone added across your scenes.'**
   String get peopleIntro;
 
   /// No description provided for @peopleSearchHint.
@@ -1254,7 +1254,7 @@ abstract class AppLocalizations {
   /// No description provided for @sharedSettledSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'No outstanding balances in this group'**
+  /// **'No outstanding balances in this scene'**
   String get sharedSettledSubtitle;
 
   /// No description provided for @sharedYouGet.

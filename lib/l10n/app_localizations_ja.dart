@@ -65,19 +65,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingPrivacyNote => 'すべてのデータは端末内に保存されます。';
 
   @override
-  String get homeNewGroup => '新しいグループ';
+  String get homeNewGroup => '新しいシーン';
 
   @override
-  String get homeGroupsHeader => 'グループ';
+  String get homeGroupsHeader => 'シーン';
 
   @override
-  String get homeYouGetByGroup => 'グループ別の受取予定';
+  String get homeYouGetByGroup => 'シーン別の受取予定';
 
   @override
-  String get homeYouWillGiveByGroup => 'グループ別の支払予定';
+  String get homeYouWillGiveByGroup => 'シーン別の支払予定';
 
   @override
-  String get homeBreakdownSubtitle => '各グループの通貨で表示';
+  String get homeBreakdownSubtitle => '各シーンの通貨で表示';
 
   @override
   String get homeYouWillGet => '受取予定';
@@ -106,19 +106,19 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'グループがありません';
+  String get homeEmptyTitle => 'シーンがありません';
 
   @override
-  String get homeEmptyBody => '旅行、家庭、友だち用の\nグループを作成して割り勘を始めましょう。';
+  String get homeEmptyBody => '旅行、ディナー、シェアハウス用の\nシーンを作成して割り勘を始めましょう。';
 
   @override
-  String get groupsNewGroup => '新しいグループ';
+  String get groupsNewGroup => '新しいシーン';
 
   @override
-  String get groupsEditGroup => 'グループを編集';
+  String get groupsEditGroup => 'シーンを編集';
 
   @override
-  String get groupsGroupName => 'グループ名';
+  String get groupsGroupName => 'シーン名';
 
   @override
   String get groupsNameHint => '例: 日本旅行';
@@ -136,17 +136,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsAddMemberHint => '名前でメンバーを追加';
 
   @override
-  String get groupsCreateGroup => 'グループを作成';
+  String get groupsCreateGroup => 'シーンを作成';
 
   @override
   String get groupsSaveChanges => '変更を保存';
 
   @override
-  String get groupsRemovalBlockedYou => 'このグループに経費または精算があるため、削除できません。';
+  String get groupsRemovalBlockedYou => 'このシーンに経費または精算があるため、削除できません。';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return '$name にはこのグループの経費または精算があるため、削除できません。';
+    return '$name にはこのシーンの経費または精算があるため、削除できません。';
   }
 
   @override
@@ -158,7 +158,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'グループを削除';
+  String get groupsDeleteGroup => 'シーンを削除';
 
   @override
   String get groupsAddExpense => '経費を追加';
@@ -196,11 +196,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return '「$title」をこのグループから削除しますか？';
+    return '「$title」をこのシーンから削除しますか？';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'グループを削除しますか？';
+  String get groupsDeleteGroupTitle => 'シーンを削除しますか？';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -439,7 +439,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get profileDefaultCurrencyHeader => 'デフォルト通貨';
 
   @override
-  String get profileDefaultCurrencyHint => '新しいグループとホームの概要に使用されます。';
+  String get profileDefaultCurrencyHint => '新しいシーンとホームの概要に使用されます。';
 
   @override
   String get profileDefaultCurrencySheet => 'デフォルト通貨';
@@ -505,7 +505,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get peopleIntro => 'すべてのグループに追加されたメンバー。';
+  String get peopleIntro => 'すべてのシーンに追加されたメンバー。';
 
   @override
   String get peopleSearchHint => '名前で検索';
@@ -661,7 +661,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sharedSettledTitle => 'すべて精算済みです';
 
   @override
-  String get sharedSettledSubtitle => 'このグループに未払い残高はありません';
+  String get sharedSettledSubtitle => 'このシーンに未払い残高はありません';
 
   @override
   String get sharedYouGet => '受取予定';

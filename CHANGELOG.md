@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Who-owes-whom suggestions follow shared expenses (pay the people on your bills), with only A↔B offsets — not fewest-transfer matching across the group.
+- Renamed user-facing “groups” to “scenes” (home, create/edit, empty states) so containers read as trips, dinners, and shared activities.
 
 ## [1.5.0] - 2026-08-05
 

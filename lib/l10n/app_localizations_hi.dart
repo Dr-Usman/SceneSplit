@@ -66,20 +66,20 @@ class AppLocalizationsHi extends AppLocalizations {
   String get onboardingPrivacyNote => 'सब कुछ आपके डिवाइस पर ही रहता है।';
 
   @override
-  String get homeNewGroup => 'नया समूह';
+  String get homeNewGroup => 'नया सीन';
 
   @override
-  String get homeGroupsHeader => 'समूह';
+  String get homeGroupsHeader => 'सीन';
 
   @override
-  String get homeYouGetByGroup => 'समूह के अनुसार आपको मिलेगा';
+  String get homeYouGetByGroup => 'सीन के अनुसार आपको मिलेगा';
 
   @override
-  String get homeYouWillGiveByGroup => 'समूह के अनुसार आपको देना होगा';
+  String get homeYouWillGiveByGroup => 'सीन के अनुसार आपको देना होगा';
 
   @override
   String get homeBreakdownSubtitle =>
-      'प्रत्येक समूह की मुद्रा में राशि दिखाई गई है';
+      'प्रत्येक सीन की मुद्रा में राशि दिखाई गई है';
 
   @override
   String get homeYouWillGet => 'आपको मिलेगा';
@@ -108,20 +108,20 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'अभी कोई समूह नहीं';
+  String get homeEmptyTitle => 'अभी कोई सीन नहीं';
 
   @override
   String get homeEmptyBody =>
-      'अपनी यात्रा, घर या\nदोस्तों के लिए समूह बनाकर बँटवारा शुरू करें।';
+      'यात्रा, डिनर या साझा घर के लिए\nएक सीन बनाकर बँटवारा शुरू करें।';
 
   @override
-  String get groupsNewGroup => 'नया समूह';
+  String get groupsNewGroup => 'नया सीन';
 
   @override
-  String get groupsEditGroup => 'समूह संपादित करें';
+  String get groupsEditGroup => 'सीन संपादित करें';
 
   @override
-  String get groupsGroupName => 'समूह का नाम';
+  String get groupsGroupName => 'सीन का नाम';
 
   @override
   String get groupsNameHint => 'जैसे जापान यात्रा';
@@ -139,18 +139,18 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsAddMemberHint => 'नाम से सदस्य जोड़ें';
 
   @override
-  String get groupsCreateGroup => 'समूह बनाएँ';
+  String get groupsCreateGroup => 'सीन बनाएँ';
 
   @override
   String get groupsSaveChanges => 'बदलाव सहेजें';
 
   @override
   String get groupsRemovalBlockedYou =>
-      'इस समूह में आपके खर्च या निपटान हैं, इसलिए आपको हटाया नहीं जा सकता।';
+      'इस सीन में आपके खर्च या निपटान हैं, इसलिए आपको हटाया नहीं जा सकता।';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return '$name के इस समूह में खर्च या निपटान हैं, इसलिए उन्हें हटाया नहीं जा सकता।';
+    return '$name के इस सीन में खर्च या निपटान हैं, इसलिए उन्हें हटाया नहीं जा सकता।';
   }
 
   @override
@@ -162,7 +162,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'समूह हटाएँ';
+  String get groupsDeleteGroup => 'सीन हटाएँ';
 
   @override
   String get groupsAddExpense => 'खर्च जोड़ें';
@@ -200,11 +200,11 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return 'क्या \"$title\" को इस समूह से हटाना है?';
+    return 'क्या \"$title\" को इस सीन से हटाना है?';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'समूह हटाएँ?';
+  String get groupsDeleteGroupTitle => 'सीन हटाएँ?';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -448,7 +448,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get profileDefaultCurrencyHint =>
-      'नए समूहों और होम सारांश के लिए उपयोग होती है।';
+      'नए सीन और होम सारांश के लिए उपयोग होती है।';
 
   @override
   String get profileDefaultCurrencySheet => 'डिफ़ॉल्ट मुद्रा';
@@ -514,7 +514,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get peopleIntro => 'आपके सभी समूहों में जोड़े गए लोग।';
+  String get peopleIntro => 'आपके सभी सीन में जोड़े गए लोग।';
 
   @override
   String get peopleSearchHint => 'नाम से खोजें';
@@ -672,7 +672,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sharedSettledTitle => 'आप सभी का निपटान कर चुके हैं';
 
   @override
-  String get sharedSettledSubtitle => 'इस समूह में कोई बकाया शेष नहीं';
+  String get sharedSettledSubtitle => 'इस सीन में कोई बकाया शेष नहीं';
 
   @override
   String get sharedYouGet => 'आपको मिलेगा';

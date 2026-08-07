@@ -66,20 +66,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get onboardingPrivacyNote => 'Alles bleibt auf deinem Gerät.';
 
   @override
-  String get homeNewGroup => 'Neue Gruppe';
+  String get homeNewGroup => 'Neue Szene';
 
   @override
-  String get homeGroupsHeader => 'GRUPPEN';
+  String get homeGroupsHeader => 'SZENEN';
 
   @override
-  String get homeYouGetByGroup => 'Du erhältst nach Gruppe';
+  String get homeYouGetByGroup => 'Du erhältst nach Szene';
 
   @override
-  String get homeYouWillGiveByGroup => 'Du schuldest nach Gruppe';
+  String get homeYouWillGiveByGroup => 'Du schuldest nach Szene';
 
   @override
   String get homeBreakdownSubtitle =>
-      'Beträge in der Währung jeder Gruppe angezeigt';
+      'Beträge in der Währung jeder Szene angezeigt';
 
   @override
   String get homeYouWillGet => 'Du erhältst';
@@ -108,20 +108,20 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'Noch keine Gruppen';
+  String get homeEmptyTitle => 'Noch keine Szenen';
 
   @override
   String get homeEmptyBody =>
-      'Erstelle eine Gruppe für deine Reise, dein\nZuhause oder Freunde und beginne zu teilen.';
+      'Erstelle eine Szene für eine Reise, ein Abendessen\noder ein gemeinsames Zuhause und beginne zu teilen.';
 
   @override
-  String get groupsNewGroup => 'Neue Gruppe';
+  String get groupsNewGroup => 'Neue Szene';
 
   @override
-  String get groupsEditGroup => 'Gruppe bearbeiten';
+  String get groupsEditGroup => 'Szene bearbeiten';
 
   @override
-  String get groupsGroupName => 'GRUPPENNAME';
+  String get groupsGroupName => 'SZENENNAME';
 
   @override
   String get groupsNameHint => 'z. B. Reise nach Japan';
@@ -139,18 +139,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsAddMemberHint => 'Mitglied nach Namen hinzufügen';
 
   @override
-  String get groupsCreateGroup => 'Gruppe erstellen';
+  String get groupsCreateGroup => 'Szene erstellen';
 
   @override
   String get groupsSaveChanges => 'Änderungen speichern';
 
   @override
   String get groupsRemovalBlockedYou =>
-      'Du hast Ausgaben oder Ausgleichszahlungen in dieser Gruppe und kannst nicht entfernt werden.';
+      'Du hast Ausgaben oder Ausgleichszahlungen in dieser Szene und kannst nicht entfernt werden.';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return '$name hat Ausgaben oder Ausgleichszahlungen in dieser Gruppe und kann nicht entfernt werden.';
+    return '$name hat Ausgaben oder Ausgleichszahlungen in dieser Szene und kann nicht entfernt werden.';
   }
 
   @override
@@ -162,7 +162,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'Gruppe löschen';
+  String get groupsDeleteGroup => 'Szene löschen';
 
   @override
   String get groupsAddExpense => 'Ausgabe hinzufügen';
@@ -200,11 +200,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return '«$title» aus dieser Gruppe entfernen?';
+    return '«$title» aus dieser Szene entfernen?';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'Gruppe löschen?';
+  String get groupsDeleteGroupTitle => 'Szene löschen?';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -449,7 +449,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profileDefaultCurrencyHint =>
-      'Wird für neue Gruppen und die Startübersicht verwendet.';
+      'Wird für neue Szenen und die Startübersicht verwendet.';
 
   @override
   String get profileDefaultCurrencySheet => 'Standardwährung';
@@ -516,7 +516,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get peopleIntro =>
-      'Alle Personen, die in deinen Gruppen hinzugefügt wurden.';
+      'Alle Personen, die in deinen Szenen hinzugefügt wurden.';
 
   @override
   String get peopleSearchHint => 'Nach Namen suchen';
@@ -675,7 +675,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get sharedSettledTitle => 'Alles ist ausgeglichen';
 
   @override
-  String get sharedSettledSubtitle => 'Keine offenen Salden in dieser Gruppe';
+  String get sharedSettledSubtitle => 'Keine offenen Salden in dieser Szene';
 
   @override
   String get sharedYouGet => 'Du erhältst';

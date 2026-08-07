@@ -66,19 +66,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingPrivacyNote => 'كل شيء يبقى على جهازك.';
 
   @override
-  String get homeNewGroup => 'مجموعة جديدة';
+  String get homeNewGroup => 'مشهد جديد';
 
   @override
-  String get homeGroupsHeader => 'المجموعات';
+  String get homeGroupsHeader => 'المشاهد';
 
   @override
-  String get homeYouGetByGroup => 'ما ستستلمه حسب المجموعة';
+  String get homeYouGetByGroup => 'ما ستستلمه حسب المشهد';
 
   @override
-  String get homeYouWillGiveByGroup => 'ما ستدفعه حسب المجموعة';
+  String get homeYouWillGiveByGroup => 'ما ستدفعه حسب المشهد';
 
   @override
-  String get homeBreakdownSubtitle => 'المبالغ معروضة بعملة كل مجموعة';
+  String get homeBreakdownSubtitle => 'المبالغ معروضة بعملة كل مشهد';
 
   @override
   String get homeYouWillGet => 'ستستلم';
@@ -107,20 +107,20 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get homeEmptyTitle => 'لا توجد مجموعات بعد';
+  String get homeEmptyTitle => 'لا توجد مشاهد بعد';
 
   @override
   String get homeEmptyBody =>
-      'أنشئ مجموعة لرحلتك أو منزلك\nأو أصدقائك لبدء تقسيم النفقات.';
+      'أنشئ مشهداً لرحلة أو عشاء\nأو منزل مشترك لبدء تقسيم النفقات.';
 
   @override
-  String get groupsNewGroup => 'مجموعة جديدة';
+  String get groupsNewGroup => 'مشهد جديد';
 
   @override
-  String get groupsEditGroup => 'تعديل المجموعة';
+  String get groupsEditGroup => 'تعديل المشهد';
 
   @override
-  String get groupsGroupName => 'اسم المجموعة';
+  String get groupsGroupName => 'اسم المشهد';
 
   @override
   String get groupsNameHint => 'مثال: رحلة إلى اليابان';
@@ -138,18 +138,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsAddMemberHint => 'أضف عضوًا بالاسم';
 
   @override
-  String get groupsCreateGroup => 'إنشاء مجموعة';
+  String get groupsCreateGroup => 'إنشاء مشهد';
 
   @override
   String get groupsSaveChanges => 'حفظ التغييرات';
 
   @override
   String get groupsRemovalBlockedYou =>
-      'لديك نفقات أو تسويات في هذه المجموعة ولا يمكن إزالتك.';
+      'لديك نفقات أو تسويات في هذا المشهد ولا يمكن إزالتك.';
 
   @override
   String groupsRemovalBlockedOther(String name) {
-    return 'لدى $name نفقات أو تسويات في هذه المجموعة ولا يمكن إزالته.';
+    return 'لدى $name نفقات أو تسويات في هذا المشهد ولا يمكن إزالته.';
   }
 
   @override
@@ -161,7 +161,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get groupsDeleteGroup => 'حذف المجموعة';
+  String get groupsDeleteGroup => 'حذف المشهد';
 
   @override
   String get groupsAddExpense => 'إضافة نفقة';
@@ -199,11 +199,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String groupsDeleteExpenseBody(String title) {
-    return 'هل تريد إزالة \"$title\" من هذه المجموعة؟';
+    return 'هل تريد إزالة \"$title\" من هذا المشهد؟';
   }
 
   @override
-  String get groupsDeleteGroupTitle => 'حذف المجموعة؟';
+  String get groupsDeleteGroupTitle => 'حذف المشهد؟';
 
   @override
   String groupsDeleteGroupBody(String name) {
@@ -445,7 +445,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileDefaultCurrencyHint =>
-      'تُستخدم للمجموعات الجديدة وملخص الصفحة الرئيسية.';
+      'تُستخدم للمشاهد الجديدة وملخص الصفحة الرئيسية.';
 
   @override
   String get profileDefaultCurrencySheet => 'العملة الافتراضية';
@@ -511,7 +511,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get peopleIntro => 'جميع الأشخاص المضافين عبر مجموعاتك.';
+  String get peopleIntro => 'جميع الأشخاص المضافين عبر مشاهدك.';
 
   @override
   String get peopleSearchHint => 'البحث بالاسم';
@@ -668,7 +668,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sharedSettledTitle => 'تمت تسوية جميع الحسابات';
 
   @override
-  String get sharedSettledSubtitle => 'لا توجد أرصدة مستحقة في هذه المجموعة';
+  String get sharedSettledSubtitle => 'لا توجد أرصدة مستحقة في هذا المشهد';
 
   @override
   String get sharedYouGet => 'ستستلم';
