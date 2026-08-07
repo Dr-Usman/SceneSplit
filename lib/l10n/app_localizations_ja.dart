@@ -205,6 +205,28 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsSettleUp => '精算';
 
   @override
+  String get groupsShareBalances => '共有';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return '残高 — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return '$groupName の貸し借り';
+  }
+
+  @override
+  String get groupsShareAllSettled => '精算済み';
+
+  @override
+  String get groupsExpenseShares => '費用の分担';
+
+  @override
+  String get groupsCouldNotShareBalances => '残高を共有できませんでした。';
+
+  @override
   String get groupsSettlements => '精算履歴';
 
   @override

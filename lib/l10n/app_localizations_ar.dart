@@ -208,6 +208,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsSettleUp => 'تسوية';
 
   @override
+  String get groupsShareBalances => 'مشاركة';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'الأرصدة — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return 'من يدين لمن في $groupName';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'تمت التسوية بالكامل';
+
+  @override
+  String get groupsExpenseShares => 'حصص المصروفات';
+
+  @override
+  String get groupsCouldNotShareBalances => 'تعذّرت مشاركة الأرصدة.';
+
+  @override
   String get groupsSettlements => 'التسويات';
 
   @override

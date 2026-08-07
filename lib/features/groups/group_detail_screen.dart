@@ -6,7 +6,9 @@ import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
+import '../../core/utils/share_balance_image.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
@@ -16,6 +18,7 @@ import '../../repositories/settlement_repository.dart';
 import '../../services/balance_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/balance_hero_card.dart';
+import '../../shared/widgets/balance_share_card.dart';
 import '../../shared/widgets/breakdown_pie_chart.dart';
 import '../../shared/widgets/member_expense_breakdown_sheet.dart';
 import '../../shared/widgets/section_header.dart';
@@ -221,20 +224,62 @@ class GroupDetailScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              if (data.debts.isNotEmpty) ...[
+              if (data.debts.isNotEmpty ||
+                  data.memberShareCents.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                SectionHeader(
-                  l10n.groupsWhoOwesWhom,
-                  trailing: TextButton.icon(
-                    onPressed: () => showRecordSettlementSheet(
-                      context,
-                      groupId: groupId,
-                      currencyCode: data.group.currencyCode,
-                      members: data.members,
+                Row(
+                  children: [
+                    Container(
+                      width: 3,
+                      height: 14,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                    icon: const Icon(Icons.handshake_outlined, size: 18),
-                    label: Text(l10n.groupsSettleUp),
-                  ),
+                    const SizedBox(width: 8),
+                    Text(
+                      l10n.groupsWhoOwesWhom,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    IconButton(
+                      tooltip: l10n.groupsShareBalances,
+                      onPressed: () => _shareBalances(
+                        context,
+                        ref,
+                        data: data,
+                        users: users,
+                        locale: locale,
+                      ),
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 28,
+                        minHeight: 28,
+                      ),
+                      icon: Icon(
+                        Icons.share_outlined,
+                        size: 18,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (data.debts.isNotEmpty)
+                      TextButton.icon(
+                        onPressed: () => showRecordSettlementSheet(
+                          context,
+                          groupId: groupId,
+                          currencyCode: data.group.currencyCode,
+                          members: data.members,
+                        ),
+                        icon: const Icon(Icons.handshake_outlined, size: 18),
+                        label: Text(l10n.groupsSettleUp),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 AppCard(
@@ -242,26 +287,42 @@ class GroupDetailScreen extends ConsumerWidget {
                     horizontal: 12,
                     vertical: 4,
                   ),
-                  child: Column(
-                    children: [
-                      for (var i = 0; i < data.debts.length; i++) ...[
-                        _DebtTile(
-                          debt: data.debts[i],
-                          users: users,
-                          currencyCode: data.group.currencyCode,
-                          locale: locale,
-                          onTap: () => showRecordSettlementSheet(
-                            context,
-                            groupId: groupId,
-                            currencyCode: data.group.currencyCode,
-                            members: data.members,
-                            prefill: data.debts[i],
+                  child: data.debts.isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 4,
                           ),
+                          child: Text(
+                            l10n.groupsShareAllSettled,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.positive,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            for (var i = 0; i < data.debts.length; i++) ...[
+                              _DebtTile(
+                                debt: data.debts[i],
+                                users: users,
+                                currencyCode: data.group.currencyCode,
+                                locale: locale,
+                                onTap: () => showRecordSettlementSheet(
+                                  context,
+                                  groupId: groupId,
+                                  currencyCode: data.group.currencyCode,
+                                  members: data.members,
+                                  prefill: data.debts[i],
+                                ),
+                              ),
+                              if (i < data.debts.length - 1)
+                                const Divider(height: 1),
+                            ],
+                          ],
                         ),
-                        if (i < data.debts.length - 1) const Divider(height: 1),
-                      ],
-                    ],
-                  ),
                 ),
               ],
               if (data.settlements.isNotEmpty) ...[
@@ -321,6 +382,64 @@ class GroupDetailScreen extends ConsumerWidget {
         );
       },
     );
+  }
+
+  Future<void> _shareBalances(
+    BuildContext context,
+    WidgetRef ref, {
+    required GroupDetailData data,
+    required Map<String, User> users,
+    required String locale,
+  }) async {
+    final l10n = context.l10n;
+    final unknown = l10n.commonUnknown;
+
+    final debtRows = [
+      for (final debt in data.debts)
+        BalanceShareDebtRow(
+          fromName: users[debt.fromUserId]?.name ?? unknown,
+          toName: users[debt.toUserId]?.name ?? unknown,
+          amountCents: debt.amountCents,
+        ),
+    ];
+
+    final shareEntries = data.memberShareCents.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    final memberRows = [
+      for (final entry in shareEntries)
+        BalanceShareMemberRow(
+          name: users[entry.key]?.name ?? unknown,
+          colorIndex: users[entry.key]?.colorIndex ?? 0,
+          shareCents: entry.value,
+        ),
+    ];
+
+    final ok = await shareBalanceImage(
+      context,
+      groupName: data.group.name,
+      card: BalanceShareCard(
+        groupEmoji: data.group.emoji,
+        groupName: data.group.name,
+        currencyCode: data.group.currencyCode,
+        locale: locale,
+        debts: debtRows,
+        memberShares: memberRows,
+      ),
+    );
+
+    if (!context.mounted) return;
+    if (ok) {
+      await ref
+          .read(analyticsServiceProvider)
+          .trackBalanceShared(
+            debtCount: debtRows.length,
+            memberShareCount: memberRows.length,
+          );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.groupsCouldNotShareBalances)));
+    }
   }
 
   Future<void> _confirmDelete(

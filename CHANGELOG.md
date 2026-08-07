@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Scene detail: share Who Owes Whom as an image (with expense share totals) via the system share sheet for WhatsApp and similar apps.
 - People → person detail: balances across scenes with per-scene currency, who-owes-whom, expense shares, and settle.
 - Person detail header: per-currency will-give / gets totals (no cross-currency merge).
 

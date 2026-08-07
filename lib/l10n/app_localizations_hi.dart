@@ -209,6 +209,28 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsSettleUp => 'निपटान करें';
 
   @override
+  String get groupsShareBalances => 'शेयर करें';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'बैलेंस — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return '$groupName में किसका कितना बकाया';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'सब निपट गया';
+
+  @override
+  String get groupsExpenseShares => 'खर्च के हिस्से';
+
+  @override
+  String get groupsCouldNotShareBalances => 'बैलेंस शेयर नहीं हो सका।';
+
+  @override
   String get groupsSettlements => 'निपटान';
 
   @override

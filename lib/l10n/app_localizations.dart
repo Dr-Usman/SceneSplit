@@ -435,6 +435,42 @@ abstract class AppLocalizations {
   /// **'Settle up'**
   String get groupsSettleUp;
 
+  /// No description provided for @groupsShareBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get groupsShareBalances;
+
+  /// No description provided for @groupsShareBalancesSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances — {groupName}'**
+  String groupsShareBalancesSubject(String groupName);
+
+  /// No description provided for @groupsShareBalancesText.
+  ///
+  /// In en, this message translates to:
+  /// **'Who owes whom in {groupName}'**
+  String groupsShareBalancesText(String groupName);
+
+  /// No description provided for @groupsShareAllSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'All settled'**
+  String get groupsShareAllSettled;
+
+  /// No description provided for @groupsExpenseShares.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense shares'**
+  String get groupsExpenseShares;
+
+  /// No description provided for @groupsCouldNotShareBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share balances.'**
+  String get groupsCouldNotShareBalances;
+
   /// No description provided for @groupsSettlements.
   ///
   /// In en, this message translates to:

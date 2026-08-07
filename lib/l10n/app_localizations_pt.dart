@@ -208,6 +208,29 @@ class AppLocalizationsPt extends AppLocalizations {
   String get groupsSettleUp => 'Acertar contas';
 
   @override
+  String get groupsShareBalances => 'Partilhar';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'Saldos — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return 'Quem deve a quem em $groupName';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'Tudo acertado';
+
+  @override
+  String get groupsExpenseShares => 'Partes das despesas';
+
+  @override
+  String get groupsCouldNotShareBalances =>
+      'Não foi possível partilhar os saldos.';
+
+  @override
   String get groupsSettlements => 'ACERTOS';
 
   @override
@@ -1059,6 +1082,29 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get groupsSettleUp => 'Acertar contas';
+
+  @override
+  String get groupsShareBalances => 'Compartilhar';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'Saldos — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return 'Quem deve a quem em $groupName';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'Tudo acertado';
+
+  @override
+  String get groupsExpenseShares => 'Partes das despesas';
+
+  @override
+  String get groupsCouldNotShareBalances =>
+      'Não foi possível compartilhar os saldos.';
 
   @override
   String get groupsSettlements => 'ACERTOS';

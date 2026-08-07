@@ -209,6 +209,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsSettleUp => 'Régler';
 
   @override
+  String get groupsShareBalances => 'Partager';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'Soldes — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return 'Qui doit quoi dans $groupName';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'Tout est réglé';
+
+  @override
+  String get groupsExpenseShares => 'Parts des dépenses';
+
+  @override
+  String get groupsCouldNotShareBalances =>
+      'Impossible de partager les soldes.';
+
+  @override
   String get groupsSettlements => 'RÈGLEMENTS';
 
   @override

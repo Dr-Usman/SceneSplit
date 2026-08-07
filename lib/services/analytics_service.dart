@@ -144,6 +144,21 @@ class AnalyticsService {
     );
   }
 
+  /// Fired after the user successfully opens the share sheet for balances.
+  Future<void> trackBalanceShared({
+    required int debtCount,
+    required int memberShareCount,
+  }) async {
+    await _track(
+      'balance_shared',
+      properties: {
+        'debt_count': debtCount,
+        'member_share_count': memberShareCount,
+        'platform': platformLabel(),
+      },
+    );
+  }
+
   Future<void> _track(
     String eventName, {
     Map<String, dynamic>? properties,

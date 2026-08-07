@@ -209,6 +209,29 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsSettleUp => 'Ausgleichen';
 
   @override
+  String get groupsShareBalances => 'Teilen';
+
+  @override
+  String groupsShareBalancesSubject(String groupName) {
+    return 'Salden — $groupName';
+  }
+
+  @override
+  String groupsShareBalancesText(String groupName) {
+    return 'Wer wem schuldet in $groupName';
+  }
+
+  @override
+  String get groupsShareAllSettled => 'Alles ausgeglichen';
+
+  @override
+  String get groupsExpenseShares => 'Kostenanteile';
+
+  @override
+  String get groupsCouldNotShareBalances =>
+      'Salden konnten nicht geteilt werden.';
+
+  @override
   String get groupsSettlements => 'AUSGLEICHSZAHLUNGEN';
 
   @override

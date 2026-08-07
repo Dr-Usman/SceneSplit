@@ -115,6 +115,22 @@
   "groupsManage": "Manage",
   "groupsWhoOwesWhom": "WHO OWES WHOM",
   "groupsSettleUp": "Settle up",
+  "groupsShareBalances": "Share",
+  "groupsShareBalancesSubject": "Balances — {groupName}",
+  "@groupsShareBalancesSubject": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsShareBalancesText": "Who owes whom in {groupName}",
+  "@groupsShareBalancesText": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsShareAllSettled": "All settled",
+  "groupsExpenseShares": "Expense shares",
+  "groupsCouldNotShareBalances": "Could not share balances.",
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
   "groupsSwipeToDeleteHint": "Swipe left to delete",
