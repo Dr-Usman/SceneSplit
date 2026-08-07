@@ -53,6 +53,7 @@
   "groupsSettleUp": "निपटान करें",
   "groupsSettlements": "निपटान",
   "groupsExpenses": "खर्च",
+  "groupsSwipeToDeleteHint": "हटाने के लिए बाईं ओर स्वाइप करें",
   "groupsDeleteExpenseTitle": "खर्च हटाएँ?",
   "groupsDeleteExpenseBody": "क्या \"{title}\" को इस सीन से हटाना है?",
   "groupsDeleteGroupTitle": "सीन हटाएँ?",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "नाम से खोजें",
   "peopleEmpty": "अभी कोई व्यक्ति नहीं। जोड़ने के लिए + पर टैप करें।",
   "peopleNoMatch": "आपकी खोज से कोई व्यक्ति मेल नहीं खाता।",
+  "peopleSwipeHint": "संपादित या हटाने के लिए बाईं ओर स्वाइप करें",
+  "peopleSceneCount": "{count, plural, =0{किसी सीन में नहीं} =1{1 सीन} other{{count} सीन}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "प्रत्येक सीन की मुद्रा में राशि दिखाई गई है",
+  "peopleDetailEmptyScenes": "अभी किसी सीन के सदस्य नहीं।",
+  "peopleDetailAllSettled": "सभी सीन में हिसाब चुकता",
+  "peopleDetailOpenBalances": "कुछ सीन में बकाया शेष",
+  "peopleDetailGets": "{name} को मिलेगा",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} को देना होगा",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "चुकता",
+  "peopleDetailNoDebts": "इस सीन में कोई बकाया नहीं",
+  "peopleDetailViewExpenses": "खर्च का हिस्सा देखें",
+  "peopleDetailExpensesSection": "खर्च",
   "dataTitle": "डेटा और बैकअप",
   "dataWebBlurb": "मोबाइल और डेस्कटॉप ऐप में बैकअप निर्यात और आयात उपलब्ध है। आपका डेटा इस ब्राउज़र में स्थानीय रूप से संग्रहीत है।",
   "dataNativeBlurb": "बैकअप निर्यात करें, फिर इसे अपने डिवाइस पर सहेजें या कहीं और साझा करें। आयात इस डिवाइस का सारा डेटा बदल देगा।",

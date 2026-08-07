@@ -53,6 +53,7 @@
   "groupsSettleUp": "Ausgleichen",
   "groupsSettlements": "AUSGLEICHSZAHLUNGEN",
   "groupsExpenses": "AUSGABEN",
+  "groupsSwipeToDeleteHint": "Nach links wischen zum Löschen",
   "groupsDeleteExpenseTitle": "Ausgabe löschen?",
   "groupsDeleteExpenseBody": "«{title}» aus dieser Szene entfernen?",
   "groupsDeleteGroupTitle": "Szene löschen?",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "Nach Namen suchen",
   "peopleEmpty": "Noch keine Personen. Tippe auf +, um jemanden hinzuzufügen.",
   "peopleNoMatch": "Keine Personen entsprechen deiner Suche.",
+  "peopleSwipeHint": "Nach links wischen zum Bearbeiten oder Löschen",
+  "peopleSceneCount": "{count, plural, =0{In keiner Szene} =1{1 Szene} other{{count} Szenen}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "Beträge in der Währung jeder Szene angezeigt",
+  "peopleDetailEmptyScenes": "Noch in keiner Szene Mitglied.",
+  "peopleDetailAllSettled": "Überall ausgeglichen",
+  "peopleDetailOpenBalances": "Offene Salden in manchen Szenen",
+  "peopleDetailGets": "{name} erhält",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} schuldet",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "Ausgeglichen",
+  "peopleDetailNoDebts": "Keine offenen Schulden in dieser Szene",
+  "peopleDetailViewExpenses": "Ausgabenanteile anzeigen",
+  "peopleDetailExpensesSection": "AUSGABEN",
   "dataTitle": "Daten & Sicherung",
   "dataWebBlurb": "Sicherungsexport und -import sind in den mobilen und Desktop-Apps verfügbar. Deine Daten werden lokal in diesem Browser gespeichert.",
   "dataNativeBlurb": "Exportiere eine Sicherung und speichere sie auf deinem Gerät oder teile sie anderswo. Der Import ersetzt alles auf diesem Gerät.",

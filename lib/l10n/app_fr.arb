@@ -53,6 +53,7 @@
   "groupsSettleUp": "Régler",
   "groupsSettlements": "RÈGLEMENTS",
   "groupsExpenses": "DÉPENSES",
+  "groupsSwipeToDeleteHint": "Balayez vers la gauche pour supprimer",
   "groupsDeleteExpenseTitle": "Supprimer la dépense ?",
   "groupsDeleteExpenseBody": "Retirer « {title} » de cette scène ?",
   "groupsDeleteGroupTitle": "Supprimer la scène ?",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "Rechercher par nom",
   "peopleEmpty": "Aucune personne pour l'instant. Appuyez sur + pour en ajouter une.",
   "peopleNoMatch": "Aucune personne ne correspond à votre recherche.",
+  "peopleSwipeHint": "Balayez vers la gauche pour modifier ou supprimer",
+  "peopleSceneCount": "{count, plural, =0{Dans aucune scène} =1{1 scène} other{{count} scènes}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "Montants affichés dans la devise de chaque scène",
+  "peopleDetailEmptyScenes": "Pas encore membre d'une scène.",
+  "peopleDetailAllSettled": "Tout est réglé dans les scènes",
+  "peopleDetailOpenBalances": "Soldes ouverts dans certaines scènes",
+  "peopleDetailGets": "{name} reçoit",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} doit",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "Réglé",
+  "peopleDetailNoDebts": "Aucune dette ouverte dans cette scène",
+  "peopleDetailViewExpenses": "Voir la part des dépenses",
+  "peopleDetailExpensesSection": "DÉPENSES",
   "dataTitle": "Données et sauvegarde",
   "dataWebBlurb": "L'exportation et l'importation de sauvegardes sont disponibles dans les applications mobile et de bureau. Vos données sont stockées localement dans ce navigateur.",
   "dataNativeBlurb": "Exportez une sauvegarde, puis enregistrez-la sur votre appareil ou partagez-la ailleurs. L'importation remplace tout sur cet appareil.",

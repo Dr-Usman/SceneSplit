@@ -53,6 +53,7 @@
   "groupsSettleUp": "精算",
   "groupsSettlements": "精算履歴",
   "groupsExpenses": "経費",
+  "groupsSwipeToDeleteHint": "左にスワイプして削除",
   "groupsDeleteExpenseTitle": "経費を削除しますか？",
   "groupsDeleteExpenseBody": "「{title}」をこのシーンから削除しますか？",
   "groupsDeleteGroupTitle": "シーンを削除しますか？",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "名前で検索",
   "peopleEmpty": "メンバーがいません。+ をタップして追加してください。",
   "peopleNoMatch": "検索に一致するメンバーがいません。",
+  "peopleSwipeHint": "左にスワイプして編集・削除",
+  "peopleSceneCount": "{count, plural, =0{シーンなし} =1{1シーン} other{{count}シーン}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "各シーンの通貨で表示",
+  "peopleDetailEmptyScenes": "まだどのシーンのメンバーでもありません。",
+  "peopleDetailAllSettled": "すべてのシーンで清算済み",
+  "peopleDetailOpenBalances": "一部のシーンに未清算があります",
+  "peopleDetailGets": "{name}の受取",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name}の支払",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "清算済み",
+  "peopleDetailNoDebts": "このシーンに未清算の債務はありません",
+  "peopleDetailViewExpenses": "分担を表示",
+  "peopleDetailExpensesSection": "支出",
   "dataTitle": "データとバックアップ",
   "dataWebBlurb": "バックアップのエクスポートとインポートはモバイルおよびデスクトップアプリで利用できます。データはこのブラウザにローカル保存されています。",
   "dataNativeBlurb": "バックアップをエクスポートし、端末に保存するか他の場所で共有してください。インポートするとこの端末のすべてのデータが置き換わります。",

@@ -196,6 +196,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsExpenses => 'खर्च';
 
   @override
+  String get groupsSwipeToDeleteHint => 'हटाने के लिए बाईं ओर स्वाइप करें';
+
+  @override
   String get groupsDeleteExpenseTitle => 'खर्च हटाएँ?';
 
   @override
@@ -525,6 +528,56 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get peopleNoMatch => 'आपकी खोज से कोई व्यक्ति मेल नहीं खाता।';
+
+  @override
+  String get peopleSwipeHint => 'संपादित या हटाने के लिए बाईं ओर स्वाइप करें';
+
+  @override
+  String peopleSceneCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सीन',
+      one: '1 सीन',
+      zero: 'किसी सीन में नहीं',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get peopleDetailCurrencySubtitle =>
+      'प्रत्येक सीन की मुद्रा में राशि दिखाई गई है';
+
+  @override
+  String get peopleDetailEmptyScenes => 'अभी किसी सीन के सदस्य नहीं।';
+
+  @override
+  String get peopleDetailAllSettled => 'सभी सीन में हिसाब चुकता';
+
+  @override
+  String get peopleDetailOpenBalances => 'कुछ सीन में बकाया शेष';
+
+  @override
+  String peopleDetailGets(String name) {
+    return '$name को मिलेगा';
+  }
+
+  @override
+  String peopleDetailWillGive(String name) {
+    return '$name को देना होगा';
+  }
+
+  @override
+  String get peopleDetailSettledInScene => 'चुकता';
+
+  @override
+  String get peopleDetailNoDebts => 'इस सीन में कोई बकाया नहीं';
+
+  @override
+  String get peopleDetailViewExpenses => 'खर्च का हिस्सा देखें';
+
+  @override
+  String get peopleDetailExpensesSection => 'खर्च';
 
   @override
   String get dataTitle => 'डेटा और बैकअप';

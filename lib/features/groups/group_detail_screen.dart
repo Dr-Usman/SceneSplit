@@ -259,6 +259,8 @@ class GroupDetailScreen extends ConsumerWidget {
               if (data.settlements.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 SectionHeader(l10n.groupsSettlements),
+                const SizedBox(height: 8),
+                _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
                 const SizedBox(height: 10),
                 for (final s in data.settlements)
                   _SettlementTile(
@@ -278,10 +280,13 @@ class GroupDetailScreen extends ConsumerWidget {
               ],
               const SizedBox(height: 28),
               SectionHeader(l10n.groupsExpenses),
-              const SizedBox(height: 12),
-              if (data.expenses.isEmpty)
-                _EmptyExpenses(l10n: l10n)
-              else
+              if (data.expenses.isEmpty) ...[
+                const SizedBox(height: 12),
+                _EmptyExpenses(l10n: l10n),
+              ] else ...[
+                const SizedBox(height: 8),
+                _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
+                const SizedBox(height: 12),
                 for (final item in data.expenses) ...[
                   _ExpenseTile(
                     item: item,
@@ -302,6 +307,7 @@ class GroupDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                 ],
+              ],
             ],
           ),
         );
@@ -664,6 +670,31 @@ class _EmptyExpenses extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SwipeHint extends StatelessWidget {
+  const _SwipeHint({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final onVariant = Theme.of(context).colorScheme.onSurfaceVariant;
+    return Row(
+      children: [
+        Icon(Icons.swipe_left_rounded, size: 16, color: onVariant),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: onVariant),
+          ),
+        ),
+      ],
     );
   }
 }

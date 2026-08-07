@@ -53,6 +53,7 @@
   "groupsSettleUp": "Acertar contas",
   "groupsSettlements": "ACERTOS",
   "groupsExpenses": "DESPESAS",
+  "groupsSwipeToDeleteHint": "Deslize para a esquerda para excluir",
   "groupsDeleteExpenseTitle": "Excluir despesa?",
   "groupsDeleteExpenseBody": "Remover «{title}» desta cena?",
   "groupsDeleteGroupTitle": "Excluir cena?",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "Buscar por nome",
   "peopleEmpty": "Nenhuma pessoa ainda. Toque em + para adicionar alguém.",
   "peopleNoMatch": "Nenhuma pessoa corresponde à sua busca.",
+  "peopleSwipeHint": "Deslize para a esquerda para editar ou excluir",
+  "peopleSceneCount": "{count, plural, =0{Em nenhuma cena} =1{1 cena} other{{count} cenas}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "Valores exibidos na moeda de cada cena",
+  "peopleDetailEmptyScenes": "Ainda não é membro de nenhuma cena.",
+  "peopleDetailAllSettled": "Tudo acertado nas cenas",
+  "peopleDetailOpenBalances": "Saldos em aberto em algumas cenas",
+  "peopleDetailGets": "{name} recebe",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} deve",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "Acertado",
+  "peopleDetailNoDebts": "Sem dívidas em aberto nesta cena",
+  "peopleDetailViewExpenses": "Ver participação nas despesas",
+  "peopleDetailExpensesSection": "DESPESAS",
   "dataTitle": "Dados e backup",
   "dataWebBlurb": "Exportação e importação de backup estão disponíveis nos apps móvel e desktop. Seus dados são armazenados localmente neste navegador.",
   "dataNativeBlurb": "Exporte um backup e salve no seu dispositivo ou compartilhe em outro lugar. A importação substitui tudo neste dispositivo.",

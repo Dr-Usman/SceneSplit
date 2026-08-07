@@ -429,6 +429,12 @@ abstract class AppLocalizations {
   /// **'EXPENSES'**
   String get groupsExpenses;
 
+  /// No description provided for @groupsSwipeToDeleteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left to delete'**
+  String get groupsSwipeToDeleteHint;
+
   /// No description provided for @groupsDeleteExpenseTitle.
   ///
   /// In en, this message translates to:
@@ -992,6 +998,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No people match your search.'**
   String get peopleNoMatch;
+
+  /// No description provided for @peopleSwipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left on a person for edit and delete'**
+  String get peopleSwipeHint;
+
+  /// No description provided for @peopleSceneCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Not in any scenes} =1{1 scene} other{{count} scenes}}'**
+  String peopleSceneCount(int count);
+
+  /// No description provided for @peopleDetailCurrencySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Amounts shown in each scene\'s currency'**
+  String get peopleDetailCurrencySubtitle;
+
+  /// No description provided for @peopleDetailEmptyScenes.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a member of any scenes yet.'**
+  String get peopleDetailEmptyScenes;
+
+  /// No description provided for @peopleDetailAllSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'All settled across scenes'**
+  String get peopleDetailAllSettled;
+
+  /// No description provided for @peopleDetailOpenBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Open balances in some scenes'**
+  String get peopleDetailOpenBalances;
+
+  /// No description provided for @peopleDetailGets.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} gets'**
+  String peopleDetailGets(String name);
+
+  /// No description provided for @peopleDetailWillGive.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will give'**
+  String peopleDetailWillGive(String name);
+
+  /// No description provided for @peopleDetailSettledInScene.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get peopleDetailSettledInScene;
+
+  /// No description provided for @peopleDetailNoDebts.
+  ///
+  /// In en, this message translates to:
+  /// **'No open debts in this scene'**
+  String get peopleDetailNoDebts;
+
+  /// No description provided for @peopleDetailViewExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'View expense shares'**
+  String get peopleDetailViewExpenses;
+
+  /// No description provided for @peopleDetailExpensesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'EXPENSES'**
+  String get peopleDetailExpensesSection;
 
   /// No description provided for @dataTitle.
   ///

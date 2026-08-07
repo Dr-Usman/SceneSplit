@@ -6,8 +6,10 @@ import '../../core/l10n/localize_error.dart';
 import '../../database/app_database.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
+import '../../providers/person_detail_provider.dart';
 import '../../repositories/user_repository.dart';
 import '../../shared/widgets/app_card.dart';
+import 'person_detail_screen.dart';
 import 'widgets/person_row.dart';
 
 class PeopleScreen extends ConsumerStatefulWidget {
@@ -45,68 +47,6 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     }
   }
 
-  Future<void> _editPerson(User person) async {
-    final l10n = context.l10n;
-    final name = await showPersonNameDialog(
-      context,
-      title: l10n.peopleEditName,
-      hint: person.name,
-      initialValue: person.name,
-    );
-    if (name == null || name.isEmpty || name == person.name || !mounted) {
-      return;
-    }
-    try {
-      await updateUserName(ref.read(databaseProvider), person.id, name);
-    } on UserNameTakenException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
-      }
-    }
-  }
-
-  Future<void> _deletePerson(User person) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(ctx.l10n.peopleDeleteTitle),
-        content: Text(ctx.l10n.peopleDeleteBody(person.name)),
-        actions: [
-          Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text(ctx.l10n.commonCancel),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: FilledButton(
-                  onPressed: () => Navigator.pop(ctx, true),
-                  child: Text(ctx.l10n.commonDelete),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-
-    try {
-      await deleteUser(ref.read(databaseProvider), person.id);
-    } on UserDeleteBlockedException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(localizeError(context, e))));
-      }
-    }
-  }
-
   List<User> _filteredUsers(List<User> users) {
     final query = _searchController.text.trim().toLowerCase();
     final sorted = [...users]
@@ -122,6 +62,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     final l10n = context.l10n;
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
     final filteredUsers = _filteredUsers(allUsers);
+    final sceneCounts = ref.watch(personSceneCountProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -195,7 +136,28 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                 ],
               ),
             )
-          else
+          else ...[
+            if (filteredUsers.any((u) => !u.isCurrentUser)) ...[
+              Row(
+                children: [
+                  Icon(
+                    Icons.swipe_left_rounded,
+                    size: 16,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.peopleSwipeHint,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+            ],
             AppCard(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
@@ -203,14 +165,27 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                   for (var i = 0; i < filteredUsers.length; i++) ...[
                     PersonRow(
                       user: filteredUsers[i],
-                      onEdit: () => _editPerson(filteredUsers[i]),
-                      onDelete: () => _deletePerson(filteredUsers[i]),
+                      subtitle: l10n.peopleSceneCount(
+                        sceneCounts[filteredUsers[i].id] ?? 0,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                PersonDetailScreen(userId: filteredUsers[i].id),
+                          ),
+                        );
+                      },
+                      onEdit: () => editPerson(context, ref, filteredUsers[i]),
+                      onDelete: () =>
+                          deletePerson(context, ref, filteredUsers[i]),
                     ),
                     if (i < filteredUsers.length - 1) const Divider(height: 1),
                   ],
                 ],
               ),
             ),
+          ],
         ],
       ),
     );

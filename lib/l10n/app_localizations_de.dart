@@ -196,6 +196,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsExpenses => 'AUSGABEN';
 
   @override
+  String get groupsSwipeToDeleteHint => 'Nach links wischen zum Löschen';
+
+  @override
   String get groupsDeleteExpenseTitle => 'Ausgabe löschen?';
 
   @override
@@ -527,6 +530,57 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get peopleNoMatch => 'Keine Personen entsprechen deiner Suche.';
+
+  @override
+  String get peopleSwipeHint =>
+      'Nach links wischen zum Bearbeiten oder Löschen';
+
+  @override
+  String peopleSceneCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Szenen',
+      one: '1 Szene',
+      zero: 'In keiner Szene',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get peopleDetailCurrencySubtitle =>
+      'Beträge in der Währung jeder Szene angezeigt';
+
+  @override
+  String get peopleDetailEmptyScenes => 'Noch in keiner Szene Mitglied.';
+
+  @override
+  String get peopleDetailAllSettled => 'Überall ausgeglichen';
+
+  @override
+  String get peopleDetailOpenBalances => 'Offene Salden in manchen Szenen';
+
+  @override
+  String peopleDetailGets(String name) {
+    return '$name erhält';
+  }
+
+  @override
+  String peopleDetailWillGive(String name) {
+    return '$name schuldet';
+  }
+
+  @override
+  String get peopleDetailSettledInScene => 'Ausgeglichen';
+
+  @override
+  String get peopleDetailNoDebts => 'Keine offenen Schulden in dieser Szene';
+
+  @override
+  String get peopleDetailViewExpenses => 'Ausgabenanteile anzeigen';
+
+  @override
+  String get peopleDetailExpensesSection => 'AUSGABEN';
 
   @override
   String get dataTitle => 'Daten & Sicherung';

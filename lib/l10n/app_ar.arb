@@ -53,6 +53,7 @@
   "groupsSettleUp": "تسوية",
   "groupsSettlements": "التسويات",
   "groupsExpenses": "النفقات",
+  "groupsSwipeToDeleteHint": "اسحب لليسار للحذف",
   "groupsDeleteExpenseTitle": "حذف النفقة؟",
   "groupsDeleteExpenseBody": "هل تريد إزالة \"{title}\" من هذا المشهد؟",
   "groupsDeleteGroupTitle": "حذف المشهد؟",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "البحث بالاسم",
   "peopleEmpty": "لا يوجد أشخاص بعد. اضغط + لإضافة شخص.",
   "peopleNoMatch": "لا يوجد أشخاص مطابقون لبحثك.",
+  "peopleSwipeHint": "اسحب لليسار للتعديل أو الحذف",
+  "peopleSceneCount": "{count, plural, =0{ليس في أي مشهد} =1{مشهد واحد} other{{count} مشاهد}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "المبالغ معروضة بعملة كل مشهد",
+  "peopleDetailEmptyScenes": "ليس عضواً في أي مشهد بعد.",
+  "peopleDetailAllSettled": "تم تسوية الكل عبر المشاهد",
+  "peopleDetailOpenBalances": "أرصدة مفتوحة في بعض المشاهد",
+  "peopleDetailGets": "{name} يستلم",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} يدفع",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "مسوّى",
+  "peopleDetailNoDebts": "لا ديون مفتوحة في هذا المشهد",
+  "peopleDetailViewExpenses": "عرض حصص المصروفات",
+  "peopleDetailExpensesSection": "المصروفات",
   "dataTitle": "البيانات والنسخ الاحتياطي",
   "dataWebBlurb": "تصدير واستيراد النسخ الاحتياطي متاح في تطبيقات الجوال وسطح المكتب. بياناتك مخزّنة محليًا في هذا المتصفّح.",
   "dataNativeBlurb": "صدّر نسخة احتياطية، ثم احفظها على جهازك أو شاركها في مكان آخر. الاستيراد يستبدل كل شيء على هذا الجهاز.",

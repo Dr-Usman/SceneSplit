@@ -196,6 +196,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupsExpenses => 'GASTOS';
 
   @override
+  String get groupsSwipeToDeleteHint => 'Desliza a la izquierda para eliminar';
+
+  @override
   String get groupsDeleteExpenseTitle => '¿Eliminar gasto?';
 
   @override
@@ -527,6 +530,56 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get peopleNoMatch => 'Ninguna persona coincide con tu búsqueda.';
+
+  @override
+  String get peopleSwipeHint => 'Desliza a la izquierda para editar o eliminar';
+
+  @override
+  String peopleSceneCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count escenas',
+      one: '1 escena',
+      zero: 'En ninguna escena',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get peopleDetailCurrencySubtitle =>
+      'Importes mostrados en la moneda de cada escena';
+
+  @override
+  String get peopleDetailEmptyScenes => 'Aún no es miembro de ninguna escena.';
+
+  @override
+  String get peopleDetailAllSettled => 'Todo saldado en las escenas';
+
+  @override
+  String get peopleDetailOpenBalances => 'Saldos abiertos en algunas escenas';
+
+  @override
+  String peopleDetailGets(String name) {
+    return '$name recibe';
+  }
+
+  @override
+  String peopleDetailWillGive(String name) {
+    return '$name debe';
+  }
+
+  @override
+  String get peopleDetailSettledInScene => 'Saldado';
+
+  @override
+  String get peopleDetailNoDebts => 'No hay deudas abiertas en esta escena';
+
+  @override
+  String get peopleDetailViewExpenses => 'Ver parte de gastos';
+
+  @override
+  String get peopleDetailExpensesSection => 'GASTOS';
 
   @override
   String get dataTitle => 'Datos y copia de seguridad';

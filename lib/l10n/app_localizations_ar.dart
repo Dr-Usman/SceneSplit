@@ -195,6 +195,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsExpenses => 'النفقات';
 
   @override
+  String get groupsSwipeToDeleteHint => 'اسحب لليسار للحذف';
+
+  @override
   String get groupsDeleteExpenseTitle => 'حذف النفقة؟';
 
   @override
@@ -521,6 +524,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get peopleNoMatch => 'لا يوجد أشخاص مطابقون لبحثك.';
+
+  @override
+  String get peopleSwipeHint => 'اسحب لليسار للتعديل أو الحذف';
+
+  @override
+  String peopleSceneCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مشاهد',
+      one: 'مشهد واحد',
+      zero: 'ليس في أي مشهد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get peopleDetailCurrencySubtitle => 'المبالغ معروضة بعملة كل مشهد';
+
+  @override
+  String get peopleDetailEmptyScenes => 'ليس عضواً في أي مشهد بعد.';
+
+  @override
+  String get peopleDetailAllSettled => 'تم تسوية الكل عبر المشاهد';
+
+  @override
+  String get peopleDetailOpenBalances => 'أرصدة مفتوحة في بعض المشاهد';
+
+  @override
+  String peopleDetailGets(String name) {
+    return '$name يستلم';
+  }
+
+  @override
+  String peopleDetailWillGive(String name) {
+    return '$name يدفع';
+  }
+
+  @override
+  String get peopleDetailSettledInScene => 'مسوّى';
+
+  @override
+  String get peopleDetailNoDebts => 'لا ديون مفتوحة في هذا المشهد';
+
+  @override
+  String get peopleDetailViewExpenses => 'عرض حصص المصروفات';
+
+  @override
+  String get peopleDetailExpensesSection => 'المصروفات';
 
   @override
   String get dataTitle => 'البيانات والنسخ الاحتياطي';

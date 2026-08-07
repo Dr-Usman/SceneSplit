@@ -53,6 +53,7 @@
   "groupsSettleUp": "Liquidar",
   "groupsSettlements": "LIQUIDACIONES",
   "groupsExpenses": "GASTOS",
+  "groupsSwipeToDeleteHint": "Desliza a la izquierda para eliminar",
   "groupsDeleteExpenseTitle": "¿Eliminar gasto?",
   "groupsDeleteExpenseBody": "¿Eliminar «{title}» de esta escena?",
   "groupsDeleteGroupTitle": "¿Eliminar escena?",
@@ -147,6 +148,33 @@
   "peopleSearchHint": "Buscar por nombre",
   "peopleEmpty": "Aún no hay personas. Toca + para añadir a alguien.",
   "peopleNoMatch": "Ninguna persona coincide con tu búsqueda.",
+  "peopleSwipeHint": "Desliza a la izquierda para editar o eliminar",
+  "peopleSceneCount": "{count, plural, =0{En ninguna escena} =1{1 escena} other{{count} escenas}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "Importes mostrados en la moneda de cada escena",
+  "peopleDetailEmptyScenes": "Aún no es miembro de ninguna escena.",
+  "peopleDetailAllSettled": "Todo saldado en las escenas",
+  "peopleDetailOpenBalances": "Saldos abiertos en algunas escenas",
+  "peopleDetailGets": "{name} recibe",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} debe",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "Saldado",
+  "peopleDetailNoDebts": "No hay deudas abiertas en esta escena",
+  "peopleDetailViewExpenses": "Ver parte de gastos",
+  "peopleDetailExpensesSection": "GASTOS",
   "dataTitle": "Datos y copia de seguridad",
   "dataWebBlurb": "La exportación e importación de copias de seguridad están disponibles en las apps móvil y de escritorio. Tus datos se almacenan localmente en este navegador.",
   "dataNativeBlurb": "Exporta una copia de seguridad y guárdala en tu dispositivo o compártela en otro lugar. Importar reemplaza todo en este dispositivo.",

@@ -104,6 +104,7 @@
   "groupsSettleUp": "Settle up",
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
+  "groupsSwipeToDeleteHint": "Swipe left to delete",
   "groupsDeleteExpenseTitle": "Delete expense?",
   "groupsDeleteExpenseBody": "Remove \"{title}\" from this scene?",
   "@groupsDeleteExpenseBody": {
@@ -300,6 +301,33 @@
   "peopleSearchHint": "Search by name",
   "peopleEmpty": "No people yet. Tap + to add someone.",
   "peopleNoMatch": "No people match your search.",
+  "peopleSwipeHint": "Swipe left on a person for edit and delete",
+  "peopleSceneCount": "{count, plural, =0{Not in any scenes} =1{1 scene} other{{count} scenes}}",
+  "@peopleSceneCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "peopleDetailCurrencySubtitle": "Amounts shown in each scene's currency",
+  "peopleDetailEmptyScenes": "Not a member of any scenes yet.",
+  "peopleDetailAllSettled": "All settled across scenes",
+  "peopleDetailOpenBalances": "Open balances in some scenes",
+  "peopleDetailGets": "{name} gets",
+  "@peopleDetailGets": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailWillGive": "{name} will give",
+  "@peopleDetailWillGive": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "peopleDetailSettledInScene": "Settled",
+  "peopleDetailNoDebts": "No open debts in this scene",
+  "peopleDetailViewExpenses": "View expense shares",
+  "peopleDetailExpensesSection": "EXPENSES",
 
   "dataTitle": "Data & backup",
   "dataWebBlurb": "Backup export and import are available in the mobile and desktop apps. Your data is stored locally in this browser.",

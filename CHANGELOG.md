@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- People → person detail: balances across scenes with per-scene currency, who-owes-whom, expense shares, and settle.
+- Person detail header: per-currency will-give / gets totals (no cross-currency merge).
+
 ### Changed
 
+- People list: swipe left for edit/delete with a swipe hint; person detail app bar uses an overflow menu for edit/delete; clearer person header.
+- Scene detail: swipe-to-delete hint under settlements and expenses.
 - Who-owes-whom suggestions follow shared expenses (pay the people on your bills), with only A↔B offsets — not fewest-transfer matching across the group.
 - Renamed user-facing “groups” to “scenes” (home, create/edit, empty states) so containers read as trips, dinners, and shared activities.
 

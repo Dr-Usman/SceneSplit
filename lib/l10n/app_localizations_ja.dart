@@ -192,6 +192,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsExpenses => '経費';
 
   @override
+  String get groupsSwipeToDeleteHint => '左にスワイプして削除';
+
+  @override
   String get groupsDeleteExpenseTitle => '経費を削除しますか？';
 
   @override
@@ -515,6 +518,55 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get peopleNoMatch => '検索に一致するメンバーがいません。';
+
+  @override
+  String get peopleSwipeHint => '左にスワイプして編集・削除';
+
+  @override
+  String peopleSceneCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countシーン',
+      one: '1シーン',
+      zero: 'シーンなし',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get peopleDetailCurrencySubtitle => '各シーンの通貨で表示';
+
+  @override
+  String get peopleDetailEmptyScenes => 'まだどのシーンのメンバーでもありません。';
+
+  @override
+  String get peopleDetailAllSettled => 'すべてのシーンで清算済み';
+
+  @override
+  String get peopleDetailOpenBalances => '一部のシーンに未清算があります';
+
+  @override
+  String peopleDetailGets(String name) {
+    return '$nameの受取';
+  }
+
+  @override
+  String peopleDetailWillGive(String name) {
+    return '$nameの支払';
+  }
+
+  @override
+  String get peopleDetailSettledInScene => '清算済み';
+
+  @override
+  String get peopleDetailNoDebts => 'このシーンに未清算の債務はありません';
+
+  @override
+  String get peopleDetailViewExpenses => '分担を表示';
+
+  @override
+  String get peopleDetailExpensesSection => '支出';
 
   @override
   String get dataTitle => 'データとバックアップ';
