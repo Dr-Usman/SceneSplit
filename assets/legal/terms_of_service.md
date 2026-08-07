@@ -6,11 +6,11 @@ By using SceneSplit ("the app"), you agree to these Terms of Service.
 
 ## Use of the app
 
-SceneSplit is provided for personal, non-commercial expense tracking and bill splitting among friends, roommates, and groups. You must enter accurate information and use the app lawfully.
+SceneSplit is provided for personal, non-commercial expense tracking and bill splitting among friends, roommates, and scenes (shared activities). You must enter accurate information and use the app lawfully.
 
 ## No financial services
 
-SceneSplit is **not** a bank, payment processor, or financial advisor. The app only helps you record and calculate shared expenses. You are solely responsible for actual money transfers between people in your groups.
+SceneSplit is **not** a bank, payment processor, or financial advisor. The app only helps you record and calculate shared expenses. You are solely responsible for actual money transfers between people in your scenes.
 
 ## Provided as-is
 
