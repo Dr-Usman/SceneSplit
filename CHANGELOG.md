@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-08-07
+
 ### Added
 
 - Scene detail: share Who Owes Whom as an image (with expense share totals) via the system share sheet for WhatsApp and similar apps.
@@ -15,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Privacy Policy and Terms: disclose optional balance image share, correct Mixpanel name/scene fields, and use “scenes” wording.
 - Member share breakdown sheet: person header with avatar, top-only total summary, expense count/percent meta, and share-of-expense rows.
 - People list: swipe left for edit/delete with a swipe hint; person detail app bar uses an overflow menu for edit/delete; clearer person header.
 - Scene detail: swipe-to-delete hint under settlements and expenses.
