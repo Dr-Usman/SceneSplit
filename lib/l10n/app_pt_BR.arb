@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "Não foi possível compartilhar os saldos.",
   "groupsSettlements": "ACERTOS",
   "groupsExpenses": "DESPESAS",
+  "groupsSettlementsTitle": "Acertos",
+  "groupsExpensesTitle": "Despesas",
+  "groupsSettlementsScreenTitle": "{groupName} · Acertos",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · Despesas",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "Ver tudo ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "Nenhum acerto registrado ainda.",
   "groupsSwipeToDeleteHint": "Deslize para a esquerda para excluir",
   "groupsDeleteExpenseTitle": "Excluir despesa?",
   "groupsDeleteExpenseBody": "Remover «{title}» desta cena?",

@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "残高を共有できませんでした。",
   "groupsSettlements": "精算履歴",
   "groupsExpenses": "経費",
+  "groupsSettlementsTitle": "精算履歴",
+  "groupsExpensesTitle": "経費",
+  "groupsSettlementsScreenTitle": "{groupName} · 精算履歴",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · 経費",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "すべて見る（{count}）",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "精算はまだ記録されていません。",
   "groupsSwipeToDeleteHint": "左にスワイプして削除",
   "groupsDeleteExpenseTitle": "経費を削除しますか？",
   "groupsDeleteExpenseBody": "「{title}」をこのシーンから削除しますか？",

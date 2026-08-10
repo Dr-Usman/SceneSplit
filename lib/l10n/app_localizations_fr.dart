@@ -238,6 +238,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsExpenses => 'DÉPENSES';
 
   @override
+  String get groupsSettlementsTitle => 'Règlements';
+
+  @override
+  String get groupsExpensesTitle => 'Dépenses';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Règlements';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Dépenses';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'Tout voir ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody =>
+      'Aucun règlement enregistré pour le moment.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'Balayez vers la gauche pour supprimer';
 
   @override

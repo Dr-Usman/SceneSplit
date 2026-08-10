@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
-import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import 'app_card.dart';
@@ -22,11 +21,11 @@ class BalanceHeroCard extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final settled = netCents == 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
 
     if (settled) {
       return AppCard(
-        gradient: AppGradients.balancePositive(context),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
             Container(
@@ -34,7 +33,7 @@ class BalanceHeroCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: AppColors.positive.withValues(
-                  alpha: isDark ? 0.25 : 0.15,
+                  alpha: isDark ? 0.18 : 0.1,
                 ),
                 shape: BoxShape.circle,
               ),
@@ -61,7 +60,7 @@ class BalanceHeroCard extends StatelessWidget {
                   Text(
                     l10n.sharedSettledSubtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      color: scheme.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

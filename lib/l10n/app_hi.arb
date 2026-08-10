@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "बैलेंस शेयर नहीं हो सका।",
   "groupsSettlements": "निपटान",
   "groupsExpenses": "खर्च",
+  "groupsSettlementsTitle": "निपटान",
+  "groupsExpensesTitle": "खर्च",
+  "groupsSettlementsScreenTitle": "{groupName} · निपटान",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · खर्च",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "सभी देखें ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "अभी तक कोई निपटान दर्ज नहीं है।",
   "groupsSwipeToDeleteHint": "हटाने के लिए बाईं ओर स्वाइप करें",
   "groupsDeleteExpenseTitle": "खर्च हटाएँ?",
   "groupsDeleteExpenseBody": "क्या \"{title}\" को इस सीन से हटाना है?",

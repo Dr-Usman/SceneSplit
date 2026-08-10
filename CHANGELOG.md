@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Scene detail: show recent settlements and expenses with a footer See all link to full list screens.
+- Expense/settlement list screens use “{scene} · Expenses/Settlements” titles.
+- Scene detail: settlement rows use card layout aligned with expenses (icon, date/note, amount).
+- Settled balance hero uses the normal surface card (white / dark surface) instead of a green wash.
+
 ## [1.6.0] - 2026-08-07
 
 ### Added

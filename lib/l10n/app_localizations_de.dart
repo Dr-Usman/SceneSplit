@@ -238,6 +238,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsExpenses => 'AUSGABEN';
 
   @override
+  String get groupsSettlementsTitle => 'Ausgleichszahlungen';
+
+  @override
+  String get groupsExpensesTitle => 'Ausgaben';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Ausgleichszahlungen';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Ausgaben';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'Alle anzeigen ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody =>
+      'Noch keine Ausgleichszahlungen erfasst.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'Nach links wischen zum Löschen';
 
   @override

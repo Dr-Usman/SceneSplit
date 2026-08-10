@@ -237,6 +237,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get groupsExpenses => 'DESPESAS';
 
   @override
+  String get groupsSettlementsTitle => 'Acertos';
+
+  @override
+  String get groupsExpensesTitle => 'Despesas';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Acertos';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Despesas';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'Ver tudo ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => 'Nenhum acerto registrado ainda.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'Deslize para a esquerda para excluir';
 
   @override
@@ -1111,6 +1135,30 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get groupsExpenses => 'DESPESAS';
+
+  @override
+  String get groupsSettlementsTitle => 'Acertos';
+
+  @override
+  String get groupsExpensesTitle => 'Despesas';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Acertos';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Despesas';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'Ver tudo ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => 'Nenhum acerto registrado ainda.';
 
   @override
   String get groupsSwipeToDeleteHint => 'Deslize para a esquerda para excluir';

@@ -237,6 +237,30 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsExpenses => 'खर्च';
 
   @override
+  String get groupsSettlementsTitle => 'निपटान';
+
+  @override
+  String get groupsExpensesTitle => 'खर्च';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · निपटान';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · खर्च';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'सभी देखें ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => 'अभी तक कोई निपटान दर्ज नहीं है।';
+
+  @override
   String get groupsSwipeToDeleteHint => 'हटाने के लिए बाईं ओर स्वाइप करें';
 
   @override

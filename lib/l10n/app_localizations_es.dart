@@ -238,6 +238,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupsExpenses => 'GASTOS';
 
   @override
+  String get groupsSettlementsTitle => 'Liquidaciones';
+
+  @override
+  String get groupsExpensesTitle => 'Gastos';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Liquidaciones';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Gastos';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'Ver todo ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody =>
+      'Aún no hay liquidaciones registradas.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'Desliza a la izquierda para eliminar';
 
   @override

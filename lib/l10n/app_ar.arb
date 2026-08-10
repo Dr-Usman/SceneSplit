@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "تعذّرت مشاركة الأرصدة.",
   "groupsSettlements": "التسويات",
   "groupsExpenses": "النفقات",
+  "groupsSettlementsTitle": "التسويات",
+  "groupsExpensesTitle": "النفقات",
+  "groupsSettlementsScreenTitle": "{groupName} · التسويات",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · النفقات",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "عرض الكل ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "لا توجد تسويات مسجّلة بعد.",
   "groupsSwipeToDeleteHint": "اسحب لليسار للحذف",
   "groupsDeleteExpenseTitle": "حذف النفقة؟",
   "groupsDeleteExpenseBody": "هل تريد إزالة \"{title}\" من هذا المشهد؟",

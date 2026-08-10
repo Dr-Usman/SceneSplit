@@ -133,6 +133,27 @@
   "groupsCouldNotShareBalances": "Could not share balances.",
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
+  "groupsSettlementsTitle": "Settlements",
+  "groupsExpensesTitle": "Expenses",
+  "groupsSettlementsScreenTitle": "{groupName} · Settlements",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · Expenses",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "See all ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "No settlements recorded yet.",
   "groupsSwipeToDeleteHint": "Swipe left to delete",
   "groupsDeleteExpenseTitle": "Delete expense?",
   "groupsDeleteExpenseBody": "Remove \"{title}\" from this scene?",

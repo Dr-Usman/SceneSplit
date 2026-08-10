@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
@@ -12,9 +11,7 @@ import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
-import '../../repositories/expense_repository.dart';
 import '../../repositories/group_repository.dart';
-import '../../repositories/settlement_repository.dart';
 import '../../services/balance_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/balance_hero_card.dart';
@@ -27,6 +24,14 @@ import '../expenses/add_expense_screen.dart';
 import '../expenses/expense_detail_screen.dart';
 import '../settlements/record_settlement_sheet.dart';
 import 'edit_group_screen.dart';
+import 'group_activity_dialogs.dart';
+import 'group_expenses_screen.dart';
+import 'group_settlements_screen.dart';
+import 'widgets/group_expense_tile.dart';
+import 'widgets/group_settlement_tile.dart';
+
+const _kExpensePreviewCount = 5;
+const _kSettlementPreviewCount = 3;
 
 class GroupDetailScreen extends ConsumerWidget {
   const GroupDetailScreen({super.key, required this.groupId});
@@ -50,6 +55,12 @@ class GroupDetailScreen extends ConsumerWidget {
       data: (data) {
         final currency = currencyByCode(data.group.currencyCode);
         final shareEntries = data.memberShareCents.entries.toList();
+        final settlementPreview = data.settlements
+            .take(_kSettlementPreviewCount)
+            .toList();
+        final expensePreview = data.expenses
+            .take(_kExpensePreviewCount)
+            .toList();
         return Scaffold(
           appBar: AppBar(
             title: Column(
@@ -330,10 +341,10 @@ class GroupDetailScreen extends ConsumerWidget {
                 SectionHeader(l10n.groupsSettlements),
                 const SizedBox(height: 8),
                 _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
-                const SizedBox(height: 10),
-                for (final s in data.settlements)
-                  _SettlementTile(
-                    settlement: s,
+                const SizedBox(height: 12),
+                for (var i = 0; i < settlementPreview.length; i++) ...[
+                  GroupSettlementTile(
+                    settlement: settlementPreview[i],
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
@@ -342,9 +353,26 @@ class GroupDetailScreen extends ConsumerWidget {
                       groupId: groupId,
                       currencyCode: data.group.currencyCode,
                       members: data.members,
-                      existing: s,
+                      existing: settlementPreview[i],
                     ),
-                    onDelete: () => _confirmDeleteSettlement(context, ref, s),
+                    onDelete: () => confirmDeleteSettlement(
+                      context,
+                      ref,
+                      settlementPreview[i],
+                    ),
+                  ),
+                  if (i < settlementPreview.length - 1)
+                    const SizedBox(height: 6),
+                ],
+                if (data.settlements.length > _kSettlementPreviewCount)
+                  _SeeAllFooter(
+                    label: l10n.groupsViewAllCount(data.settlements.length),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            GroupSettlementsScreen(groupId: groupId),
+                      ),
+                    ),
                   ),
               ],
               const SizedBox(height: 28),
@@ -356,26 +384,38 @@ class GroupDetailScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
                 const SizedBox(height: 12),
-                for (final item in data.expenses) ...[
-                  _ExpenseTile(
-                    item: item,
+                for (var i = 0; i < expensePreview.length; i++) ...[
+                  GroupExpenseTile(
+                    item: expensePreview[i],
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
-                    l10n: l10n,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ExpenseDetailScreen(
                           groupId: groupId,
-                          expenseId: item.expense.id,
+                          expenseId: expensePreview[i].expense.id,
                           currencyCode: data.group.currencyCode,
                         ),
                       ),
                     ),
-                    onDelete: () => _confirmDelete(context, ref, item.expense),
+                    onDelete: () => confirmDeleteExpense(
+                      context,
+                      ref,
+                      expensePreview[i].expense,
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  if (i < expensePreview.length - 1) const SizedBox(height: 10),
                 ],
+                if (data.expenses.length > _kExpensePreviewCount)
+                  _SeeAllFooter(
+                    label: l10n.groupsViewAllCount(data.expenses.length),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => GroupExpensesScreen(groupId: groupId),
+                      ),
+                    ),
+                  ),
               ],
             ],
           ),
@@ -442,35 +482,6 @@ class GroupDetailScreen extends ConsumerWidget {
     }
   }
 
-  Future<void> _confirmDelete(
-    BuildContext context,
-    WidgetRef ref,
-    Expense expense,
-  ) async {
-    final l10n = context.l10n;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.groupsDeleteExpenseTitle),
-        content: Text(l10n.groupsDeleteExpenseBody(expense.title)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.commonCancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: Text(l10n.commonDelete),
-          ),
-        ],
-      ),
-    );
-    if (ok == true && context.mounted) {
-      await deleteExpense(ref.read(databaseProvider), expense.id);
-    }
-  }
-
   Future<void> _confirmDeleteGroup(
     BuildContext context,
     WidgetRef ref,
@@ -498,35 +509,6 @@ class GroupDetailScreen extends ConsumerWidget {
     if (ok == true && context.mounted) {
       await deleteGroup(ref.read(databaseProvider), group.id);
       if (context.mounted) Navigator.of(context).pop();
-    }
-  }
-
-  Future<void> _confirmDeleteSettlement(
-    BuildContext context,
-    WidgetRef ref,
-    Settlement settlement,
-  ) async {
-    final l10n = context.l10n;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.groupsDeleteSettlementTitle),
-        content: Text(l10n.groupsDeleteSettlementBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.commonCancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.negative),
-            child: Text(l10n.commonDelete),
-          ),
-        ],
-      ),
-    );
-    if (ok == true && context.mounted) {
-      await deleteSettlement(ref.read(databaseProvider), settlement.id);
     }
   }
 }
@@ -591,182 +573,23 @@ class _DebtTile extends StatelessWidget {
   }
 }
 
-class _ExpenseTile extends StatelessWidget {
-  const _ExpenseTile({
-    required this.item,
-    required this.users,
-    required this.currencyCode,
-    required this.locale,
-    required this.l10n,
-    required this.onTap,
-    required this.onDelete,
-  });
+class _SeeAllFooter extends StatelessWidget {
+  const _SeeAllFooter({required this.label, required this.onPressed});
 
-  final ExpenseWithSplits item;
-  final Map<String, User> users;
-  final String currencyCode;
-  final String locale;
-  final AppLocalizations l10n;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
+  final String label;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final expense = item.expense;
-    final payerNames = [
-      for (final p in item.payers) users[p.userId]?.name ?? '?',
-    ];
-    final payer = formatPayersLabel(payerNames, l10n);
-    final date = DateFormat.MMMd(locale).format(expense.date);
-
-    return Dismissible(
-      key: ValueKey(expense.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: AppColors.negative.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(20),
+    return Center(
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          // visualDensity: VisualDensity.compact,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         ),
-        child: const Icon(
-          Icons.delete_outline_rounded,
-          color: AppColors.negative,
-        ),
-      ),
-      confirmDismiss: (_) async {
-        onDelete();
-        return false;
-      },
-      child: AppCard(
-        padding: const EdgeInsets.all(16),
-        onTap: onTap,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    expense.title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.groupsPayerPaidDate(payer, date),
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              formatCents(expense.amountCents, currencyCode, locale: locale),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SettlementTile extends StatelessWidget {
-  const _SettlementTile({
-    required this.settlement,
-    required this.users,
-    required this.currencyCode,
-    required this.locale,
-    required this.onTap,
-    required this.onDelete,
-  });
-
-  final Settlement settlement;
-  final Map<String, User> users;
-  final String currencyCode;
-  final String locale;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final from = users[settlement.fromUserId]?.name ?? '?';
-    final to = users[settlement.toUserId]?.name ?? '?';
-    final date = DateFormat.MMMd(locale).format(settlement.createdAt);
-
-    return Dismissible(
-      key: ValueKey(settlement.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: AppColors.negative.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: const Icon(
-          Icons.delete_outline_rounded,
-          color: AppColors.negative,
-        ),
-      ),
-      confirmDismiss: (_) async {
-        onDelete();
-        return false;
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(14),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.check_circle_outline_rounded,
-                size: 18,
-                color: AppColors.positive,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  l10n.groupsSettlementPaid(from, to),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    formatCents(
-                      settlement.amountCents,
-                      currencyCode,
-                      locale: locale,
-                    ),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    date,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        child: Text(label),
       ),
     );
   }

@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "No se pudieron compartir los saldos.",
   "groupsSettlements": "LIQUIDACIONES",
   "groupsExpenses": "GASTOS",
+  "groupsSettlementsTitle": "Liquidaciones",
+  "groupsExpensesTitle": "Gastos",
+  "groupsSettlementsScreenTitle": "{groupName} · Liquidaciones",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · Gastos",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "Ver todo ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "Aún no hay liquidaciones registradas.",
   "groupsSwipeToDeleteHint": "Desliza a la izquierda para eliminar",
   "groupsDeleteExpenseTitle": "¿Eliminar gasto?",
   "groupsDeleteExpenseBody": "¿Eliminar «{title}» de esta escena?",

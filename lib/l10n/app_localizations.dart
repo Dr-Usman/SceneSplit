@@ -483,6 +483,42 @@ abstract class AppLocalizations {
   /// **'EXPENSES'**
   String get groupsExpenses;
 
+  /// No description provided for @groupsSettlementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlements'**
+  String get groupsSettlementsTitle;
+
+  /// No description provided for @groupsExpensesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get groupsExpensesTitle;
+
+  /// No description provided for @groupsSettlementsScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{groupName} · Settlements'**
+  String groupsSettlementsScreenTitle(String groupName);
+
+  /// No description provided for @groupsExpensesScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{groupName} · Expenses'**
+  String groupsExpensesScreenTitle(String groupName);
+
+  /// No description provided for @groupsViewAllCount.
+  ///
+  /// In en, this message translates to:
+  /// **'See all ({count})'**
+  String groupsViewAllCount(int count);
+
+  /// No description provided for @groupsEmptySettlementsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No settlements recorded yet.'**
+  String get groupsEmptySettlementsBody;
+
   /// No description provided for @groupsSwipeToDeleteHint.
   ///
   /// In en, this message translates to:

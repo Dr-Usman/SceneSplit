@@ -236,6 +236,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupsExpenses => 'EXPENSES';
 
   @override
+  String get groupsSettlementsTitle => 'Settlements';
+
+  @override
+  String get groupsExpensesTitle => 'Expenses';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · Settlements';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · Expenses';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'See all ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => 'No settlements recorded yet.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'Swipe left to delete';
 
   @override

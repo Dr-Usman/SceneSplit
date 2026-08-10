@@ -79,38 +79,4 @@ abstract class AppGradients {
       colors: [AppColors.primary, AppColors.secondary],
     );
   }
-
-  static LinearGradient balancePositive(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: isDark
-          ? [
-              AppColors.positive.withValues(alpha: 0.2),
-              AppColors.primary.withValues(alpha: 0.12),
-            ]
-          : [
-              AppColors.positive.withValues(alpha: 0.08),
-              AppColors.primarySoft.withValues(alpha: 0.4),
-            ],
-    );
-  }
-
-  static LinearGradient balanceNegative(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: isDark
-          ? [
-              AppColors.negative.withValues(alpha: 0.2),
-              AppColors.secondary.withValues(alpha: 0.12),
-            ]
-          : [
-              AppColors.negative.withValues(alpha: 0.06),
-              AppColors.secondarySoft.withValues(alpha: 0.45),
-            ],
-    );
-  }
 }

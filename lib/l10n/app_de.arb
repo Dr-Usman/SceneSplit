@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "Salden konnten nicht geteilt werden.",
   "groupsSettlements": "AUSGLEICHSZAHLUNGEN",
   "groupsExpenses": "AUSGABEN",
+  "groupsSettlementsTitle": "Ausgleichszahlungen",
+  "groupsExpensesTitle": "Ausgaben",
+  "groupsSettlementsScreenTitle": "{groupName} · Ausgleichszahlungen",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · Ausgaben",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "Alle anzeigen ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "Noch keine Ausgleichszahlungen erfasst.",
   "groupsSwipeToDeleteHint": "Nach links wischen zum Löschen",
   "groupsDeleteExpenseTitle": "Ausgabe löschen?",
   "groupsDeleteExpenseBody": "«{title}» aus dieser Szene entfernen?",

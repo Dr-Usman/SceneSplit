@@ -236,6 +236,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsExpenses => 'النفقات';
 
   @override
+  String get groupsSettlementsTitle => 'التسويات';
+
+  @override
+  String get groupsExpensesTitle => 'النفقات';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · التسويات';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · النفقات';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'عرض الكل ($count)';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => 'لا توجد تسويات مسجّلة بعد.';
+
+  @override
   String get groupsSwipeToDeleteHint => 'اسحب لليسار للحذف';
 
   @override

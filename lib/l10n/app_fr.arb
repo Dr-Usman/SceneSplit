@@ -62,6 +62,27 @@
   "groupsCouldNotShareBalances": "Impossible de partager les soldes.",
   "groupsSettlements": "RÈGLEMENTS",
   "groupsExpenses": "DÉPENSES",
+  "groupsSettlementsTitle": "Règlements",
+  "groupsExpensesTitle": "Dépenses",
+  "groupsSettlementsScreenTitle": "{groupName} · Règlements",
+  "@groupsSettlementsScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsExpensesScreenTitle": "{groupName} · Dépenses",
+  "@groupsExpensesScreenTitle": {
+    "placeholders": {
+      "groupName": {"type": "String"}
+    }
+  },
+  "groupsViewAllCount": "Tout voir ({count})",
+  "@groupsViewAllCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "groupsEmptySettlementsBody": "Aucun règlement enregistré pour le moment.",
   "groupsSwipeToDeleteHint": "Balayez vers la gauche pour supprimer",
   "groupsDeleteExpenseTitle": "Supprimer la dépense ?",
   "groupsDeleteExpenseBody": "Retirer « {title} » de cette scène ?",

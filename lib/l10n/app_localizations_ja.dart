@@ -233,6 +233,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsExpenses => '経費';
 
   @override
+  String get groupsSettlementsTitle => '精算履歴';
+
+  @override
+  String get groupsExpensesTitle => '経費';
+
+  @override
+  String groupsSettlementsScreenTitle(String groupName) {
+    return '$groupName · 精算履歴';
+  }
+
+  @override
+  String groupsExpensesScreenTitle(String groupName) {
+    return '$groupName · 経費';
+  }
+
+  @override
+  String groupsViewAllCount(int count) {
+    return 'すべて見る（$count）';
+  }
+
+  @override
+  String get groupsEmptySettlementsBody => '精算はまだ記録されていません。';
+
+  @override
   String get groupsSwipeToDeleteHint => '左にスワイプして削除';
 
   @override
