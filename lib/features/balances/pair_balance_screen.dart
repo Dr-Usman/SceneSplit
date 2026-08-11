@@ -15,6 +15,7 @@ import '../../shared/widgets/user_avatar.dart';
 import '../expenses/expense_detail_screen.dart';
 import '../settlements/record_settlement_sheet.dart';
 
+/// Relationship view for open debts between two people (either direction).
 class PairBalanceScreen extends ConsumerWidget {
   const PairBalanceScreen({
     super.key,
@@ -35,6 +36,7 @@ class PairBalanceScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
+    final theme = Theme.of(context);
     final users = ref.watch(userByIdProvider);
     final overview = ref.watch(balancesOverviewProvider);
     final scenesAsync = ref.watch(
@@ -48,96 +50,150 @@ class PairBalanceScreen extends ConsumerWidget {
 
     final pairDebts = overview.asData == null
         ? const <OpenPairwiseBalance>[]
-        : filterOpenDebts(
+        : filterOpenDebtsBetweenPair(
             overview.asData!.value.openDebts,
-            fromId: fromUserId,
-            toId: toUserId,
+            userIdA: fromUserId,
+            userIdB: toUserId,
           );
-    final currencyTotals = aggregatePairByCurrency(
+    final forwardTotals = aggregatePairByCurrency(
       pairDebts,
       fromId: fromUserId,
       toId: toUserId,
     );
+    final reverseTotals = aggregatePairByCurrency(
+      pairDebts,
+      fromId: toUserId,
+      toId: fromUserId,
+    );
+    final hasBothDirections =
+        forwardTotals.isNotEmpty && reverseTotals.isNotEmpty;
+    final pairNets = hasBothDirections
+        ? netPersonPovTotals(summarizePersonPovTotals(pairDebts, fromUserId))
+        : const <PersonPovCurrencyNet>[];
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.groupsOwesTemplate(fromName, toName))),
+      appBar: AppBar(title: Text(l10n.balancesPairBetween(fromName, toName))),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         children: [
           AppCard(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.zero,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    UserAvatar(
-                      name: fromUser?.name ?? '?',
-                      colorIndex: fromUser?.colorIndex ?? 0,
-                      size: 52,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Column(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                            color: Theme.of(context).colorScheme.primary,
+                          UserAvatar(
+                            name: fromUser?.name ?? '?',
+                            colorIndex: fromUser?.colorIndex ?? 0,
+                            size: 52,
                           ),
-                          Text(
-                            l10n.balancesOwes,
-                            style: Theme.of(context).textTheme.labelSmall,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  hasBothDirections
+                                      ? Icons.swap_horiz_rounded
+                                      : Icons.arrow_forward_rounded,
+                                  color: theme.colorScheme.primary,
+                                ),
+                                Text(
+                                  l10n.balancesOwes,
+                                  style: theme.textTheme.labelSmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          UserAvatar(
+                            name: toUser?.name ?? '?',
+                            colorIndex: toUser?.colorIndex ?? 0,
+                            size: 52,
                           ),
                         ],
                       ),
-                    ),
-                    UserAvatar(
-                      name: toUser?.name ?? '?',
-                      colorIndex: toUser?.colorIndex ?? 0,
-                      size: 52,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n.groupsOwesTemplate(fromName, toName),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.balancesPairBetween(fromName, toName),
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      if (forwardTotals.isEmpty && reverseTotals.isEmpty)
+                        Text(
+                          l10n.balancesPairSettled,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.positive,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      else ...[
+                        for (final total in forwardTotals) ...[
+                          _DirectionAmountRow(
+                            label: hasBothDirections
+                                ? l10n.groupsOwesTemplate(fromName, toName)
+                                : l10n.balancesOpenDebtTotal,
+                            amount: formatCents(
+                              total.amountCents,
+                              total.currencyCode,
+                              locale: locale,
+                            ),
+                          ),
+                          if (total != forwardTotals.last ||
+                              reverseTotals.isNotEmpty)
+                            const SizedBox(height: 8),
+                        ],
+                        for (final total in reverseTotals) ...[
+                          _DirectionAmountRow(
+                            label: l10n.groupsOwesTemplate(toName, fromName),
+                            amount: formatCents(
+                              total.amountCents,
+                              total.currencyCode,
+                              locale: locale,
+                            ),
+                          ),
+                          if (total != reverseTotals.last)
+                            const SizedBox(height: 8),
+                        ],
+                      ],
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                if (currencyTotals.isEmpty)
-                  Text(
-                    l10n.balancesPairSettled,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.positive,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
-                else
-                  for (final total in currencyTotals) ...[
-                    Row(
+                if (pairNets.isNotEmpty &&
+                    fromUser != null &&
+                    toUser != null) ...[
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: theme.brightness == Brightness.dark
+                        ? AppColors.borderDark
+                        : AppColors.border,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Expanded(
-                          child: Text(
-                            l10n.balancesOpenDebtTotal,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                        Text(
-                          formatCents(
-                            total.amountCents,
-                            total.currencyCode,
+                        for (var i = 0; i < pairNets.length; i++) ...[
+                          if (i > 0) const SizedBox(height: 6),
+                          _PairNetLine(
+                            net: pairNets[i],
+                            subject: fromUser,
+                            other: toUser,
                             locale: locale,
                           ),
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w800),
-                        ),
+                        ],
                       ],
                     ),
-                    if (total != currencyTotals.last) const SizedBox(height: 8),
-                  ],
+                  ),
+                ],
               ],
             ),
           ),
@@ -151,21 +207,23 @@ class PairBalanceScreen extends ConsumerWidget {
               if (scenes.isEmpty) {
                 return Text(
                   l10n.balancesPairSettled,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.positive,
                     fontWeight: FontWeight.w600,
                   ),
                 );
               }
+              final showDirection = hasBothDirections;
               return Column(
                 children: [
                   for (final scene in scenes) ...[
                     _ScenePairCard(
                       scene: scene,
-                      fromUserId: fromUserId,
-                      toUserId: toUserId,
-                      debtorName: fromName,
-                      debtorColorIndex: fromUser?.colorIndex ?? 0,
+                      debtorName: _displayName(l10n, users[scene.fromUserId]),
+                      creditorName: _displayName(l10n, users[scene.toUserId]),
+                      debtorColorIndex:
+                          users[scene.fromUserId]?.colorIndex ?? 0,
+                      showDirection: showDirection,
                       locale: locale,
                     ),
                     const SizedBox(height: 12),
@@ -180,21 +238,124 @@ class PairBalanceScreen extends ConsumerWidget {
   }
 }
 
+class _DirectionAmountRow extends StatelessWidget {
+  const _DirectionAmountRow({required this.label, required this.amount});
+
+  final String label;
+  final String amount;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: Text(label, style: theme.textTheme.bodyMedium)),
+        const SizedBox(width: 12),
+        Text(
+          amount,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PairNetLine extends StatelessWidget {
+  const _PairNetLine({
+    required this.net,
+    required this.subject,
+    required this.other,
+    required this.locale,
+  });
+
+  final PersonPovCurrencyNet net;
+  final User subject;
+  final User other;
+  final String locale;
+
+  String _name(BuildContext context, User user) {
+    final l10n = context.l10n;
+    if (user.isCurrentUser) return l10n.commonYouSuffix(user.name);
+    return user.name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final onVariant = theme.colorScheme.onSurfaceVariant;
+    final amount = formatCents(
+      net.amountCents,
+      net.currencyCode,
+      locale: locale,
+    );
+    final debtor = net.personOwesOther ? subject : other;
+    final creditor = net.personOwesOther ? other : subject;
+
+    final Color accent;
+    if (creditor.isCurrentUser) {
+      accent = AppColors.primaryDark;
+    } else if (debtor.isCurrentUser) {
+      accent = AppColors.negative;
+    } else {
+      accent = theme.colorScheme.onSurface;
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.balancesHeroNetLabel,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: onVariant,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            l10n.balancesHeroNetOwes(
+              _name(context, debtor),
+              _name(context, creditor),
+            ),
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              height: 1.25,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          amount,
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: accent,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _ScenePairCard extends StatelessWidget {
   const _ScenePairCard({
     required this.scene,
-    required this.fromUserId,
-    required this.toUserId,
     required this.debtorName,
+    required this.creditorName,
     required this.debtorColorIndex,
+    required this.showDirection,
     required this.locale,
   });
 
   final PairSceneBreakdown scene;
-  final String fromUserId;
-  final String toUserId;
   final String debtorName;
+  final String creditorName;
   final int debtorColorIndex;
+  final bool showDirection;
   final String locale;
 
   @override
@@ -202,8 +363,8 @@ class _ScenePairCard extends StatelessWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final prefill = PairwiseDebt(
-      fromUserId: fromUserId,
-      toUserId: toUserId,
+      fromUserId: scene.fromUserId,
+      toUserId: scene.toUserId,
       amountCents: scene.debtCents,
     );
 
@@ -217,11 +378,25 @@ class _ScenePairCard extends StatelessWidget {
               Text(scene.groupEmoji, style: const TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  scene.groupName,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      scene.groupName,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    if (showDirection) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        l10n.groupsOwesTemplate(debtorName, creditorName),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
               TextButton.icon(

@@ -98,6 +98,7 @@
   "balancesSettleInScene": "Acertar",
   "balancesViewShares": "Partes das despesas",
   "balancesPairSettled": "Acertado entre estas pessoas",
+  "balancesPairBetween": "{a} e {b}",
   "balancesSelectPerson": "Toque para selecionar",
   "homeCardYouWillGive": "você deverá",
   "homeMemberCount": "{count, plural, =1{1 membro} other{{count} membros}}",

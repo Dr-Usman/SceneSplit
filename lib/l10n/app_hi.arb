@@ -98,6 +98,7 @@
   "balancesSettleInScene": "निपटान करें",
   "balancesViewShares": "खर्च के हिस्से",
   "balancesPairSettled": "इन लोगों के बीच निपट गया",
+  "balancesPairBetween": "{a} और {b}",
   "balancesSelectPerson": "चुनने के लिए टैप करें",
   "homeCardYouWillGive": "आपको देना होगा",
   "homeMemberCount": "{count, plural, =1{1 सदस्य} other{{count} सदस्य}}",

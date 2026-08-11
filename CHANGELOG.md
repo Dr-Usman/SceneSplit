@@ -7,31 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Pair balance screen is a relationship view: both open directions between the people, scenes for either direction, and a Net footer only when both sides are open in the same currency.
+
+## [1.7.0] - 2026-08-11
+
 ### Added
 
-- Bottom navigation via MainTabsScreen: Scenes, Balances, Profile.
-- Balances tab: Whom POV hero with per-currency owed / owe totals across scenes and people, plus counterparty breakdown on tap.
-- Balances tab: cross-scene who-owes-whom list with Whom defaulting to You, optional Who filter, Clear for all open debts, and pair drill-down with per-currency / per-scene totals and settle.
-- Balances hero: when Who and Whom are both set and both directions are open, show Net inside the hero card footer (“{debtor} owes {creditor}” + colored amount).
-- Startup bootstrap screen shows the SceneSplit logo (on a small brand-dark pad) above the spinner so the wordmark stays readable in light and dark mode.
+- Bottom navigation: Scenes, Balances, and Profile tabs.
+- Balances tab: cross-scene who-owes-whom with Whom defaulting to You, optional Who filter, Clear, and pair drill-down with per-currency / per-scene totals and settle.
+- Balances hero: Whom/Who POV with per-currency owed / owe totals, counterparty breakdown on tap, and Net footer when both people are selected and both directions are open.
+- Startup bootstrap screen shows the SceneSplit logo above the spinner (readable in light and dark mode).
 
 ### Fixed
 
-- Pair balance scene cards: wrap “View shares” ListTile in Material so ink/splash isn’t hidden under AppCard (removes Flutter assertion).
+- Pair balance “View shares” row: Material wrapper so ink/splash works under AppCard (removes Flutter assertion).
 
 ### Changed
 
-- Balances hero: show for Who and/or Whom; Who-only or Whom-only = that person’s full get/owe POV; both = pair-only totals; neither = hide hero. Totals are pair-scoped when Who is set, full Whom POV when Who is empty. Surface card with teal (owed) / red (owe) amounts and multi-currency on one line (`Rs · $`).
-- Balances Who → Whom filter: compact chip (surface when empty, light teal when selected; 22px avatars, single-line names, Anyone empty state); sheet has title/hint, larger Who/Whom avatar slots with name under avatar and per-slot clear (×), soft teal/purple tints, Clear + Show results; filter opens only via the chip. Current user shows as “{name} (you)”.
-- Balances list: one card per person-pair (avatar + name → owes → avatar + name) with multi-currency open-debt amounts, You’re owed / You owe badges (teal / red), dashed scene divider, and scene labels; currency codes shown when multiple currencies are open.
-- Balances person picker: drag handle, title + Clear selection row, search, and separator (aligned with currency picker).
-- Balances copy: subtitle and filter hint explain filtering open debts by who owes whom.
-- Home: move New scene from FAB to AppBar + so the scene list isn’t covered; Scenes tab uses a home icon.
-- Scene detail: show recent settlements and expenses with a footer See all link to full list screens.
-- Expense/settlement list screens use “{scene} · Expenses/Settlements” titles.
-- Scene detail: settlement rows use card layout aligned with expenses (icon, date/note, amount).
-- Settled balance hero uses the normal surface card (white / dark surface) instead of a green wash.
-- Person detail: header and scene net labels use “total debt” / “total credit” instead of “will give” / “gets”.
+- Balances filter: compact Who → Whom chip and sheet (Anyone empty state, “{name} (you)” for you, Clear + Show results).
+- Balances list: one card per person-pair with You’re owed / You owe badges, dashed scene divider, and multi-currency totals.
+- Home: New scene moved from FAB to AppBar +; Scenes tab uses a home icon.
+- Scene detail: recent settlements and expenses with See all; settlement rows use the same card layout as expenses; settled hero uses a normal surface card.
+- Expense/settlement list titles use “{scene} · Expenses/Settlements”.
+- Person detail: “total debt” / “total credit” instead of “will give” / “gets”.
 
 ## [1.6.0] - 2026-08-07
 

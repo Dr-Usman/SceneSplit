@@ -207,6 +207,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get balancesPairSettled => 'この二人の間は精算済みです';
 
   @override
+  String balancesPairBetween(String a, String b) {
+    return '$a と $b';
+  }
+
+  @override
   String get balancesSelectPerson => 'タップして選択';
 
   @override

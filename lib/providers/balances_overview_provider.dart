@@ -177,12 +177,14 @@ List<OpenPairwiseBalance> scopeDebtsForBalancesHero(
   ];
 }
 
-/// One scene's open debt for a pair, plus the debtor's expense-share rollup.
+/// One scene's open debt for a directed pair, plus the debtor's expense-share rollup.
 class PairSceneBreakdown {
   final String groupId;
   final String groupName;
   final String groupEmoji;
   final String currencyCode;
+  final String fromUserId;
+  final String toUserId;
   final int debtCents;
   final List<GroupMemberInfo> members;
   final List<MemberExpenseShare> expenseShares;
@@ -194,6 +196,8 @@ class PairSceneBreakdown {
     required this.groupName,
     required this.groupEmoji,
     required this.currencyCode,
+    required this.fromUserId,
+    required this.toUserId,
     required this.debtCents,
     required this.members,
     required this.expenseShares,
@@ -212,6 +216,20 @@ List<OpenPairwiseBalance> filterOpenDebts(
     for (final d in debts)
       if ((fromId == null || d.debt.fromUserId == fromId) &&
           (toId == null || d.debt.toUserId == toId))
+        d,
+  ];
+}
+
+/// Open edges between two people in either direction (relationship view).
+List<OpenPairwiseBalance> filterOpenDebtsBetweenPair(
+  List<OpenPairwiseBalance> debts, {
+  required String userIdA,
+  required String userIdB,
+}) {
+  return [
+    for (final d in debts)
+      if ((d.debt.fromUserId == userIdA && d.debt.toUserId == userIdB) ||
+          (d.debt.fromUserId == userIdB && d.debt.toUserId == userIdA))
         d,
   ];
 }
@@ -438,7 +456,7 @@ final balancesOverviewProvider = Provider<AsyncValue<BalancesOverviewData>>((
   );
 });
 
-/// Scene breakdown + share totals for a directed pair across open debts.
+/// Scene breakdown + share totals for either direction between a pair.
 final pairBalanceDetailProvider =
     Provider.family<
       AsyncValue<List<PairSceneBreakdown>>,
@@ -463,10 +481,10 @@ final pairBalanceDetailProvider =
       if (error != null) return AsyncValue.error(error, StackTrace.current);
       if (loading || !overview.hasValue) return const AsyncValue.loading();
 
-      final pairDebts = filterOpenDebts(
+      final pairDebts = filterOpenDebtsBetweenPair(
         overview.value!.openDebts,
-        fromId: pair.fromId,
-        toId: pair.toId,
+        userIdA: pair.fromId,
+        userIdB: pair.toId,
       );
       if (pairDebts.isEmpty) return const AsyncValue.data([]);
 
@@ -485,15 +503,17 @@ final pairBalanceDetailProvider =
         splitsByExpense.putIfAbsent(s.expenseId, () => []).add(s);
       }
 
-      final byGroupId = <String, OpenPairwiseBalance>{};
+      // One entry per scene + direction (same scene rarely has both).
+      final bySceneDirection = <String, OpenPairwiseBalance>{};
       for (final d in pairDebts) {
-        byGroupId[d.groupId] = d;
+        final key = '${d.groupId}|${d.debt.fromUserId}|${d.debt.toUserId}';
+        bySceneDirection[key] = d;
       }
 
       final result = <PairSceneBreakdown>[];
-      for (final entry in byGroupId.entries) {
-        final open = entry.value;
-        final groupId = entry.key;
+      for (final open in bySceneDirection.values) {
+        final groupId = open.groupId;
+        final debtorId = open.debt.fromUserId;
         final memberIds = allMembers
             .where((m) => m.groupId == groupId)
             .map((m) => m.userId);
@@ -514,9 +534,9 @@ final pairBalanceDetailProvider =
             ),
         ];
         final breakdown = buildMemberShareBreakdown(expenseList);
-        // Show the debtor's (Who) shares in scenes where they owe Whom.
-        final shares = breakdown.expenseShares[pair.fromId] ?? const [];
-        final totalShare = breakdown.shareCents[pair.fromId] ?? 0;
+        // Debtor's shares for this directed scene edge.
+        final shares = breakdown.expenseShares[debtorId] ?? const [];
+        final totalShare = breakdown.shareCents[debtorId] ?? 0;
 
         result.add(
           PairSceneBreakdown(
@@ -524,6 +544,8 @@ final pairBalanceDetailProvider =
             groupName: open.groupName,
             groupEmoji: open.groupEmoji,
             currencyCode: open.currencyCode,
+            fromUserId: open.debt.fromUserId,
+            toUserId: open.debt.toUserId,
             debtCents: open.debt.amountCents,
             members: memberInfos,
             expenseShares: shares,
@@ -536,7 +558,9 @@ final pairBalanceDetailProvider =
       result.sort((a, b) {
         final byCurrency = a.currencyCode.compareTo(b.currencyCode);
         if (byCurrency != 0) return byCurrency;
-        return b.debtCents.compareTo(a.debtCents);
+        final byAmount = b.debtCents.compareTo(a.debtCents);
+        if (byAmount != 0) return byAmount;
+        return a.groupName.toLowerCase().compareTo(b.groupName.toLowerCase());
       });
 
       return AsyncValue.data(result);

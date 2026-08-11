@@ -211,6 +211,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get balancesPairSettled => 'Réglé entre ces personnes';
 
   @override
+  String balancesPairBetween(String a, String b) {
+    return '$a et $b';
+  }
+
+  @override
   String get balancesSelectPerson => 'Toucher pour sélectionner';
 
   @override

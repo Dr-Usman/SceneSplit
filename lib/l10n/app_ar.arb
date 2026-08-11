@@ -98,6 +98,7 @@
   "balancesSettleInScene": "تسوية",
   "balancesViewShares": "حصص المصروفات",
   "balancesPairSettled": "تمت التسوية بين هذين الشخصين",
+  "balancesPairBetween": "{a} و {b}",
   "balancesSelectPerson": "اضغط للاختيار",
   "homeCardYouWillGive": "ستدفع",
   "homeMemberCount": "{count, plural, =1{عضو واحد} other{{count} أعضاء}}",

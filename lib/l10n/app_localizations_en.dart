@@ -208,6 +208,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get balancesPairSettled => 'Settled between these people';
 
   @override
+  String balancesPairBetween(String a, String b) {
+    return '$a & $b';
+  }
+
+  @override
   String get balancesSelectPerson => 'Tap to select';
 
   @override

@@ -126,6 +126,17 @@
   "balancesSettleInScene": "Settle up",
   "balancesViewShares": "Expense shares",
   "balancesPairSettled": "Settled between these people",
+  "balancesPairBetween": "{a} & {b}",
+  "@balancesPairBetween": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
   "balancesSelectPerson": "Tap to select",
   "homeCardYouWillGive": "you will give",
   "homeMemberCount": "{count, plural, =1{1 member} other{{count} members}}",

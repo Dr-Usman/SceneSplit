@@ -210,6 +210,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get balancesPairSettled => 'Acertado entre estas pessoas';
 
   @override
+  String balancesPairBetween(String a, String b) {
+    return '$a e $b';
+  }
+
+  @override
   String get balancesSelectPerson => 'Toque para selecionar';
 
   @override
@@ -1234,6 +1239,11 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get balancesPairSettled => 'Acertado entre estas pessoas';
+
+  @override
+  String balancesPairBetween(String a, String b) {
+    return '$a e $b';
+  }
 
   @override
   String get balancesSelectPerson => 'Toque para selecionar';

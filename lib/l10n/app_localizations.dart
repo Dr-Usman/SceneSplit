@@ -471,6 +471,12 @@ abstract class AppLocalizations {
   /// **'Settled between these people'**
   String get balancesPairSettled;
 
+  /// No description provided for @balancesPairBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} & {b}'**
+  String balancesPairBetween(String a, String b);
+
   /// No description provided for @balancesSelectPerson.
   ///
   /// In en, this message translates to:

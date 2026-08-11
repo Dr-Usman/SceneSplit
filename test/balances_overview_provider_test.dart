@@ -82,6 +82,54 @@ void main() {
     });
   });
 
+  group('filterOpenDebtsBetweenPair', () {
+    final debts = [
+      _debt(
+        groupId: 'g1',
+        groupName: 'Trip',
+        currency: 'PKR',
+        from: 'casey',
+        to: 'alex',
+        cents: 43800,
+      ),
+      _debt(
+        groupId: 'g2',
+        groupName: 'Dinner',
+        currency: 'PKR',
+        from: 'alex',
+        to: 'casey',
+        cents: 2400,
+      ),
+      _debt(
+        groupId: 'g3',
+        groupName: 'Other',
+        currency: 'USD',
+        from: 'bob',
+        to: 'alex',
+        cents: 50,
+      ),
+    ];
+
+    test('includes both directions between the pair', () {
+      final filtered = filterOpenDebtsBetweenPair(
+        debts,
+        userIdA: 'casey',
+        userIdB: 'alex',
+      );
+      expect(filtered, hasLength(2));
+      expect(filtered.map((d) => d.debt.fromUserId).toSet(), {'casey', 'alex'});
+    });
+
+    test('excludes unrelated people', () {
+      final filtered = filterOpenDebtsBetweenPair(
+        debts,
+        userIdA: 'casey',
+        userIdB: 'alex',
+      );
+      expect(filtered.every((d) => d.groupId != 'g3'), isTrue);
+    });
+  });
+
   group('aggregatePairByCurrency', () {
     test('sums per currency and skips other pairs', () {
       final debts = [

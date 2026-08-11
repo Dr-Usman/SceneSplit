@@ -98,6 +98,7 @@
   "balancesSettleInScene": "精算する",
   "balancesViewShares": "支出の負担",
   "balancesPairSettled": "この二人の間は精算済みです",
+  "balancesPairBetween": "{a} と {b}",
   "balancesSelectPerson": "タップして選択",
   "homeCardYouWillGive": "支払予定",
   "homeMemberCount": "{count, plural, =1{1人} other{{count}人}}",

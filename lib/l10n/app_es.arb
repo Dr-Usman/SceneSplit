@@ -98,6 +98,7 @@
   "balancesSettleInScene": "Liquidar",
   "balancesViewShares": "Partes de gastos",
   "balancesPairSettled": "Liquidado entre estas personas",
+  "balancesPairBetween": "{a} y {b}",
   "balancesSelectPerson": "Toca para seleccionar",
   "homeCardYouWillGive": "deberás",
   "homeMemberCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",

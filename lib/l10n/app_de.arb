@@ -98,6 +98,7 @@
   "balancesSettleInScene": "Ausgleichen",
   "balancesViewShares": "Ausgabenanteile",
   "balancesPairSettled": "Zwischen diesen Personen ausgeglichen",
+  "balancesPairBetween": "{a} & {b}",
   "balancesSelectPerson": "Tippen zum Auswählen",
   "homeCardYouWillGive": "du schuldest",
   "homeMemberCount": "{count, plural, =1{1 Mitglied} other{{count} Mitglieder}}",
