@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Pair balance screen is a relationship view: both open directions between the people, scenes for either direction, and a Net footer only when both sides are open in the same currency.
 
 ## [1.7.0] - 2026-08-11
 
@@ -23,9 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Pair balance “View shares” row: Material wrapper so ink/splash works under AppCard (removes Flutter assertion).
+- AppCard always wraps content in Material so ListTile/ExpansionTile ink isn’t hidden under the card fill (fixes person detail scene cards).
 
 ### Changed
 
+- Pair balance screen is a relationship view: both open directions between the people, scenes for either direction, and a Net footer only when both sides are open in the same currency.
 - Balances filter: compact Who → Whom chip and sheet (Anyone empty state, “{name} (you)” for you, Clear + Show results).
 - Balances list: one card per person-pair with You’re owed / You owe badges, dashed scene divider, and multi-currency totals.
 - Home: New scene moved from FAB to AppBar +; Scenes tab uses a home icon.

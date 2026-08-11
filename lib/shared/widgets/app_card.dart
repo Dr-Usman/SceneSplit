@@ -36,18 +36,16 @@ class AppCard extends StatelessWidget {
 
     final content = Padding(padding: padding, child: child);
 
-    final card = Container(
+    // Always provide a Material under the DecoratedBox so ListTile /
+    // ExpansionTile ink and tile backgrounds paint above the card fill.
+    return Container(
       margin: margin,
       decoration: decoration,
       clipBehavior: Clip.antiAlias,
-      child: onTap == null
-          ? content
-          : Material(
-              color: Colors.transparent,
-              child: InkWell(onTap: onTap, child: content),
-            ),
+      child: Material(
+        color: Colors.transparent,
+        child: onTap == null ? content : InkWell(onTap: onTap, child: content),
+      ),
     );
-
-    return card;
   }
 }

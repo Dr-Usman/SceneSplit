@@ -28,19 +28,23 @@ supported platforms from GitHub Releases.
 
 | Home (light) | Home (dark) |
 |:---:|:---:|
-| <img src="docs/screenshots/home-light.jpg" alt="Home dashboard (light)" width="220" /> | <img src="docs/screenshots/home-dark.jpg" alt="Home dashboard (dark)" width="220" /> |
-| **Scene detail** | **Pending summary** |
-| <img src="docs/screenshots/group-detail.jpg" alt="Scene detail with balances and donut chart" width="220" /> | <img src="docs/screenshots/pending-summary.jpg" alt="Home pending summary sheet" width="220" /> |
+| <img src="docs/screenshots/home-light.jpg" alt="Scenes home with bottom navigation (light)" width="220" /> | <img src="docs/screenshots/home-dark.jpg" alt="Scenes home (dark)" width="220" /> |
+| **Balances** | **Pair balance** |
+| <img src="docs/screenshots/balances.jpg" alt="Balances tab with who-owes-whom list" width="220" /> | <img src="docs/screenshots/pair-balance.jpg" alt="Pair drill-down across scenes" width="220" /> |
+| **Scene detail** | **Person detail** |
+| <img src="docs/screenshots/group-detail.jpg" alt="Scene detail with balances and donut chart" width="220" /> | <img src="docs/screenshots/person-detail.jpg" alt="Person detail with total debt and credit" width="220" /> |
 
 Play Store feature graphic, device captures, and phone mockups: see [`store/play/README.md`](store/play/README.md) (binaries are local / gitignored).
 
 ## Features
 
+- **Bottom navigation** — Scenes, Balances, and Profile tabs
 - **People & scenes** — Global people pool from Profile; create scenes (trips, dinners, shared activities) with emoji icons and members
-- **Person detail** — Per-person balances across scenes, per-currency will-give / gets, who-owes-whom, expense shares, and settle
+- **Balances tab** — Cross-scene who-owes-whom with Whom defaulting to You, Who → Whom filter, POV hero totals, and pair drill-down with settle
+- **Person detail** — Per-person balances across scenes, per-currency total debt / total credit, who-owes-whom, expense shares, and settle
 - **Flexible splits** — Equal, exact amounts, or percentage, with live validation; choose who is included per expense
 - **Multi-payer bills** — An expense can be paid by one or more people (equal or exact amounts)
-- **Balances & settlements** — Live balances; who-owes-whom follows shared expenses (A↔B offsets); editable settlement records
+- **Settlements** — Live balances; who-owes-whom follows shared expenses (A↔B offsets); editable settlement records
 - **Share balances** — Export Who Owes Whom (plus expense share totals) as an image for WhatsApp and other apps
 - **Insights** — Scene expense breakdown pie; tap a member to see which expenses make up their share
 - **Currency** — App-wide default for home summary and new scenes; each scene has its own currency; locale-aware formatting
@@ -105,7 +109,9 @@ lib/
 ├── providers/         # Riverpod streams and derived state
 ├── features/
 │   ├── onboarding/
-│   ├── home/
+│   ├── main_tabs/     # Scenes / Balances / Profile shell
+│   ├── home/          # Scenes list
+│   ├── balances/      # Cross-scene who-owes-whom + pair drill-down
 │   ├── groups/        # create, edit, scene detail (UI: “scenes”)
 │   ├── expenses/
 │   ├── settlements/

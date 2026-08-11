@@ -2,50 +2,88 @@
 
 ## App name
 
-**SceneSplit**
+**SceneSplit** (Play title ≤30: **SceneSplit: Split Expenses**)
 
 ## iOS subtitle (max 30 characters)
 
-**Split bills with your group**
+**Split bills. Settle fair.**
 
 ## Google Play short description (max 80 characters)
 
-**Split group expenses, track who owes what, and settle up — works fully offline.**
+**Split scene expenses offline. Track who owes whom & settle up — no sign-up.**
 
 ## Full description
 
-**SceneSplit — split expenses without the hassle**
+SceneSplit – Offline Bill Splitter | Who Owes Whom & Settle Up
 
-Track shared costs for trips, roommates, dinners, and events. SceneSplit helps your group stay fair, clear, and settled — no sign-up required.
+Split shared expenses for trips, roommates, dinners, and events — no account, no cloud ledger. SceneSplit is a fast offline expense splitter that tracks who owes what across all your scenes and helps you settle up fairly.
 
-**Split any expense**
-Add bills and choose how to split: equally, by exact amounts, or by percentage. Pick which members are included per expense.
+SCENES, BALANCES & PROFILE
+Navigate with bottom tabs built for real shared spending:
+• Scenes — organize trips, dinners, roommates, and events
+• Balances — see who owes whom across every scene in one place
+• Profile — people, currency, language, appearance, and backup
 
-**Know your balance instantly**
-See what you will get and what you will give across all your groups. Tap your summary for a breakdown by group.
+TRACK WHO OWES WHOM
+Open the Balances tab for a clear cross-scene debt view:
+• Who → Whom filters (Whom defaults to you)
+• Per-currency totals for what you’re owed and what you owe
+• Pair drill-down with per-scene breakdown and settle
+• Person profiles with total debt and total credit across scenes
+• Per-scene balances you can trust
 
-**Settle up smartly**
-SceneSplit suggests the simplest way to clear debts between members and lets you record settlements in one tap.
+SPLIT BILLS YOUR WAY
+Add any expense in seconds and choose how to split:
+• Equal split between members
+• Exact amounts per person
+• Percentage split
+• Include or exclude people per expense
+• Multi-payer bills when more than one person paid
 
-**Built for real groups**
-Create groups with custom emojis and currencies (PKR, USD, EUR, and more). Manage people once and reuse them across groups.
+SETTLE UP FAST
+Record settlements quickly and keep history transparent:
+• Smart who-owes-whom suggestions from shared expenses
+• Editable settlement records
+• Share Who Owes Whom as an image for WhatsApp and similar apps
 
-**Private and offline**
-All data stays on your device. No account, no cloud, no ads — your expenses are yours.
+BUILT FOR REAL-LIFE SCENES
+• Custom names, emojis, and currencies (PKR, USD, EUR & more)
+• Reuse people across scenes
+• Scene expense breakdown charts — tap a member to see their share
+• Light, dark, or system appearance
 
-**Visual insights**
-Pie charts show member spending and balance breakdowns so everyone can see the big picture.
+PRIVATE & OFFLINE-FIRST
+Your expense ledger stays on your device:
+• No sign-up required
+• Works offline for day-to-day use
+• No ads
+• Optional product analytics only — we don’t sell your data or run ad trackers
+• Export/import a local backup when you need it
 
-Perfect for friends, families, flatmates, and travel groups who want a simple Splitwise-style experience that works offline.
+SPEAKS YOUR LANGUAGE
+English, Spanish, French, German, Portuguese (Brazil), Hindi, Arabic, and Japanese — follow the device or set a preference in Profile.
+
+WHY SCENESPLIT?
+• Simple, minimal, and lightweight
+• Fully usable offline
+• No account needed
+• A practical Splitwise-style alternative that keeps data on your phone
+
+Whether you’re splitting rent, travel costs, or dinner bills, SceneSplit makes shared expense tracking simple, fair, and stress-free.
+
+Download SceneSplit and take control of your shared expenses.
+
+Open source: https://github.com/Dr-Usman/SceneSplit
+Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 ## ASO keywords
 
-**Primary:** expense splitter, split bills, bill split, shared expenses, group expenses, settle up, expense tracker, roommate expenses, trip expenses, splitwise alternative
+**Primary:** split bills, bill splitter, who owes whom, settle up, shared expenses, expense splitter, balances, roommate expenses, trip expenses, splitwise alternative
 
-**Secondary:** offline expense app, travel bill split, dinner split, household expenses, who owes whom, debt settlement, group budget, PKR expense split, multi currency expenses
+**Secondary:** offline expense app, scene expenses, cross-scene balances, travel bill split, dinner split, household expenses, multi currency expenses, debt settlement, bill split app, shared bills
 
 **iOS keyword field (100 chars):**
-`split,bills,expenses,group,settle,roommate,trip,offline,shared,tracker`
+`split,bills,expenses,settle,balances,roommate,trip,offline,owes,shared`
 
 ## Category
 
@@ -54,24 +92,27 @@ Perfect for friends, families, flatmates, and travel groups who want a simple Sp
 
 ## Promo text (iOS, 170 chars)
 
-Split trips, dinners, and rent with friends. Track balances, settle up fast, and keep everything offline on your phone. No account needed.
+Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.0)
+## What's New (v1.7.0)
 
-Welcome to SceneSplit! Split group expenses, track balances, record settlements, and view spending breakdowns — all offline on your device.
-
+• New Balances tab — who owes whom across all your scenes
+• Filter open debts with Who → Whom; drill into any pair to settle
+• Bottom navigation: Scenes, Balances, and Profile
+• Clearer person totals: total debt and total credit
+• Scene detail: recent activity with See all, polished settlement cards
 ---
 
 ## Pre-submit checklist
 
 Complete these before App Store / Play Store upload:
 
-1. **Support email** — Update `supportEmail` in [`lib/core/constants/app_links.dart`](lib/core/constants/app_links.dart) (currently `support@example.com`).
-2. **Privacy policy URL** — Host [`assets/legal/privacy_policy.md`](assets/legal/privacy_policy.md) at a public HTTPS URL. Add to store console and optionally `AppLinks.privacyPolicyUrl`.
-3. **Terms URL** (optional) — Host [`assets/legal/terms_of_service.md`](assets/legal/terms_of_service.md) if required by your jurisdiction.
-4. **Store URLs** — After publish, add Play Store and App Store links to `AppLinks.playStoreUrl` and `AppLinks.appStoreUrl` for Rate us fallback.
-5. **Legal email in docs** — Replace `support@example.com` in privacy policy and terms markdown in `assets/legal/`.
-6. **mailto** — Test Contact us, Feedback, and Suggest a feature on a real iOS and Android device.
-7. **In-app review** — Test Rate SceneSplit on a real device (simulators may not show the dialog).
-8. **Screenshots** — Capture home, group detail, add expense, and profile screens in light and dark mode.
-9. **App icon & feature graphic** — Ensure store assets match brand colors (teal `#00B5B2`, purple `#7856E6`).
+1. **Support email** — Set in [`lib/core/constants/app_links.dart`](lib/core/constants/app_links.dart).
+2. **Privacy policy URL** — Hosted and linked in store console / `AppLinks.privacyPolicyUrl`.
+3. **Terms URL** (optional) — Host [`assets/legal/terms_of_service.md`](assets/legal/terms_of_service.md) if required.
+4. **Store URLs** — Play Store / App Store links in `AppLinks` for Rate us fallback.
+5. **Legal docs** — Contact email correct in `assets/legal/`.
+6. **mailto** — Test Contact us, Feedback, and Suggest a feature on a real device.
+7. **In-app review** — Test Rate SceneSplit on a real device.
+8. **Screenshots** — Upload framed mockups from `store/play/mockups/` in the order listed in [`store/play/README.md`](store/play/README.md).
+9. **App icon & feature graphic** — Brand colors teal `#00B5B2`, purple `#7856E6`.
