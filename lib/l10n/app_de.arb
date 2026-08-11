@@ -25,6 +25,80 @@
   "homeYouWillGive": "Du schuldest",
   "homeSettledUp": "ausgeglichen",
   "homeCardYouWillGet": "du erhältst",
+  "navScenes": "Szenen",
+  "navBalances": "Salden",
+  "navProfile": "Profil",
+  "balancesTitle": "Salden",
+  "balancesSubtitle": "Sieh, wer wem über deine Szenen schuldet.",
+  "balancesWho": "Wer",
+  "balancesWhom": "Wem",
+  "balancesFilterTitle": "Wer schuldet wem",
+  "balancesFilterHint": "Wähle, wer wem schuldet, um offene Schulden zu filtern.",
+  "balancesAnyone": "Beliebig",
+  "balancesOwes": "schuldet",
+  "balancesClear": "Zurücksetzen",
+  "balancesShowResults": "Ergebnisse anzeigen",
+  "balancesClearSelection": "Auswahl löschen",
+  "balancesEmpty": "Keine offenen Schulden in deinen Szenen.",
+  "balancesEmptyFiltered": "Keine offenen Schulden passen zu dieser Auswahl.",
+  "balancesPickPerson": "Person auswählen",
+  "balancesNoPeopleFound": "Keine Personen gefunden",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "Offene Schuld",
+  "balancesOpenDebtCurrency": "Offene Schuld ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "Dir geschuldet",
+  "balancesYouOwe": "Du schuldest",
+  "balancesHeroOwed": "Bekommt",
+  "balancesHeroOwe": "Schuldet",
+  "balancesHeroOwedBreakdown": "Wer schuldet {name}",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "Wem {name} schuldet",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "Netto",
+  "balancesHeroNetOwes": "{debtor} schuldet {creditor}",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "Anteil gesamt",
+  "balancesExpenseTotal": "Ausgaben gesamt",
+  "balancesScenesHeader": "SZENEN",
+  "balancesSettleInScene": "Ausgleichen",
+  "balancesViewShares": "Ausgabenanteile",
+  "balancesPairSettled": "Zwischen diesen Personen ausgeglichen",
+  "balancesSelectPerson": "Tippen zum Auswählen",
   "homeCardYouWillGive": "du schuldest",
   "homeMemberCount": "{count, plural, =1{1 Mitglied} other{{count} Mitglieder}}",
   "homeEmptyTitle": "Noch keine Szenen",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · Ausgleichszahlungen",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · Ausgaben",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "Alle anzeigen ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "Noch keine Ausgleichszahlungen erfasst.",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{In keiner Szene} =1{1 Szene} other{{count} Szenen}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "Beträge in der Währung jeder Szene angezeigt",
   "peopleDetailEmptyScenes": "Noch in keiner Szene Mitglied.",
   "peopleDetailAllSettled": "Überall ausgeglichen",
   "peopleDetailOpenBalances": "Offene Salden in manchen Szenen",
-  "peopleDetailGets": "{name} erhält",
+  "peopleDetailGets": "Gesamtforderung von {name}",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} schuldet",
+  "peopleDetailWillGive": "Gesamtschulden von {name}",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "Deine Gesamtforderung",
+  "peopleDetailYourTotalDebt": "Deine Gesamtschulden",
   "peopleDetailSettledInScene": "Ausgeglichen",
   "peopleDetailNoDebts": "Keine offenen Schulden in dieser Szene",
   "peopleDetailViewExpenses": "Ausgabenanteile anzeigen",

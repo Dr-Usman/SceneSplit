@@ -14,7 +14,6 @@ import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/summary_split_card.dart';
 import '../groups/create_group_screen.dart';
 import '../groups/group_detail_screen.dart';
-import '../profile/profile_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -24,47 +23,26 @@ class HomeScreen extends ConsumerWidget {
     final l10n = context.l10n;
     final homeData = ref.watch(homeDataProvider);
     final currencyCode = ref.watch(currencyCodeProvider).value ?? 'PKR';
-    final user = ref.watch(currentUserProvider).value;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLinks.appName),
         actions: [
-          if (user != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                ),
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: AppColors.primarySoft,
-                  child: Text(
-                    user.name.isEmpty ? '?' : user.name[0].toUpperCase(),
-                    style: const TextStyle(
-                      color: AppColors.primaryDark,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
+          IconButton(
+            tooltip: l10n.homeNewGroup,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CreateGroupScreen()),
             ),
+            icon: const Icon(Icons.add_rounded),
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => const CreateGroupScreen())),
-        icon: const Icon(Icons.add_rounded),
-        label: Text(l10n.homeNewGroup),
       ),
       body: homeData.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) =>
             Center(child: Text(l10n.commonSomethingWentWrong('$e'))),
         data: (data) => ListView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
           children: [
             _BalanceSummaryCard(data: data, currencyCode: currencyCode),
             const SizedBox(height: 28),

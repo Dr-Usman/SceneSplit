@@ -94,6 +94,126 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeCardYouWillGet => 'vous recevrez';
 
   @override
+  String get navScenes => 'Scènes';
+
+  @override
+  String get navBalances => 'Soldes';
+
+  @override
+  String get navProfile => 'Profil';
+
+  @override
+  String get balancesTitle => 'Soldes';
+
+  @override
+  String get balancesSubtitle => 'Voyez qui doit quoi à qui dans vos scènes.';
+
+  @override
+  String get balancesWho => 'Qui';
+
+  @override
+  String get balancesWhom => 'À qui';
+
+  @override
+  String get balancesFilterTitle => 'Qui doit à qui';
+
+  @override
+  String get balancesFilterHint =>
+      'Choisissez qui doit à qui pour filtrer les dettes ouvertes.';
+
+  @override
+  String get balancesAnyone => 'N’importe qui';
+
+  @override
+  String get balancesOwes => 'doit à';
+
+  @override
+  String get balancesClear => 'Effacer';
+
+  @override
+  String get balancesShowResults => 'Afficher les résultats';
+
+  @override
+  String get balancesClearSelection => 'Effacer la sélection';
+
+  @override
+  String get balancesEmpty => 'Aucune dette ouverte dans vos scènes.';
+
+  @override
+  String get balancesEmptyFiltered =>
+      'Aucune dette ouverte ne correspond à cette sélection.';
+
+  @override
+  String get balancesPickPerson => 'Sélectionner une personne';
+
+  @override
+  String get balancesNoPeopleFound => 'Aucune personne trouvée';
+
+  @override
+  String balancesCurrencySection(String currency) {
+    return '$currency';
+  }
+
+  @override
+  String get balancesOpenDebtTotal => 'Dette ouverte';
+
+  @override
+  String balancesOpenDebtCurrency(String currency) {
+    return 'Dette ouverte ($currency)';
+  }
+
+  @override
+  String get balancesYouAreOwed => 'On vous doit';
+
+  @override
+  String get balancesYouOwe => 'Vous devez';
+
+  @override
+  String get balancesHeroOwed => 'Reçoit';
+
+  @override
+  String get balancesHeroOwe => 'Doit';
+
+  @override
+  String balancesHeroOwedBreakdown(String name) {
+    return 'Qui doit à $name';
+  }
+
+  @override
+  String balancesHeroOweBreakdown(String name) {
+    return 'À qui $name doit';
+  }
+
+  @override
+  String get balancesHeroNetLabel => 'Net';
+
+  @override
+  String balancesHeroNetOwes(String debtor, String creditor) {
+    return '$debtor doit à $creditor';
+  }
+
+  @override
+  String get balancesShareTotal => 'Total de la part';
+
+  @override
+  String get balancesExpenseTotal => 'Total des dépenses';
+
+  @override
+  String get balancesScenesHeader => 'SCÈNES';
+
+  @override
+  String get balancesSettleInScene => 'Régler';
+
+  @override
+  String get balancesViewShares => 'Parts des dépenses';
+
+  @override
+  String get balancesPairSettled => 'Réglé entre ces personnes';
+
+  @override
+  String get balancesSelectPerson => 'Toucher pour sélectionner';
+
+  @override
   String get homeCardYouWillGive => 'vous devrez';
 
   @override
@@ -632,13 +752,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String peopleDetailGets(String name) {
-    return '$name reçoit';
+    return 'Créance totale de $name';
   }
 
   @override
   String peopleDetailWillGive(String name) {
-    return '$name doit';
+    return 'Dette totale de $name';
   }
+
+  @override
+  String get peopleDetailYourTotalCredit => 'Votre créance totale';
+
+  @override
+  String get peopleDetailYourTotalDebt => 'Votre dette totale';
 
   @override
   String get peopleDetailSettledInScene => 'Réglé';

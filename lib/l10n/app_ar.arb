@@ -25,6 +25,80 @@
   "homeYouWillGive": "ستدفع",
   "homeSettledUp": "تمت التسوية",
   "homeCardYouWillGet": "ستستلم",
+  "navScenes": "المشاهد",
+  "navBalances": "الأرصدة",
+  "navProfile": "الملف",
+  "balancesTitle": "الأرصدة",
+  "balancesSubtitle": "اطلع على من يدين لمن عبر مشاهدك.",
+  "balancesWho": "من",
+  "balancesWhom": "لمن",
+  "balancesFilterTitle": "من يدين لمن",
+  "balancesFilterHint": "اختر من يدين لمن لتصفية الديون المفتوحة.",
+  "balancesAnyone": "أي شخص",
+  "balancesOwes": "مدين لـ",
+  "balancesClear": "مسح",
+  "balancesShowResults": "عرض النتائج",
+  "balancesClearSelection": "مسح التحديد",
+  "balancesEmpty": "لا توجد ديون مفتوحة في مشاهدك.",
+  "balancesEmptyFiltered": "لا توجد ديون مفتوحة تطابق هذا الاختيار.",
+  "balancesPickPerson": "اختر شخصًا",
+  "balancesNoPeopleFound": "لم يتم العثور على أشخاص",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "دين مفتوح",
+  "balancesOpenDebtCurrency": "دين مفتوح ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "مستحق لك",
+  "balancesYouOwe": "عليك دين",
+  "balancesHeroOwed": "يحصلون",
+  "balancesHeroOwe": "يمدينون",
+  "balancesHeroOwedBreakdown": "من يدين لـ {name}",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "لمن يدين {name}",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "الصافي",
+  "balancesHeroNetOwes": "{debtor} يدين لـ {creditor}",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "إجمالي الحصة",
+  "balancesExpenseTotal": "إجمالي المصروفات",
+  "balancesScenesHeader": "المشاهد",
+  "balancesSettleInScene": "تسوية",
+  "balancesViewShares": "حصص المصروفات",
+  "balancesPairSettled": "تمت التسوية بين هذين الشخصين",
+  "balancesSelectPerson": "اضغط للاختيار",
   "homeCardYouWillGive": "ستدفع",
   "homeMemberCount": "{count, plural, =1{عضو واحد} other{{count} أعضاء}}",
   "homeEmptyTitle": "لا توجد مشاهد بعد",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · التسويات",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · النفقات",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "عرض الكل ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "لا توجد تسويات مسجّلة بعد.",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{ليس في أي مشهد} =1{مشهد واحد} other{{count} مشاهد}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "المبالغ معروضة بعملة كل مشهد",
   "peopleDetailEmptyScenes": "ليس عضواً في أي مشهد بعد.",
   "peopleDetailAllSettled": "تم تسوية الكل عبر المشاهد",
   "peopleDetailOpenBalances": "أرصدة مفتوحة في بعض المشاهد",
-  "peopleDetailGets": "{name} يستلم",
+  "peopleDetailGets": "إجمالي مستحقات {name}",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} يدفع",
+  "peopleDetailWillGive": "إجمالي دين {name}",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "إجمالي مستحقاتك",
+  "peopleDetailYourTotalDebt": "إجمالي دينك",
   "peopleDetailSettledInScene": "مسوّى",
   "peopleDetailNoDebts": "لا ديون مفتوحة في هذا المشهد",
   "peopleDetailViewExpenses": "عرض حصص المصروفات",

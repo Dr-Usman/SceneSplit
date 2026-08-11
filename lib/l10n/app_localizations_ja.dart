@@ -92,6 +92,124 @@ class AppLocalizationsJa extends AppLocalizations {
   String get homeCardYouWillGet => '受取予定';
 
   @override
+  String get navScenes => 'シーン';
+
+  @override
+  String get navBalances => '残高';
+
+  @override
+  String get navProfile => 'プロフィール';
+
+  @override
+  String get balancesTitle => '残高';
+
+  @override
+  String get balancesSubtitle => 'シーン全体で誰が誰に借りているかを確認。';
+
+  @override
+  String get balancesWho => '誰が';
+
+  @override
+  String get balancesWhom => '誰に';
+
+  @override
+  String get balancesFilterTitle => '誰が誰に借りているか';
+
+  @override
+  String get balancesFilterHint => '誰が誰に借りているかを選んで未清算の負債を絞り込みます。';
+
+  @override
+  String get balancesAnyone => '誰でも';
+
+  @override
+  String get balancesOwes => '借りている';
+
+  @override
+  String get balancesClear => 'クリア';
+
+  @override
+  String get balancesShowResults => '結果を表示';
+
+  @override
+  String get balancesClearSelection => '選択をクリア';
+
+  @override
+  String get balancesEmpty => 'シーン全体で未精算の借りはありません。';
+
+  @override
+  String get balancesEmptyFiltered => 'この選択に一致する未精算はありません。';
+
+  @override
+  String get balancesPickPerson => '人を選択';
+
+  @override
+  String get balancesNoPeopleFound => '該当する人がいません';
+
+  @override
+  String balancesCurrencySection(String currency) {
+    return '$currency';
+  }
+
+  @override
+  String get balancesOpenDebtTotal => '未精算';
+
+  @override
+  String balancesOpenDebtCurrency(String currency) {
+    return '未精算（$currency）';
+  }
+
+  @override
+  String get balancesYouAreOwed => '受け取り';
+
+  @override
+  String get balancesYouOwe => '支払い';
+
+  @override
+  String get balancesHeroOwed => '受け取る';
+
+  @override
+  String get balancesHeroOwe => '払う';
+
+  @override
+  String balancesHeroOwedBreakdown(String name) {
+    return '$nameに借りがある人';
+  }
+
+  @override
+  String balancesHeroOweBreakdown(String name) {
+    return '$nameが借りている相手';
+  }
+
+  @override
+  String get balancesHeroNetLabel => '差引';
+
+  @override
+  String balancesHeroNetOwes(String debtor, String creditor) {
+    return '$debtorは$creditorに借りがある';
+  }
+
+  @override
+  String get balancesShareTotal => '負担合計';
+
+  @override
+  String get balancesExpenseTotal => '支出合計';
+
+  @override
+  String get balancesScenesHeader => 'シーン';
+
+  @override
+  String get balancesSettleInScene => '精算する';
+
+  @override
+  String get balancesViewShares => '支出の負担';
+
+  @override
+  String get balancesPairSettled => 'この二人の間は精算済みです';
+
+  @override
+  String get balancesSelectPerson => 'タップして選択';
+
+  @override
   String get homeCardYouWillGive => '支払予定';
 
   @override
@@ -613,13 +731,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String peopleDetailGets(String name) {
-    return '$nameの受取';
+    return '$nameの合計受取';
   }
 
   @override
   String peopleDetailWillGive(String name) {
-    return '$nameの支払';
+    return '$nameの合計負債';
   }
+
+  @override
+  String get peopleDetailYourTotalCredit => 'あなたの合計受取';
+
+  @override
+  String get peopleDetailYourTotalDebt => 'あなたの合計負債';
 
   @override
   String get peopleDetailSettledInScene => '清算済み';

@@ -1,16 +1,19 @@
 {
   "@@locale": "en",
-
   "commonSomethingWentWrong": "Something went wrong: {error}",
   "@commonSomethingWentWrong": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "commonErrorWithDetail": "Error: {error}",
   "@commonErrorWithDetail": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "commonCancel": "Cancel",
@@ -21,24 +24,26 @@
   "commonYouSuffix": "{name} (you)",
   "@commonYouSuffix": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "commonNameAlreadyInList": "\"{name}\" is already in the list.",
   "@commonNameAlreadyInList": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "commonUnknown": "Unknown",
-
   "onboardingTagline": "Split expenses with friends.\nNo accounts, no fuss.",
   "onboardingYourName": "YOUR NAME",
   "onboardingNameHint": "e.g. John Doe",
   "onboardingCurrency": "CURRENCY",
   "onboardingGetStarted": "Get Started",
   "onboardingPrivacyNote": "Everything stays on your device.",
-
   "homeNewGroup": "New scene",
   "homeGroupsHeader": "SCENES",
   "homeYouGetByGroup": "You get by scene",
@@ -48,16 +53,91 @@
   "homeYouWillGive": "You will give",
   "homeSettledUp": "settled up",
   "homeCardYouWillGet": "you will get",
+  "navScenes": "Scenes",
+  "navBalances": "Balances",
+  "navProfile": "Profile",
+  "balancesTitle": "Balances",
+  "balancesSubtitle": "See who owes whom across your scenes.",
+  "balancesWho": "Who",
+  "balancesWhom": "Whom",
+  "balancesFilterTitle": "Who owes whom",
+  "balancesFilterHint": "Choose who owes whom to filter open debts.",
+  "balancesAnyone": "Anyone",
+  "balancesOwes": "owes",
+  "balancesClear": "Clear",
+  "balancesShowResults": "Show results",
+  "balancesClearSelection": "Clear selection",
+  "balancesEmpty": "No open debts across your scenes.",
+  "balancesEmptyFiltered": "No open debts match this selection.",
+  "balancesPickPerson": "Select a person",
+  "balancesNoPeopleFound": "No people found",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "Open debt",
+  "balancesOpenDebtCurrency": "Open debt ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "You're owed",
+  "balancesYouOwe": "You owe",
+  "balancesHeroOwed": "They get",
+  "balancesHeroOwe": "They owe",
+  "balancesHeroOwedBreakdown": "Who owes {name}",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "Whom {name} owes",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "Net",
+  "balancesHeroNetOwes": "{debtor} owes {creditor}",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "Total share",
+  "balancesExpenseTotal": "Total expenses",
+  "balancesScenesHeader": "SCENES",
+  "balancesSettleInScene": "Settle up",
+  "balancesViewShares": "Expense shares",
+  "balancesPairSettled": "Settled between these people",
+  "balancesSelectPerson": "Tap to select",
   "homeCardYouWillGive": "you will give",
   "homeMemberCount": "{count, plural, =1{1 member} other{{count} members}}",
   "@homeMemberCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "homeEmptyTitle": "No scenes yet",
   "homeEmptyBody": "Create a scene for a trip, dinner,\nor shared home to start splitting.",
-
   "groupsNewGroup": "New scene",
   "groupsEditGroup": "Edit scene",
   "groupsGroupName": "SCENE NAME",
@@ -72,16 +152,24 @@
   "groupsRemovalBlockedOther": "{name} has expenses or settlements in this scene and cannot be removed.",
   "@groupsRemovalBlockedOther": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "groupsThisMember": "This member",
   "groupsCurrencySubtitle": "{symbol} — {name} ({code})",
   "@groupsCurrencySubtitle": {
     "placeholders": {
-      "symbol": {"type": "String"},
-      "name": {"type": "String"},
-      "code": {"type": "String"}
+      "symbol": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
     }
   },
   "groupsDeleteGroup": "Delete scene",
@@ -90,26 +178,34 @@
   "groupsMemberShareTitle": "{name}'s share",
   "@groupsMemberShareTitle": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "groupsMemberShareExpenseCount": "{count, plural, =1{1 expense} other{{count} expenses}}",
   "@groupsMemberShareExpenseCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsMemberShareOfAmount": "of {amount}",
   "@groupsMemberShareOfAmount": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "groupsMemberShareTotalLabel": "Total share",
   "groupsMembersHeader": "MEMBERS ({count})",
   "@groupsMembersHeader": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsManage": "Manage",
@@ -119,13 +215,17 @@
   "groupsShareBalancesSubject": "Balances — {groupName}",
   "@groupsShareBalancesSubject": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsShareBalancesText": "Who owes whom in {groupName}",
   "@groupsShareBalancesText": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsShareAllSettled": "All settled",
@@ -138,19 +238,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · Settlements",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · Expenses",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "See all ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "No settlements recorded yet.",
@@ -159,14 +265,18 @@
   "groupsDeleteExpenseBody": "Remove \"{title}\" from this scene?",
   "@groupsDeleteExpenseBody": {
     "placeholders": {
-      "title": {"type": "String"}
+      "title": {
+        "type": "String"
+      }
     }
   },
   "groupsDeleteGroupTitle": "Delete scene?",
   "groupsDeleteGroupBody": "Delete \"{name}\" and all its expenses? This cannot be undone.",
   "@groupsDeleteGroupBody": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "groupsDeleteSettlementTitle": "Delete settlement?",
@@ -174,27 +284,38 @@
   "groupsOwesTemplate": "{from} owes {to}",
   "@groupsOwesTemplate": {
     "placeholders": {
-      "from": {"type": "String"},
-      "to": {"type": "String"}
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
     }
   },
   "groupsPayerPaidDate": "{payer} paid · {date}",
   "@groupsPayerPaidDate": {
     "placeholders": {
-      "payer": {"type": "String"},
-      "date": {"type": "String"}
+      "payer": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
     }
   },
   "groupsSettlementPaid": "{from} paid {to}",
   "@groupsSettlementPaid": {
     "placeholders": {
-      "from": {"type": "String"},
-      "to": {"type": "String"}
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
     }
   },
   "groupsEmptyExpensesTitle": "No expenses yet",
   "groupsEmptyExpensesBody": "Tap \"Add expense\" to split your first bill.",
-
   "expensesEditTitle": "Edit expense",
   "expensesAddTitle": "Add expense",
   "expensesDetailTitle": "Expense",
@@ -227,32 +348,42 @@
   "expensesPaymentExceeds": "Each payment must not exceed {amount}",
   "@expensesPaymentExceeds": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesEnterValidPayments": "Enter valid payment amounts",
   "expensesOverBy": "Over by {amount}",
   "@expensesOverBy": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesAmountRemaining": "{amount} remaining",
   "@expensesAmountRemaining": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesPaymentsTotal": "Payments total {amount}",
   "@expensesPaymentsTotal": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesShareExceeds": "Each share must not exceed {amount}",
   "@expensesShareExceeds": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesEnterValidSplits": "Enter valid split amounts",
@@ -261,31 +392,44 @@
   "expensesPercentReduce": "Total {total}% — reduce by {over}%",
   "@expensesPercentReduce": {
     "placeholders": {
-      "total": {"type": "String"},
-      "over": {"type": "String"}
+      "total": {
+        "type": "String"
+      },
+      "over": {
+        "type": "String"
+      }
     }
   },
   "expensesPercentRemaining": "Total {total}% — {remaining}% remaining",
   "@expensesPercentRemaining": {
     "placeholders": {
-      "total": {"type": "String"},
-      "remaining": {"type": "String"}
+      "total": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
     }
   },
   "expensesPayerLine": "{name}: {amount}",
   "@expensesPayerLine": {
     "placeholders": {
-      "name": {"type": "String"},
-      "amount": {"type": "String"}
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
     }
   },
   "expensesPreviewTotal": "Total: {amount}",
   "@expensesPreviewTotal": {
     "placeholders": {
-      "amount": {"type": "String"}
+      "amount": {
+        "type": "String"
+      }
     }
   },
-
   "settlementsEditTitle": "Edit settlement",
   "settlementsRecordTitle": "Record settlement",
   "settlementsFromPays": "FROM (PAYS)",
@@ -295,7 +439,6 @@
   "settlementsNoteHint": "Cash, bank transfer…",
   "settlementsSaveChanges": "Save changes",
   "settlementsRecordPayment": "Record payment",
-
   "profileTitle": "Profile",
   "profileYourName": "Your name",
   "profileLanguage": "LANGUAGE",
@@ -314,7 +457,9 @@
   "profilePeopleCount": "{count, plural, =0{No people yet} =1{1 person} other{{count} people}}",
   "@profilePeopleCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "profileDataBackup": "Data & backup",
@@ -323,19 +468,26 @@
   "profileAboutApp": "About {appName}",
   "@profileAboutApp": {
     "placeholders": {
-      "appName": {"type": "String"}
+      "appName": {
+        "type": "String"
+      }
     }
   },
   "profileAboutSubtitle": "Privacy, contact, feedback & share",
   "profileVersionFooter": "{appName} v{version} ({build})",
   "@profileVersionFooter": {
     "placeholders": {
-      "appName": {"type": "String"},
-      "version": {"type": "String"},
-      "build": {"type": "String"}
+      "appName": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
     }
   },
-
   "peopleTitle": "People",
   "peopleAddPerson": "Add person",
   "peopleAddHint": "e.g. Alice",
@@ -344,7 +496,9 @@
   "peopleDeleteBody": "Remove {name} from your people list? This cannot be undone.",
   "@peopleDeleteBody": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "peopleIntro": "Everyone added across your scenes.",
@@ -355,30 +509,37 @@
   "peopleSceneCount": "{count, plural, =0{Not in any scenes} =1{1 scene} other{{count} scenes}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "Amounts shown in each scene's currency",
   "peopleDetailEmptyScenes": "Not a member of any scenes yet.",
   "peopleDetailAllSettled": "All settled across scenes",
   "peopleDetailOpenBalances": "Open balances in some scenes",
-  "peopleDetailGets": "{name} gets",
+  "peopleDetailGets": "{name}'s total credit",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} will give",
+  "peopleDetailWillGive": "{name}'s total debt",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "Your total credit",
+  "peopleDetailYourTotalDebt": "Your total debt",
   "peopleDetailSettledInScene": "Settled",
   "peopleDetailNoDebts": "No open debts in this scene",
   "peopleDetailViewExpenses": "View expense shares",
   "peopleDetailExpensesSection": "EXPENSES",
-
   "dataTitle": "Data & backup",
   "dataWebBlurb": "Backup export and import are available in the mobile and desktop apps. Your data is stored locally in this browser.",
   "dataNativeBlurb": "Export a backup, then save it on your device or share it elsewhere. Import replaces everything on this device.",
@@ -400,14 +561,17 @@
   "dataSaveToDeviceSubtitle": "Choose folder and filename",
   "dataShare": "Share",
   "dataShareSubtitle": "Send via email, Drive, AirDrop, etc.",
-
   "aboutTitle": "About",
   "aboutCouldNotOpenEmail": "Could not open email app",
   "aboutVersion": "Version {version} ({build})",
   "@aboutVersion": {
     "placeholders": {
-      "version": {"type": "String"},
-      "build": {"type": "String"}
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
     }
   },
   "aboutTagline": "Split expenses with friends.\nOffline-first. No account required.",
@@ -422,41 +586,53 @@
   "aboutRateApp": "Rate {appName}",
   "@aboutRateApp": {
     "placeholders": {
-      "appName": {"type": "String"}
+      "appName": {
+        "type": "String"
+      }
     }
   },
   "aboutShareApp": "Share app",
   "aboutShareAppSubject": "Try {appName}",
   "@aboutShareAppSubject": {
     "placeholders": {
-      "appName": {"type": "String"}
+      "appName": {
+        "type": "String"
+      }
     }
   },
   "aboutShareAppMessage": "Check out {appName} — split expenses with friends. Offline-first, no account required.\n\n{links}",
   "@aboutShareAppMessage": {
     "placeholders": {
-      "appName": {"type": "String"},
-      "links": {"type": "String"}
+      "appName": {
+        "type": "String"
+      },
+      "links": {
+        "type": "String"
+      }
     }
   },
   "aboutCouldNotShare": "Could not share the app.",
   "aboutCopyright": "© {year} {appName}",
   "@aboutCopyright": {
     "placeholders": {
-      "year": {"type": "int"},
-      "appName": {"type": "String"}
+      "year": {
+        "type": "int"
+      },
+      "appName": {
+        "type": "String"
+      }
     }
   },
-
   "legalPrivacyTitle": "Privacy Policy",
   "legalTermsTitle": "Terms of Service",
   "legalLoadError": "Could not load document: {error}",
   "@legalLoadError": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
-
   "sharedSettledTitle": "You are all settled up",
   "sharedSettledSubtitle": "No outstanding balances in this scene",
   "sharedYouGet": "You get",
@@ -466,7 +642,9 @@
   "sharedPercentLabel": "{percent}%",
   "@sharedPercentLabel": {
     "placeholders": {
-      "percent": {"type": "String"}
+      "percent": {
+        "type": "String"
+      }
     }
   },
   "sharedChooseLanguage": "Choose language",
@@ -476,40 +654,57 @@
   "sharedCurrencyFieldLabel": "{code} — {name}",
   "@sharedCurrencyFieldLabel": {
     "placeholders": {
-      "code": {"type": "String"},
-      "name": {"type": "String"}
+      "code": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
     }
   },
   "sharedCustomEmoji": "Custom emoji",
-
   "moneyTwoPayers": "{a} & {b}",
   "@moneyTwoPayers": {
     "placeholders": {
-      "a": {"type": "String"},
-      "b": {"type": "String"}
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
     }
   },
   "moneyManyPayers": "{name} +{count}",
   "@moneyManyPayers": {
     "placeholders": {
-      "name": {"type": "String"},
-      "count": {"type": "int"}
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
     }
   },
-
   "supportEmailBodyFooter": "\n\n---\nApp: {appName} {version} ({build})",
   "@supportEmailBodyFooter": {
     "placeholders": {
-      "appName": {"type": "String"},
-      "version": {"type": "String"},
-      "build": {"type": "String"}
+      "appName": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
     }
   },
-
   "errorUserNameTaken": "Someone named \"{name}\" already exists.",
   "@errorUserNameTaken": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "errorCannotDeleteSelf": "You cannot delete yourself.",
@@ -519,7 +714,6 @@
   "errorBackupNotSceneSplit": "This file does not look like a SceneSplit backup.",
   "errorBackupExportWeb": "Backup export is not available on web. Use the mobile or desktop app to export backups.",
   "errorBackupImportWeb": "Backup import is not available on web. Use the mobile or desktop app to import backups.",
-
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

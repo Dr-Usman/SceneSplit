@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'core/constants/app_assets.dart';
 import 'core/constants/app_links.dart';
 import 'core/l10n/l10n_extensions.dart';
 import 'core/theme/app_theme.dart';
-import 'features/home/home_screen.dart';
+import 'features/main_tabs/main_tabs_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'providers/analytics_provider.dart';
 import 'providers/database_provider.dart';
@@ -46,8 +47,7 @@ class SceneSplitApp extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: currentUser.when(
-        loading: () =>
-            const Scaffold(body: Center(child: CircularProgressIndicator())),
+        loading: () => const _BootstrapLoadingScreen(),
         error: (e, _) => Scaffold(
           body: Center(
             child: Builder(
@@ -57,7 +57,51 @@ class SceneSplitApp extends ConsumerWidget {
           ),
         ),
         data: (user) =>
-            user == null ? const OnboardingScreen() : const HomeScreen(),
+            user == null ? const OnboardingScreen() : const MainTabsScreen(),
+      ),
+    );
+  }
+}
+
+/// Full-screen gate while [currentUserProvider] resolves.
+///
+/// Scaffold follows the app theme; only the logo sits on a small brand-dark
+/// pad so the white wordmark stays readable in light and dark mode.
+class _BootstrapLoadingScreen extends StatelessWidget {
+  const _BootstrapLoadingScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.logoBackground,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Image(
+                  image: AssetImage(AppAssets.logo),
+                  width: 88,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

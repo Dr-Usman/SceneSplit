@@ -25,6 +25,80 @@
   "homeYouWillGive": "Vous devrez",
   "homeSettledUp": "soldé",
   "homeCardYouWillGet": "vous recevrez",
+  "navScenes": "Scènes",
+  "navBalances": "Soldes",
+  "navProfile": "Profil",
+  "balancesTitle": "Soldes",
+  "balancesSubtitle": "Voyez qui doit quoi à qui dans vos scènes.",
+  "balancesWho": "Qui",
+  "balancesWhom": "À qui",
+  "balancesFilterTitle": "Qui doit à qui",
+  "balancesFilterHint": "Choisissez qui doit à qui pour filtrer les dettes ouvertes.",
+  "balancesAnyone": "N’importe qui",
+  "balancesOwes": "doit à",
+  "balancesClear": "Effacer",
+  "balancesShowResults": "Afficher les résultats",
+  "balancesClearSelection": "Effacer la sélection",
+  "balancesEmpty": "Aucune dette ouverte dans vos scènes.",
+  "balancesEmptyFiltered": "Aucune dette ouverte ne correspond à cette sélection.",
+  "balancesPickPerson": "Sélectionner une personne",
+  "balancesNoPeopleFound": "Aucune personne trouvée",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "Dette ouverte",
+  "balancesOpenDebtCurrency": "Dette ouverte ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "On vous doit",
+  "balancesYouOwe": "Vous devez",
+  "balancesHeroOwed": "Reçoit",
+  "balancesHeroOwe": "Doit",
+  "balancesHeroOwedBreakdown": "Qui doit à {name}",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "À qui {name} doit",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "Net",
+  "balancesHeroNetOwes": "{debtor} doit à {creditor}",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "Total de la part",
+  "balancesExpenseTotal": "Total des dépenses",
+  "balancesScenesHeader": "SCÈNES",
+  "balancesSettleInScene": "Régler",
+  "balancesViewShares": "Parts des dépenses",
+  "balancesPairSettled": "Réglé entre ces personnes",
+  "balancesSelectPerson": "Toucher pour sélectionner",
   "homeCardYouWillGive": "vous devrez",
   "homeMemberCount": "{count, plural, =1{1 membre} other{{count} membres}}",
   "homeEmptyTitle": "Aucune scène pour l'instant",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · Règlements",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · Dépenses",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "Tout voir ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "Aucun règlement enregistré pour le moment.",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{Dans aucune scène} =1{1 scène} other{{count} scènes}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "Montants affichés dans la devise de chaque scène",
   "peopleDetailEmptyScenes": "Pas encore membre d'une scène.",
   "peopleDetailAllSettled": "Tout est réglé dans les scènes",
   "peopleDetailOpenBalances": "Soldes ouverts dans certaines scènes",
-  "peopleDetailGets": "{name} reçoit",
+  "peopleDetailGets": "Créance totale de {name}",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} doit",
+  "peopleDetailWillGive": "Dette totale de {name}",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "Votre créance totale",
+  "peopleDetailYourTotalDebt": "Votre dette totale",
   "peopleDetailSettledInScene": "Réglé",
   "peopleDetailNoDebts": "Aucune dette ouverte dans cette scène",
   "peopleDetailViewExpenses": "Voir la part des dépenses",

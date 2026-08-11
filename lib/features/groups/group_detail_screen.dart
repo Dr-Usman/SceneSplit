@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
-import '../../core/utils/money.dart';
 import '../../core/utils/share_balance_image.dart';
 import '../../database/app_database.dart';
 import '../../providers/analytics_provider.dart';
@@ -12,12 +11,12 @@ import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/group_repository.dart';
-import '../../services/balance_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/balance_hero_card.dart';
 import '../../shared/widgets/balance_share_card.dart';
 import '../../shared/widgets/breakdown_pie_chart.dart';
 import '../../shared/widgets/member_expense_breakdown_sheet.dart';
+import '../../shared/widgets/pairwise_debt_tile.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/user_avatar.dart';
 import '../expenses/add_expense_screen.dart';
@@ -316,7 +315,7 @@ class GroupDetailScreen extends ConsumerWidget {
                       : Column(
                           children: [
                             for (var i = 0; i < data.debts.length; i++) ...[
-                              _DebtTile(
+                              PairwiseDebtTile(
                                 debt: data.debts[i],
                                 users: users,
                                 currencyCode: data.group.currencyCode,
@@ -510,66 +509,6 @@ class GroupDetailScreen extends ConsumerWidget {
       await deleteGroup(ref.read(databaseProvider), group.id);
       if (context.mounted) Navigator.of(context).pop();
     }
-  }
-}
-
-class _DebtTile extends StatelessWidget {
-  const _DebtTile({
-    required this.debt,
-    required this.users,
-    required this.currencyCode,
-    required this.locale,
-    this.onTap,
-  });
-
-  final PairwiseDebt debt;
-  final Map<String, User> users;
-  final String currencyCode;
-  final String locale;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final from = users[debt.fromUserId]?.name ?? '?';
-    final to = users[debt.toUserId]?.name ?? '?';
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-    final onVariant = Theme.of(context).colorScheme.onSurfaceVariant;
-    final descriptionStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-      color: onSurface,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    );
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                l10n.groupsOwesTemplate(from, to),
-                style: descriptionStyle,
-              ),
-            ),
-            Text(
-              formatCents(debt.amountCents, currencyCode, locale: locale),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: onSurface,
-              ),
-            ),
-            if (onTap != null) ...[
-              const SizedBox(width: 4),
-              Icon(Icons.chevron_right_rounded, size: 18, color: onVariant),
-            ],
-          ],
-        ),
-      ),
-    );
   }
 }
 

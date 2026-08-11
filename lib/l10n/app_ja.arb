@@ -25,6 +25,80 @@
   "homeYouWillGive": "支払予定",
   "homeSettledUp": "精算済み",
   "homeCardYouWillGet": "受取予定",
+  "navScenes": "シーン",
+  "navBalances": "残高",
+  "navProfile": "プロフィール",
+  "balancesTitle": "残高",
+  "balancesSubtitle": "シーン全体で誰が誰に借りているかを確認。",
+  "balancesWho": "誰が",
+  "balancesWhom": "誰に",
+  "balancesFilterTitle": "誰が誰に借りているか",
+  "balancesFilterHint": "誰が誰に借りているかを選んで未清算の負債を絞り込みます。",
+  "balancesAnyone": "誰でも",
+  "balancesOwes": "借りている",
+  "balancesClear": "クリア",
+  "balancesShowResults": "結果を表示",
+  "balancesClearSelection": "選択をクリア",
+  "balancesEmpty": "シーン全体で未精算の借りはありません。",
+  "balancesEmptyFiltered": "この選択に一致する未精算はありません。",
+  "balancesPickPerson": "人を選択",
+  "balancesNoPeopleFound": "該当する人がいません",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "未精算",
+  "balancesOpenDebtCurrency": "未精算（{currency}）",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "受け取り",
+  "balancesYouOwe": "支払い",
+  "balancesHeroOwed": "受け取る",
+  "balancesHeroOwe": "払う",
+  "balancesHeroOwedBreakdown": "{name}に借りがある人",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "{name}が借りている相手",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "差引",
+  "balancesHeroNetOwes": "{debtor}は{creditor}に借りがある",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "負担合計",
+  "balancesExpenseTotal": "支出合計",
+  "balancesScenesHeader": "シーン",
+  "balancesSettleInScene": "精算する",
+  "balancesViewShares": "支出の負担",
+  "balancesPairSettled": "この二人の間は精算済みです",
+  "balancesSelectPerson": "タップして選択",
   "homeCardYouWillGive": "支払予定",
   "homeMemberCount": "{count, plural, =1{1人} other{{count}人}}",
   "homeEmptyTitle": "シーンがありません",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · 精算履歴",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · 経費",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "すべて見る（{count}）",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "精算はまだ記録されていません。",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{シーンなし} =1{1シーン} other{{count}シーン}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "各シーンの通貨で表示",
   "peopleDetailEmptyScenes": "まだどのシーンのメンバーでもありません。",
   "peopleDetailAllSettled": "すべてのシーンで清算済み",
   "peopleDetailOpenBalances": "一部のシーンに未清算があります",
-  "peopleDetailGets": "{name}の受取",
+  "peopleDetailGets": "{name}の合計受取",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name}の支払",
+  "peopleDetailWillGive": "{name}の合計負債",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "あなたの合計受取",
+  "peopleDetailYourTotalDebt": "あなたの合計負債",
   "peopleDetailSettledInScene": "清算済み",
   "peopleDetailNoDebts": "このシーンに未清算の債務はありません",
   "peopleDetailViewExpenses": "分担を表示",

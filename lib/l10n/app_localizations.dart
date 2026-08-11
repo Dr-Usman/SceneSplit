@@ -261,6 +261,222 @@ abstract class AppLocalizations {
   /// **'you will get'**
   String get homeCardYouWillGet;
 
+  /// No description provided for @navScenes.
+  ///
+  /// In en, this message translates to:
+  /// **'Scenes'**
+  String get navScenes;
+
+  /// No description provided for @navBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances'**
+  String get navBalances;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @balancesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances'**
+  String get balancesTitle;
+
+  /// No description provided for @balancesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'See who owes whom across your scenes.'**
+  String get balancesSubtitle;
+
+  /// No description provided for @balancesWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Who'**
+  String get balancesWho;
+
+  /// No description provided for @balancesWhom.
+  ///
+  /// In en, this message translates to:
+  /// **'Whom'**
+  String get balancesWhom;
+
+  /// No description provided for @balancesFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who owes whom'**
+  String get balancesFilterTitle;
+
+  /// No description provided for @balancesFilterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose who owes whom to filter open debts.'**
+  String get balancesFilterHint;
+
+  /// No description provided for @balancesAnyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone'**
+  String get balancesAnyone;
+
+  /// No description provided for @balancesOwes.
+  ///
+  /// In en, this message translates to:
+  /// **'owes'**
+  String get balancesOwes;
+
+  /// No description provided for @balancesClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get balancesClear;
+
+  /// No description provided for @balancesShowResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Show results'**
+  String get balancesShowResults;
+
+  /// No description provided for @balancesClearSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear selection'**
+  String get balancesClearSelection;
+
+  /// No description provided for @balancesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open debts across your scenes.'**
+  String get balancesEmpty;
+
+  /// No description provided for @balancesEmptyFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'No open debts match this selection.'**
+  String get balancesEmptyFiltered;
+
+  /// No description provided for @balancesPickPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a person'**
+  String get balancesPickPerson;
+
+  /// No description provided for @balancesNoPeopleFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No people found'**
+  String get balancesNoPeopleFound;
+
+  /// No description provided for @balancesCurrencySection.
+  ///
+  /// In en, this message translates to:
+  /// **'{currency}'**
+  String balancesCurrencySection(String currency);
+
+  /// No description provided for @balancesOpenDebtTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Open debt'**
+  String get balancesOpenDebtTotal;
+
+  /// No description provided for @balancesOpenDebtCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Open debt ({currency})'**
+  String balancesOpenDebtCurrency(String currency);
+
+  /// No description provided for @balancesYouAreOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re owed'**
+  String get balancesYouAreOwed;
+
+  /// No description provided for @balancesYouOwe.
+  ///
+  /// In en, this message translates to:
+  /// **'You owe'**
+  String get balancesYouOwe;
+
+  /// No description provided for @balancesHeroOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'They get'**
+  String get balancesHeroOwed;
+
+  /// No description provided for @balancesHeroOwe.
+  ///
+  /// In en, this message translates to:
+  /// **'They owe'**
+  String get balancesHeroOwe;
+
+  /// No description provided for @balancesHeroOwedBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Who owes {name}'**
+  String balancesHeroOwedBreakdown(String name);
+
+  /// No description provided for @balancesHeroOweBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Whom {name} owes'**
+  String balancesHeroOweBreakdown(String name);
+
+  /// No description provided for @balancesHeroNetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Net'**
+  String get balancesHeroNetLabel;
+
+  /// No description provided for @balancesHeroNetOwes.
+  ///
+  /// In en, this message translates to:
+  /// **'{debtor} owes {creditor}'**
+  String balancesHeroNetOwes(String debtor, String creditor);
+
+  /// No description provided for @balancesShareTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total share'**
+  String get balancesShareTotal;
+
+  /// No description provided for @balancesExpenseTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total expenses'**
+  String get balancesExpenseTotal;
+
+  /// No description provided for @balancesScenesHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'SCENES'**
+  String get balancesScenesHeader;
+
+  /// No description provided for @balancesSettleInScene.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle up'**
+  String get balancesSettleInScene;
+
+  /// No description provided for @balancesViewShares.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense shares'**
+  String get balancesViewShares;
+
+  /// No description provided for @balancesPairSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled between these people'**
+  String get balancesPairSettled;
+
+  /// No description provided for @balancesSelectPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select'**
+  String get balancesSelectPerson;
+
   /// No description provided for @homeCardYouWillGive.
   ///
   /// In en, this message translates to:
@@ -1128,14 +1344,26 @@ abstract class AppLocalizations {
   /// No description provided for @peopleDetailGets.
   ///
   /// In en, this message translates to:
-  /// **'{name} gets'**
+  /// **'{name}\'s total credit'**
   String peopleDetailGets(String name);
 
   /// No description provided for @peopleDetailWillGive.
   ///
   /// In en, this message translates to:
-  /// **'{name} will give'**
+  /// **'{name}\'s total debt'**
   String peopleDetailWillGive(String name);
+
+  /// No description provided for @peopleDetailYourTotalCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Your total credit'**
+  String get peopleDetailYourTotalCredit;
+
+  /// No description provided for @peopleDetailYourTotalDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your total debt'**
+  String get peopleDetailYourTotalDebt;
 
   /// No description provided for @peopleDetailSettledInScene.
   ///

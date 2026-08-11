@@ -93,6 +93,124 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeCardYouWillGet => 'ستستلم';
 
   @override
+  String get navScenes => 'المشاهد';
+
+  @override
+  String get navBalances => 'الأرصدة';
+
+  @override
+  String get navProfile => 'الملف';
+
+  @override
+  String get balancesTitle => 'الأرصدة';
+
+  @override
+  String get balancesSubtitle => 'اطلع على من يدين لمن عبر مشاهدك.';
+
+  @override
+  String get balancesWho => 'من';
+
+  @override
+  String get balancesWhom => 'لمن';
+
+  @override
+  String get balancesFilterTitle => 'من يدين لمن';
+
+  @override
+  String get balancesFilterHint => 'اختر من يدين لمن لتصفية الديون المفتوحة.';
+
+  @override
+  String get balancesAnyone => 'أي شخص';
+
+  @override
+  String get balancesOwes => 'مدين لـ';
+
+  @override
+  String get balancesClear => 'مسح';
+
+  @override
+  String get balancesShowResults => 'عرض النتائج';
+
+  @override
+  String get balancesClearSelection => 'مسح التحديد';
+
+  @override
+  String get balancesEmpty => 'لا توجد ديون مفتوحة في مشاهدك.';
+
+  @override
+  String get balancesEmptyFiltered => 'لا توجد ديون مفتوحة تطابق هذا الاختيار.';
+
+  @override
+  String get balancesPickPerson => 'اختر شخصًا';
+
+  @override
+  String get balancesNoPeopleFound => 'لم يتم العثور على أشخاص';
+
+  @override
+  String balancesCurrencySection(String currency) {
+    return '$currency';
+  }
+
+  @override
+  String get balancesOpenDebtTotal => 'دين مفتوح';
+
+  @override
+  String balancesOpenDebtCurrency(String currency) {
+    return 'دين مفتوح ($currency)';
+  }
+
+  @override
+  String get balancesYouAreOwed => 'مستحق لك';
+
+  @override
+  String get balancesYouOwe => 'عليك دين';
+
+  @override
+  String get balancesHeroOwed => 'يحصلون';
+
+  @override
+  String get balancesHeroOwe => 'يمدينون';
+
+  @override
+  String balancesHeroOwedBreakdown(String name) {
+    return 'من يدين لـ $name';
+  }
+
+  @override
+  String balancesHeroOweBreakdown(String name) {
+    return 'لمن يدين $name';
+  }
+
+  @override
+  String get balancesHeroNetLabel => 'الصافي';
+
+  @override
+  String balancesHeroNetOwes(String debtor, String creditor) {
+    return '$debtor يدين لـ $creditor';
+  }
+
+  @override
+  String get balancesShareTotal => 'إجمالي الحصة';
+
+  @override
+  String get balancesExpenseTotal => 'إجمالي المصروفات';
+
+  @override
+  String get balancesScenesHeader => 'المشاهد';
+
+  @override
+  String get balancesSettleInScene => 'تسوية';
+
+  @override
+  String get balancesViewShares => 'حصص المصروفات';
+
+  @override
+  String get balancesPairSettled => 'تمت التسوية بين هذين الشخصين';
+
+  @override
+  String get balancesSelectPerson => 'اضغط للاختيار';
+
+  @override
   String get homeCardYouWillGive => 'ستدفع';
 
   @override
@@ -619,13 +737,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String peopleDetailGets(String name) {
-    return '$name يستلم';
+    return 'إجمالي مستحقات $name';
   }
 
   @override
   String peopleDetailWillGive(String name) {
-    return '$name يدفع';
+    return 'إجمالي دين $name';
   }
+
+  @override
+  String get peopleDetailYourTotalCredit => 'إجمالي مستحقاتك';
+
+  @override
+  String get peopleDetailYourTotalDebt => 'إجمالي دينك';
 
   @override
   String get peopleDetailSettledInScene => 'مسوّى';

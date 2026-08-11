@@ -7,9 +7,9 @@ import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/person_detail_provider.dart';
-import '../../services/balance_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/member_expense_breakdown_sheet.dart';
+import '../../shared/widgets/pairwise_debt_tile.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/user_avatar.dart';
 import '../expenses/expense_detail_screen.dart';
@@ -210,13 +210,13 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
       netAmount = '';
     } else if (net > 0) {
       netLabel = person.isCurrentUser
-          ? l10n.sharedYouGet
+          ? l10n.peopleDetailYourTotalCredit
           : l10n.peopleDetailGets(displayName);
       netColor = AppColors.positive;
       netAmount = formatCents(net, currency, locale: locale);
     } else {
       netLabel = person.isCurrentUser
-          ? l10n.sharedYouWillGive
+          ? l10n.peopleDetailYourTotalDebt
           : l10n.peopleDetailWillGive(displayName);
       netColor = AppColors.negative;
       netAmount = formatCents(-net, currency, locale: locale);
@@ -311,7 +311,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
               )
             else
               for (var i = 0; i < balance.debts.length; i++) ...[
-                _PersonDebtTile(
+                PairwiseDebtTile(
                   debt: balance.debts[i],
                   users: users,
                   currencyCode: currency,
@@ -382,65 +382,6 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
   }
 }
 
-class _PersonDebtTile extends StatelessWidget {
-  const _PersonDebtTile({
-    required this.debt,
-    required this.users,
-    required this.currencyCode,
-    required this.locale,
-    this.onTap,
-  });
-
-  final PairwiseDebt debt;
-  final Map<String, User> users;
-  final String currencyCode;
-  final String locale;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final from = users[debt.fromUserId]?.name ?? '?';
-    final to = users[debt.toUserId]?.name ?? '?';
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-    final onVariant = Theme.of(context).colorScheme.onSurfaceVariant;
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                l10n.groupsOwesTemplate(from, to),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: onSurface,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Text(
-              formatCents(debt.amountCents, currencyCode, locale: locale),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: onSurface,
-              ),
-            ),
-            if (onTap != null) ...[
-              const SizedBox(width: 4),
-              Icon(Icons.chevron_right_rounded, size: 18, color: onVariant),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 enum _StatusTone { neutral, positive, attention }
 
 class _BalanceSummary extends StatelessWidget {
@@ -462,10 +403,10 @@ class _BalanceSummary extends StatelessWidget {
     final multiCurrency = totals.length > 1;
 
     final willGiveLabel = person.isCurrentUser
-        ? l10n.sharedYouWillGive
+        ? l10n.peopleDetailYourTotalDebt
         : l10n.peopleDetailWillGive(displayName);
     final getsLabel = person.isCurrentUser
-        ? l10n.sharedYouGet
+        ? l10n.peopleDetailYourTotalCredit
         : l10n.peopleDetailGets(displayName);
 
     return Column(

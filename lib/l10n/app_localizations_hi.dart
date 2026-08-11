@@ -94,6 +94,125 @@ class AppLocalizationsHi extends AppLocalizations {
   String get homeCardYouWillGet => 'आपको मिलेगा';
 
   @override
+  String get navScenes => 'सीन';
+
+  @override
+  String get navBalances => 'बैलेंस';
+
+  @override
+  String get navProfile => 'प्रोफ़ाइल';
+
+  @override
+  String get balancesTitle => 'बैलेंस';
+
+  @override
+  String get balancesSubtitle => 'अपने सीन में देखें कि कौन किसे देता है।';
+
+  @override
+  String get balancesWho => 'कौन';
+
+  @override
+  String get balancesWhom => 'किसे';
+
+  @override
+  String get balancesFilterTitle => 'कौन किसे देता है';
+
+  @override
+  String get balancesFilterHint =>
+      'खुले कर्ज़ फ़िल्टर करने के लिए चुनें कि कौन किसे देता है।';
+
+  @override
+  String get balancesAnyone => 'कोई भी';
+
+  @override
+  String get balancesOwes => 'देना है';
+
+  @override
+  String get balancesClear => 'साफ़ करें';
+
+  @override
+  String get balancesShowResults => 'परिणाम दिखाएँ';
+
+  @override
+  String get balancesClearSelection => 'चयन साफ़ करें';
+
+  @override
+  String get balancesEmpty => 'आपके सीन में कोई खुला बकाया नहीं है।';
+
+  @override
+  String get balancesEmptyFiltered => 'इस चयन से कोई खुला बकाया मेल नहीं खाता।';
+
+  @override
+  String get balancesPickPerson => 'व्यक्ति चुनें';
+
+  @override
+  String get balancesNoPeopleFound => 'कोई व्यक्ति नहीं मिला';
+
+  @override
+  String balancesCurrencySection(String currency) {
+    return '$currency';
+  }
+
+  @override
+  String get balancesOpenDebtTotal => 'खुला बकाया';
+
+  @override
+  String balancesOpenDebtCurrency(String currency) {
+    return 'खुला बकाया ($currency)';
+  }
+
+  @override
+  String get balancesYouAreOwed => 'आपको मिलना है';
+
+  @override
+  String get balancesYouOwe => 'आपको देना है';
+
+  @override
+  String get balancesHeroOwed => 'उन्हें मिलेगा';
+
+  @override
+  String get balancesHeroOwe => 'उन्हें देना है';
+
+  @override
+  String balancesHeroOwedBreakdown(String name) {
+    return '$name को कौन देता है';
+  }
+
+  @override
+  String balancesHeroOweBreakdown(String name) {
+    return '$name किसे देता है';
+  }
+
+  @override
+  String get balancesHeroNetLabel => 'नेट';
+
+  @override
+  String balancesHeroNetOwes(String debtor, String creditor) {
+    return '$debtor पर $creditor का बाकी';
+  }
+
+  @override
+  String get balancesShareTotal => 'कुल हिस्सा';
+
+  @override
+  String get balancesExpenseTotal => 'कुल खर्च';
+
+  @override
+  String get balancesScenesHeader => 'सीन';
+
+  @override
+  String get balancesSettleInScene => 'निपटान करें';
+
+  @override
+  String get balancesViewShares => 'खर्च के हिस्से';
+
+  @override
+  String get balancesPairSettled => 'इन लोगों के बीच निपट गया';
+
+  @override
+  String get balancesSelectPerson => 'चुनने के लिए टैप करें';
+
+  @override
   String get homeCardYouWillGive => 'आपको देना होगा';
 
   @override
@@ -624,13 +743,19 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String peopleDetailGets(String name) {
-    return '$name को मिलेगा';
+    return '$name का कुल क्रेडिट';
   }
 
   @override
   String peopleDetailWillGive(String name) {
-    return '$name को देना होगा';
+    return '$name का कुल कर्ज़';
   }
+
+  @override
+  String get peopleDetailYourTotalCredit => 'आपका कुल क्रेडिट';
+
+  @override
+  String get peopleDetailYourTotalDebt => 'आपका कुल कर्ज़';
 
   @override
   String get peopleDetailSettledInScene => 'चुकता';

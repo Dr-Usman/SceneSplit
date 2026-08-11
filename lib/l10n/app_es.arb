@@ -25,6 +25,80 @@
   "homeYouWillGive": "Deberás",
   "homeSettledUp": "al día",
   "homeCardYouWillGet": "recibirás",
+  "navScenes": "Escenas",
+  "navBalances": "Saldos",
+  "navProfile": "Perfil",
+  "balancesTitle": "Saldos",
+  "balancesSubtitle": "Mira quién le debe a quién en tus escenas.",
+  "balancesWho": "Quién",
+  "balancesWhom": "A quién",
+  "balancesFilterTitle": "Quién debe a quién",
+  "balancesFilterHint": "Elige quién le debe a quién para filtrar deudas abiertas.",
+  "balancesAnyone": "Cualquiera",
+  "balancesOwes": "debe a",
+  "balancesClear": "Borrar",
+  "balancesShowResults": "Mostrar resultados",
+  "balancesClearSelection": "Borrar selección",
+  "balancesEmpty": "No hay deudas abiertas en tus escenas.",
+  "balancesEmptyFiltered": "Ninguna deuda abierta coincide con esta selección.",
+  "balancesPickPerson": "Seleccionar una persona",
+  "balancesNoPeopleFound": "No se encontraron personas",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "Deuda abierta",
+  "balancesOpenDebtCurrency": "Deuda abierta ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "Te deben",
+  "balancesYouOwe": "Debes",
+  "balancesHeroOwed": "Recibe",
+  "balancesHeroOwe": "Debe",
+  "balancesHeroOwedBreakdown": "Quién le debe a {name}",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "A quién debe {name}",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "Neto",
+  "balancesHeroNetOwes": "{debtor} debe a {creditor}",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "Total de la parte",
+  "balancesExpenseTotal": "Total de gastos",
+  "balancesScenesHeader": "ESCENAS",
+  "balancesSettleInScene": "Liquidar",
+  "balancesViewShares": "Partes de gastos",
+  "balancesPairSettled": "Liquidado entre estas personas",
+  "balancesSelectPerson": "Toca para seleccionar",
   "homeCardYouWillGive": "deberás",
   "homeMemberCount": "{count, plural, =1{1 miembro} other{{count} miembros}}",
   "homeEmptyTitle": "Aún no hay escenas",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · Liquidaciones",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · Gastos",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "Ver todo ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "Aún no hay liquidaciones registradas.",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{En ninguna escena} =1{1 escena} other{{count} escenas}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "Importes mostrados en la moneda de cada escena",
   "peopleDetailEmptyScenes": "Aún no es miembro de ninguna escena.",
   "peopleDetailAllSettled": "Todo saldado en las escenas",
   "peopleDetailOpenBalances": "Saldos abiertos en algunas escenas",
-  "peopleDetailGets": "{name} recibe",
+  "peopleDetailGets": "Crédito total de {name}",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} debe",
+  "peopleDetailWillGive": "Deuda total de {name}",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "Tu crédito total",
+  "peopleDetailYourTotalDebt": "Tu deuda total",
   "peopleDetailSettledInScene": "Saldado",
   "peopleDetailNoDebts": "No hay deudas abiertas en esta escena",
   "peopleDetailViewExpenses": "Ver parte de gastos",

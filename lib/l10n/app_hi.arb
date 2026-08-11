@@ -25,6 +25,80 @@
   "homeYouWillGive": "आपको देना होगा",
   "homeSettledUp": "निपटान हो गया",
   "homeCardYouWillGet": "आपको मिलेगा",
+  "navScenes": "सीन",
+  "navBalances": "बैलेंस",
+  "navProfile": "प्रोफ़ाइल",
+  "balancesTitle": "बैलेंस",
+  "balancesSubtitle": "अपने सीन में देखें कि कौन किसे देता है।",
+  "balancesWho": "कौन",
+  "balancesWhom": "किसे",
+  "balancesFilterTitle": "कौन किसे देता है",
+  "balancesFilterHint": "खुले कर्ज़ फ़िल्टर करने के लिए चुनें कि कौन किसे देता है।",
+  "balancesAnyone": "कोई भी",
+  "balancesOwes": "देना है",
+  "balancesClear": "साफ़ करें",
+  "balancesShowResults": "परिणाम दिखाएँ",
+  "balancesClearSelection": "चयन साफ़ करें",
+  "balancesEmpty": "आपके सीन में कोई खुला बकाया नहीं है।",
+  "balancesEmptyFiltered": "इस चयन से कोई खुला बकाया मेल नहीं खाता।",
+  "balancesPickPerson": "व्यक्ति चुनें",
+  "balancesNoPeopleFound": "कोई व्यक्ति नहीं मिला",
+  "balancesCurrencySection": "{currency}",
+  "@balancesCurrencySection": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesOpenDebtTotal": "खुला बकाया",
+  "balancesOpenDebtCurrency": "खुला बकाया ({currency})",
+  "@balancesOpenDebtCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesYouAreOwed": "आपको मिलना है",
+  "balancesYouOwe": "आपको देना है",
+  "balancesHeroOwed": "उन्हें मिलेगा",
+  "balancesHeroOwe": "उन्हें देना है",
+  "balancesHeroOwedBreakdown": "{name} को कौन देता है",
+  "@balancesHeroOwedBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroOweBreakdown": "{name} किसे देता है",
+  "@balancesHeroOweBreakdown": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesHeroNetLabel": "नेट",
+  "balancesHeroNetOwes": "{debtor} पर {creditor} का बाकी",
+  "@balancesHeroNetOwes": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "balancesShareTotal": "कुल हिस्सा",
+  "balancesExpenseTotal": "कुल खर्च",
+  "balancesScenesHeader": "सीन",
+  "balancesSettleInScene": "निपटान करें",
+  "balancesViewShares": "खर्च के हिस्से",
+  "balancesPairSettled": "इन लोगों के बीच निपट गया",
+  "balancesSelectPerson": "चुनने के लिए टैप करें",
   "homeCardYouWillGive": "आपको देना होगा",
   "homeMemberCount": "{count, plural, =1{1 सदस्य} other{{count} सदस्य}}",
   "homeEmptyTitle": "अभी कोई सीन नहीं",
@@ -67,19 +141,25 @@
   "groupsSettlementsScreenTitle": "{groupName} · निपटान",
   "@groupsSettlementsScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsExpensesScreenTitle": "{groupName} · खर्च",
   "@groupsExpensesScreenTitle": {
     "placeholders": {
-      "groupName": {"type": "String"}
+      "groupName": {
+        "type": "String"
+      }
     }
   },
   "groupsViewAllCount": "सभी देखें ({count})",
   "@groupsViewAllCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "groupsEmptySettlementsBody": "अभी तक कोई निपटान दर्ज नहीं है।",
@@ -182,25 +262,33 @@
   "peopleSceneCount": "{count, plural, =0{किसी सीन में नहीं} =1{1 सीन} other{{count} सीन}}",
   "@peopleSceneCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "peopleDetailCurrencySubtitle": "प्रत्येक सीन की मुद्रा में राशि दिखाई गई है",
   "peopleDetailEmptyScenes": "अभी किसी सीन के सदस्य नहीं।",
   "peopleDetailAllSettled": "सभी सीन में हिसाब चुकता",
   "peopleDetailOpenBalances": "कुछ सीन में बकाया शेष",
-  "peopleDetailGets": "{name} को मिलेगा",
+  "peopleDetailGets": "{name} का कुल क्रेडिट",
   "@peopleDetailGets": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
-  "peopleDetailWillGive": "{name} को देना होगा",
+  "peopleDetailWillGive": "{name} का कुल कर्ज़",
   "@peopleDetailWillGive": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
+  "peopleDetailYourTotalCredit": "आपका कुल क्रेडिट",
+  "peopleDetailYourTotalDebt": "आपका कुल कर्ज़",
   "peopleDetailSettledInScene": "चुकता",
   "peopleDetailNoDebts": "इस सीन में कोई बकाया नहीं",
   "peopleDetailViewExpenses": "खर्च का हिस्सा देखें",
