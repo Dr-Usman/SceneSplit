@@ -5,6 +5,7 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/person_detail_provider.dart';
 import '../../shared/widgets/app_card.dart';
@@ -16,14 +17,38 @@ import '../expenses/expense_detail_screen.dart';
 import '../settlements/record_settlement_sheet.dart';
 import 'widgets/person_row.dart';
 
-class PersonDetailScreen extends ConsumerWidget {
+class PersonDetailScreen extends ConsumerStatefulWidget {
   const PersonDetailScreen({super.key, required this.userId});
 
   final String userId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(personDetailProvider(userId));
+  ConsumerState<PersonDetailScreen> createState() => _PersonDetailScreenState();
+}
+
+class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
+  bool _openedTracked = false;
+
+  void _trackOpenedOnce(PersonDetailData data) {
+    if (_openedTracked) return;
+    _openedTracked = true;
+    final openDebtCount = data.groups.fold<int>(
+      0,
+      (sum, g) => sum + g.debts.length,
+    );
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackPersonDetailOpened(
+        openDebtCount: openDebtCount,
+        sceneCount: data.sceneCount,
+        isSelf: data.user.isCurrentUser,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(personDetailProvider(widget.userId));
     final users = ref.watch(userByIdProvider);
     final l10n = context.l10n;
     final theme = Theme.of(context);
@@ -38,6 +63,7 @@ class PersonDetailScreen extends ConsumerWidget {
         body: Center(child: Text('$e')),
       ),
       data: (data) {
+        _trackOpenedOnce(data);
         final displayName = data.user.isCurrentUser
             ? l10n.commonYouSuffix(data.user.name)
             : data.user.name;
@@ -322,6 +348,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
                     currencyCode: currency,
                     members: balance.members,
                     prefill: balance.debts[i],
+                    analyticsSource: kSettlementSourcePersonDetail,
                   ),
                 ),
                 if (i < balance.debts.length - 1) const Divider(height: 1),

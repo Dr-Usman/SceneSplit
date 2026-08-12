@@ -406,6 +406,7 @@ class _ScenePairCard extends StatelessWidget {
                   currencyCode: scene.currencyCode,
                   members: scene.members,
                   prefill: prefill,
+                  analyticsSource: kSettlementSourceBalancesPair,
                 ),
                 icon: const Icon(Icons.handshake_outlined, size: 18),
                 label: Text(l10n.balancesSettleInScene),

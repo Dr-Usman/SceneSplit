@@ -59,7 +59,7 @@ If you contact us by email (see [Contact Us](#contact-us)), we receive only the 
 
 ## Product Analytics (Mixpanel)
 
-SceneSplit uses **Mixpanel** to understand product usage and improve the app. The SDK may send product events such as completing onboarding, creating a scene or expense, changing language, and sharing balances. Events can include technical properties (for example platform, currency code, split type, amount in cents, and counts such as how many balance lines were shared) and a local user identifier.
+SceneSplit uses **Mixpanel** to understand product usage and improve the app. The SDK may send product events such as completing onboarding, creating a scene, expense, or settlement, changing language, navigating Balances and People screens, sharing balances or the app, prompting for a store review, and exporting or importing a backup. Events can include technical properties (for example platform, currency code, split type, amount in cents, navigation source, and counts such as how many balance lines were shared) and a local user identifier.
 
 Your **display name** and **scene names** may be sent when you complete setup or create a scene, and your display name may be stored on your Mixpanel People profile. Expense titles, notes, and **other people’s names** are not sent as event properties.
 

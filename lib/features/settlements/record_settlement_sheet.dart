@@ -7,10 +7,16 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/settlement_repository.dart';
 import '../../services/balance_service.dart';
+
+/// Analytics [source] for [showRecordSettlementSheet] / settlement_created.
+const kSettlementSourceSceneDetail = 'scene_detail';
+const kSettlementSourceBalancesPair = 'balances_pair';
+const kSettlementSourcePersonDetail = 'person_detail';
 
 Future<void> showRecordSettlementSheet(
   BuildContext context, {
@@ -19,6 +25,7 @@ Future<void> showRecordSettlementSheet(
   required List<GroupMemberInfo> members,
   PairwiseDebt? prefill,
   Settlement? existing,
+  String analyticsSource = kSettlementSourceSceneDetail,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -33,6 +40,7 @@ Future<void> showRecordSettlementSheet(
       members: members,
       prefill: prefill,
       existing: existing,
+      analyticsSource: analyticsSource,
     ),
   );
 }
@@ -42,6 +50,7 @@ class _RecordSettlementSheet extends ConsumerStatefulWidget {
     required this.groupId,
     required this.currencyCode,
     required this.members,
+    required this.analyticsSource,
     this.prefill,
     this.existing,
   });
@@ -49,6 +58,7 @@ class _RecordSettlementSheet extends ConsumerStatefulWidget {
   final String groupId;
   final String currencyCode;
   final List<GroupMemberInfo> members;
+  final String analyticsSource;
   final PairwiseDebt? prefill;
   final Settlement? existing;
 
@@ -134,6 +144,15 @@ class _RecordSettlementSheetState
         amountCents: cents,
         note: note,
       );
+      await ref
+          .read(analyticsServiceProvider)
+          .trackSettlementCreated(
+            groupId: widget.groupId,
+            amountCents: cents,
+            currencyCode: widget.currencyCode,
+            source: widget.analyticsSource,
+            hadPrefill: widget.prefill != null,
+          );
     }
     if (mounted) Navigator.pop(context);
   }
