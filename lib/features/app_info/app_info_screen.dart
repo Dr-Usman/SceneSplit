@@ -14,8 +14,9 @@ import '../../shared/widgets/settings_tile.dart';
 import '../legal/legal_document_screen.dart';
 import '../legal/legal_document_type.dart';
 
-class AboutScreen extends ConsumerWidget {
-  const AboutScreen({super.key});
+/// App version, legal docs, contact/feedback, rate, and share.
+class AppInfoScreen extends ConsumerWidget {
+  const AppInfoScreen({super.key});
 
   Future<void> _sendEmail(BuildContext context, String subject) async {
     final launched = await launchSupportEmail(subject, context.l10n);

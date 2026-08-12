@@ -14,14 +14,15 @@ import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/settings_tile.dart';
 import 'backup_export_sheet.dart';
 
-class DataScreen extends ConsumerStatefulWidget {
-  const DataScreen({super.key});
+/// Export and import SceneSplit database backups.
+class DataBackupScreen extends ConsumerStatefulWidget {
+  const DataBackupScreen({super.key});
 
   @override
-  ConsumerState<DataScreen> createState() => _DataScreenState();
+  ConsumerState<DataBackupScreen> createState() => _DataBackupScreenState();
 }
 
-class _DataScreenState extends ConsumerState<DataScreen> {
+class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
   bool _backupBusy = false;
 
   Future<void> _exportBackup() async {
@@ -70,9 +71,7 @@ class _DataScreenState extends ConsumerState<DataScreen> {
         bytes: backup.bytes,
       );
       if (saved != null && mounted) {
-        ref
-            .read(analyticsServiceProvider)
-            .trackBackupExported(method: 'save');
+        ref.read(analyticsServiceProvider).trackBackupExported(method: 'save');
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(context.l10n.dataBackupSaved)));
@@ -109,9 +108,7 @@ class _DataScreenState extends ConsumerState<DataScreen> {
         ),
       );
       if (mounted) {
-        ref
-            .read(analyticsServiceProvider)
-            .trackBackupExported(method: 'share');
+        ref.read(analyticsServiceProvider).trackBackupExported(method: 'share');
       }
     } on Object {
       if (mounted) {

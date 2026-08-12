@@ -6,7 +6,7 @@ import '../../../providers/data_providers.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/settings_tile.dart';
-import '../data_screen.dart';
+import '../data_backup_screen.dart';
 import '../people_screen.dart';
 
 class ProfileManageSection extends ConsumerWidget {
@@ -39,9 +39,9 @@ class ProfileManageSection extends ConsumerWidget {
                 title: l10n.profileDataBackup,
                 subtitle: l10n.profileDataBackupSubtitle,
                 showDivider: false,
-                onTap: () => Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const DataScreen())),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DataBackupScreen()),
+                ),
               ),
             ],
           ),
