@@ -42,7 +42,7 @@ Add any expense in seconds and choose how to split:
 
 SETTLE UP FAST
 Record settlements quickly and keep history transparent:
-• Smart who-owes-whom suggestions from shared expenses
+• Who-owes-whom uses the fewest transfers to settle each scene
 • Editable settlement records
 • Share Who Owes Whom as an image for WhatsApp and similar apps
 
@@ -94,13 +94,10 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.7.0)
+## What's New (v1.8.0)
 
-• New Balances tab — who owes whom across all your scenes
-• Filter open debts with Who → Whom; drill into any pair to settle
-• Bottom navigation: Scenes, Balances, and Profile
-• Clearer person totals: total debt and total credit
-• Scene detail: recent activity with See all, polished settlement cards
+• Settle up with fewer payments — who owes whom now uses the fewest transfers per scene
+• Clearer settle suggestions on scene detail, Balances, person detail, and share images
 ---
 
 ## Pre-submit checklist

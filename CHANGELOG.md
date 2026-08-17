@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-08-17
+
 ### Added
 
 - Mixpanel events for settlements, bottom-nav tabs, Balances pair/filter usage, person detail opens, app share, review prompts, and backup export/import.
