@@ -7,8 +7,8 @@ import '../../services/balance_service.dart';
 import 'user_avatar.dart';
 
 /// Shared “A owes B” row used on group detail, person detail, and Balances.
-class PairwiseDebtTile extends StatelessWidget {
-  const PairwiseDebtTile({
+class OpenDebtTile extends StatelessWidget {
+  const OpenDebtTile({
     super.key,
     required this.debt,
     required this.users,
@@ -19,7 +19,7 @@ class PairwiseDebtTile extends StatelessWidget {
     this.onTap,
   });
 
-  final PairwiseDebt debt;
+  final OpenDebt debt;
   final Map<String, User> users;
   final String currencyCode;
   final String locale;

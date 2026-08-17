@@ -74,7 +74,7 @@ buildMemberShareBreakdown(List<ExpenseWithSplits> expenses) {
 class GroupDetailData {
   final Group group;
   final List<GroupMemberInfo> members;
-  final List<PairwiseDebt> debts;
+  final List<OpenDebt> debts;
   final int myNetCents;
   final List<ExpenseWithSplits> expenses;
   final List<Settlement> settlements;
@@ -175,17 +175,7 @@ final groupDetailProvider =
 
       final me = currentUser.value;
       final myNet = me == null ? 0 : (net[me.id] ?? 0);
-      final debts = BalanceService.pairwiseDebts(
-        payersByExpense: {
-          for (final e in groupExpenses)
-            e.id: payersByExpense[e.id] ?? const [],
-        },
-        splitsByExpense: {
-          for (final e in groupExpenses)
-            e.id: splitsByExpense[e.id] ?? const [],
-        },
-        settlements: groupSettlements,
-      );
+      final debts = BalanceService.simplifyDebts(net);
 
       final expenseList = [
         for (final e in groupExpenses)

@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../services/analytics_service.dart';
 import '../constants/app_links.dart';
 import '../l10n/l10n_extensions.dart';
 
@@ -31,7 +32,10 @@ Future<bool> launchSupportEmail(String subject, AppLocalizations l10n) async {
 }
 
 /// Opens the system share sheet with a localized pitch and store/web links.
-Future<bool> shareApp(BuildContext context) async {
+Future<bool> shareApp(
+  BuildContext context, {
+  AnalyticsService? analytics,
+}) async {
   final l10n = context.l10n;
   final links = AppLinks.shareStoreUrls.join('\n');
   if (links.isEmpty) return false;
@@ -47,15 +51,21 @@ Future<bool> shareApp(BuildContext context) async {
         sharePositionOrigin: origin,
       ),
     );
-    return result.status != ShareResultStatus.unavailable;
+    final shared = result.status != ShareResultStatus.unavailable;
+    if (shared) {
+      await analytics?.trackAppShared();
+    }
+    return shared;
   } on Object {
     return false;
   }
 }
 
-Future<void> requestAppReview() async {
+Future<void> requestAppReview({AnalyticsService? analytics}) async {
   final review = InAppReview.instance;
-  if (await review.isAvailable()) {
+  final available = await review.isAvailable();
+  await analytics?.trackReviewPrompted(available: available);
+  if (available) {
     await review.requestReview();
     return;
   }

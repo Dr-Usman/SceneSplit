@@ -6,7 +6,7 @@ import '../../../core/l10n/l10n_extensions.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/settings_tile.dart';
-import '../../about/about_screen.dart';
+import '../../app_info/app_info_screen.dart';
 
 class ProfileAppSection extends StatelessWidget {
   const ProfileAppSection({super.key});
@@ -28,7 +28,7 @@ class ProfileAppSection extends StatelessWidget {
             showDivider: false,
             onTap: () => Navigator.of(
               context,
-            ).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
+            ).push(MaterialPageRoute(builder: (_) => const AppInfoScreen())),
           ),
         ),
         const SizedBox(height: 20),

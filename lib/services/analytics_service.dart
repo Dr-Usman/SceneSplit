@@ -1,6 +1,48 @@
 import 'package:flutter/foundation.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
+/// Canonical Mixpanel event names used by [AnalyticsService].
+///
+/// Add new product events here first, then wire a typed `track*` method below.
+abstract final class AnalyticsEvents {
+  static const appOpened = 'app_opened';
+  static const signUpCompleted = 'sign_up_completed';
+  static const groupCreated = 'group_created';
+  static const expenseCreated = 'expense_created';
+  static const languageChanged = 'language_changed';
+  static const balanceShared = 'balance_shared';
+  static const settlementCreated = 'settlement_created';
+  static const tabSelected = 'tab_selected';
+  static const balancesPairOpened = 'balances_pair_opened';
+  static const personDetailOpened = 'person_detail_opened';
+  static const balancesFilterApplied = 'balances_filter_applied';
+  static const balancesFilterCleared = 'balances_filter_cleared';
+  static const appShared = 'app_shared';
+  static const reviewPrompted = 'review_prompted';
+  static const backupExported = 'backup_exported';
+  static const backupImported = 'backup_imported';
+
+  /// Full integrated catalog (order matches product funnel, then feature areas).
+  static const List<String> all = [
+    appOpened,
+    signUpCompleted,
+    groupCreated,
+    expenseCreated,
+    languageChanged,
+    balanceShared,
+    settlementCreated,
+    tabSelected,
+    balancesPairOpened,
+    personDetailOpened,
+    balancesFilterApplied,
+    balancesFilterCleared,
+    appShared,
+    reviewPrompted,
+    backupExported,
+    backupImported,
+  ];
+}
+
 /// Mixpanel product analytics. Typed methods below are the full event catalog.
 class AnalyticsService {
   /// Override at build time: `flutter run --dart-define=MIXPANEL_TOKEN=…`
@@ -35,7 +77,10 @@ class AnalyticsService {
   Future<void> trackAppOpened() async {
     if (_appOpenedTracked) return;
     _appOpenedTracked = true;
-    await _track('app_opened', properties: {'platform': platformLabel()});
+    await _track(
+      AnalyticsEvents.appOpened,
+      properties: {'platform': platformLabel()},
+    );
   }
 
   /// Links Mixpanel’s distinct id to the local user UUID and sets People props.
@@ -78,7 +123,7 @@ class AnalyticsService {
   }) async {
     await setLocaleCode(localeCode);
     await _track(
-      'language_changed',
+      AnalyticsEvents.languageChanged,
       properties: {
         'locale_code': localeCode,
         'previous_locale_code': ?previousLocaleCode,
@@ -93,7 +138,7 @@ class AnalyticsService {
     required String defaultCurrency,
   }) async {
     await _track(
-      'sign_up_completed',
+      AnalyticsEvents.signUpCompleted,
       properties: {
         'user_id': userId,
         'name': name,
@@ -112,7 +157,7 @@ class AnalyticsService {
     required int memberCount,
   }) async {
     await _track(
-      'group_created',
+      AnalyticsEvents.groupCreated,
       properties: {
         'group_id': groupId,
         'group_name': groupName,
@@ -132,7 +177,7 @@ class AnalyticsService {
     required int memberCount,
   }) async {
     await _track(
-      'expense_created',
+      AnalyticsEvents.expenseCreated,
       properties: {
         'group_id': groupId,
         'group_name': groupName,
@@ -150,12 +195,128 @@ class AnalyticsService {
     required int memberShareCount,
   }) async {
     await _track(
-      'balance_shared',
+      AnalyticsEvents.balanceShared,
       properties: {
         'debt_count': debtCount,
         'member_share_count': memberShareCount,
         'platform': platformLabel(),
       },
+    );
+  }
+
+  /// Fired after a new settlement is saved (not on edit).
+  ///
+  /// [source] is one of `scene_detail`, `balances_pair`, `person_detail`.
+  Future<void> trackSettlementCreated({
+    required String groupId,
+    required int amountCents,
+    required String currencyCode,
+    required String source,
+    required bool hadPrefill,
+  }) async {
+    await _track(
+      AnalyticsEvents.settlementCreated,
+      properties: {
+        'group_id': groupId,
+        'amount_cents': amountCents,
+        'currency_code': currencyCode,
+        'source': source,
+        'had_prefill': hadPrefill,
+      },
+    );
+  }
+
+  /// Fired when the user selects a bottom-nav tab (skips no-op same-index).
+  ///
+  /// [tab] is one of `scenes`, `balances`, `profile`.
+  Future<void> trackTabSelected({required String tab}) async {
+    await _track(AnalyticsEvents.tabSelected, properties: {'tab': tab});
+  }
+
+  /// Fired when a person-pair is opened from the Balances tab.
+  Future<void> trackBalancesPairOpened({
+    required bool hasWhoFilter,
+    required bool hasWhomFilter,
+    required int currencyCount,
+  }) async {
+    await _track(
+      AnalyticsEvents.balancesPairOpened,
+      properties: {
+        'has_who_filter': hasWhoFilter,
+        'has_whom_filter': hasWhomFilter,
+        'currency_count': currencyCount,
+      },
+    );
+  }
+
+  /// Fired once when Person detail loads successfully.
+  Future<void> trackPersonDetailOpened({
+    required int openDebtCount,
+    required int sceneCount,
+    required bool isSelf,
+  }) async {
+    await _track(
+      AnalyticsEvents.personDetailOpened,
+      properties: {
+        'open_debt_count': openDebtCount,
+        'scene_count': sceneCount,
+        'is_self': isSelf,
+      },
+    );
+  }
+
+  /// Fired when Balances filter sheet applies Who/Whom results.
+  Future<void> trackBalancesFilterApplied({
+    required bool whoSet,
+    required bool whomSet,
+    required bool whomIsYou,
+  }) async {
+    await _track(
+      AnalyticsEvents.balancesFilterApplied,
+      properties: {
+        'who_set': whoSet,
+        'whom_set': whomSet,
+        'whom_is_you': whomIsYou,
+      },
+    );
+  }
+
+  /// Fired when Balances filters are cleared.
+  Future<void> trackBalancesFilterCleared() async {
+    await _track(AnalyticsEvents.balancesFilterCleared);
+  }
+
+  /// Fired after the system share sheet opens for “Share app”.
+  Future<void> trackAppShared() async {
+    await _track(
+      AnalyticsEvents.appShared,
+      properties: {'platform': platformLabel()},
+    );
+  }
+
+  /// Fired when the user taps Rate SceneSplit (native review or store fallback).
+  Future<void> trackReviewPrompted({required bool available}) async {
+    await _track(
+      AnalyticsEvents.reviewPrompted,
+      properties: {'available': available, 'platform': platformLabel()},
+    );
+  }
+
+  /// Fired after a backup file is saved or shared successfully.
+  ///
+  /// [method] is `save` or `share`.
+  Future<void> trackBackupExported({required String method}) async {
+    await _track(
+      AnalyticsEvents.backupExported,
+      properties: {'method': method, 'platform': platformLabel()},
+    );
+  }
+
+  /// Fired after a backup import completes successfully.
+  Future<void> trackBackupImported() async {
+    await _track(
+      AnalyticsEvents.backupImported,
+      properties: {'platform': platformLabel()},
     );
   }
 

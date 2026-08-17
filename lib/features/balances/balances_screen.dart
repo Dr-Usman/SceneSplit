@@ -5,6 +5,7 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/balances_overview_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
@@ -45,6 +46,7 @@ class _BalancesScreenState extends ConsumerState<BalancesScreen> {
       _whomId = null;
       _defaultWhomToYou = false;
     });
+    ref.read(analyticsServiceProvider).trackBalancesFilterCleared();
   }
 
   bool get _hasActiveFilter =>
@@ -127,7 +129,20 @@ class _BalancesScreenState extends ConsumerState<BalancesScreen> {
                 _clearFilters();
                 Navigator.of(ctx).pop();
               },
-              onShowResults: () => Navigator.of(ctx).pop(),
+              onShowResults: () {
+                final appliedWhom = _effectiveWhomId(current);
+                if (_whoId != null || appliedWhom != null) {
+                  ref
+                      .read(analyticsServiceProvider)
+                      .trackBalancesFilterApplied(
+                        whoSet: _whoId != null,
+                        whomSet: appliedWhom != null,
+                        whomIsYou:
+                            appliedWhom != null && appliedWhom == current?.id,
+                      );
+                }
+                Navigator.of(ctx).pop();
+              },
             );
           },
         );
@@ -135,10 +150,21 @@ class _BalancesScreenState extends ConsumerState<BalancesScreen> {
     );
   }
 
-  void _openPair(String fromId, String toId) {
+  void _openPair(PairOpenBalanceSummary pair) {
+    final whomId = _effectiveWhomId(ref.read(currentUserProvider).value);
+    ref
+        .read(analyticsServiceProvider)
+        .trackBalancesPairOpened(
+          hasWhoFilter: _whoId != null,
+          hasWhomFilter: whomId != null,
+          currencyCount: pair.currencyTotals.length,
+        );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => PairBalanceScreen(fromUserId: fromId, toUserId: toId),
+        builder: (_) => PairBalanceScreen(
+          fromUserId: pair.fromUserId,
+          toUserId: pair.toUserId,
+        ),
       ),
     );
   }
@@ -250,7 +276,7 @@ class _BalancesScreenState extends ConsumerState<BalancesScreen> {
                     users: data.users,
                     locale: locale,
                     currentUserId: currentUser?.id,
-                    onTap: () => _openPair(pair.fromUserId, pair.toUserId),
+                    onTap: () => _openPair(pair),
                   ),
                   const SizedBox(height: 8),
                 ],

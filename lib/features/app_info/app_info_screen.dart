@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/constants/app_assets.dart';
@@ -7,13 +8,15 @@ import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/app_link_launcher.dart';
+import '../../providers/analytics_provider.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/settings_tile.dart';
 import '../legal/legal_document_screen.dart';
 import '../legal/legal_document_type.dart';
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+/// App version, legal docs, contact/feedback, rate, and share.
+class AppInfoScreen extends ConsumerWidget {
+  const AppInfoScreen({super.key});
 
   Future<void> _sendEmail(BuildContext context, String subject) async {
     final launched = await launchSupportEmail(subject, context.l10n);
@@ -25,8 +28,9 @@ class AboutScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+    final analytics = ref.read(analyticsServiceProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.aboutTitle)),
@@ -132,14 +136,17 @@ class AboutScreen extends StatelessWidget {
                     SettingsTile(
                       icon: Icons.star_outline_rounded,
                       title: l10n.aboutRateApp(AppLinks.appName),
-                      onTap: () => requestAppReview(),
+                      onTap: () => requestAppReview(analytics: analytics),
                     ),
                     SettingsTile(
                       icon: Icons.ios_share_rounded,
                       title: l10n.aboutShareApp,
                       showDivider: false,
                       onTap: () async {
-                        final shared = await shareApp(context);
+                        final shared = await shareApp(
+                          context,
+                          analytics: analytics,
+                        );
                         if (!shared && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

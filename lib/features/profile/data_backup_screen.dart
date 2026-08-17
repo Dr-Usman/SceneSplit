@@ -7,20 +7,22 @@ import 'package:share_plus/share_plus.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/database_provider.dart';
 import '../../services/database_backup_service.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/settings_tile.dart';
 import 'backup_export_sheet.dart';
 
-class DataScreen extends ConsumerStatefulWidget {
-  const DataScreen({super.key});
+/// Export and import SceneSplit database backups.
+class DataBackupScreen extends ConsumerStatefulWidget {
+  const DataBackupScreen({super.key});
 
   @override
-  ConsumerState<DataScreen> createState() => _DataScreenState();
+  ConsumerState<DataBackupScreen> createState() => _DataBackupScreenState();
 }
 
-class _DataScreenState extends ConsumerState<DataScreen> {
+class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
   bool _backupBusy = false;
 
   Future<void> _exportBackup() async {
@@ -69,6 +71,7 @@ class _DataScreenState extends ConsumerState<DataScreen> {
         bytes: backup.bytes,
       );
       if (saved != null && mounted) {
+        ref.read(analyticsServiceProvider).trackBackupExported(method: 'save');
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(context.l10n.dataBackupSaved)));
@@ -104,6 +107,9 @@ class _DataScreenState extends ConsumerState<DataScreen> {
           sharePositionOrigin: origin,
         ),
       );
+      if (mounted) {
+        ref.read(analyticsServiceProvider).trackBackupExported(method: 'share');
+      }
     } on Object {
       if (mounted) {
         ScaffoldMessenger.of(
@@ -173,6 +179,7 @@ class _DataScreenState extends ConsumerState<DataScreen> {
         rethrow;
       }
       if (mounted) {
+        ref.read(analyticsServiceProvider).trackBackupImported();
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(context.l10n.dataImportSuccess)));

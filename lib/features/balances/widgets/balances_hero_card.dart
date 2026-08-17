@@ -25,7 +25,7 @@ class BalancesHeroCard extends StatelessWidget {
   });
 
   final User person;
-  final List<OpenPairwiseBalance> openDebts;
+  final List<OpenSceneDebt> openDebts;
   final Map<String, User> users;
   final String locale;
   final String fallbackCurrency;

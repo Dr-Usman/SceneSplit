@@ -6,15 +6,15 @@ import 'data_providers.dart';
 import 'database_provider.dart';
 import 'group_detail_provider.dart';
 
-/// One open pairwise debt in a specific scene.
-class OpenPairwiseBalance {
+/// One open simplified debt in a specific scene.
+class OpenSceneDebt {
   final String groupId;
   final String groupName;
   final String groupEmoji;
   final String currencyCode;
-  final PairwiseDebt debt;
+  final OpenDebt debt;
 
-  const OpenPairwiseBalance({
+  const OpenSceneDebt({
     required this.groupId,
     required this.groupName,
     required this.groupEmoji,
@@ -56,7 +56,7 @@ class PersonPovCurrencyTotals {
 /// Never merges different currencies. Currencies where both sides are 0 are
 /// omitted. Results are sorted by currency code.
 List<PersonPovCurrencyTotals> summarizePersonPovTotals(
-  List<OpenPairwiseBalance> debts,
+  List<OpenSceneDebt> debts,
   String personId,
 ) {
   final owedToThem = <String, int>{};
@@ -125,10 +125,7 @@ List<PersonPovCurrencyNet> netPersonPovTotals(
   Map<String, Map<String, int>> owedByCounterparty,
   Map<String, Map<String, int>> oweToCounterparty,
 })
-aggregatePersonPovByCounterparty(
-  List<OpenPairwiseBalance> debts,
-  String personId,
-) {
+aggregatePersonPovByCounterparty(List<OpenSceneDebt> debts, String personId) {
   final owed = <String, Map<String, int>>{};
   final owe = <String, Map<String, int>>{};
 
@@ -154,8 +151,8 @@ aggregatePersonPovByCounterparty(
 /// - Who only → all edges involving Who (full person POV).
 /// - Whom only → all edges involving Whom (full person POV).
 /// - Both → edges between Who and Whom (either direction).
-List<OpenPairwiseBalance> scopeDebtsForBalancesHero(
-  List<OpenPairwiseBalance> debts, {
+List<OpenSceneDebt> scopeDebtsForBalancesHero(
+  List<OpenSceneDebt> debts, {
   String? whoId,
   String? whomId,
 }) {
@@ -207,8 +204,8 @@ class PairSceneBreakdown {
 }
 
 /// Filter open cross-scene debts by optional debtor [fromId] and/or creditor [toId].
-List<OpenPairwiseBalance> filterOpenDebts(
-  List<OpenPairwiseBalance> debts, {
+List<OpenSceneDebt> filterOpenDebts(
+  List<OpenSceneDebt> debts, {
   String? fromId,
   String? toId,
 }) {
@@ -221,8 +218,8 @@ List<OpenPairwiseBalance> filterOpenDebts(
 }
 
 /// Open edges between two people in either direction (relationship view).
-List<OpenPairwiseBalance> filterOpenDebtsBetweenPair(
-  List<OpenPairwiseBalance> debts, {
+List<OpenSceneDebt> filterOpenDebtsBetweenPair(
+  List<OpenSceneDebt> debts, {
   required String userIdA,
   required String userIdB,
 }) {
@@ -236,7 +233,7 @@ List<OpenPairwiseBalance> filterOpenDebtsBetweenPair(
 
 /// Sum directed A→B open edges per currency (never merges currencies).
 List<PairCurrencyTotal> aggregatePairByCurrency(
-  List<OpenPairwiseBalance> debts, {
+  List<OpenSceneDebt> debts, {
   required String fromId,
   required String toId,
 }) {
@@ -273,8 +270,8 @@ class PairOpenBalanceSummary {
 }
 
 /// Group open scene debts into directed pairs; currencies stay as separate rows.
-List<PairOpenBalanceSummary> groupDebtsByPair(List<OpenPairwiseBalance> debts) {
-  final byPair = <String, List<OpenPairwiseBalance>>{};
+List<PairOpenBalanceSummary> groupDebtsByPair(List<OpenSceneDebt> debts) {
+  final byPair = <String, List<OpenSceneDebt>>{};
   for (final d in debts) {
     final key = '${d.debt.fromUserId}|${d.debt.toUserId}';
     byPair.putIfAbsent(key, () => []).add(d);
@@ -317,10 +314,10 @@ List<PairOpenBalanceSummary> groupDebtsByPair(List<OpenPairwiseBalance> debts) {
 }
 
 /// Group open debts by currency; within each currency, largest amount first.
-Map<String, List<OpenPairwiseBalance>> groupDebtsByCurrency(
-  List<OpenPairwiseBalance> debts,
+Map<String, List<OpenSceneDebt>> groupDebtsByCurrency(
+  List<OpenSceneDebt> debts,
 ) {
-  final map = <String, List<OpenPairwiseBalance>>{};
+  final map = <String, List<OpenSceneDebt>>{};
   for (final d in debts) {
     map.putIfAbsent(d.currencyCode, () => []).add(d);
   }
@@ -351,7 +348,7 @@ int sumExpenseCents(List<MemberExpenseShare> shares) {
 }
 
 class BalancesOverviewData {
-  final List<OpenPairwiseBalance> openDebts;
+  final List<OpenSceneDebt> openDebts;
   final Map<String, User> users;
   final User? currentUser;
 
@@ -362,7 +359,7 @@ class BalancesOverviewData {
   });
 }
 
-/// Cross-scene open pairwise debts for the Balances tab.
+/// Cross-scene open simplified debts for the Balances tab.
 final balancesOverviewProvider = Provider<AsyncValue<BalancesOverviewData>>((
   ref,
 ) {
@@ -408,7 +405,7 @@ final balancesOverviewProvider = Provider<AsyncValue<BalancesOverviewData>>((
     splitsByExpense.putIfAbsent(s.expenseId, () => []).add(s);
   }
 
-  final openDebts = <OpenPairwiseBalance>[];
+  final openDebts = <OpenSceneDebt>[];
   for (final group in allGroups) {
     final groupExpenses = allExpenses
         .where((e) => e.groupId == group.id)
@@ -417,20 +414,24 @@ final balancesOverviewProvider = Provider<AsyncValue<BalancesOverviewData>>((
         .where((s) => s.groupId == group.id)
         .toList();
 
-    final debts = BalanceService.pairwiseDebts(
-      payersByExpense: {
-        for (final e in groupExpenses) e.id: payersByExpense[e.id] ?? const [],
-      },
-      splitsByExpense: {
-        for (final e in groupExpenses) e.id: splitsByExpense[e.id] ?? const [],
-      },
-      settlements: groupSettlements,
+    final groupPayers = [
+      for (final e in groupExpenses) ...?payersByExpense[e.id],
+    ];
+    final groupSplits = [
+      for (final e in groupExpenses) ...?splitsByExpense[e.id],
+    ];
+    final debts = BalanceService.simplifyDebts(
+      BalanceService.netBalances(
+        payers: groupPayers,
+        splits: groupSplits,
+        settlements: groupSettlements,
+      ),
     );
 
     for (final debt in debts) {
       if (debt.amountCents <= 0) continue;
       openDebts.add(
-        OpenPairwiseBalance(
+        OpenSceneDebt(
           groupId: group.id,
           groupName: group.name,
           groupEmoji: group.emoji,
@@ -504,7 +505,7 @@ final pairBalanceDetailProvider =
       }
 
       // One entry per scene + direction (same scene rarely has both).
-      final bySceneDirection = <String, OpenPairwiseBalance>{};
+      final bySceneDirection = <String, OpenSceneDebt>{};
       for (final d in pairDebts) {
         final key = '${d.groupId}|${d.debt.fromUserId}|${d.debt.toUserId}';
         bySceneDirection[key] = d;

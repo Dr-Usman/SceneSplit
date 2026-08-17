@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/main_tabs_provider.dart';
 import '../balances/balances_screen.dart';
 import '../home/home_screen.dart';
@@ -11,6 +12,12 @@ import '../profile/profile_screen.dart';
 /// (Scenes / Balances / Profile).
 class MainTabsScreen extends ConsumerWidget {
   const MainTabsScreen({super.key});
+
+  static String _tabName(int index) => switch (index) {
+    kMainTabBalances => 'balances',
+    kMainTabProfile => 'profile',
+    _ => 'scenes',
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +32,9 @@ class MainTabsScreen extends ConsumerWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) {
+          if (i == index) return;
           ref.read(mainTabIndexProvider.notifier).setIndex(i);
+          ref.read(analyticsServiceProvider).trackTabSelected(tab: _tabName(i));
         },
         destinations: [
           NavigationDestination(
