@@ -49,7 +49,7 @@ class PairBalanceScreen extends ConsumerWidget {
     final toName = _displayName(l10n, toUser);
 
     final pairDebts = overview.asData == null
-        ? const <OpenPairwiseBalance>[]
+        ? const <OpenSceneDebt>[]
         : filterOpenDebtsBetweenPair(
             overview.asData!.value.openDebts,
             userIdA: fromUserId,
@@ -362,7 +362,7 @@ class _ScenePairCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final prefill = PairwiseDebt(
+    final prefill = OpenDebt(
       fromUserId: scene.fromUserId,
       toUserId: scene.toUserId,
       amountCents: scene.debtCents,

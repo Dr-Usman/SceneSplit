@@ -44,7 +44,7 @@ Play Store feature graphic, device captures, and phone mockups: see [`store/play
 - **Person detail** — Per-person balances across scenes, per-currency total debt / total credit, who-owes-whom, expense shares, and settle
 - **Flexible splits** — Equal, exact amounts, or percentage, with live validation; choose who is included per expense
 - **Multi-payer bills** — An expense can be paid by one or more people (equal or exact amounts)
-- **Settlements** — Live balances; who-owes-whom follows shared expenses (A↔B offsets); editable settlement records
+- **Settlements** — Live balances; who-owes-whom uses the fewest transfers to settle each scene; editable settlement records
 - **Share balances** — Export Who Owes Whom (plus expense share totals) as an image for WhatsApp and other apps
 - **Insights** — Scene expense breakdown pie; tap a member to see which expenses make up their share
 - **Currency** — App-wide default for home summary and new scenes; each scene has its own currency; locale-aware formatting

@@ -5,11 +5,8 @@ import '../services/balance_service.dart';
 import 'data_providers.dart';
 import 'group_detail_provider.dart';
 
-/// Pairwise debts that involve [personId] as debtor or creditor.
-List<PairwiseDebt> filterDebtsForPerson(
-  List<PairwiseDebt> debts,
-  String personId,
-) {
+/// Open debts that involve [personId] as debtor or creditor.
+List<OpenDebt> filterDebtsForPerson(List<OpenDebt> debts, String personId) {
   return [
     for (final d in debts)
       if (d.fromUserId == personId || d.toUserId == personId) d,
@@ -41,7 +38,7 @@ class PersonGroupBalance {
 
   /// Person's net in this scene: positive = owed to them, negative = they owe.
   final int netCents;
-  final List<PairwiseDebt> debts;
+  final List<OpenDebt> debts;
   final int totalShareCents;
   final List<MemberExpenseShare> expenseShares;
 
@@ -70,7 +67,7 @@ class PersonCurrencyTotals {
   });
 }
 
-/// Aggregate pairwise debts for [data.user] into per-currency will-give / gets.
+/// Aggregate open debts for [data.user] into per-currency will-give / gets.
 ///
 /// Never merges different currencies. Currencies where both sides are 0 are
 /// omitted. Results are sorted by currency code.
@@ -218,17 +215,7 @@ final personDetailProvider =
         );
 
         final debts = filterDebtsForPerson(
-          BalanceService.pairwiseDebts(
-            payersByExpense: {
-              for (final e in groupExpenses)
-                e.id: payersByExpense[e.id] ?? const [],
-            },
-            splitsByExpense: {
-              for (final e in groupExpenses)
-                e.id: splitsByExpense[e.id] ?? const [],
-            },
-            settlements: groupSettlements,
-          ),
+          BalanceService.simplifyDebts(net),
           personId,
         );
 

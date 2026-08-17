@@ -5,7 +5,7 @@ import 'package:scene_split/providers/balances_overview_provider.dart';
 import 'package:scene_split/providers/group_detail_provider.dart';
 import 'package:scene_split/services/balance_service.dart';
 
-OpenPairwiseBalance _debt({
+OpenSceneDebt _debt({
   required String groupId,
   required String groupName,
   required String currency,
@@ -13,12 +13,12 @@ OpenPairwiseBalance _debt({
   required String to,
   required int cents,
 }) {
-  return OpenPairwiseBalance(
+  return OpenSceneDebt(
     groupId: groupId,
     groupName: groupName,
     groupEmoji: '🎬',
     currencyCode: currency,
-    debt: PairwiseDebt(fromUserId: from, toUserId: to, amountCents: cents),
+    debt: OpenDebt(fromUserId: from, toUserId: to, amountCents: cents),
   );
 }
 

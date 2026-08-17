@@ -30,10 +30,10 @@ void main() {
 
   test('filterDebtsForPerson keeps only edges involving the person', () {
     const debts = [
-      PairwiseDebt(fromUserId: 'a', toUserId: 'b', amountCents: 100),
-      PairwiseDebt(fromUserId: 'c', toUserId: 'd', amountCents: 200),
-      PairwiseDebt(fromUserId: 'b', toUserId: 'a', amountCents: 50),
-      PairwiseDebt(fromUserId: 'e', toUserId: 'a', amountCents: 75),
+      OpenDebt(fromUserId: 'a', toUserId: 'b', amountCents: 100),
+      OpenDebt(fromUserId: 'c', toUserId: 'd', amountCents: 200),
+      OpenDebt(fromUserId: 'b', toUserId: 'a', amountCents: 50),
+      OpenDebt(fromUserId: 'e', toUserId: 'a', amountCents: 75),
     ];
 
     final forA = filterDebtsForPerson(debts, 'a');
@@ -89,9 +89,7 @@ void main() {
       group: group(id: 'g1', name: 'Trip', currencyCode: 'USD'),
       members: const [],
       netCents: 0,
-      debts: const [
-        PairwiseDebt(fromUserId: 'a', toUserId: 'b', amountCents: 10),
-      ],
+      debts: const [OpenDebt(fromUserId: 'a', toUserId: 'b', amountCents: 10)],
       totalShareCents: 0,
       expenseShares: const [],
     );
@@ -123,11 +121,7 @@ void main() {
           members: const [],
           netCents: -3200,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'alice',
-              toUserId: 'you',
-              amountCents: 3200,
-            ),
+            OpenDebt(fromUserId: 'alice', toUserId: 'you', amountCents: 3200),
           ],
           totalShareCents: 5000,
           expenseShares: const [],
@@ -137,11 +131,7 @@ void main() {
           members: const [],
           netCents: 450000,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'you',
-              toUserId: 'alice',
-              amountCents: 450000,
-            ),
+            OpenDebt(fromUserId: 'you', toUserId: 'alice', amountCents: 450000),
           ],
           totalShareCents: 100000,
           expenseShares: const [],
@@ -172,11 +162,7 @@ void main() {
           members: const [],
           netCents: -1000,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'alice',
-              toUserId: 'bob',
-              amountCents: 1000,
-            ),
+            OpenDebt(fromUserId: 'alice', toUserId: 'bob', amountCents: 1000),
           ],
           totalShareCents: 0,
           expenseShares: const [],
@@ -186,16 +172,8 @@ void main() {
           members: const [],
           netCents: 400,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'bob',
-              toUserId: 'alice',
-              amountCents: 400,
-            ),
-            PairwiseDebt(
-              fromUserId: 'alice',
-              toUserId: 'cara',
-              amountCents: 200,
-            ),
+            OpenDebt(fromUserId: 'bob', toUserId: 'alice', amountCents: 400),
+            OpenDebt(fromUserId: 'alice', toUserId: 'cara', amountCents: 200),
           ],
           totalShareCents: 0,
           expenseShares: const [],
@@ -227,11 +205,7 @@ void main() {
           members: const [],
           netCents: -3200,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'alice',
-              toUserId: 'you',
-              amountCents: 3200,
-            ),
+            OpenDebt(fromUserId: 'alice', toUserId: 'you', amountCents: 3200),
           ],
           totalShareCents: 0,
           expenseShares: const [],
@@ -241,11 +215,7 @@ void main() {
           members: const [],
           netCents: 450000,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'you',
-              toUserId: 'alice',
-              amountCents: 450000,
-            ),
+            OpenDebt(fromUserId: 'you', toUserId: 'alice', amountCents: 450000),
           ],
           totalShareCents: 0,
           expenseShares: const [],
@@ -297,11 +267,7 @@ void main() {
           members: const [],
           netCents: 500,
           debts: const [
-            PairwiseDebt(
-              fromUserId: 'bob',
-              toUserId: 'alice',
-              amountCents: 500,
-            ),
+            OpenDebt(fromUserId: 'bob', toUserId: 'alice', amountCents: 500),
           ],
           totalShareCents: 0,
           expenseShares: const [],

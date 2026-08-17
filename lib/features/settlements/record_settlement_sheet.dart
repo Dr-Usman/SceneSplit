@@ -23,7 +23,7 @@ Future<void> showRecordSettlementSheet(
   required String groupId,
   required String currencyCode,
   required List<GroupMemberInfo> members,
-  PairwiseDebt? prefill,
+  OpenDebt? prefill,
   Settlement? existing,
   String analyticsSource = kSettlementSourceSceneDetail,
 }) {
@@ -59,7 +59,7 @@ class _RecordSettlementSheet extends ConsumerStatefulWidget {
   final String currencyCode;
   final List<GroupMemberInfo> members;
   final String analyticsSource;
-  final PairwiseDebt? prefill;
+  final OpenDebt? prefill;
   final Settlement? existing;
 
   @override

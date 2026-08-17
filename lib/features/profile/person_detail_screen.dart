@@ -10,7 +10,7 @@ import '../../providers/data_providers.dart';
 import '../../providers/person_detail_provider.dart';
 import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/member_expense_breakdown_sheet.dart';
-import '../../shared/widgets/pairwise_debt_tile.dart';
+import '../../shared/widgets/open_debt_tile.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/user_avatar.dart';
 import '../expenses/expense_detail_screen.dart';
@@ -337,7 +337,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
               )
             else
               for (var i = 0; i < balance.debts.length; i++) ...[
-                PairwiseDebtTile(
+                OpenDebtTile(
                   debt: balance.debts[i],
                   users: users,
                   currencyCode: currency,
