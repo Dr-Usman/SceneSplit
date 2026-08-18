@@ -1668,7 +1668,7 @@ abstract class AppLocalizations {
   /// No description provided for @sharedYouWillGive.
   ///
   /// In en, this message translates to:
-  /// **'You will give'**
+  /// **'You give'**
   String get sharedYouWillGive;
 
   /// No description provided for @sharedNoChartData.

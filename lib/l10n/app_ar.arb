@@ -339,7 +339,7 @@
   "sharedSettledTitle": "تمت تسوية جميع الحسابات",
   "sharedSettledSubtitle": "لا توجد أرصدة مستحقة في هذا المشهد",
   "sharedYouGet": "ستستلم",
-  "sharedYouWillGive": "ستدفع",
+  "sharedYouWillGive": "تدفع",
   "sharedNoChartData": "لا توجد بيانات للرسم البياني",
   "sharedTotal": "الإجمالي",
   "sharedPercentLabel": "{percent}%",

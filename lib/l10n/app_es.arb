@@ -339,7 +339,7 @@
   "sharedSettledTitle": "Estáis todos al día",
   "sharedSettledSubtitle": "No hay saldos pendientes en esta escena",
   "sharedYouGet": "Recibes",
-  "sharedYouWillGive": "Deberás",
+  "sharedYouWillGive": "Debes",
   "sharedNoChartData": "No hay datos para el gráfico",
   "sharedTotal": "Total",
   "sharedPercentLabel": "{percent} %",

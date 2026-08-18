@@ -339,7 +339,7 @@
   "sharedSettledTitle": "Tout est réglé",
   "sharedSettledSubtitle": "Aucun solde en attente dans cette scène",
   "sharedYouGet": "Vous recevez",
-  "sharedYouWillGive": "Vous devrez",
+  "sharedYouWillGive": "Vous devez",
   "sharedNoChartData": "Aucune donnée à afficher",
   "sharedTotal": "Total",
   "sharedPercentLabel": "{percent} %",

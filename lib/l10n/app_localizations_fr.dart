@@ -938,7 +938,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sharedYouGet => 'Vous recevez';
 
   @override
-  String get sharedYouWillGive => 'Vous devrez';
+  String get sharedYouWillGive => 'Vous devez';
 
   @override
   String get sharedNoChartData => 'Aucune donnée à afficher';

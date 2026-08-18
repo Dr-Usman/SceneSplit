@@ -75,54 +75,49 @@ class BalanceHeroCard extends StatelessWidget {
     final String label;
     final String amount;
     final Color amountColor;
-    final Color tintColor;
 
     if (netCents > 0) {
       label = l10n.sharedYouGet;
       amount = formatCents(netCents, currencyCode, locale: locale);
       amountColor = AppColors.positive;
-      tintColor = AppColors.positive.withValues(alpha: isDark ? 0.12 : 0.08);
     } else {
       label = l10n.sharedYouWillGive;
       amount = formatCents(netCents, currencyCode, locale: locale);
       amountColor = AppColors.negative;
-      tintColor = AppColors.negative.withValues(alpha: isDark ? 0.12 : 0.08);
     }
 
     return AppCard(
-      padding: EdgeInsets.zero,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: tintColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: scheme.onSurfaceVariant,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 6),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: Alignment.centerLeft,
-              child: Text(
-                amount,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: amountColor,
-                  letterSpacing: -0.5,
+          ),
+          const SizedBox(width: 12),
+          Flexible(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  amount,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: amountColor,
+                    letterSpacing: -0.3,
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

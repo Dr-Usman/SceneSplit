@@ -920,7 +920,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sharedYouGet => 'ستستلم';
 
   @override
-  String get sharedYouWillGive => 'ستدفع';
+  String get sharedYouWillGive => 'تدفع';
 
   @override
   String get sharedNoChartData => 'لا توجد بيانات للرسم البياني';

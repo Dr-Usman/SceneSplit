@@ -922,7 +922,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sharedYouGet => 'You get';
 
   @override
-  String get sharedYouWillGive => 'You will give';
+  String get sharedYouWillGive => 'You give';
 
   @override
   String get sharedNoChartData => 'No data to chart';

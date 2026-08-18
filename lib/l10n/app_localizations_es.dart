@@ -933,7 +933,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sharedYouGet => 'Recibes';
 
   @override
-  String get sharedYouWillGive => 'Deberás';
+  String get sharedYouWillGive => 'Debes';
 
   @override
   String get sharedNoChartData => 'No hay datos para el gráfico';

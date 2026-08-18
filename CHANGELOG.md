@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Scene net card is a white single-row card; amount stays green or red; labels are “You get” / “You give”.
+
 ## [1.8.0] - 2026-08-17
 
 ### Added
