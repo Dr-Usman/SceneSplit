@@ -1,7 +1,7 @@
 name: scene_split
 description: "Split expenses with friends, track balances, and settle up — offline-first Flutter app with local SQLite storage."
 publish_to: 'none'
-version: 1.8.0+9
+version: 1.9.0+10
 
 environment:
   sdk: ^3.12.2

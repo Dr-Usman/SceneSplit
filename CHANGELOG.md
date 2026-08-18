@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-08-18
+
 ### Added
 
 - Scene expenses: share a date-range list as an image or as text from scene detail or the expenses screen (who paid, people included, amounts). Text includes a “By person” running total of each member’s shares.

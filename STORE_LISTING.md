@@ -45,6 +45,7 @@ Record settlements quickly and keep history transparent:
 • Who-owes-whom uses the fewest transfers to settle each scene
 • Editable settlement records
 • Share Who Owes Whom as an image for WhatsApp and similar apps
+• Share a scene’s expenses as an image or text for a date range
 
 BUILT FOR REAL-LIFE SCENES
 • Custom names, emojis, and currencies (PKR, USD, EUR & more)
@@ -94,10 +95,10 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.8.0)
+## What's New (v1.9.0)
 
-• Settle up with fewer payments — who owes whom now uses the fewest transfers per scene
-• Clearer settle suggestions on scene detail, Balances, person detail, and share images
+• Share a scene’s expenses as an image or as text — pick a date range, then send who paid, who was included, and totals
+• Scene net is easier to scan: You get / You give on a single white row
 ---
 
 ## Pre-submit checklist
