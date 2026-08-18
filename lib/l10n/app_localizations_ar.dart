@@ -353,6 +353,146 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsCouldNotShareBalances => 'تعذّرت مشاركة الأرصدة.';
 
   @override
+  String get groupsShareExpenses => 'مشاركة';
+
+  @override
+  String get groupsShareExpensesRangeTitle => 'اختر التواريخ';
+
+  @override
+  String get groupsShareExpensesRangeAll => 'كل التواريخ';
+
+  @override
+  String get groupsShareExpensesRangeAllSubtitle =>
+      'كل المصروفات في هذا المشهد';
+
+  @override
+  String get groupsShareExpensesRangeMonth => 'هذا الشهر';
+
+  @override
+  String get groupsShareExpensesRangeMonthSubtitle => 'من اليوم 1 حتى اليوم';
+
+  @override
+  String get groupsShareExpensesRangeLast7 => 'آخر 7 أيام';
+
+  @override
+  String get groupsShareExpensesRangeLast7Subtitle => 'بما في ذلك اليوم';
+
+  @override
+  String get groupsShareExpensesRangeCustom => 'نطاق مخصص';
+
+  @override
+  String get groupsShareExpensesRangeCustomSubtitle =>
+      'اختر تاريخ البداية والنهاية';
+
+  @override
+  String get groupsShareExpensesFormatTitle => 'طريقة المشاركة';
+
+  @override
+  String get groupsShareExpensesFormatImage => 'صورة';
+
+  @override
+  String get groupsShareExpensesFormatImageSubtitle => 'قائمة مختصرة كصورة';
+
+  @override
+  String get groupsShareExpensesFormatText => 'نص';
+
+  @override
+  String get groupsShareExpensesFormatTextSubtitle => 'من دفع وحصة كل شخص';
+
+  @override
+  String get groupsShareExpensesEmptyRange =>
+      'لا توجد مصروفات في هذا النطاق الزمني.';
+
+  @override
+  String get groupsCouldNotShareExpenses => 'تعذّرت مشاركة المصروفات.';
+
+  @override
+  String groupsShareExpensesSubject(String groupName) {
+    return 'المصروفات — $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaption(String groupName) {
+    return 'المصروفات في $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaptionWithRange(String groupName, String range) {
+    return 'المصروفات في $groupName ($range)';
+  }
+
+  @override
+  String groupsShareExpensesPeopleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count أشخاص',
+      one: 'شخص واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsShareExpensesAndMore(int count) {
+    return 'و$count أخرى';
+  }
+
+  @override
+  String groupsShareExpensesPayerPaidDatePeople(
+    String payer,
+    String date,
+    String people,
+  ) {
+    return '$payer دفع · $date · $people';
+  }
+
+  @override
+  String groupsShareExpensesPaidDateAmount(
+    String payer,
+    String date,
+    String amount,
+  ) {
+    return '$payer دفع · $date · $amount';
+  }
+
+  @override
+  String groupsShareExpensesNameAmount(String name, String amount) {
+    return '$name $amount';
+  }
+
+  @override
+  String groupsShareExpensesHeaderMeta(String range, String countLabel) {
+    return '$range · $countLabel';
+  }
+
+  @override
+  String groupsShareExpensesRangeSpan(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String groupsShareExpensesTotalLine(String amount) {
+    return 'الإجمالي: $amount';
+  }
+
+  @override
+  String groupsShareExpensesMemberTotalLine(
+    String name,
+    String parts,
+    String total,
+  ) {
+    return '$name: $parts = $total';
+  }
+
+  @override
+  String groupsShareExpensesMemberSingle(String name, String total) {
+    return '$name: $total';
+  }
+
+  @override
+  String get groupsShareExpensesByPerson => 'حسب الشخص';
+
+  @override
   String get groupsSettlements => 'التسويات';
 
   @override

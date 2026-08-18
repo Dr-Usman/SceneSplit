@@ -356,6 +356,149 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível partilhar os saldos.';
 
   @override
+  String get groupsShareExpenses => 'Partilhar';
+
+  @override
+  String get groupsShareExpensesRangeTitle => 'Escolher datas';
+
+  @override
+  String get groupsShareExpensesRangeAll => 'Todas as datas';
+
+  @override
+  String get groupsShareExpensesRangeAllSubtitle =>
+      'Todas as despesas nesta cena';
+
+  @override
+  String get groupsShareExpensesRangeMonth => 'Este mês';
+
+  @override
+  String get groupsShareExpensesRangeMonthSubtitle => 'Do dia 1 até hoje';
+
+  @override
+  String get groupsShareExpensesRangeLast7 => 'Últimos 7 dias';
+
+  @override
+  String get groupsShareExpensesRangeLast7Subtitle => 'Incluindo hoje';
+
+  @override
+  String get groupsShareExpensesRangeCustom => 'Intervalo personalizado';
+
+  @override
+  String get groupsShareExpensesRangeCustomSubtitle =>
+      'Escolher data de início e fim';
+
+  @override
+  String get groupsShareExpensesFormatTitle => 'Como partilhar';
+
+  @override
+  String get groupsShareExpensesFormatImage => 'Imagem';
+
+  @override
+  String get groupsShareExpensesFormatImageSubtitle =>
+      'Lista compacta como imagem';
+
+  @override
+  String get groupsShareExpensesFormatText => 'Texto';
+
+  @override
+  String get groupsShareExpensesFormatTextSubtitle =>
+      'Quem pagou e a parte de cada pessoa';
+
+  @override
+  String get groupsShareExpensesEmptyRange =>
+      'Não há despesas neste intervalo de datas.';
+
+  @override
+  String get groupsCouldNotShareExpenses =>
+      'Não foi possível partilhar as despesas.';
+
+  @override
+  String groupsShareExpensesSubject(String groupName) {
+    return 'Despesas — $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaption(String groupName) {
+    return 'Despesas em $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaptionWithRange(String groupName, String range) {
+    return 'Despesas em $groupName ($range)';
+  }
+
+  @override
+  String groupsShareExpensesPeopleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pessoas',
+      one: '1 pessoa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsShareExpensesAndMore(int count) {
+    return 'e mais $count';
+  }
+
+  @override
+  String groupsShareExpensesPayerPaidDatePeople(
+    String payer,
+    String date,
+    String people,
+  ) {
+    return '$payer pagou · $date · $people';
+  }
+
+  @override
+  String groupsShareExpensesPaidDateAmount(
+    String payer,
+    String date,
+    String amount,
+  ) {
+    return '$payer pagou · $date · $amount';
+  }
+
+  @override
+  String groupsShareExpensesNameAmount(String name, String amount) {
+    return '$name $amount';
+  }
+
+  @override
+  String groupsShareExpensesHeaderMeta(String range, String countLabel) {
+    return '$range · $countLabel';
+  }
+
+  @override
+  String groupsShareExpensesRangeSpan(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String groupsShareExpensesTotalLine(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String groupsShareExpensesMemberTotalLine(
+    String name,
+    String parts,
+    String total,
+  ) {
+    return '$name: $parts = $total';
+  }
+
+  @override
+  String groupsShareExpensesMemberSingle(String name, String total) {
+    return '$name: $total';
+  }
+
+  @override
+  String get groupsShareExpensesByPerson => 'Por pessoa';
+
+  @override
   String get groupsSettlements => 'ACERTOS';
 
   @override
@@ -1385,6 +1528,149 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get groupsCouldNotShareBalances =>
       'Não foi possível compartilhar os saldos.';
+
+  @override
+  String get groupsShareExpenses => 'Compartilhar';
+
+  @override
+  String get groupsShareExpensesRangeTitle => 'Escolher datas';
+
+  @override
+  String get groupsShareExpensesRangeAll => 'Todas as datas';
+
+  @override
+  String get groupsShareExpensesRangeAllSubtitle =>
+      'Todas as despesas nesta cena';
+
+  @override
+  String get groupsShareExpensesRangeMonth => 'Este mês';
+
+  @override
+  String get groupsShareExpensesRangeMonthSubtitle => 'Do dia 1 até hoje';
+
+  @override
+  String get groupsShareExpensesRangeLast7 => 'Últimos 7 dias';
+
+  @override
+  String get groupsShareExpensesRangeLast7Subtitle => 'Incluindo hoje';
+
+  @override
+  String get groupsShareExpensesRangeCustom => 'Intervalo personalizado';
+
+  @override
+  String get groupsShareExpensesRangeCustomSubtitle =>
+      'Escolher data de início e fim';
+
+  @override
+  String get groupsShareExpensesFormatTitle => 'Como compartilhar';
+
+  @override
+  String get groupsShareExpensesFormatImage => 'Imagem';
+
+  @override
+  String get groupsShareExpensesFormatImageSubtitle =>
+      'Lista compacta como imagem';
+
+  @override
+  String get groupsShareExpensesFormatText => 'Texto';
+
+  @override
+  String get groupsShareExpensesFormatTextSubtitle =>
+      'Quem pagou e a parte de cada pessoa';
+
+  @override
+  String get groupsShareExpensesEmptyRange =>
+      'Não há despesas neste intervalo de datas.';
+
+  @override
+  String get groupsCouldNotShareExpenses =>
+      'Não foi possível compartilhar as despesas.';
+
+  @override
+  String groupsShareExpensesSubject(String groupName) {
+    return 'Despesas — $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaption(String groupName) {
+    return 'Despesas em $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaptionWithRange(String groupName, String range) {
+    return 'Despesas em $groupName ($range)';
+  }
+
+  @override
+  String groupsShareExpensesPeopleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pessoas',
+      one: '1 pessoa',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsShareExpensesAndMore(int count) {
+    return 'e mais $count';
+  }
+
+  @override
+  String groupsShareExpensesPayerPaidDatePeople(
+    String payer,
+    String date,
+    String people,
+  ) {
+    return '$payer pagou · $date · $people';
+  }
+
+  @override
+  String groupsShareExpensesPaidDateAmount(
+    String payer,
+    String date,
+    String amount,
+  ) {
+    return '$payer pagou · $date · $amount';
+  }
+
+  @override
+  String groupsShareExpensesNameAmount(String name, String amount) {
+    return '$name $amount';
+  }
+
+  @override
+  String groupsShareExpensesHeaderMeta(String range, String countLabel) {
+    return '$range · $countLabel';
+  }
+
+  @override
+  String groupsShareExpensesRangeSpan(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String groupsShareExpensesTotalLine(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String groupsShareExpensesMemberTotalLine(
+    String name,
+    String parts,
+    String total,
+  ) {
+    return '$name: $parts = $total';
+  }
+
+  @override
+  String groupsShareExpensesMemberSingle(String name, String total) {
+    return '$name: $total';
+  }
+
+  @override
+  String get groupsShareExpensesByPerson => 'Por pessoa';
 
   @override
   String get groupsSettlements => 'ACERTOS';

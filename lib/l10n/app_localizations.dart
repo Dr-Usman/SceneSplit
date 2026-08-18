@@ -693,6 +693,204 @@ abstract class AppLocalizations {
   /// **'Could not share balances.'**
   String get groupsCouldNotShareBalances;
 
+  /// No description provided for @groupsShareExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get groupsShareExpenses;
+
+  /// No description provided for @groupsShareExpensesRangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose dates'**
+  String get groupsShareExpensesRangeTitle;
+
+  /// No description provided for @groupsShareExpensesRangeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All dates'**
+  String get groupsShareExpensesRangeAll;
+
+  /// No description provided for @groupsShareExpensesRangeAllSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every expense in this scene'**
+  String get groupsShareExpensesRangeAllSubtitle;
+
+  /// No description provided for @groupsShareExpensesRangeMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get groupsShareExpensesRangeMonth;
+
+  /// No description provided for @groupsShareExpensesRangeMonthSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'From the 1st through today'**
+  String get groupsShareExpensesRangeMonthSubtitle;
+
+  /// No description provided for @groupsShareExpensesRangeLast7.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get groupsShareExpensesRangeLast7;
+
+  /// No description provided for @groupsShareExpensesRangeLast7Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Including today'**
+  String get groupsShareExpensesRangeLast7Subtitle;
+
+  /// No description provided for @groupsShareExpensesRangeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom range'**
+  String get groupsShareExpensesRangeCustom;
+
+  /// No description provided for @groupsShareExpensesRangeCustomSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick start and end dates'**
+  String get groupsShareExpensesRangeCustomSubtitle;
+
+  /// No description provided for @groupsShareExpensesFormatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to share'**
+  String get groupsShareExpensesFormatTitle;
+
+  /// No description provided for @groupsShareExpensesFormatImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get groupsShareExpensesFormatImage;
+
+  /// No description provided for @groupsShareExpensesFormatImageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact list as a picture'**
+  String get groupsShareExpensesFormatImageSubtitle;
+
+  /// No description provided for @groupsShareExpensesFormatText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get groupsShareExpensesFormatText;
+
+  /// No description provided for @groupsShareExpensesFormatTextSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who paid and each person\'s share'**
+  String get groupsShareExpensesFormatTextSubtitle;
+
+  /// No description provided for @groupsShareExpensesEmptyRange.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses in this date range.'**
+  String get groupsShareExpensesEmptyRange;
+
+  /// No description provided for @groupsCouldNotShareExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share expenses.'**
+  String get groupsCouldNotShareExpenses;
+
+  /// No description provided for @groupsShareExpensesSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses — {groupName}'**
+  String groupsShareExpensesSubject(String groupName);
+
+  /// No description provided for @groupsShareExpensesCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses in {groupName}'**
+  String groupsShareExpensesCaption(String groupName);
+
+  /// No description provided for @groupsShareExpensesCaptionWithRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses in {groupName} ({range})'**
+  String groupsShareExpensesCaptionWithRange(String groupName, String range);
+
+  /// No description provided for @groupsShareExpensesPeopleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} people}}'**
+  String groupsShareExpensesPeopleCount(int count);
+
+  /// No description provided for @groupsShareExpensesAndMore.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count} more'**
+  String groupsShareExpensesAndMore(int count);
+
+  /// No description provided for @groupsShareExpensesPayerPaidDatePeople.
+  ///
+  /// In en, this message translates to:
+  /// **'{payer} paid · {date} · {people}'**
+  String groupsShareExpensesPayerPaidDatePeople(
+    String payer,
+    String date,
+    String people,
+  );
+
+  /// No description provided for @groupsShareExpensesPaidDateAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{payer} paid · {date} · {amount}'**
+  String groupsShareExpensesPaidDateAmount(
+    String payer,
+    String date,
+    String amount,
+  );
+
+  /// No description provided for @groupsShareExpensesNameAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} {amount}'**
+  String groupsShareExpensesNameAmount(String name, String amount);
+
+  /// No description provided for @groupsShareExpensesHeaderMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{range} · {countLabel}'**
+  String groupsShareExpensesHeaderMeta(String range, String countLabel);
+
+  /// No description provided for @groupsShareExpensesRangeSpan.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end}'**
+  String groupsShareExpensesRangeSpan(String start, String end);
+
+  /// No description provided for @groupsShareExpensesTotalLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {amount}'**
+  String groupsShareExpensesTotalLine(String amount);
+
+  /// No description provided for @groupsShareExpensesMemberTotalLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {parts} = {total}'**
+  String groupsShareExpensesMemberTotalLine(
+    String name,
+    String parts,
+    String total,
+  );
+
+  /// No description provided for @groupsShareExpensesMemberSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {total}'**
+  String groupsShareExpensesMemberSingle(String name, String total);
+
+  /// No description provided for @groupsShareExpensesByPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'By person'**
+  String get groupsShareExpensesByPerson;
+
   /// No description provided for @groupsSettlements.
   ///
   /// In en, this message translates to:

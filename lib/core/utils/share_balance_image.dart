@@ -9,6 +9,12 @@ import '../../shared/widgets/balance_share_card.dart';
 import '../l10n/l10n_extensions.dart';
 import '../theme/app_theme.dart';
 
+/// iPad popover origin for [ShareParams.sharePositionOrigin].
+Rect? sharePositionOrigin(BuildContext context) {
+  final box = context.findRenderObject() as RenderBox?;
+  return box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+}
+
 /// Renders [card] off-screen, captures a PNG, and opens the system share sheet.
 Future<bool> shareBalanceImage(
   BuildContext context, {
@@ -16,10 +22,9 @@ Future<bool> shareBalanceImage(
   required String groupName,
 }) async {
   final l10n = context.l10n;
-  final box = context.findRenderObject() as RenderBox?;
-  final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+  final origin = sharePositionOrigin(context);
 
-  final bytes = await captureBalanceShareCard(context, card: card);
+  final bytes = await captureShareWidget(context, child: card);
   if (bytes == null || !context.mounted) return false;
 
   try {
@@ -49,6 +54,15 @@ Future<Uint8List?> captureBalanceShareCard(
   BuildContext context, {
   required BalanceShareCard card,
   double pixelRatio = 3,
+}) {
+  return captureShareWidget(context, child: card, pixelRatio: pixelRatio);
+}
+
+/// Builds [child] in an off-screen overlay and returns PNG bytes.
+Future<Uint8List?> captureShareWidget(
+  BuildContext context, {
+  required Widget child,
+  double pixelRatio = 3,
 }) async {
   final boundaryKey = GlobalKey();
   final overlay = Overlay.maybeOf(context, rootOverlay: true);
@@ -69,7 +83,7 @@ Future<Uint8List?> captureBalanceShareCard(
               textDirection: Directionality.of(context),
               child: Theme(
                 data: AppTheme.light,
-                child: RepaintBoundary(key: boundaryKey, child: card),
+                child: RepaintBoundary(key: boundaryKey, child: child),
               ),
             ),
           ),

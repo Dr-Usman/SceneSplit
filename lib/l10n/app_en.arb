@@ -242,6 +242,161 @@
   "groupsShareAllSettled": "All settled",
   "groupsExpenseShares": "Expense shares",
   "groupsCouldNotShareBalances": "Could not share balances.",
+  "groupsShareExpenses": "Share",
+  "groupsShareExpensesRangeTitle": "Choose dates",
+  "groupsShareExpensesRangeAll": "All dates",
+  "groupsShareExpensesRangeAllSubtitle": "Every expense in this scene",
+  "groupsShareExpensesRangeMonth": "This month",
+  "groupsShareExpensesRangeMonthSubtitle": "From the 1st through today",
+  "groupsShareExpensesRangeLast7": "Last 7 days",
+  "groupsShareExpensesRangeLast7Subtitle": "Including today",
+  "groupsShareExpensesRangeCustom": "Custom range",
+  "groupsShareExpensesRangeCustomSubtitle": "Pick start and end dates",
+  "groupsShareExpensesFormatTitle": "How to share",
+  "groupsShareExpensesFormatImage": "Image",
+  "groupsShareExpensesFormatImageSubtitle": "Compact list as a picture",
+  "groupsShareExpensesFormatText": "Text",
+  "groupsShareExpensesFormatTextSubtitle": "Who paid and each person's share",
+  "groupsShareExpensesEmptyRange": "No expenses in this date range.",
+  "groupsCouldNotShareExpenses": "Could not share expenses.",
+  "groupsShareExpensesSubject": "Expenses — {groupName}",
+  "@groupsShareExpensesSubject": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesCaption": "Expenses in {groupName}",
+  "@groupsShareExpensesCaption": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesCaptionWithRange": "Expenses in {groupName} ({range})",
+  "@groupsShareExpensesCaptionWithRange": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      },
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesPeopleCount": "{count, plural, =1{1 person} other{{count} people}}",
+  "@groupsShareExpensesPeopleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsShareExpensesAndMore": "and {count} more",
+  "@groupsShareExpensesAndMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsShareExpensesPayerPaidDatePeople": "{payer} paid · {date} · {people}",
+  "@groupsShareExpensesPayerPaidDatePeople": {
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "people": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesPaidDateAmount": "{payer} paid · {date} · {amount}",
+  "@groupsShareExpensesPaidDateAmount": {
+    "placeholders": {
+      "payer": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesNameAmount": "{name} {amount}",
+  "@groupsShareExpensesNameAmount": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesHeaderMeta": "{range} · {countLabel}",
+  "@groupsShareExpensesHeaderMeta": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "countLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesRangeSpan": "{start} – {end}",
+  "@groupsShareExpensesRangeSpan": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesTotalLine": "Total: {amount}",
+  "@groupsShareExpensesTotalLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
+  "@groupsShareExpensesMemberTotalLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "parts": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesMemberSingle": "{name}: {total}",
+  "@groupsShareExpensesMemberSingle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsShareExpensesByPerson": "By person",
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
   "groupsSettlementsTitle": "Settlements",

@@ -59,7 +59,7 @@ If you contact us by email (see [Contact Us](#contact-us)), we receive only the 
 
 ## Product Analytics (Mixpanel)
 
-SceneSplit uses **Mixpanel** to understand product usage and improve the app. The SDK may send product events such as completing onboarding, creating a scene, expense, or settlement, changing language, navigating Balances and People screens, sharing balances or the app, prompting for a store review, and exporting or importing a backup. Events can include technical properties (for example platform, currency code, split type, amount in cents, navigation source, and counts such as how many balance lines were shared) and a local user identifier.
+SceneSplit uses **Mixpanel** to understand product usage and improve the app. The SDK may send product events such as completing onboarding, creating a scene, expense, or settlement, changing language, navigating Balances and People screens, sharing balances, expenses, or the app, prompting for a store review, and exporting or importing a backup. Events can include technical properties (for example platform, currency code, split type, amount in cents, navigation source, and counts such as how many balance lines or expenses were shared) and a local user identifier.
 
 Your **display name** and **scene names** may be sent when you complete setup or create a scene, and your display name may be stored on your Mixpanel People profile. Expense titles, notes, and **other people’s names** are not sent as event properties.
 
@@ -76,7 +76,7 @@ Information stored on your device is used solely to:
 - Suggest and record settlements between members
 - Display summaries and charts within the app
 
-**Optional share:** From a scene, you can **Share balances** to create an image of who owes whom and expense-share totals. The system share sheet sends that image (and a short caption that may include the scene name) only to destinations **you** choose (for example WhatsApp or Messages). SceneSplit does not upload that image to our servers.
+**Optional share:** From a scene, you can **Share balances** (who owes whom and expense-share totals) or **Share expenses** (a date-range list as an image or as text). The system share sheet sends that content (and a short caption that may include the scene name) only to destinations **you** choose (for example WhatsApp or Messages). SceneSplit does not upload that content to our servers.
 
 Limited usage events sent to Mixpanel are used to understand product engagement and improve SceneSplit. We do not use your data for marketing profiles unrelated to improving the app.
 
@@ -103,7 +103,7 @@ SceneSplit uses a small number of standard libraries that may interact with your
 | **Google Fonts** | App typography | May download font files from Google servers on first use; fonts are cached locally afterward |
 | **In-app review** | Optional “Rate SceneSplit” prompt | Opens your platform’s native store review dialog; no expense data is sent |
 | **Email client** | Contact us, feedback, feature suggestions | Opens your email app; we only receive what you send us |
-| **System share sheet** | Share balance images, app links, or backup files | Hands content you choose to the apps or destinations you pick; SceneSplit does not receive a copy |
+| **System share sheet** | Share balance images, expense lists, app links, or backup files | Hands content you choose to the apps or destinations you pick; SceneSplit does not receive a copy |
 | **Mixpanel** | Product analytics | Usage events, local user id, and limited profile fields; see [Product Analytics](#product-analytics-mixpanel) |
 
 These services are governed by their own privacy policies. SceneSplit does not pass your full expense ledger to them.

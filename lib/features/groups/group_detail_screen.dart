@@ -28,6 +28,7 @@ import 'group_expenses_screen.dart';
 import 'group_settlements_screen.dart';
 import 'widgets/group_expense_tile.dart';
 import 'widgets/group_settlement_tile.dart';
+import 'widgets/share_expenses_sheet.dart';
 
 const _kExpensePreviewCount = 5;
 const _kSettlementPreviewCount = 3;
@@ -375,7 +376,32 @@ class GroupDetailScreen extends ConsumerWidget {
                   ),
               ],
               const SizedBox(height: 28),
-              SectionHeader(l10n.groupsExpenses),
+              SectionHeader(
+                l10n.groupsExpenses,
+                trailing: data.expenses.isEmpty
+                    ? null
+                    : IconButton(
+                        tooltip: l10n.groupsShareExpenses,
+                        onPressed: () => shareSceneExpenses(
+                          context,
+                          ref,
+                          data: data,
+                          users: users,
+                          locale: locale,
+                        ),
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 28,
+                          minHeight: 28,
+                        ),
+                        icon: Icon(
+                          Icons.share_outlined,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+              ),
               if (data.expenses.isEmpty) ...[
                 const SizedBox(height: 12),
                 _EmptyExpenses(l10n: l10n),

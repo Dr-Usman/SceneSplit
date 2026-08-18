@@ -21,6 +21,7 @@ abstract final class AnalyticsEvents {
   static const reviewPrompted = 'review_prompted';
   static const backupExported = 'backup_exported';
   static const backupImported = 'backup_imported';
+  static const expensesShared = 'expenses_shared';
 
   /// Full integrated catalog (order matches product funnel, then feature areas).
   static const List<String> all = [
@@ -40,6 +41,7 @@ abstract final class AnalyticsEvents {
     reviewPrompted,
     backupExported,
     backupImported,
+    expensesShared,
   ];
 }
 
@@ -317,6 +319,25 @@ class AnalyticsService {
     await _track(
       AnalyticsEvents.backupImported,
       properties: {'platform': platformLabel()},
+    );
+  }
+
+  /// Fired after the user successfully opens the share sheet for expenses.
+  ///
+  /// [format] is `image` or `text`. [range] is `all`, `month`, `7d`, or `custom`.
+  Future<void> trackExpensesShared({
+    required int expenseCount,
+    required String format,
+    required String range,
+  }) async {
+    await _track(
+      AnalyticsEvents.expensesShared,
+      properties: {
+        'expense_count': expenseCount,
+        'format': format,
+        'range': range,
+        'platform': platformLabel(),
+      },
     );
   }
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Scene expenses: share a date-range list as an image or as text from scene detail or the expenses screen (who paid, people included, amounts). Text includes a “By person” running total of each member’s shares.
+
 ### Changed
 
 - Scene net card is a white single-row card; amount stays green or red; labels are “You get” / “You give”.

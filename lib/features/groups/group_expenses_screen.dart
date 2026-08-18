@@ -8,6 +8,7 @@ import '../../shared/widgets/app_card.dart';
 import '../expenses/expense_detail_screen.dart';
 import 'group_activity_dialogs.dart';
 import 'widgets/group_expense_tile.dart';
+import 'widgets/share_expenses_sheet.dart';
 
 class GroupExpensesScreen extends ConsumerWidget {
   const GroupExpensesScreen({super.key, required this.groupId});
@@ -20,6 +21,7 @@ class GroupExpensesScreen extends ConsumerWidget {
     final locale = Localizations.localeOf(context).toString();
     final detail = ref.watch(groupDetailProvider(groupId));
     final users = ref.watch(userByIdProvider);
+    final data = detail.asData?.value;
     final title = detail.maybeWhen(
       data: (data) => l10n.groupsExpensesScreenTitle(data.group.name),
       orElse: () => l10n.groupsExpensesTitle,
@@ -35,6 +37,20 @@ class GroupExpensesScreen extends ConsumerWidget {
             context,
           ).appBarTheme.titleTextStyle?.copyWith(fontSize: 18),
         ),
+        actions: [
+          if (data != null && data.expenses.isNotEmpty)
+            IconButton(
+              tooltip: l10n.groupsShareExpenses,
+              onPressed: () => shareSceneExpenses(
+                context,
+                ref,
+                data: data,
+                users: users,
+                locale: locale,
+              ),
+              icon: const Icon(Icons.share_outlined),
+            ),
+        ],
       ),
       body: detail.when(
         loading: () => const Center(child: CircularProgressIndicator()),

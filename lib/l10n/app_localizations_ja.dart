@@ -350,6 +350,143 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsCouldNotShareBalances => '残高を共有できませんでした。';
 
   @override
+  String get groupsShareExpenses => '共有';
+
+  @override
+  String get groupsShareExpensesRangeTitle => '日付を選択';
+
+  @override
+  String get groupsShareExpensesRangeAll => 'すべての日付';
+
+  @override
+  String get groupsShareExpensesRangeAllSubtitle => 'このシーンのすべての支出';
+
+  @override
+  String get groupsShareExpensesRangeMonth => '今月';
+
+  @override
+  String get groupsShareExpensesRangeMonthSubtitle => '1日から今日まで';
+
+  @override
+  String get groupsShareExpensesRangeLast7 => '過去7日間';
+
+  @override
+  String get groupsShareExpensesRangeLast7Subtitle => '今日を含む';
+
+  @override
+  String get groupsShareExpensesRangeCustom => '期間を指定';
+
+  @override
+  String get groupsShareExpensesRangeCustomSubtitle => '開始日と終了日を選ぶ';
+
+  @override
+  String get groupsShareExpensesFormatTitle => '共有方法';
+
+  @override
+  String get groupsShareExpensesFormatImage => '画像';
+
+  @override
+  String get groupsShareExpensesFormatImageSubtitle => 'コンパクトなリストを画像で';
+
+  @override
+  String get groupsShareExpensesFormatText => 'テキスト';
+
+  @override
+  String get groupsShareExpensesFormatTextSubtitle => '支払った人と各自の分担額';
+
+  @override
+  String get groupsShareExpensesEmptyRange => 'この期間に支出はありません。';
+
+  @override
+  String get groupsCouldNotShareExpenses => '支出を共有できませんでした。';
+
+  @override
+  String groupsShareExpensesSubject(String groupName) {
+    return '支出 — $groupName';
+  }
+
+  @override
+  String groupsShareExpensesCaption(String groupName) {
+    return '$groupNameの支出';
+  }
+
+  @override
+  String groupsShareExpensesCaptionWithRange(String groupName, String range) {
+    return '$groupNameの支出（$range）';
+  }
+
+  @override
+  String groupsShareExpensesPeopleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count人',
+      one: '1人',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String groupsShareExpensesAndMore(int count) {
+    return 'ほか$count件';
+  }
+
+  @override
+  String groupsShareExpensesPayerPaidDatePeople(
+    String payer,
+    String date,
+    String people,
+  ) {
+    return '$payerが支払い · $date · $people';
+  }
+
+  @override
+  String groupsShareExpensesPaidDateAmount(
+    String payer,
+    String date,
+    String amount,
+  ) {
+    return '$payerが支払い · $date · $amount';
+  }
+
+  @override
+  String groupsShareExpensesNameAmount(String name, String amount) {
+    return '$name $amount';
+  }
+
+  @override
+  String groupsShareExpensesHeaderMeta(String range, String countLabel) {
+    return '$range · $countLabel';
+  }
+
+  @override
+  String groupsShareExpensesRangeSpan(String start, String end) {
+    return '$start – $end';
+  }
+
+  @override
+  String groupsShareExpensesTotalLine(String amount) {
+    return '合計: $amount';
+  }
+
+  @override
+  String groupsShareExpensesMemberTotalLine(
+    String name,
+    String parts,
+    String total,
+  ) {
+    return '$name: $parts = $total';
+  }
+
+  @override
+  String groupsShareExpensesMemberSingle(String name, String total) {
+    return '$name: $total';
+  }
+
+  @override
+  String get groupsShareExpensesByPerson => '人別';
+
+  @override
   String get groupsSettlements => '精算履歴';
 
   @override
