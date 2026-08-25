@@ -1056,6 +1056,26 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get updateAvailableTitle => 'Update verfügbar';
+
+  @override
+  String get updateAvailableBody =>
+      'Eine neuere Version von SceneSplit ist verfügbar. Aktualisiere, um die neuesten Verbesserungen zu erhalten.';
+
+  @override
+  String get updateNowAction => 'Aktualisieren';
+
+  @override
+  String get updateLaterAction => 'Später';
+
+  @override
+  String get updateReadyMessage =>
+      'Update heruntergeladen. Starte neu, um die Installation abzuschließen.';
+
+  @override
+  String get updateRestartAction => 'Neu starten';
+
+  @override
   String get legalPrivacyTitle => 'Datenschutzerklärung';
 
   @override

@@ -1030,6 +1030,25 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get updateAvailableTitle => 'アップデートがあります';
+
+  @override
+  String get updateAvailableBody =>
+      'SceneSplit の新しいバージョンがあります。最新の改善を利用するには更新してください。';
+
+  @override
+  String get updateNowAction => '更新';
+
+  @override
+  String get updateLaterAction => '後で';
+
+  @override
+  String get updateReadyMessage => 'アップデートをダウンロードしました。インストールを完了するには再起動してください。';
+
+  @override
+  String get updateRestartAction => '再起動';
+
+  @override
   String get legalPrivacyTitle => 'プライバシーポリシー';
 
   @override

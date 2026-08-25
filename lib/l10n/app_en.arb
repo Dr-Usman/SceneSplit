@@ -789,6 +789,12 @@
       }
     }
   },
+  "updateAvailableTitle": "Update available",
+  "updateAvailableBody": "A newer version of SceneSplit is available. Update to get the latest improvements.",
+  "updateNowAction": "Update",
+  "updateLaterAction": "Later",
+  "updateReadyMessage": "Update downloaded. Restart to finish installing.",
+  "updateRestartAction": "Restart",
   "legalPrivacyTitle": "Privacy Policy",
   "legalTermsTitle": "Terms of Service",
   "legalLoadError": "Could not load document: {error}",

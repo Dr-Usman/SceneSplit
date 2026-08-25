@@ -1040,6 +1040,26 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get updateAvailableTitle => 'يتوفر تحديث';
+
+  @override
+  String get updateAvailableBody =>
+      'يتوفر إصدار أحدث من SceneSplit. حدّث للحصول على أحدث التحسينات.';
+
+  @override
+  String get updateNowAction => 'تحديث';
+
+  @override
+  String get updateLaterAction => 'لاحقًا';
+
+  @override
+  String get updateReadyMessage =>
+      'تم تنزيل التحديث. أعد التشغيل لإكمال التثبيت.';
+
+  @override
+  String get updateRestartAction => 'إعادة التشغيل';
+
+  @override
   String get legalPrivacyTitle => 'سياسة الخصوصية';
 
   @override

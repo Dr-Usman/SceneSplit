@@ -25,6 +25,7 @@
 | package_info_plus | ^10.2.0 | |
 | url_launcher | ^6.3.2 | |
 | in_app_review | ^2.0.12 | |
+| in_app_update | ^5.0.0 | Android Play In-App Updates (flexible) |
 
 ### Dev dependencies
 

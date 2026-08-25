@@ -19,6 +19,8 @@ abstract final class AnalyticsEvents {
   static const balancesFilterCleared = 'balances_filter_cleared';
   static const appShared = 'app_shared';
   static const reviewPrompted = 'review_prompted';
+  static const updatePrompted = 'update_prompted';
+  static const updateStarted = 'update_started';
   static const backupExported = 'backup_exported';
   static const backupImported = 'backup_imported';
   static const expensesShared = 'expenses_shared';
@@ -39,6 +41,8 @@ abstract final class AnalyticsEvents {
     balancesFilterCleared,
     appShared,
     reviewPrompted,
+    updatePrompted,
+    updateStarted,
     backupExported,
     backupImported,
     expensesShared,
@@ -301,6 +305,22 @@ class AnalyticsService {
     await _track(
       AnalyticsEvents.reviewPrompted,
       properties: {'available': available, 'platform': platformLabel()},
+    );
+  }
+
+  /// Fired when an in-app update prompt or flexible flow is shown.
+  Future<void> trackUpdatePrompted({required String platform}) async {
+    await _track(
+      AnalyticsEvents.updatePrompted,
+      properties: {'platform': platform},
+    );
+  }
+
+  /// Fired when the user accepts / starts downloading an update.
+  Future<void> trackUpdateStarted({required String platform}) async {
+    await _track(
+      AnalyticsEvents.updateStarted,
+      properties: {'platform': platform},
     );
   }
 

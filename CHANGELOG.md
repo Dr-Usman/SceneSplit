@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Flexible in-app updates: Google Play In-App Updates on Android, and a dismissible App Store prompt on iOS when a newer version is available.
+
 ## [1.9.0] - 2026-08-18
 
 ### Added

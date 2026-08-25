@@ -1827,6 +1827,42 @@ abstract class AppLocalizations {
   /// **'© {year} {appName}'**
   String aboutCopyright(int year, String appName);
 
+  /// No description provided for @updateAvailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailableTitle;
+
+  /// No description provided for @updateAvailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A newer version of SceneSplit is available. Update to get the latest improvements.'**
+  String get updateAvailableBody;
+
+  /// No description provided for @updateNowAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateNowAction;
+
+  /// No description provided for @updateLaterAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLaterAction;
+
+  /// No description provided for @updateReadyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Update downloaded. Restart to finish installing.'**
+  String get updateReadyMessage;
+
+  /// No description provided for @updateRestartAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get updateRestartAction;
+
   /// No description provided for @legalPrivacyTitle.
   ///
   /// In en, this message translates to:

@@ -1053,6 +1053,26 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get updateAvailableTitle => 'Atualização disponível';
+
+  @override
+  String get updateAvailableBody =>
+      'Há uma versão mais recente do SceneSplit. Atualize para obter as últimas melhorias.';
+
+  @override
+  String get updateNowAction => 'Atualizar';
+
+  @override
+  String get updateLaterAction => 'Mais tarde';
+
+  @override
+  String get updateReadyMessage =>
+      'Atualização baixada. Reinicie para concluir a instalação.';
+
+  @override
+  String get updateRestartAction => 'Reiniciar';
+
+  @override
   String get legalPrivacyTitle => 'Política de privacidade';
 
   @override
@@ -2225,6 +2245,26 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String aboutCopyright(int year, String appName) {
     return '© $year $appName';
   }
+
+  @override
+  String get updateAvailableTitle => 'Atualização disponível';
+
+  @override
+  String get updateAvailableBody =>
+      'Há uma versão mais recente do SceneSplit. Atualize para obter as últimas melhorias.';
+
+  @override
+  String get updateNowAction => 'Atualizar';
+
+  @override
+  String get updateLaterAction => 'Mais tarde';
+
+  @override
+  String get updateReadyMessage =>
+      'Atualização baixada. Reinicie para concluir a instalação.';
+
+  @override
+  String get updateRestartAction => 'Reiniciar';
 
   @override
   String get legalPrivacyTitle => 'Política de privacidade';

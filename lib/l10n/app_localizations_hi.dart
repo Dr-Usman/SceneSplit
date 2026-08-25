@@ -1047,6 +1047,26 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get updateAvailableTitle => 'अपडेट उपलब्ध';
+
+  @override
+  String get updateAvailableBody =>
+      'SceneSplit का नया संस्करण उपलब्ध है। नवीनतम सुधारों के लिए अपडेट करें।';
+
+  @override
+  String get updateNowAction => 'अपडेट करें';
+
+  @override
+  String get updateLaterAction => 'बाद में';
+
+  @override
+  String get updateReadyMessage =>
+      'अपडेट डाउनलोड हो गया। इंस्टॉल पूरा करने के लिए रीस्टार्ट करें।';
+
+  @override
+  String get updateRestartAction => 'रीस्टार्ट';
+
+  @override
   String get legalPrivacyTitle => 'गोपनीयता नीति';
 
   @override
