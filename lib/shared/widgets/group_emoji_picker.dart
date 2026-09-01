@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../core/constants/group_emojis.dart';
-import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
+import 'emoji_picker_sheet.dart';
+
+export 'emoji_picker_sheet.dart' show showEmojiPickerSheet;
 
 bool isValidSingleEmoji(String input) {
   final trimmed = input.trim();
@@ -12,50 +13,7 @@ bool isValidSingleEmoji(String input) {
 }
 
 Future<String?> showCustomEmojiDialog(BuildContext context, {String? initial}) {
-  final l10n = context.l10n;
-  final controller = TextEditingController(text: initial ?? '');
-  return showDialog<String>(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: Text(l10n.sharedCustomEmoji),
-      content: TextField(
-        controller: controller,
-        autofocus: true,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 32),
-        decoration: const InputDecoration(hintText: '😀', counterText: ''),
-        inputFormatters: [LengthLimitingTextInputFormatter(8)],
-        onSubmitted: (_) {
-          final value = controller.text.trim();
-          if (isValidSingleEmoji(value)) Navigator.pop(ctx, value);
-        },
-      ),
-      actions: [
-        Row(
-          children: [
-            Expanded(
-              child: TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: Text(l10n.commonCancel),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: FilledButton(
-                onPressed: () {
-                  final value = controller.text.trim();
-                  if (isValidSingleEmoji(value)) {
-                    Navigator.pop(ctx, value);
-                  }
-                },
-                child: Text(l10n.commonSave),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+  return showEmojiPickerSheet(context, selected: initial);
 }
 
 class GroupEmojiPicker extends StatelessWidget {
@@ -71,9 +29,9 @@ class GroupEmojiPicker extends StatelessWidget {
   bool get _isCustomSelected => !groupEmojis.contains(selectedEmoji);
 
   Future<void> _pickCustom(BuildContext context) async {
-    final emoji = await showCustomEmojiDialog(
+    final emoji = await showEmojiPickerSheet(
       context,
-      initial: _isCustomSelected ? selectedEmoji : null,
+      selected: _isCustomSelected ? selectedEmoji : null,
     );
     if (emoji != null) onChanged(emoji);
   }
