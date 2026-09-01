@@ -150,17 +150,28 @@ class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
     );
     if (confirmed != true || !mounted) return;
 
-    final picked = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['sqlite', 'db'],
-    );
-    if (picked == null || picked.files.single.path == null || !mounted) {
+    final List<PlatformFile> picked;
+    try {
+      picked = await FilePicker.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['sqlite', 'db'],
+      );
+    } on Object {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.dataCouldNotImport)),
+        );
+      }
+      return;
+    }
+
+    if (picked.isEmpty || picked.first.path == null || !mounted) {
       return;
     }
 
     setState(() => _backupBusy = true);
     try {
-      final backupPath = picked.files.single.path!;
+      final backupPath = picked.first.path!;
       validateBackupFile(
         backupPath,
         expectedSchemaVersion: AppDatabase.databaseSchemaVersion,

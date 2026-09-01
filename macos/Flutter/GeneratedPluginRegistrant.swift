@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import file_picker
+import file_picker_darwin
 import in_app_review
 import mixpanel_flutter
 import package_info_plus
