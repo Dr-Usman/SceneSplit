@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
@@ -25,6 +26,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   final _memberController = TextEditingController();
   String _emoji = '🧾';
   String _currencyCode = 'PKR';
+  bool _showDecimals = false;
+  bool _decimalsUserChanged = false;
   bool _saving = false;
   bool _currencyInitialized = false;
 
@@ -106,6 +109,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         name: groupName,
         emoji: _emoji,
         currencyCode: _currencyCode,
+        showDecimals: _showDecimals,
         existingUserIds: [if (_includeMe) me.id, ..._selectedUserIds],
         newMemberNames: _newNames,
       );
@@ -138,6 +142,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final defaultCurrency = ref.watch(currencyCodeProvider).value ?? 'PKR';
     if (!_currencyInitialized) {
       _currencyCode = defaultCurrency;
+      _showDecimals = defaultDecimalsForCurrency(defaultCurrency);
       _currencyInitialized = true;
     }
 
@@ -165,7 +170,31 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           const SizedBox(height: 8),
           CurrencyPickerField(
             currencyCode: _currencyCode,
-            onChanged: (code) => setState(() => _currencyCode = code),
+            onChanged: (code) => setState(() {
+              _currencyCode = code;
+              if (!_decimalsUserChanged) {
+                _showDecimals = defaultDecimalsForCurrency(code);
+              }
+            }),
+          ),
+          SwitchListTile.adaptive(
+            value: _showDecimals,
+            onChanged: (value) => setState(() {
+              _showDecimals = value;
+              _decimalsUserChanged = true;
+            }),
+            contentPadding: EdgeInsets.zero,
+            title: Text(
+              l10n.groupsShowDecimals,
+              style: const TextStyle(fontSize: 15),
+            ),
+            subtitle: Text(
+              l10n.groupsShowDecimalsSubtitle,
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
           const SizedBox(height: 24),
           _sectionLabel(context, l10n.groupsMembers),
@@ -175,6 +204,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
               name: me.name,
               label: l10n.commonYouSuffix(me.name),
               colorIndex: me.colorIndex,
+              onTap: () => setState(() => _includeMe = !_includeMe),
               trailing: Checkbox(
                 value: _includeMe,
                 onChanged: (checked) =>
@@ -186,6 +216,13 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             _MemberTile(
               name: user.name,
               colorIndex: user.colorIndex,
+              onTap: () => setState(() {
+                if (_selectedUserIds.contains(user.id)) {
+                  _selectedUserIds.remove(user.id);
+                } else {
+                  _selectedUserIds.add(user.id);
+                }
+              }),
               trailing: Checkbox(
                 value: _selectedUserIds.contains(user.id),
                 onChanged: (checked) => setState(() {
@@ -202,6 +239,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             _MemberTile(
               name: _newNames[i],
               colorIndex: (otherUsers.length + 1 + i) % 8,
+              onTap: () => setState(() => _newNames.removeAt(i)),
               trailing: Checkbox(
                 value: true,
                 onChanged: (_) => setState(() => _newNames.removeAt(i)),
@@ -278,29 +316,41 @@ class _MemberTile extends StatelessWidget {
     required this.colorIndex,
     required this.trailing,
     this.label,
+    this.onTap,
   });
 
   final String name;
   final String? label;
   final int colorIndex;
   final Widget trailing;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          UserAvatar(name: name, colorIndex: colorIndex, size: 38),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label ?? name,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+          child: Row(
+            children: [
+              UserAvatar(name: name, colorIndex: colorIndex, size: 38),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label ?? name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              trailing,
+            ],
           ),
-          trailing,
-        ],
+        ),
       ),
     );
   }

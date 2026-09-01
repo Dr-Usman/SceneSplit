@@ -257,6 +257,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsCurrency => 'मुद्रा';
 
   @override
+  String get groupsShowDecimals => 'दशमलव दिखाएं';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'पैसे और भिन्नात्मक राशि प्रदर्शित करें';
+
+  @override
   String get groupsMembers => 'सदस्य';
 
   @override

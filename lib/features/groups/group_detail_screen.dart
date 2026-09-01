@@ -137,6 +137,7 @@ class GroupDetailScreen extends ConsumerWidget {
               BalanceHeroCard(
                 netCents: data.myNetCents,
                 currencyCode: data.group.currencyCode,
+                showDecimals: data.group.showDecimals,
               ),
               if (data.memberShareCents.isNotEmpty) ...[
                 const SizedBox(height: 24),
@@ -154,6 +155,7 @@ class GroupDetailScreen extends ConsumerWidget {
                           cents: shareEntries[i].value,
                           color: chartColorForIndex(i),
                           currencyCode: data.group.currencyCode,
+                          showDecimals: data.group.showDecimals,
                         ),
                     ],
                     onSliceTap: (slice) {
@@ -175,6 +177,7 @@ class GroupDetailScreen extends ConsumerWidget {
                             ? null
                             : slice.cents / totalShares * 100,
                         items: items,
+                        showDecimals: data.group.showDecimals,
                         onExpenseTap: (expenseId) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -321,6 +324,7 @@ class GroupDetailScreen extends ConsumerWidget {
                                 users: users,
                                 currencyCode: data.group.currencyCode,
                                 locale: locale,
+                                showDecimals: data.group.showDecimals,
                                 onTap: () => showRecordSettlementSheet(
                                   context,
                                   groupId: groupId,
@@ -348,6 +352,7 @@ class GroupDetailScreen extends ConsumerWidget {
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
+                    showDecimals: data.group.showDecimals,
                     onTap: () => showRecordSettlementSheet(
                       context,
                       groupId: groupId,
@@ -415,6 +420,7 @@ class GroupDetailScreen extends ConsumerWidget {
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
+                    showDecimals: data.group.showDecimals,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ExpenseDetailScreen(

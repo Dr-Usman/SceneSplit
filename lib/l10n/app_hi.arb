@@ -110,6 +110,8 @@
   "groupsNameHint": "जैसे जापान यात्रा",
   "groupsIcon": "आइकन",
   "groupsCurrency": "मुद्रा",
+  "groupsShowDecimals": "दशमलव दिखाएं",
+  "groupsShowDecimalsSubtitle": "पैसे और भिन्नात्मक राशि प्रदर्शित करें",
   "groupsMembers": "सदस्य",
   "groupsAddMemberHint": "नाम से सदस्य जोड़ें",
   "groupsCreateGroup": "सीन बनाएँ",

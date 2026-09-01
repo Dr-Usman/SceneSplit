@@ -110,6 +110,8 @@
   "groupsNameHint": "例: 日本旅行",
   "groupsIcon": "アイコン",
   "groupsCurrency": "通貨",
+  "groupsShowDecimals": "小数点以下を表示",
+  "groupsShowDecimalsSubtitle": "セントや端数を表示",
   "groupsMembers": "メンバー",
   "groupsAddMemberHint": "名前でメンバーを追加",
   "groupsCreateGroup": "シーンを作成",

@@ -258,6 +258,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsCurrency => 'DEVISE';
 
   @override
+  String get groupsShowDecimals => 'Afficher les décimales';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'Afficher les centimes et montants fractionnaires';
+
+  @override
   String get groupsMembers => 'MEMBRES';
 
   @override

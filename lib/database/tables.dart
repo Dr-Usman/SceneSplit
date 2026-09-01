@@ -35,6 +35,7 @@ class Groups extends Table {
   TextColumn get name => text().withLength(min: 1, max: 60)();
   TextColumn get emoji => text().withDefault(const Constant('🧾'))();
   TextColumn get currencyCode => text().withDefault(const Constant('PKR'))();
+  BoolColumn get showDecimals => boolean().withDefault(const Constant(true))();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override

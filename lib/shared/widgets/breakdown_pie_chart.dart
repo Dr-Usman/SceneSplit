@@ -9,6 +9,7 @@ class BreakdownSlice {
   final int cents;
   final Color color;
   final String currencyCode;
+  final bool showDecimals;
 
   /// Optional stable id (e.g. userId) for drill-down taps.
   final String? id;
@@ -18,6 +19,7 @@ class BreakdownSlice {
     required this.cents,
     required this.color,
     required this.currencyCode,
+    this.showDecimals = true,
     this.id,
   });
 }
@@ -237,6 +239,7 @@ class _BreakdownPieChartState extends State<BreakdownPieChart> {
           currencyCode: sorted.first.currencyCode,
           locale: locale,
           l10n: l10n,
+          showDecimals: sorted.first.showDecimals,
         ),
       ],
     );
@@ -249,12 +252,14 @@ class _TotalRow extends StatelessWidget {
     required this.currencyCode,
     required this.locale,
     required this.l10n,
+    this.showDecimals = true,
   });
 
   final int cents;
   final String currencyCode;
   final String locale;
   final AppLocalizations l10n;
+  final bool showDecimals;
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +277,12 @@ class _TotalRow extends StatelessWidget {
           ),
         ),
         Text(
-          formatCents(cents, currencyCode, locale: locale),
+          formatCents(
+            cents,
+            currencyCode,
+            locale: locale,
+            showDecimals: showDecimals,
+          ),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w800,
             color: colorScheme.onSurface,
@@ -325,7 +335,12 @@ class _LegendRow extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          formatCents(slice.cents, slice.currencyCode, locale: locale),
+          formatCents(
+            slice.cents,
+            slice.currencyCode,
+            locale: locale,
+            showDecimals: slice.showDecimals,
+          ),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
             color: colorScheme.onSurface,

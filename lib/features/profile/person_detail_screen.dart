@@ -239,13 +239,23 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
           ? l10n.peopleDetailYourTotalCredit
           : l10n.peopleDetailGets(displayName);
       netColor = AppColors.positive;
-      netAmount = formatCents(net, currency, locale: locale);
+      netAmount = formatCents(
+        net,
+        currency,
+        locale: locale,
+        showDecimals: balance.group.showDecimals,
+      );
     } else {
       netLabel = person.isCurrentUser
           ? l10n.peopleDetailYourTotalDebt
           : l10n.peopleDetailWillGive(displayName);
       netColor = AppColors.negative;
-      netAmount = formatCents(-net, currency, locale: locale);
+      netAmount = formatCents(
+        -net,
+        currency,
+        locale: locale,
+        showDecimals: balance.group.showDecimals,
+      );
     }
 
     return AppCard(
@@ -370,6 +380,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
                     balance.totalShareCents,
                     currency,
                     locale: locale,
+                    showDecimals: balance.group.showDecimals,
                   ),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,

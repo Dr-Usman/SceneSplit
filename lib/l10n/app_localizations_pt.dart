@@ -257,6 +257,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get groupsCurrency => 'MOEDA';
 
   @override
+  String get groupsShowDecimals => 'Mostrar decimais';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'Exibir centavos e valores fracionários';
+
+  @override
   String get groupsMembers => 'MEMBROS';
 
   @override
@@ -1449,6 +1456,13 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get groupsCurrency => 'MOEDA';
+
+  @override
+  String get groupsShowDecimals => 'Mostrar decimais';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'Exibir centavos e valores fracionários';
 
   @override
   String get groupsMembers => 'MEMBROS';

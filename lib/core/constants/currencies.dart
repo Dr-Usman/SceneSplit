@@ -40,3 +40,23 @@ Currency currencyByCode(String code) => supportedCurrencies.firstWhere(
   (c) => c.code == code,
   orElse: () => supportedCurrencies.first,
 );
+
+/// Returns the sensible default for whether a currency shows decimals when splitting.
+/// For high-denomination currencies where cents/decimals are practically unused (PKR, INR, JPY, etc.),
+/// this defaults to false. For major low-denomination currencies (USD, EUR, GBP, etc.), it defaults to true.
+bool defaultDecimalsForCurrency(String currencyCode) {
+  switch (currencyCode.toUpperCase()) {
+    case 'PKR':
+    case 'INR':
+    case 'JPY':
+    case 'KRW':
+    case 'VND':
+    case 'IDR':
+    case 'HUF':
+    case 'CLP':
+    case 'COP':
+      return false;
+    default:
+      return true;
+  }
+}

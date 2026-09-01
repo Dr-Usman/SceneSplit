@@ -10,10 +10,12 @@ class BalanceHeroCard extends StatelessWidget {
     super.key,
     required this.netCents,
     required this.currencyCode,
+    this.showDecimals = true,
   });
 
   final int netCents;
   final String currencyCode;
+  final bool showDecimals;
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +80,21 @@ class BalanceHeroCard extends StatelessWidget {
 
     if (netCents > 0) {
       label = l10n.sharedYouGet;
-      amount = formatCents(netCents, currencyCode, locale: locale);
+      amount = formatCents(
+        netCents,
+        currencyCode,
+        locale: locale,
+        showDecimals: showDecimals,
+      );
       amountColor = AppColors.positive;
     } else {
       label = l10n.sharedYouWillGive;
-      amount = formatCents(netCents, currencyCode, locale: locale);
+      amount = formatCents(
+        netCents,
+        currencyCode,
+        locale: locale,
+        showDecimals: showDecimals,
+      );
       amountColor = AppColors.negative;
     }
 

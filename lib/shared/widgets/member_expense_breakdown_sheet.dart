@@ -16,6 +16,7 @@ Future<void> showMemberExpenseBreakdownSheet(
   required List<MemberExpenseShare> items,
   required void Function(String expenseId) onExpenseTap,
   double? percent,
+  bool showDecimals = true,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -122,7 +123,12 @@ Future<void> showMemberExpenseBreakdownSheet(
                           ),
                         ),
                         Text(
-                          formatCents(totalCents, currencyCode, locale: locale),
+                          formatCents(
+                            totalCents,
+                            currencyCode,
+                            locale: locale,
+                            showDecimals: showDecimals,
+                          ),
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w800,
                             color: summaryAmountColor,
@@ -155,11 +161,13 @@ Future<void> showMemberExpenseBreakdownSheet(
                             item: item,
                             currencyCode: currencyCode,
                             locale: locale,
+                            showDecimals: showDecimals,
                             ofAmountLabel: l10n.groupsMemberShareOfAmount(
                               formatCents(
                                 item.expense.amountCents,
                                 currencyCode,
                                 locale: locale,
+                                showDecimals: showDecimals,
                               ),
                             ),
                             alsoPaidLabel: l10n.expensesSubtitleAlsoPaid,
@@ -183,6 +191,7 @@ class _MemberExpenseRow extends StatelessWidget {
     required this.item,
     required this.currencyCode,
     required this.locale,
+    this.showDecimals = true,
     required this.ofAmountLabel,
     required this.alsoPaidLabel,
     required this.onTap,
@@ -191,6 +200,7 @@ class _MemberExpenseRow extends StatelessWidget {
   final MemberExpenseShare item;
   final String currencyCode;
   final String locale;
+  final bool showDecimals;
   final String ofAmountLabel;
   final String alsoPaidLabel;
   final VoidCallback onTap;
@@ -281,6 +291,7 @@ class _MemberExpenseRow extends StatelessWidget {
                         item.shareCents,
                         currencyCode,
                         locale: locale,
+                        showDecimals: showDecimals,
                       ),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w800,

@@ -153,19 +153,37 @@ String formatExpenseShareMemberTotalLine(
   ExpenseShareMemberTotal row, {
   required AppLocalizations l10n,
   required String locale,
+  bool showDecimals = true,
 }) {
-  final total = _formatPlainAmount(row.totalCents, locale);
+  final total = _formatPlainAmount(
+    row.totalCents,
+    locale,
+    showDecimals: showDecimals,
+  );
   if (row.partsCents.length <= 1) {
     return l10n.groupsShareExpensesMemberSingle(row.name, total);
   }
 
   final parts = [
-    for (final cents in row.partsCents) _formatPlainAmount(cents, locale),
+    for (final cents in row.partsCents)
+      _formatPlainAmount(cents, locale, showDecimals: showDecimals),
   ].join(' + ');
   return l10n.groupsShareExpensesMemberTotalLine(row.name, parts, total);
 }
 
-String _formatPlainAmount(int cents, String locale) {
+String _formatPlainAmount(
+  int cents,
+  String locale, {
+  bool showDecimals = true,
+}) {
+  if (!showDecimals) {
+    final value = (cents.abs() / 100).round();
+    final format = NumberFormat.decimalPattern(locale)
+      ..minimumFractionDigits = 0
+      ..maximumFractionDigits = 0;
+    return format.format(value);
+  }
+
   final value = cents.abs() / 100;
   final digits = value.truncateToDouble() == value ? 0 : 2;
   final format = NumberFormat.decimalPattern(locale)
@@ -182,6 +200,7 @@ buildExpenseShareImageContent(
   required AppLocalizations l10n,
   required String currencyCode,
   required String locale,
+  bool showDecimals = true,
   int maxRows = kExpenseShareImageMaxRows,
 }) {
   final totalCents = expenses.fold<int>(
@@ -202,6 +221,7 @@ buildExpenseShareImageContent(
           item.expense.amountCents,
           currencyCode,
           locale: locale,
+          showDecimals: showDecimals,
         ),
         subtitle: l10n.groupsShareExpensesPayerPaidDatePeople(
           formatPayersLabel([
@@ -222,6 +242,7 @@ String _payerLabelForText(
   required AppLocalizations l10n,
   required String currencyCode,
   required String locale,
+  bool showDecimals = true,
 }) {
   final payers = item.payers;
   if (payers.isEmpty) return '?';
@@ -231,7 +252,12 @@ String _payerLabelForText(
     for (final p in payers)
       l10n.groupsShareExpensesNameAmount(
         _userName(userNames, p.userId),
-        formatCents(p.amountCents, currencyCode, locale: locale),
+        formatCents(
+          p.amountCents,
+          currencyCode,
+          locale: locale,
+          showDecimals: showDecimals,
+        ),
       ),
   ];
   if (withAmounts.length == 2) {
@@ -246,13 +272,19 @@ String _memberSharesLine(
   required AppLocalizations l10n,
   required String currencyCode,
   required String locale,
+  bool showDecimals = true,
 }) {
   final parts = [
     for (final split in item.splits)
       if (split.amountCents > 0)
         l10n.groupsShareExpensesNameAmount(
           _userName(userNames, split.userId),
-          formatCents(split.amountCents, currencyCode, locale: locale),
+          formatCents(
+            split.amountCents,
+            currencyCode,
+            locale: locale,
+            showDecimals: showDecimals,
+          ),
         ),
   ];
   return parts.join(' · ');
@@ -267,6 +299,7 @@ String buildExpenseShareText(
   required AppLocalizations l10n,
   required String currencyCode,
   required String locale,
+  bool showDecimals = true,
 }) {
   final dateFormat = DateFormat.MMMd(locale);
   final totalCents = expenses.fold<int>(
@@ -288,6 +321,7 @@ String buildExpenseShareText(
       item.expense.amountCents,
       currencyCode,
       locale: locale,
+      showDecimals: showDecimals,
     );
     buffer
       ..writeln()
@@ -300,6 +334,7 @@ String buildExpenseShareText(
             l10n: l10n,
             currencyCode: currencyCode,
             locale: locale,
+            showDecimals: showDecimals,
           ),
           dateFormat.format(item.expense.date),
           amount,
@@ -311,6 +346,7 @@ String buildExpenseShareText(
       l10n: l10n,
       currencyCode: currencyCode,
       locale: locale,
+      showDecimals: showDecimals,
     );
     if (members.isNotEmpty) {
       buffer.writeln(members);
@@ -327,7 +363,12 @@ String buildExpenseShareText(
       ..writeln(l10n.groupsShareExpensesByPerson);
     for (final row in memberTotals) {
       buffer.writeln(
-        formatExpenseShareMemberTotalLine(row, l10n: l10n, locale: locale),
+        formatExpenseShareMemberTotalLine(
+          row,
+          l10n: l10n,
+          locale: locale,
+          showDecimals: showDecimals,
+        ),
       );
     }
   }
@@ -336,7 +377,12 @@ String buildExpenseShareText(
     ..writeln()
     ..write(
       l10n.groupsShareExpensesTotalLine(
-        formatCents(totalCents, currencyCode, locale: locale),
+        formatCents(
+          totalCents,
+          currencyCode,
+          locale: locale,
+          showDecimals: showDecimals,
+        ),
       ),
     );
   return buffer.toString();

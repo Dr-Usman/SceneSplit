@@ -10,12 +10,14 @@ void main() {
     required String id,
     required String name,
     required String currencyCode,
+    bool showDecimals = true,
   }) {
     return Group(
       id: id,
       name: name,
       emoji: '🏕',
       currencyCode: currencyCode,
+      showDecimals: showDecimals,
       createdAt: now,
     );
   }

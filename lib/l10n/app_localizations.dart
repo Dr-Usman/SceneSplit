@@ -543,6 +543,18 @@ abstract class AppLocalizations {
   /// **'CURRENCY'**
   String get groupsCurrency;
 
+  /// No description provided for @groupsShowDecimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Show decimals'**
+  String get groupsShowDecimals;
+
+  /// No description provided for @groupsShowDecimalsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display cents and fractional amounts'**
+  String get groupsShowDecimalsSubtitle;
+
   /// No description provided for @groupsMembers.
   ///
   /// In en, this message translates to:

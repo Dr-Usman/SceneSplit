@@ -255,6 +255,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupsCurrency => 'CURRENCY';
 
   @override
+  String get groupsShowDecimals => 'Show decimals';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'Display cents and fractional amounts';
+
+  @override
   String get groupsMembers => 'MEMBERS';
 
   @override

@@ -80,6 +80,7 @@ class _BalanceSummaryCard extends StatelessWidget {
           cents: summary.myNetCents,
           color: chartColorForIndex(colorIndex++),
           currencyCode: summary.group.currencyCode,
+          showDecimals: summary.group.showDecimals,
         ),
       );
     }
@@ -103,6 +104,7 @@ class _BalanceSummaryCard extends StatelessWidget {
           cents: -summary.myNetCents,
           color: chartColorForIndex(colorIndex++),
           currencyCode: summary.group.currencyCode,
+          showDecimals: summary.group.showDecimals,
         ),
       );
     }
@@ -155,11 +157,21 @@ class _GroupCard extends StatelessWidget {
       balanceColor = Theme.of(context).colorScheme.onSurfaceVariant;
     } else if (net > 0) {
       balanceLabel = l10n.homeCardYouWillGet;
-      balanceAmount = formatCents(net, group.currencyCode, locale: locale);
+      balanceAmount = formatCents(
+        net,
+        group.currencyCode,
+        locale: locale,
+        showDecimals: group.showDecimals,
+      );
       balanceColor = AppColors.positive;
     } else {
       balanceLabel = l10n.homeCardYouWillGive;
-      balanceAmount = formatCents(net, group.currencyCode, locale: locale);
+      balanceAmount = formatCents(
+        net,
+        group.currencyCode,
+        locale: locale,
+        showDecimals: group.showDecimals,
+      );
       balanceColor = AppColors.negative;
     }
 

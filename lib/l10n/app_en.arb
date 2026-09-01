@@ -155,6 +155,8 @@
   "groupsNameHint": "e.g. Trip to Japan",
   "groupsIcon": "ICON",
   "groupsCurrency": "CURRENCY",
+  "groupsShowDecimals": "Show decimals",
+  "groupsShowDecimalsSubtitle": "Display cents and fractional amounts",
   "groupsMembers": "MEMBERS",
   "groupsAddMemberHint": "Add member by name",
   "groupsCreateGroup": "Create scene",

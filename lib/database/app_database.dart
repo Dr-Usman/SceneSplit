@@ -23,7 +23,7 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting(super.executor);
 
-  static const int databaseSchemaVersion = 4;
+  static const int databaseSchemaVersion = 5;
 
   @override
   int get schemaVersion => databaseSchemaVersion;
@@ -49,6 +49,9 @@ FROM expenses
       }
       if (from < 4) {
         await m.addColumn(appSettings, appSettings.localeCode);
+      }
+      if (from < 5) {
+        await m.addColumn(groups, groups.showDecimals);
       }
     },
   );

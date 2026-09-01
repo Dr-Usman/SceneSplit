@@ -110,6 +110,8 @@
   "groupsNameHint": "مثال: رحلة إلى اليابان",
   "groupsIcon": "الأيقونة",
   "groupsCurrency": "العملة",
+  "groupsShowDecimals": "إظهار الكسور العشرية",
+  "groupsShowDecimalsSubtitle": "عرض السنتات والمبالغ الكسرية",
   "groupsMembers": "الأعضاء",
   "groupsAddMemberHint": "أضف عضوًا بالاسم",
   "groupsCreateGroup": "إنشاء مشهد",

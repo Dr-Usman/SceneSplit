@@ -14,6 +14,7 @@ class OpenDebtTile extends StatelessWidget {
     required this.users,
     required this.currencyCode,
     required this.locale,
+    this.showDecimals = true,
     this.subtitle,
     this.showAvatars = false,
     this.onTap,
@@ -23,6 +24,7 @@ class OpenDebtTile extends StatelessWidget {
   final Map<String, User> users;
   final String currencyCode;
   final String locale;
+  final bool showDecimals;
   final String? subtitle;
   final bool showAvatars;
   final VoidCallback? onTap;
@@ -91,7 +93,12 @@ class OpenDebtTile extends StatelessWidget {
               ),
             ),
             Text(
-              formatCents(debt.amountCents, currencyCode, locale: locale),
+              formatCents(
+                debt.amountCents,
+                currencyCode,
+                locale: locale,
+                showDecimals: showDecimals,
+              ),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,

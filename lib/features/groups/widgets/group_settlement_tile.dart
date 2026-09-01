@@ -14,6 +14,7 @@ class GroupSettlementTile extends StatelessWidget {
     required this.users,
     required this.currencyCode,
     required this.locale,
+    this.showDecimals = true,
     required this.onTap,
     required this.onDelete,
   });
@@ -22,6 +23,7 @@ class GroupSettlementTile extends StatelessWidget {
   final Map<String, User> users;
   final String currencyCode;
   final String locale;
+  final bool showDecimals;
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
@@ -103,7 +105,12 @@ class GroupSettlementTile extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              formatCents(settlement.amountCents, currencyCode, locale: locale),
+              formatCents(
+                settlement.amountCents,
+                currencyCode,
+                locale: locale,
+                showDecimals: showDecimals,
+              ),
               style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
             ),
           ],

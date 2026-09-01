@@ -255,6 +255,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsCurrency => 'العملة';
 
   @override
+  String get groupsShowDecimals => 'إظهار الكسور العشرية';
+
+  @override
+  String get groupsShowDecimalsSubtitle => 'عرض السنتات والمبالغ الكسرية';
+
+  @override
   String get groupsMembers => 'الأعضاء';
 
   @override

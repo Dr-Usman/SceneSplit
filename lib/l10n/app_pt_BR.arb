@@ -110,6 +110,8 @@
   "groupsNameHint": "ex.: Viagem ao Japão",
   "groupsIcon": "ÍCONE",
   "groupsCurrency": "MOEDA",
+  "groupsShowDecimals": "Mostrar decimais",
+  "groupsShowDecimalsSubtitle": "Exibir centavos e valores fracionários",
   "groupsMembers": "MEMBROS",
   "groupsAddMemberHint": "Adicionar membro pelo nome",
   "groupsCreateGroup": "Criar cena",

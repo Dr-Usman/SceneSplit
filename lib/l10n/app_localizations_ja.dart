@@ -253,6 +253,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsCurrency => '通貨';
 
   @override
+  String get groupsShowDecimals => '小数点以下を表示';
+
+  @override
+  String get groupsShowDecimalsSubtitle => 'セントや端数を表示';
+
+  @override
   String get groupsMembers => 'メンバー';
 
   @override

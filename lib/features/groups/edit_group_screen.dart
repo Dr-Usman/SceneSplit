@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
@@ -27,6 +28,8 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
   final _memberController = TextEditingController();
   String _emoji = '🧾';
   String _currencyCode = 'PKR';
+  bool _showDecimals = true;
+  bool _decimalsUserChanged = false;
   bool _saving = false;
   bool _initialized = false;
 
@@ -46,6 +49,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     _nameController.text = data.group.name;
     _emoji = data.group.emoji;
     _currencyCode = data.group.currencyCode;
+    _showDecimals = data.group.showDecimals;
     _selectedMemberIds.addAll(data.members.map((m) => m.user.id));
     _nameController.addListener(() => setState(() {}));
   }
@@ -96,6 +100,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
         name: _nameController.text.trim(),
         emoji: _emoji,
         currencyCode: _currencyCode,
+        showDecimals: _showDecimals,
       );
 
       await syncGroupMembers(
@@ -197,7 +202,31 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
               const SizedBox(height: 8),
               CurrencyPickerField(
                 currencyCode: _currencyCode,
-                onChanged: (code) => setState(() => _currencyCode = code),
+                onChanged: (code) => setState(() {
+                  _currencyCode = code;
+                  if (!_decimalsUserChanged) {
+                    _showDecimals = defaultDecimalsForCurrency(code);
+                  }
+                }),
+              ),
+              SwitchListTile.adaptive(
+                value: _showDecimals,
+                onChanged: (value) => setState(() {
+                  _showDecimals = value;
+                  _decimalsUserChanged = true;
+                }),
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  l10n.groupsShowDecimals,
+                  style: const TextStyle(fontSize: 15),
+                ),
+                subtitle: Text(
+                  l10n.groupsShowDecimalsSubtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               _sectionLabel(l10n.groupsMembers),
@@ -209,6 +238,15 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                       ? l10n.commonYouSuffix(m.user.name)
                       : null,
                   colorIndex: m.user.colorIndex,
+                  onTap: () {
+                    final isSelected = _selectedMemberIds.contains(m.user.id);
+                    _toggleMember(
+                      userId: m.user.id,
+                      include: !isSelected,
+                      userName: m.user.name,
+                      isCurrentUser: m.user.id == me?.id,
+                    );
+                  },
                   trailing: Checkbox(
                     value: _selectedMemberIds.contains(m.user.id),
                     onChanged: (checked) => _toggleMember(
@@ -223,6 +261,15 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                 _MemberTile(
                   name: user.name,
                   colorIndex: user.colorIndex,
+                  onTap: () {
+                    final isSelected = _selectedMemberIds.contains(user.id);
+                    _toggleMember(
+                      userId: user.id,
+                      include: !isSelected,
+                      userName: user.name,
+                      isCurrentUser: false,
+                    );
+                  },
                   trailing: Checkbox(
                     value: _selectedMemberIds.contains(user.id),
                     onChanged: (checked) => _toggleMember(
@@ -237,6 +284,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                 _MemberTile(
                   name: _newNames[i],
                   colorIndex: (data.members.length + i) % 8,
+                  onTap: () => setState(() => _newNames.removeAt(i)),
                   trailing: Checkbox(
                     value: true,
                     onChanged: (_) => setState(() => _newNames.removeAt(i)),
@@ -315,29 +363,41 @@ class _MemberTile extends StatelessWidget {
     required this.colorIndex,
     required this.trailing,
     this.label,
+    this.onTap,
   });
 
   final String name;
   final String? label;
   final int colorIndex;
   final Widget trailing;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          UserAvatar(name: name, colorIndex: colorIndex, size: 38),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label ?? name,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+          child: Row(
+            children: [
+              UserAvatar(name: name, colorIndex: colorIndex, size: 38),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label ?? name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              trailing,
+            ],
           ),
-          trailing,
-        ],
+        ),
       ),
     );
   }

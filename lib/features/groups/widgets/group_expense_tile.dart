@@ -15,6 +15,7 @@ class GroupExpenseTile extends StatelessWidget {
     required this.users,
     required this.currencyCode,
     required this.locale,
+    this.showDecimals = true,
     required this.onTap,
     required this.onDelete,
   });
@@ -23,6 +24,7 @@ class GroupExpenseTile extends StatelessWidget {
   final Map<String, User> users;
   final String currencyCode;
   final String locale;
+  final bool showDecimals;
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
@@ -83,7 +85,12 @@ class GroupExpenseTile extends StatelessWidget {
               ),
             ),
             Text(
-              formatCents(expense.amountCents, currencyCode, locale: locale),
+              formatCents(
+                expense.amountCents,
+                currencyCode,
+                locale: locale,
+                showDecimals: showDecimals,
+              ),
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
           ],

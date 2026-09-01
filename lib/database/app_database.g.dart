@@ -727,6 +727,21 @@ class $GroupsTable extends Groups with TableInfo<$GroupsTable, Group> {
     requiredDuringInsert: false,
     defaultValue: const Constant('PKR'),
   );
+  static const VerificationMeta _showDecimalsMeta = const VerificationMeta(
+    'showDecimals',
+  );
+  @override
+  late final GeneratedColumn<bool> showDecimals = GeneratedColumn<bool>(
+    'show_decimals',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("show_decimals" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -745,6 +760,7 @@ class $GroupsTable extends Groups with TableInfo<$GroupsTable, Group> {
     name,
     emoji,
     currencyCode,
+    showDecimals,
     createdAt,
   ];
   @override
@@ -787,6 +803,15 @@ class $GroupsTable extends Groups with TableInfo<$GroupsTable, Group> {
         ),
       );
     }
+    if (data.containsKey('show_decimals')) {
+      context.handle(
+        _showDecimalsMeta,
+        showDecimals.isAcceptableOrUnknown(
+          data['show_decimals']!,
+          _showDecimalsMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -818,6 +843,10 @@ class $GroupsTable extends Groups with TableInfo<$GroupsTable, Group> {
         DriftSqlType.string,
         data['${effectivePrefix}currency_code'],
       )!,
+      showDecimals: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}show_decimals'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -836,12 +865,14 @@ class Group extends DataClass implements Insertable<Group> {
   final String name;
   final String emoji;
   final String currencyCode;
+  final bool showDecimals;
   final DateTime createdAt;
   const Group({
     required this.id,
     required this.name,
     required this.emoji,
     required this.currencyCode,
+    required this.showDecimals,
     required this.createdAt,
   });
   @override
@@ -851,6 +882,7 @@ class Group extends DataClass implements Insertable<Group> {
     map['name'] = Variable<String>(name);
     map['emoji'] = Variable<String>(emoji);
     map['currency_code'] = Variable<String>(currencyCode);
+    map['show_decimals'] = Variable<bool>(showDecimals);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -861,6 +893,7 @@ class Group extends DataClass implements Insertable<Group> {
       name: Value(name),
       emoji: Value(emoji),
       currencyCode: Value(currencyCode),
+      showDecimals: Value(showDecimals),
       createdAt: Value(createdAt),
     );
   }
@@ -875,6 +908,7 @@ class Group extends DataClass implements Insertable<Group> {
       name: serializer.fromJson<String>(json['name']),
       emoji: serializer.fromJson<String>(json['emoji']),
       currencyCode: serializer.fromJson<String>(json['currencyCode']),
+      showDecimals: serializer.fromJson<bool>(json['showDecimals']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -886,6 +920,7 @@ class Group extends DataClass implements Insertable<Group> {
       'name': serializer.toJson<String>(name),
       'emoji': serializer.toJson<String>(emoji),
       'currencyCode': serializer.toJson<String>(currencyCode),
+      'showDecimals': serializer.toJson<bool>(showDecimals),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -895,12 +930,14 @@ class Group extends DataClass implements Insertable<Group> {
     String? name,
     String? emoji,
     String? currencyCode,
+    bool? showDecimals,
     DateTime? createdAt,
   }) => Group(
     id: id ?? this.id,
     name: name ?? this.name,
     emoji: emoji ?? this.emoji,
     currencyCode: currencyCode ?? this.currencyCode,
+    showDecimals: showDecimals ?? this.showDecimals,
     createdAt: createdAt ?? this.createdAt,
   );
   Group copyWithCompanion(GroupsCompanion data) {
@@ -911,6 +948,9 @@ class Group extends DataClass implements Insertable<Group> {
       currencyCode: data.currencyCode.present
           ? data.currencyCode.value
           : this.currencyCode,
+      showDecimals: data.showDecimals.present
+          ? data.showDecimals.value
+          : this.showDecimals,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -922,13 +962,15 @@ class Group extends DataClass implements Insertable<Group> {
           ..write('name: $name, ')
           ..write('emoji: $emoji, ')
           ..write('currencyCode: $currencyCode, ')
+          ..write('showDecimals: $showDecimals, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, emoji, currencyCode, createdAt);
+  int get hashCode =>
+      Object.hash(id, name, emoji, currencyCode, showDecimals, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -937,6 +979,7 @@ class Group extends DataClass implements Insertable<Group> {
           other.name == this.name &&
           other.emoji == this.emoji &&
           other.currencyCode == this.currencyCode &&
+          other.showDecimals == this.showDecimals &&
           other.createdAt == this.createdAt);
 }
 
@@ -945,6 +988,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
   final Value<String> name;
   final Value<String> emoji;
   final Value<String> currencyCode;
+  final Value<bool> showDecimals;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
   const GroupsCompanion({
@@ -952,6 +996,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
     this.name = const Value.absent(),
     this.emoji = const Value.absent(),
     this.currencyCode = const Value.absent(),
+    this.showDecimals = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -960,6 +1005,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
     required String name,
     this.emoji = const Value.absent(),
     this.currencyCode = const Value.absent(),
+    this.showDecimals = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -969,6 +1015,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
     Expression<String>? name,
     Expression<String>? emoji,
     Expression<String>? currencyCode,
+    Expression<bool>? showDecimals,
     Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
@@ -977,6 +1024,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
       if (name != null) 'name': name,
       if (emoji != null) 'emoji': emoji,
       if (currencyCode != null) 'currency_code': currencyCode,
+      if (showDecimals != null) 'show_decimals': showDecimals,
       if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -987,6 +1035,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
     Value<String>? name,
     Value<String>? emoji,
     Value<String>? currencyCode,
+    Value<bool>? showDecimals,
     Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
@@ -995,6 +1044,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
       name: name ?? this.name,
       emoji: emoji ?? this.emoji,
       currencyCode: currencyCode ?? this.currencyCode,
+      showDecimals: showDecimals ?? this.showDecimals,
       createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
@@ -1015,6 +1065,9 @@ class GroupsCompanion extends UpdateCompanion<Group> {
     if (currencyCode.present) {
       map['currency_code'] = Variable<String>(currencyCode.value);
     }
+    if (showDecimals.present) {
+      map['show_decimals'] = Variable<bool>(showDecimals.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -1031,6 +1084,7 @@ class GroupsCompanion extends UpdateCompanion<Group> {
           ..write('name: $name, ')
           ..write('emoji: $emoji, ')
           ..write('currencyCode: $currencyCode, ')
+          ..write('showDecimals: $showDecimals, ')
           ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -3687,6 +3741,7 @@ typedef $$GroupsTableCreateCompanionBuilder =
       required String name,
       Value<String> emoji,
       Value<String> currencyCode,
+      Value<bool> showDecimals,
       Value<DateTime> createdAt,
       Value<int> rowid,
     });
@@ -3696,6 +3751,7 @@ typedef $$GroupsTableUpdateCompanionBuilder =
       Value<String> name,
       Value<String> emoji,
       Value<String> currencyCode,
+      Value<bool> showDecimals,
       Value<DateTime> createdAt,
       Value<int> rowid,
     });
@@ -3786,6 +3842,11 @@ class $$GroupsTableFilterComposer
 
   ColumnFilters<String> get currencyCode => $composableBuilder(
     column: $table.currencyCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get showDecimals => $composableBuilder(
+    column: $table.showDecimals,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3899,6 +3960,11 @@ class $$GroupsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get showDecimals => $composableBuilder(
+    column: $table.showDecimals,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -3925,6 +3991,11 @@ class $$GroupsTableAnnotationComposer
 
   GeneratedColumn<String> get currencyCode => $composableBuilder(
     column: $table.currencyCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get showDecimals => $composableBuilder(
+    column: $table.showDecimals,
     builder: (column) => column,
   );
 
@@ -4043,6 +4114,7 @@ class $$GroupsTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<String> emoji = const Value.absent(),
                 Value<String> currencyCode = const Value.absent(),
+                Value<bool> showDecimals = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GroupsCompanion(
@@ -4050,6 +4122,7 @@ class $$GroupsTableTableManager
                 name: name,
                 emoji: emoji,
                 currencyCode: currencyCode,
+                showDecimals: showDecimals,
                 createdAt: createdAt,
                 rowid: rowid,
               ),
@@ -4059,6 +4132,7 @@ class $$GroupsTableTableManager
                 required String name,
                 Value<String> emoji = const Value.absent(),
                 Value<String> currencyCode = const Value.absent(),
+                Value<bool> showDecimals = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GroupsCompanion.insert(
@@ -4066,6 +4140,7 @@ class $$GroupsTableTableManager
                 name: name,
                 emoji: emoji,
                 currencyCode: currencyCode,
+                showDecimals: showDecimals,
                 createdAt: createdAt,
                 rowid: rowid,
               ),

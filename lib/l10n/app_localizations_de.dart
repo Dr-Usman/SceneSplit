@@ -258,6 +258,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsCurrency => 'WÄHRUNG';
 
   @override
+  String get groupsShowDecimals => 'Dezimalstellen anzeigen';
+
+  @override
+  String get groupsShowDecimalsSubtitle =>
+      'Cents und Bruchteilbeträge anzeigen';
+
+  @override
   String get groupsMembers => 'MITGLIEDER';
 
   @override

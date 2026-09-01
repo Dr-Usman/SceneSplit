@@ -187,6 +187,7 @@ Future<void> shareSceneExpenses(
         l10n: l10n,
         currencyCode: currencyCode,
         locale: locale,
+        showDecimals: data.group.showDecimals,
       );
       ok = await shareExpenseImage(
         context,
@@ -211,6 +212,7 @@ Future<void> shareSceneExpenses(
             content.totalCents,
             currencyCode,
             locale: locale,
+            showDecimals: data.group.showDecimals,
           ),
         ),
       );
@@ -226,6 +228,7 @@ Future<void> shareSceneExpenses(
           l10n: l10n,
           currencyCode: currencyCode,
           locale: locale,
+          showDecimals: data.group.showDecimals,
         ),
       );
   }

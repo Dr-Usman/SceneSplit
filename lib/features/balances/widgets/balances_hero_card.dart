@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/currencies.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/money.dart';
@@ -68,6 +69,7 @@ class BalancesHeroCard extends StatelessWidget {
             cents: cents,
             color: chartColorForIndex(colorIndex++),
             currencyCode: code,
+            showDecimals: defaultDecimalsForCurrency(code),
             id: id,
           ),
         );
@@ -111,6 +113,7 @@ class BalancesHeroCard extends StatelessWidget {
             cents: cents,
             color: chartColorForIndex(colorIndex++),
             currencyCode: code,
+            showDecimals: defaultDecimalsForCurrency(code),
             id: id,
           ),
         );

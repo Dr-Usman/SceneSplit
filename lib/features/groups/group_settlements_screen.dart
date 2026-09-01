@@ -61,6 +61,7 @@ class GroupSettlementsScreen extends ConsumerWidget {
                 users: users,
                 currencyCode: data.group.currencyCode,
                 locale: locale,
+                showDecimals: data.group.showDecimals,
                 onTap: () => showRecordSettlementSheet(
                   context,
                   groupId: groupId,

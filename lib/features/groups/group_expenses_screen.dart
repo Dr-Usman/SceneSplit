@@ -107,6 +107,7 @@ class GroupExpensesScreen extends ConsumerWidget {
                 users: users,
                 currencyCode: data.group.currencyCode,
                 locale: locale,
+                showDecimals: data.group.showDecimals,
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => ExpenseDetailScreen(

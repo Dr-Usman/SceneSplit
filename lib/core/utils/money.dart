@@ -4,9 +4,27 @@ import '../constants/currencies.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Formats integer cents using locale-aware grouping and symbol placement.
-String formatCents(int cents, String currencyCode, {String? locale}) {
+/// If [showDecimals] is false, rounds the amount to the nearest whole integer with no decimals.
+String formatCents(
+  int cents,
+  String currencyCode, {
+  String? locale,
+  bool showDecimals = true,
+}) {
   final currency = currencyByCode(currencyCode);
   final symbol = currency.symbol.trim();
+
+  if (!showDecimals) {
+    final value = (cents.abs() / 100).round();
+    final format = NumberFormat.currency(
+      locale: locale,
+      name: currencyCode,
+      symbol: symbol,
+      decimalDigits: 0,
+    );
+    return _ensureLetterSymbolSpacing(format.format(value), symbol);
+  }
+
   final value = cents.abs() / 100;
   final format = NumberFormat.currency(
     locale: locale,

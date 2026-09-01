@@ -24,6 +24,7 @@ Future<String> createGroup(
   required String name,
   required String emoji,
   required String currencyCode,
+  bool showDecimals = true,
   required List<String> existingUserIds,
   required List<String> newMemberNames,
 }) async {
@@ -38,6 +39,7 @@ Future<String> createGroup(
             name: name,
             emoji: Value(emoji),
             currencyCode: Value(currencyCode),
+            showDecimals: Value(showDecimals),
           ),
         );
 
@@ -70,6 +72,7 @@ Future<void> updateGroup(
   required String name,
   required String emoji,
   String? currencyCode,
+  bool? showDecimals,
 }) async {
   await (db.update(db.groups)..where((g) => g.id.equals(groupId))).write(
     GroupsCompanion(
@@ -78,6 +81,9 @@ Future<void> updateGroup(
       currencyCode: currencyCode == null
           ? const Value.absent()
           : Value(currencyCode),
+      showDecimals: showDecimals == null
+          ? const Value.absent()
+          : Value(showDecimals),
     ),
   );
 }
