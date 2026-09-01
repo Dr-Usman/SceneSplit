@@ -95,10 +95,12 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.9.0)
+## What's New (v1.10.0)
 
-• Share a scene’s expenses as an image or as text — pick a date range, then send who paid, who was included, and totals
-• Scene net is easier to scan: You get / You give on a single white row
+• Per-scene decimal setting: choose whether amounts show cents or round to whole numbers, with smart defaults by currency
+• Categorized custom emoji picker: easily pick scene emojis by category with live search and manual text input
+• Seamless in-app update checks for Android & iOS
+• Tap anywhere on a member row to quickly toggle members when creating or editing scenes
 ---
 
 ## Pre-submit checklist

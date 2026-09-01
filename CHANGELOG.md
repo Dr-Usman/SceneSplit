@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Scene creation and edit: the entire member list tile is now tappable to toggle selection.
+## [1.10.0] - 2026-09-01
 
 ### Added
 
 - Flexible in-app updates: Google Play In-App Updates on Android, and a dismissible App Store prompt on iOS when a newer version is available.
 - Categorized emoji picker bottom sheet for scene custom emoji selection (food, travel, activities, home, finance, smileys) with direct type/paste input fallback.
 - Per-scene decimal formatting setting: scenes can toggle whether to display decimals/cents, with smart defaults based on the chosen currency (e.g. whole numbers for PKR, INR, JPY and decimals for USD, EUR, GBP).
+
+### Changed
+
+- Scene creation and edit: the entire member list tile is now tappable to toggle selection.
 
 ## [1.9.0] - 2026-08-18
 
