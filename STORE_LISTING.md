@@ -95,12 +95,14 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.10.0)
+## What's New (v1.11.0)
 
-• Per-scene decimal setting: choose whether amounts show cents or round to whole numbers, with smart defaults by currency
-• Categorized custom emoji picker: easily pick scene emojis by category with live search and manual text input
-• Seamless in-app update checks for Android & iOS
-• Tap anywhere on a member row to quickly toggle members when creating or editing scenes
+• Refreshed app branding: sharp theme-adaptive logos for light and dark modes
+• New app icon: sleek brand gradient featuring the iconic SceneSplit emblem
+• Brand mark in headers: clean logo mark in the Home app bar and exported balance receipt cards
+• More apps: discover other tools by the developer right from the About screen
+• Direct store rating: tap to quickly rate SceneSplit on the Play Store
+• Performance & bundle optimizations: reduced app package download size
 ---
 
 ## Pre-submit checklist
@@ -113,6 +115,6 @@ Complete these before App Store / Play Store upload:
 4. **Store URLs** — Play Store / App Store links in `AppLinks` for Rate us fallback.
 5. **Legal docs** — Contact email correct in `assets/legal/`.
 6. **mailto** — Test Contact us, Feedback, and Suggest a feature on a real device.
-7. **In-app review** — Test Rate SceneSplit on a real device.
+7. **Rate app** — Test Rate SceneSplit opens the store listing directly on a real device.
 8. **Screenshots** — Upload framed mockups from `store/play/mockups/` in the order listed in [`store/play/README.md`](store/play/README.md).
 9. **App icon & feature graphic** — Brand colors teal `#00B5B2`, purple `#7856E6`.
