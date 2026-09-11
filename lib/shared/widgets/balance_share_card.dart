@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_links.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
@@ -169,15 +170,27 @@ class BalanceShareCard extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 18),
-          Text(
-            AppLinks.appName,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.4,
-              color: AppColors.textSecondary.withValues(alpha: 0.85),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                AppAssets.logoMark,
+                width: 16,
+                height: 16,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                AppLinks.appName,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.4,
+                  color: AppColors.textSecondary.withValues(alpha: 0.85),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -77,28 +77,18 @@ class _BootstrapLoadingScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.logoBackground,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(12),
-                child: Image(
-                  image: AssetImage(AppAssets.logo),
-                  width: 88,
-                  fit: BoxFit.contain,
-                ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Image(
+                image: AssetImage(AppAssets.logoFor(context)),
+                width: 88,
+                fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 24),
-            const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: AppColors.primary,
-              ),
+            const SizedBox(height: 2),
+            SizedBox(
+              width: 90,
+              child: LinearProgressIndicator(color: AppColors.primary),
             ),
           ],
         ),

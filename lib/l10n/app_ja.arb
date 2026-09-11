@@ -365,6 +365,7 @@
   "aboutShareAppSubject": "{appName} を試してみて",
   "aboutShareAppMessage": "{appName} をチェック — 友だちと支出を割り勘。オフライン優先、アカウント不要。\n\n{links}",
   "aboutCouldNotShare": "アプリを共有できませんでした。",
+  "aboutMoreApps": "その他のアプリ",
   "aboutCopyright": "© {year} {appName}",
   "updateAvailableTitle": "アップデートがあります",
   "updateAvailableBody": "SceneSplit の新しいバージョンがあります。最新の改善を利用するには更新してください。",

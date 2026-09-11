@@ -28,9 +28,9 @@ class ProfileScreen extends StatelessWidget {
           ProfileCurrencySection(),
           SizedBox(height: 32),
           ProfileManageSection(),
-          ProfileDevSection(),
           SizedBox(height: 32),
           ProfileAppSection(),
+          ProfileDevSection(),
         ],
       ),
     );

@@ -1055,6 +1055,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aboutCouldNotShare => 'Não foi possível compartilhar o app.';
 
   @override
+  String get aboutMoreApps => 'Mais aplicativos';
+
+  @override
   String aboutCopyright(int year, String appName) {
     return '© $year $appName';
   }
@@ -2254,6 +2257,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get aboutCouldNotShare => 'Não foi possível compartilhar o app.';
+
+  @override
+  String get aboutMoreApps => 'Mais aplicativos';
 
   @override
   String aboutCopyright(int year, String appName) {

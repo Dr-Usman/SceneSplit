@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- "More apps" tile in About screen linking to developer apps page.
+- Theme-adaptive app logos: added `logo_light.png` (brand dark navy "Scene") and `logo_dark.png` (white "Scene") across loading, onboarding, and about screens.
+- Added `logo_mark` to Home AppBar header and balance share card image footer.
+- Debug developer tools: moved developer section below the app section in Profile and added a "Clear & reset all data" option with confirmation dialog to wipe database and restart fresh from onboarding (visible only in debug mode).
+
+### Changed
+
+- Updated app icons across Android, iOS, macOS, Web, and Play Store assets using the new branded teal-to-navy gradient and centered logo mark.
+- Removed redundant duplicate `logo.png` asset in favor of `logo_light.png`, reducing app package size.
+- Renamed review launcher to `rateApp` which directly opens the store listing.
+
+### Fixed
+
+- "Rate SceneSplit" in About screen now opens the store listing URL directly instead of relying on the in-app review dialog.
+- Removed unused `in_app_review` package dependency.
+
 ## [1.10.0] - 2026-09-01
 
 ### Added

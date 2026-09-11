@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_links.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
@@ -26,7 +27,19 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLinks.appName),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              AppAssets.logoMark,
+              width: 24,
+              height: 24,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 4),
+            Text(AppLinks.appName),
+          ],
+        ),
         actions: [
           IconButton(
             tooltip: l10n.homeNewGroup,

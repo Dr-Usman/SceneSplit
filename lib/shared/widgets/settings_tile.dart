@@ -10,6 +10,8 @@ class SettingsTile extends StatelessWidget {
     required this.onTap,
     this.subtitle,
     this.showDivider = true,
+    this.iconColor,
+    this.titleColor,
   });
 
   final IconData icon;
@@ -17,6 +19,8 @@ class SettingsTile extends StatelessWidget {
   final String? subtitle;
   final VoidCallback onTap;
   final bool showDivider;
+  final Color? iconColor;
+  final Color? titleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class SettingsTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Row(
               children: [
-                Icon(icon, size: 22, color: AppColors.primary),
+                Icon(icon, size: 22, color: iconColor ?? AppColors.primary),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -36,9 +40,10 @@ class SettingsTile extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
+                          color: titleColor,
                         ),
                       ),
                       if (subtitle != null) ...[

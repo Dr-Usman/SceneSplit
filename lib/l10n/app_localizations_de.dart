@@ -1058,6 +1058,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get aboutCouldNotShare => 'App konnte nicht geteilt werden.';
 
   @override
+  String get aboutMoreApps => 'Weitere Apps';
+
+  @override
   String aboutCopyright(int year, String appName) {
     return '© $year $appName';
   }

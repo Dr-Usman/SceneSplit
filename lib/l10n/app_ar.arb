@@ -365,6 +365,7 @@
   "aboutShareAppSubject": "جرّب {appName}",
   "aboutShareAppMessage": "تعرّف على {appName} — قسّم النفقات مع الأصدقاء. يعمل دون اتصال، بلا حساب.\n\n{links}",
   "aboutCouldNotShare": "تعذّرت مشاركة التطبيق.",
+  "aboutMoreApps": "المزيد من التطبيقات",
   "aboutCopyright": "© {year} {appName}",
   "updateAvailableTitle": "يتوفر تحديث",
   "updateAvailableBody": "يتوفر إصدار أحدث من SceneSplit. حدّث للحصول على أحدث التحسينات.",

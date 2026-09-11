@@ -145,6 +145,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _buildHero(BuildContext context, {required bool centered}) {
     final l10n = context.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final taglineStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
       color: Theme.of(context).colorScheme.onSurfaceVariant,
       height: 1.5,
@@ -169,8 +170,14 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 width: 200,
                 height: 180,
                 padding: const EdgeInsets.all(12),
-                color: AppColors.logoBackground,
-                child: Image.asset(AppAssets.logo, fit: BoxFit.contain),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.logoBackground : Colors.white,
+                  border: isDark ? null : Border.all(color: AppColors.border),
+                ),
+                child: Image.asset(
+                  AppAssets.logoFor(context),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),

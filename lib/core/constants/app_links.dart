@@ -19,6 +19,10 @@ abstract class AppLinks {
   /// Live web demo / download landing page.
   static const webUrl = 'https://dr-usman.github.io/SceneSplit/';
 
+  /// Developer page listing more apps on Google Play.
+  static const developerPlayStoreUrl =
+      'https://play.google.com/store/apps/dev?id=5809108425817759974';
+
   /// Store and web URLs included when sharing the app (non-empty only).
   static List<String> get shareStoreUrls {
     return [

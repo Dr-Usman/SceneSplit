@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,24 +60,26 @@ Future<bool> shareApp(
   }
 }
 
-Future<void> requestAppReview({AnalyticsService? analytics}) async {
-  final review = InAppReview.instance;
-  final available = await review.isAvailable();
-  await analytics?.trackReviewPrompted(available: available);
-  if (available) {
-    await review.requestReview();
-    return;
-  }
-
+/// Opens the store listing page directly so the user can rate/review the app.
+Future<bool> rateApp({AnalyticsService? analytics}) async {
   final storeUrl = !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS
-      ? AppLinks.appStoreUrl
+      ? (AppLinks.appStoreUrl.isNotEmpty
+            ? AppLinks.appStoreUrl
+            : AppLinks.playStoreUrl)
       : AppLinks.playStoreUrl;
-  if (storeUrl.isNotEmpty) {
-    final uri = Uri.parse(storeUrl);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
+
+  final hasStoreUrl = storeUrl.isNotEmpty;
+  await analytics?.trackReviewPrompted(available: hasStoreUrl);
+
+  if (hasStoreUrl) {
+    return launchExternalUrl(storeUrl);
   }
+  return false;
+}
+
+/// Opens the developer store page on Google Play.
+Future<bool> openDeveloperPage() async {
+  return launchExternalUrl(AppLinks.developerPlayStoreUrl);
 }
 
 Future<bool> launchExternalUrl(String url) async {

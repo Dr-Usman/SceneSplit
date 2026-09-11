@@ -780,6 +780,7 @@
     }
   },
   "aboutCouldNotShare": "Could not share the app.",
+  "aboutMoreApps": "More apps",
   "aboutCopyright": "© {year} {appName}",
   "@aboutCopyright": {
     "placeholders": {

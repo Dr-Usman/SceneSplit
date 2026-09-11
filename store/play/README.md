@@ -16,6 +16,18 @@ store/play/
   mockups/              # Framed phone creatives (1024 × 1536, gitignored)
 ```
 
+## App icon
+
+Launcher icon specifications and brand background gradient palettes:
+- Center: `logo_mark` (clapperboard emblem with white س, ~60–65% scale, subtle drop shadow)
+- Angle: **135°** (top-left to bottom-right)
+- **Palette A (Teal to Navy — Sleek / Cinematic)**:
+  - Top-left: `#015D66` (Deep Pine Teal)
+  - Bottom-right: `#0F1E4A` (Midnight Navy)
+- **Palette B (Teal to Purple — Vibrant / Modern Fintech)**:
+  - Top-left: `#015D66` (Deep Pine Teal)
+  - Bottom-right: `#6A3DE8` (Electric Violet / matches `AppColors.secondary`)
+
 ## Feature graphic
 
 - Size: **1024 × 500** PNG

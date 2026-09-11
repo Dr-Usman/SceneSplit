@@ -365,6 +365,7 @@
   "aboutShareAppSubject": "Essayez {appName}",
   "aboutShareAppMessage": "Découvrez {appName} — partagez vos dépenses entre amis. Hors ligne d’abord, sans compte.\n\n{links}",
   "aboutCouldNotShare": "Impossible de partager l’application.",
+  "aboutMoreApps": "Plus d'applications",
   "aboutCopyright": "© {year} {appName}",
   "updateAvailableTitle": "Mise à jour disponible",
   "updateAvailableBody": "Une nouvelle version de SceneSplit est disponible. Mettez à jour pour profiter des dernières améliorations.",

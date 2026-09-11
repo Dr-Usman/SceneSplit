@@ -1833,6 +1833,12 @@ abstract class AppLocalizations {
   /// **'Could not share the app.'**
   String get aboutCouldNotShare;
 
+  /// No description provided for @aboutMoreApps.
+  ///
+  /// In en, this message translates to:
+  /// **'More apps'**
+  String get aboutMoreApps;
+
   /// No description provided for @aboutCopyright.
   ///
   /// In en, this message translates to:

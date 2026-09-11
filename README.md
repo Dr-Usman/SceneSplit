@@ -1,7 +1,10 @@
 # SceneSplit
 
-<p style="text-align: center;">
-  <img src="assets/images/logo.png" alt="SceneSplit logo" width="160" />
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/images/logo_dark.png">
+    <img src="assets/images/logo_light.png" alt="SceneSplit logo" width="160" />
+  </picture>
 </p>
 
 **Split shared expenses by scene, track who owes what, and settle up — fully offline.**

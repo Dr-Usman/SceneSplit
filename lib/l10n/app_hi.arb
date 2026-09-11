@@ -365,6 +365,7 @@
   "aboutShareAppSubject": "{appName} आज़माएँ",
   "aboutShareAppMessage": "{appName} देखें — दोस्तों के साथ खर्च बाँटें। ऑफ़लाइन-पहले, बिना खाते के।\n\n{links}",
   "aboutCouldNotShare": "ऐप शेयर नहीं हो सका।",
+  "aboutMoreApps": "और ऐप्स",
   "aboutCopyright": "© {year} {appName}",
   "updateAvailableTitle": "अपडेट उपलब्ध",
   "updateAvailableBody": "SceneSplit का नया संस्करण उपलब्ध है। नवीनतम सुधारों के लिए अपडेट करें।",

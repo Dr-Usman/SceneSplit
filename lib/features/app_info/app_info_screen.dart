@@ -49,15 +49,25 @@ class AppInfoScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(28),
                     boxShadow: AppShadows.logo(context),
+                    border: Theme.of(context).brightness == Brightness.dark
+                        ? Border.all(color: AppColors.border)
+                        : null,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(28),
                     child: Container(
                       width: 120,
                       height: 108,
-                      color: AppColors.logoBackground,
-                      padding: const EdgeInsets.all(8),
-                      child: Image.asset(AppAssets.logo, fit: BoxFit.contain),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.logoBackground
+                            : Colors.white,
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset(
+                        AppAssets.logoFor(context),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -136,12 +146,11 @@ class AppInfoScreen extends ConsumerWidget {
                     SettingsTile(
                       icon: Icons.star_outline_rounded,
                       title: l10n.aboutRateApp(AppLinks.appName),
-                      onTap: () => requestAppReview(analytics: analytics),
+                      onTap: () => rateApp(analytics: analytics),
                     ),
                     SettingsTile(
                       icon: Icons.ios_share_rounded,
                       title: l10n.aboutShareApp,
-                      showDivider: false,
                       onTap: () async {
                         final shared = await shareApp(
                           context,
@@ -155,6 +164,12 @@ class AppInfoScreen extends ConsumerWidget {
                           );
                         }
                       },
+                    ),
+                    SettingsTile(
+                      icon: Icons.apps_rounded,
+                      title: l10n.aboutMoreApps,
+                      showDivider: false,
+                      onTap: () => openDeveloperPage(),
                     ),
                   ],
                 ),
