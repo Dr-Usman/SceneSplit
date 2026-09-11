@@ -14,68 +14,71 @@
 
 ## Full description
 
+```text
 SceneSplit – Offline Bill Splitter | Who Owes Whom & Settle Up
 
-Split shared expenses for trips, roommates, dinners, and events — no account, no cloud ledger. SceneSplit is a fast offline expense splitter that tracks who owes what across all your scenes and helps you settle up fairly.
+Split shared expenses for trips, roommates, dinners, and events — with zero accounts, no cloud ledger, and complete privacy. SceneSplit is a fast, offline group expense tracker and bill splitter that organizes who owes what across all your groups and helps you settle debts fairly.
 
-SCENES, BALANCES & PROFILE
-Navigate with bottom tabs built for real shared spending:
-• Scenes — organize trips, dinners, roommates, and events
-• Balances — see who owes whom across every scene in one place
-• Profile — people, currency, language, appearance, and backup
+Whether you are sharing apartment rent with roommates, splitting travel costs with friends, or dividing a restaurant check, SceneSplit makes group expense sharing simple, transparent, and stress-free.
 
-TRACK WHO OWES WHOM
-Open the Balances tab for a clear cross-scene debt view:
-• Who → Whom filters (Whom defaults to you)
-• Per-currency totals for what you’re owed and what you owe
-• Pair drill-down with per-scene breakdown and settle
-• Person profiles with total debt and total credit across scenes
-• Per-scene balances you can trust
+HOW IT WORKS: SCENES, BALANCES & PROFILE
+Navigate easily with clean bottom tabs built for real-world shared spending:
+• Scenes — Organize expenses by trip, dinner, roommate household, or event
+• Balances — See who owes whom across every single scene in one unified view
+• Profile — Manage people, default currencies, language, theme, and backups
+
+TRACK WHO OWES WHOM & SETTLE DEBTS
+Open the Balances tab for a clear, transparent cross-scene debt breakdown:
+• Smart Who → Whom filters to instantly see who owes you or who you owe
+• Multi-currency totals showing what you are owed and what you owe per currency
+• Pair drill-down with detailed per-scene expense summaries
+• Person profiles displaying total shared credit and debt across all activities
+• Debt simplification suggestions to settle up with the fewest possible payments
 
 SPLIT BILLS YOUR WAY
-Add any expense in seconds and choose how to split:
-• Equal split between members
-• Exact amounts per person
-• Percentage split
-• Include or exclude people per expense
-• Multi-payer bills when more than one person paid
+Add any shared bill in seconds with flexible calculation options:
+• Equal splits: Divide dinner checks and tickets equally among members
+• Exact amount splits: Assign specific amounts paid per person
+• Percentage splits: Split shared rent and utility bills by percentage
+• Member inclusion: Easily include or exclude specific people per bill
+• Multi-payer support: Split bills when more than one person contributed payment
 
-SETTLE UP FAST
-Record settlements quickly and keep history transparent:
-• Who-owes-whom uses the fewest transfers to settle each scene
-• Editable settlement records
-• Share Who Owes Whom as an image for WhatsApp and similar apps
-• Share a scene’s expenses as an image or text for a date range
+SETTLE UP FAST & SHARE SUMMARIES
+Keep everyone in the loop without awkward money conversations:
+• Smart settlement suggestions that calculate the fastest path to zero balance
+• Editable settlement history to log cash, bank transfers, or mobile payments
+• Share Who Owes Whom balance cards as images directly to WhatsApp, Telegram, or Messages
+• Export scene expense summaries as clean text or image receipts
 
-BUILT FOR REAL-LIFE SCENES
-• Custom names, emojis, and currencies (PKR, USD, EUR & more)
-• Reuse people across scenes
-• Scene expense breakdown charts — tap a member to see their share
-• Light, dark, or system appearance
+DESIGNED FOR REAL-LIFE EXPENSE SHARING
+• Custom scenes with names, emojis, and local currencies (PKR, USD, EUR, GBP, INR, JPY & more)
+• Global people list: Add a friend once and reuse them across multiple trips or dinners
+• Visual expense charts: Tap any member in a scene to see their total spend and share
+• Dark & Light modes: Beautiful theme-adaptive interface designed for day and night use
 
-PRIVATE & OFFLINE-FIRST
-Your expense ledger stays on your device:
-• No sign-up required
-• Works offline for day-to-day use
-• No ads
-• Optional product analytics only — we don’t sell your data or run ad trackers
-• Export/import a local backup when you need it
+100% PRIVATE, OFFLINE & NO ACCOUNT REQUIRED
+Your personal finances and group expenses stay strictly on your device:
+• No sign-up, no login, and no email required
+• Works completely offline — perfect for international travel, flights, and road trips
+• Zero ads and no trackers selling your personal data
+• Full local backup: Easily export and import your database whenever you want
 
-SPEAKS YOUR LANGUAGE
-English, Spanish, French, German, Portuguese (Brazil), Hindi, Arabic, and Japanese — follow the device or set a preference in Profile.
+GLOBAL LOCALIZATION
+Available in 8 languages with full RTL support:
+• English, Spanish (Español), French (Français), German (Deutsch), Portuguese (Português do Brasil), Hindi (हिन्दी), Arabic (العربية), and Japanese (日本語)
+• Follows your system language or choose your preference in Profile
 
-WHY SCENESPLIT?
-• Simple, minimal, and lightweight
-• Fully usable offline
-• No account needed
-• A practical Splitwise-style alternative that keeps data on your phone
+WHY CHOOSE SCENESPLIT?
+✔ Lightweight, lightning-fast, and distraction-free
+✔ Works 100% offline with no internet connection required
+✔ No subscriptions, no locked features, and no forced accounts
+✔ A practical, offline alternative to Splitwise that keeps your data on your phone
 
-Whether you’re splitting rent, travel costs, or dinner bills, SceneSplit makes shared expense tracking simple, fair, and stress-free.
+Download SceneSplit today — the simple, private way to split group bills, track who owes whom, and settle up with friends!
 
-Download SceneSplit and take control of your shared expenses.
-
-Open source: https://github.com/Dr-Usman/SceneSplit
+Open Source: https://github.com/Dr-Usman/SceneSplit
 Try the web demo: https://dr-usman.github.io/SceneSplit/
+```
 
 ## ASO keywords
 
@@ -97,12 +100,12 @@ Split trips, dinners, and rent by scene. See who owes whom across all balances, 
 
 ## What's New (v1.11.0)
 
-• Refreshed app branding: sharp theme-adaptive logos for light and dark modes
-• New app icon: sleek brand gradient featuring the iconic SceneSplit emblem
-• Brand mark in headers: clean logo mark in the Home app bar and exported balance receipt cards
-• More apps: discover other tools by the developer right from the About screen
-• Direct store rating: tap to quickly rate SceneSplit on the Play Store
-• Performance & bundle optimizations: reduced app package download size
+- Refreshed app branding: sharp theme-adaptive logos for light and dark modes
+- New app icon: sleek brand gradient featuring the iconic SceneSplit emblem
+- Brand mark in headers: clean logo mark in the Home app bar and exported balance receipt cards
+- More apps: discover other tools by the developer right from the About screen
+- Direct store rating: tap to quickly rate SceneSplit on the Play Store
+- Performance & bundle optimizations: reduced app package download size
 ---
 
 ## Pre-submit checklist
