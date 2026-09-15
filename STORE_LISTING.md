@@ -98,14 +98,10 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.11.0)
+## What's New (v1.11.1)
 
-- Refreshed app branding: sharp theme-adaptive logos for light and dark modes
-- New app icon: sleek brand gradient featuring the iconic SceneSplit emblem
-- Brand mark in headers: clean logo mark in the Home app bar and exported balance receipt cards
-- More apps: discover other tools by the developer right from the About screen
-- Direct store rating: tap to quickly rate SceneSplit on the Play Store
-- Performance & bundle optimizations: reduced app package download size
+- Fixed decimal formatting on shared balance receipt cards to properly honor each scene's decimal preference
+- Performance and stability improvements
 ---
 
 ## Pre-submit checklist
