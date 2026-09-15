@@ -495,6 +495,7 @@ class GroupDetailScreen extends ConsumerWidget {
         locale: locale,
         debts: debtRows,
         memberShares: memberRows,
+        showDecimals: data.group.showDecimals,
       ),
     );
 

@@ -43,6 +43,7 @@ class BalanceShareCard extends StatelessWidget {
     required this.locale,
     required this.debts,
     required this.memberShares,
+    this.showDecimals = true,
   });
 
   static const double cardWidth = 360;
@@ -53,6 +54,7 @@ class BalanceShareCard extends StatelessWidget {
   final String locale;
   final List<BalanceShareDebtRow> debts;
   final List<BalanceShareMemberRow> memberShares;
+  final bool showDecimals;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +123,7 @@ class BalanceShareCard extends StatelessWidget {
                             debts[i].amountCents,
                             currencyCode,
                             locale: locale,
+                            showDecimals: showDecimals,
                           ),
                         ),
                         if (i < debts.length - 1)
@@ -150,6 +153,7 @@ class BalanceShareCard extends StatelessWidget {
                         memberShares[i].shareCents,
                         currencyCode,
                         locale: locale,
+                        showDecimals: showDecimals,
                       ),
                     ),
                     if (i < memberShares.length - 1)
@@ -162,6 +166,7 @@ class BalanceShareCard extends StatelessWidget {
                       totalCents,
                       currencyCode,
                       locale: locale,
+                      showDecimals: showDecimals,
                     ),
                     emphasize: true,
                   ),
