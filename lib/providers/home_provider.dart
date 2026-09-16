@@ -13,10 +13,14 @@ class GroupSummary {
   /// Positive = they are owed, negative = they owe.
   final int myNetCents;
 
+  /// Timestamp of the latest activity in this group (created, expense, or settlement).
+  final DateTime lastActivityAt;
+
   const GroupSummary({
     required this.group,
     required this.memberCount,
     required this.myNetCents,
+    required this.lastActivityAt,
   });
 }
 
@@ -95,14 +99,32 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
     if (myNet > 0) totalOwed += myNet;
     if (myNet < 0) totalOwe += -myNet;
 
+    var lastActivity = group.createdAt;
+    for (final e in groupExpenses) {
+      if (e.createdAt.isAfter(lastActivity)) {
+        lastActivity = e.createdAt;
+      }
+      if (e.date.isAfter(lastActivity)) {
+        lastActivity = e.date;
+      }
+    }
+    for (final s in groupSettlements) {
+      if (s.createdAt.isAfter(lastActivity)) {
+        lastActivity = s.createdAt;
+      }
+    }
+
     summaries.add(
       GroupSummary(
         group: group,
         memberCount: allMembers.where((m) => m.groupId == group.id).length,
         myNetCents: myNet,
+        lastActivityAt: lastActivity,
       ),
     );
   }
+
+  summaries.sort((a, b) => b.lastActivityAt.compareTo(a.lastActivityAt));
 
   return AsyncValue.data(
     HomeData(

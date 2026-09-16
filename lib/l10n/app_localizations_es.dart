@@ -94,6 +94,32 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homeCardYouWillGet => 'recibirás';
 
   @override
+  String get timeJustNow => 'Ahora mismo';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return 'hace ${count}m';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return 'hace ${count}h';
+  }
+
+  @override
+  String get timeYesterday => 'Ayer';
+
+  @override
+  String timeTodayAt(String time) {
+    return 'Hoy, $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return 'Ayer, $time';
+  }
+
+  @override
   String get navScenes => 'Escenas';
 
   @override
@@ -602,6 +628,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get expensesAmountSubtitle => 'Importe total de la cuenta';
+
+  @override
+  String get expensesCalculator => 'Calculadora';
+
+  @override
+  String get expensesCalculatorTooltip => 'Abrir calculadora';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return 'Aplicar $amount';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'Borrar';
+
+  @override
+  String get expensesCalculatorDivZero => 'No se puede dividir por 0';
 
   @override
   String get expensesDescription => 'Descripción';

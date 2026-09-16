@@ -261,6 +261,42 @@ abstract class AppLocalizations {
   /// **'you will get'**
   String get homeCardYouWillGet;
 
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String timeMinutesAgo(int count);
+
+  /// No description provided for @timeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String timeHoursAgo(int count);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @timeTodayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Today, {time}'**
+  String timeTodayAt(String time);
+
+  /// No description provided for @timeYesterdayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday, {time}'**
+  String timeYesterdayAt(String time);
+
   /// No description provided for @navScenes.
   ///
   /// In en, this message translates to:
@@ -1058,6 +1094,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total bill amount'**
   String get expensesAmountSubtitle;
+
+  /// No description provided for @expensesCalculator.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculator'**
+  String get expensesCalculator;
+
+  /// No description provided for @expensesCalculatorTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Open calculator'**
+  String get expensesCalculatorTooltip;
+
+  /// No description provided for @expensesCalculatorApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply {amount}'**
+  String expensesCalculatorApply(String amount);
+
+  /// No description provided for @expensesCalculatorClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get expensesCalculatorClear;
+
+  /// No description provided for @expensesCalculatorDivZero.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot divide by 0'**
+  String get expensesCalculatorDivZero;
 
   /// No description provided for @expensesDescription.
   ///

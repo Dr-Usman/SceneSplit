@@ -22,63 +22,22 @@ class BalanceHeroCard extends StatelessWidget {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
     final settled = netCents == 0;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final scheme = Theme.of(context).colorScheme;
-
-    if (settled) {
-      return AppCard(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: AppColors.positive.withValues(
-                  alpha: isDark ? 0.18 : 0.1,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle_rounded,
-                color: AppColors.positive,
-                size: 28,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.sharedSettledTitle,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.positive,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.sharedSettledSubtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
 
     final String label;
     final String amount;
     final Color amountColor;
 
-    if (netCents > 0) {
+    if (settled) {
+      label = l10n.groupsShareAllSettled;
+      amount = formatCents(
+        0,
+        currencyCode,
+        locale: locale,
+        showDecimals: showDecimals,
+      );
+      amountColor = scheme.onSurfaceVariant;
+    } else if (netCents > 0) {
       label = l10n.sharedYouGet;
       amount = formatCents(
         netCents,
@@ -102,6 +61,14 @@ class BalanceHeroCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
+          if (settled) ...[
+            const Icon(
+              Icons.check_circle_rounded,
+              color: AppColors.positive,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+          ],
           Expanded(
             child: Text(
               label,

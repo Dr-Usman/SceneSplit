@@ -93,6 +93,32 @@ class AppLocalizationsPt extends AppLocalizations {
   String get homeCardYouWillGet => 'você receberá';
 
   @override
+  String get timeJustNow => 'Agora há pouco';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return 'há ${count}m';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return 'há ${count}h';
+  }
+
+  @override
+  String get timeYesterday => 'Ontem';
+
+  @override
+  String timeTodayAt(String time) {
+    return 'Hoje, $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return 'Ontem, $time';
+  }
+
+  @override
   String get navScenes => 'Cenas';
 
   @override
@@ -599,6 +625,23 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get expensesAmountSubtitle => 'Valor total da conta';
+
+  @override
+  String get expensesCalculator => 'Calculadora';
+
+  @override
+  String get expensesCalculatorTooltip => 'Abrir calculadora';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return 'Aplicar $amount';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'Limpar';
+
+  @override
+  String get expensesCalculatorDivZero => 'Não é possível dividir por 0';
 
   @override
   String get expensesDescription => 'Descrição';
@@ -1297,6 +1340,32 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get homeCardYouWillGet => 'você receberá';
 
   @override
+  String get timeJustNow => 'Agora há pouco';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return 'há ${count}m';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return 'há ${count}h';
+  }
+
+  @override
+  String get timeYesterday => 'Ontem';
+
+  @override
+  String timeTodayAt(String time) {
+    return 'Hoje, $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return 'Ontem, $time';
+  }
+
+  @override
   String get navScenes => 'Cenas';
 
   @override
@@ -1803,6 +1872,23 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get expensesAmountSubtitle => 'Valor total da conta';
+
+  @override
+  String get expensesCalculator => 'Calculadora';
+
+  @override
+  String get expensesCalculatorTooltip => 'Abrir calculadora';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return 'Aplicar $amount';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'Limpar';
+
+  @override
+  String get expensesCalculatorDivZero => 'Não é possível dividir por 0';
 
   @override
   String get expensesDescription => 'Descrição';

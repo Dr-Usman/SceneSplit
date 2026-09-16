@@ -94,6 +94,32 @@ class AppLocalizationsHi extends AppLocalizations {
   String get homeCardYouWillGet => 'आपको मिलेगा';
 
   @override
+  String get timeJustNow => 'अभी';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '$count मि. पहले';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '$count घं. पहले';
+  }
+
+  @override
+  String get timeYesterday => 'कल';
+
+  @override
+  String timeTodayAt(String time) {
+    return 'आज, $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return 'कल, $time';
+  }
+
+  @override
   String get navScenes => 'सीन';
 
   @override
@@ -596,6 +622,23 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get expensesAmountSubtitle => 'कुल बिल की राशि';
+
+  @override
+  String get expensesCalculator => 'कैलकुलेटर';
+
+  @override
+  String get expensesCalculatorTooltip => 'कैलकुलेटर खोलें';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return '$amount लागू करें';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'साफ़ करें';
+
+  @override
+  String get expensesCalculatorDivZero => '0 से विभाजित नहीं किया जा सकता';
 
   @override
   String get expensesDescription => 'विवरण';

@@ -12,6 +12,7 @@ import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/expense_repository.dart';
 import '../../services/split_engine_service.dart';
+import '../../shared/widgets/calculator_sheet.dart';
 import '../../shared/widgets/member_select_tile.dart';
 import '../../shared/widgets/user_avatar.dart';
 
@@ -360,6 +361,32 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     });
   }
 
+  Future<void> _openCalculator({
+    required String currencyCode,
+    required bool showDecimals,
+  }) async {
+    FocusScope.of(context).unfocus();
+    final result = await showCalculatorSheet(
+      context,
+      currencyCode: currencyCode,
+      initialValue: _amountController.text,
+      showDecimals: showDecimals,
+    );
+
+    if (result != null && mounted) {
+      setState(() {
+        _amountController.text = result;
+      });
+      // Ensure focus is completely cleared and keyboard stays hidden
+      FocusScope.of(context).unfocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          FocusScope.of(context).unfocus();
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final detail = ref.watch(groupDetailProvider(widget.groupId));
@@ -406,6 +433,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   letterSpacing: -1,
                 ),
                 decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                   prefixText: '$symbol ',
                   prefixStyle: const TextStyle(
                     fontSize: 32,
@@ -413,20 +441,34 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     color: AppColors.textSecondary,
                   ),
                   hintText: '0',
+                  suffixIcon: IconButton(
+                    tooltip: l10n.expensesCalculatorTooltip,
+                    icon: const Icon(
+                      Icons.calculate_outlined,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                    onPressed: () => _openCalculator(
+                      currencyCode: widget.currencyCode,
+                      showDecimals: data.group.showDecimals,
+                    ),
+                  ),
                 ),
                 autofocus: !widget.isEditing,
                 onChanged: (_) => setState(() {}),
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
               ),
               const SizedBox(height: 20),
               _sectionLabel(l10n.expensesDescription),
               const SizedBox(height: 8),
               TextField(
                 controller: _titleController,
-                textCapitalization: TextCapitalization.sentences,
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   hintText: l10n.expensesDescriptionHint,
                 ),
                 onChanged: (_) => setState(() {}),
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
               ),
               const SizedBox(height: 20),
               _sectionLabel(l10n.expensesDate),
@@ -499,6 +541,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 8),
               TextField(
                 controller: _noteController,
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(hintText: l10n.expensesNoteHint),
               ),
@@ -658,6 +701,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   width: 110,
                   child: TextField(
                     controller: _payerExactControllers[m.user.id],
+                    onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
@@ -665,6 +709,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
                     ],
                     decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                       prefixText: '$symbol ',
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
@@ -779,6 +824,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   width: 110,
                   child: TextField(
                     controller: _exactControllers[m.user.id],
+                    onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
@@ -786,6 +832,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
                     ],
                     decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                       prefixText: '$symbol ',
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
@@ -824,6 +871,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   width: 80,
                   child: TextField(
                     controller: _percentControllers[m.user.id],
+                    onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),

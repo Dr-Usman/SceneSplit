@@ -53,6 +53,40 @@
   "homeYouWillGive": "You will give",
   "homeSettledUp": "settled up",
   "homeCardYouWillGet": "you will get",
+  "timeJustNow": "Just now",
+  "timeMinutesAgo": "{count}m ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count}h ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeYesterday": "Yesterday",
+  "timeTodayAt": "Today, {time}",
+  "@timeTodayAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "timeYesterdayAt": "Yesterday, {time}",
+  "@timeYesterdayAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "navScenes": "Scenes",
   "navBalances": "Balances",
   "navProfile": "Profile",
@@ -490,6 +524,18 @@
   "expensesNotFound": "Expense not found",
   "expensesAmount": "Amount",
   "expensesAmountSubtitle": "Total bill amount",
+  "expensesCalculator": "Calculator",
+  "expensesCalculatorTooltip": "Open calculator",
+  "expensesCalculatorApply": "Apply {amount}",
+  "@expensesCalculatorApply": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesCalculatorClear": "Clear",
+  "expensesCalculatorDivZero": "Cannot divide by 0",
   "expensesDescription": "Description",
   "expensesDescriptionHint": "e.g. Dinner, Groceries, Taxi",
   "expensesDate": "Date",

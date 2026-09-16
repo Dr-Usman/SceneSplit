@@ -6,6 +6,7 @@ import '../../core/constants/app_links.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_decorations.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/date_formatters.dart';
 import '../../core/utils/money.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/home_provider.dart';
@@ -161,12 +162,17 @@ class _GroupCard extends StatelessWidget {
     final net = summary.myNetCents;
     final settled = net == 0;
 
-    final String balanceLabel;
-    final String? balanceAmount;
+    final String? balanceLabel;
+    final String balanceAmount;
     final Color balanceColor;
     if (settled) {
-      balanceLabel = l10n.homeSettledUp;
-      balanceAmount = null;
+      balanceLabel = null;
+      balanceAmount = formatCents(
+        0,
+        group.currencyCode,
+        locale: locale,
+        showDecimals: group.showDecimals,
+      );
       balanceColor = Theme.of(context).colorScheme.onSurfaceVariant;
     } else if (net > 0) {
       balanceLabel = l10n.homeCardYouWillGet;
@@ -208,6 +214,7 @@ class _GroupCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   group.name,
@@ -218,7 +225,11 @@ class _GroupCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  l10n.homeMemberCount(summary.memberCount),
+                  formatRelativeActivityTime(
+                    summary.lastActivityAt,
+                    locale: locale,
+                    l10n: l10n,
+                  ),
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -230,21 +241,22 @@ class _GroupCard extends StatelessWidget {
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                balanceLabel,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                balanceAmount,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: balanceColor,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              if (balanceAmount != null) ...[
+              if (balanceLabel != null) ...[
                 const SizedBox(height: 2),
                 Text(
-                  balanceAmount,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  balanceLabel,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: balanceColor,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
