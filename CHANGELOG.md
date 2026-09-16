@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-09-16
+
 ### Added
 
 - In-app calculator: added a calculator button in the expense amount input field that opens a quick keypad for summing and evaluating bill amounts directly.

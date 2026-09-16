@@ -98,10 +98,13 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.11.1)
+## What's New (v1.12.0)
 
-- Fixed decimal formatting on shared balance receipt cards to properly honor each scene's decimal preference
-- Performance and stability improvements
+- In-app bill calculator: tap the calculator icon on any expense amount field to quickly add up and evaluate totals
+- Smart scene sorting: scenes now automatically order by latest expense, settlement, or activity
+- Clearer scene cards: see exact activity timestamps with day and time at a glance
+- Streamlined settled views: cleaner zero balance displays across Home and Scene detail
+- Performance and UI refinements
 ---
 
 ## Pre-submit checklist
