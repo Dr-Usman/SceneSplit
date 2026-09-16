@@ -93,6 +93,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeCardYouWillGet => 'ستستلم';
 
   @override
+  String get timeJustNow => 'الآن';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return 'منذ $count د';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return 'منذ $count س';
+  }
+
+  @override
+  String get timeYesterday => 'أمس';
+
+  @override
+  String timeTodayAt(String time) {
+    return 'اليوم، $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return 'أمس، $time';
+  }
+
+  @override
   String get navScenes => 'المشاهد';
 
   @override
@@ -592,6 +618,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get expensesAmountSubtitle => 'إجمالي مبلغ الفاتورة';
+
+  @override
+  String get expensesCalculator => 'آلة حاسبة';
+
+  @override
+  String get expensesCalculatorTooltip => 'فتح الآلة الحاسبة';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return 'تطبيق $amount';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'مسح';
+
+  @override
+  String get expensesCalculatorDivZero => 'لا يمكن القسمة على 0';
 
   @override
   String get expensesDescription => 'الوصف';

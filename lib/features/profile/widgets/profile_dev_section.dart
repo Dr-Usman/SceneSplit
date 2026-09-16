@@ -8,6 +8,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../database/database_paths.dart';
 import '../../../dev/demo_seed.dart';
 import '../../../providers/database_provider.dart';
+import '../../../providers/main_tabs_provider.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../../shared/widgets/settings_tile.dart';
@@ -108,6 +109,9 @@ class _ProfileDevSectionState extends ConsumerState<ProfileDevSection> {
       }
 
       await ref.read(databaseProvider.notifier).reopen();
+
+      // Reset bottom navigation tab back to Scenes/Home
+      ref.read(mainTabIndexProvider.notifier).setIndex(kMainTabScenes);
 
       if (!mounted) return;
 

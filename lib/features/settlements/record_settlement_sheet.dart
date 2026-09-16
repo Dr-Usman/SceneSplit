@@ -219,7 +219,11 @@ class _RecordSettlementSheetState
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[\d.,]')),
                 ],
-                decoration: InputDecoration(prefixText: '$symbol '),
+                decoration: InputDecoration(
+                  prefixText: '$symbol ',
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
               ),
               const SizedBox(height: 16),
               _label(l10n.settlementsNoteOptional),
@@ -227,6 +231,7 @@ class _RecordSettlementSheetState
               TextField(
                 controller: _noteController,
                 decoration: InputDecoration(hintText: l10n.settlementsNoteHint),
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
               ),
               const SizedBox(height: 28),
               FilledButton(

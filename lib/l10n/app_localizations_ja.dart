@@ -92,6 +92,32 @@ class AppLocalizationsJa extends AppLocalizations {
   String get homeCardYouWillGet => '受取予定';
 
   @override
+  String get timeJustNow => 'たった今';
+
+  @override
+  String timeMinutesAgo(int count) {
+    return '$count分前';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    return '$count時間前';
+  }
+
+  @override
+  String get timeYesterday => '昨日';
+
+  @override
+  String timeTodayAt(String time) {
+    return '今日 $time';
+  }
+
+  @override
+  String timeYesterdayAt(String time) {
+    return '昨日 $time';
+  }
+
+  @override
   String get navScenes => 'シーン';
 
   @override
@@ -585,6 +611,23 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get expensesAmountSubtitle => '請求の合計金額';
+
+  @override
+  String get expensesCalculator => '計算機';
+
+  @override
+  String get expensesCalculatorTooltip => '計算機を開く';
+
+  @override
+  String expensesCalculatorApply(String amount) {
+    return '$amount を適用';
+  }
+
+  @override
+  String get expensesCalculatorClear => 'クリア';
+
+  @override
+  String get expensesCalculatorDivZero => '0で割ることはできません';
 
   @override
   String get expensesDescription => '説明';

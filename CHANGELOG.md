@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- In-app calculator: added a calculator button in the expense amount input field that opens a quick keypad for summing and evaluating bill amounts directly.
+- Activity timestamp on Home screen group cards with day, date, and localized time (e.g. `Today, 2:30 PM`, `Yesterday, 4:15 PM`, `Mon, 2:30 PM`, `Thu, Nov 20, 2025`).
+
+### Changed
+
+- Home screen group cards are now sorted automatically by most recent activity (expenses, settlements, or group creation).
+- Simplified Home group card to a 2-row layout: Group title and balance amount on top, activity date/time and direction label below.
+- Settled group cards on the Home screen now display only the currency symbol and zero amount on the primary row without the "Settled up" text label.
+- Group detail balance card: updated settled state to display the zero amount (`$0` / `Rs 0`) on the right with a streamlined checkmark icon and improved horizontal spacing for mobile screens.
+- Developer tools: resetting data in debug mode immediately resets bottom navigation index back to Home.
+
 ## [1.11.1] - 2026-09-15
 
 ### Fixed
