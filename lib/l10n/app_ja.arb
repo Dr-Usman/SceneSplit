@@ -119,6 +119,7 @@
   "groupsShowDecimals": "小数点以下を表示",
   "groupsShowDecimalsSubtitle": "セントや端数を表示",
   "groupsMembers": "メンバー",
+  "groupsSelectedCount": "{count, plural, other{{count}人選択中}}",
   "groupsAddMemberHint": "名前でメンバーを追加",
   "groupsCreateGroup": "シーンを作成",
   "groupsSaveChanges": "変更を保存",

@@ -597,6 +597,12 @@ abstract class AppLocalizations {
   /// **'MEMBERS'**
   String get groupsMembers;
 
+  /// No description provided for @groupsSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 selected} other{{count} selected}}'**
+  String groupsSelectedCount(int count);
+
   /// No description provided for @groupsAddMemberHint.
   ///
   /// In en, this message translates to:

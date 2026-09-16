@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Group creation and edit screens: added a dynamic selected members count (e.g. `3 selected`) displayed on the right side of the "MEMBERS" section header.
+
+### Changed
+
+- Group creation and edit screens: existing members and people are now sorted alphabetically (A to Z), keeping "You" pinned at the top.
+- Group detail screen: members in the horizontal row are now sorted alphabetically by name.
+
 ## [1.12.0] - 2026-09-16
 
 ### Added

@@ -119,6 +119,7 @@
   "groupsShowDecimals": "Mostrar decimais",
   "groupsShowDecimalsSubtitle": "Exibir centavos e valores fracionários",
   "groupsMembers": "MEMBROS",
+  "groupsSelectedCount": "{count, plural, =1{1 selecionado} other{{count} selecionados}}",
   "groupsAddMemberHint": "Adicionar membro pelo nome",
   "groupsCreateGroup": "Criar cena",
   "groupsSaveChanges": "Salvar alterações",

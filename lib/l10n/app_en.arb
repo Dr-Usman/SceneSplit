@@ -192,6 +192,14 @@
   "groupsShowDecimals": "Show decimals",
   "groupsShowDecimalsSubtitle": "Display cents and fractional amounts",
   "groupsMembers": "MEMBERS",
+  "groupsSelectedCount": "{count, plural, =1{1 selected} other{{count} selected}}",
+  "@groupsSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupsAddMemberHint": "Add member by name",
   "groupsCreateGroup": "Create scene",
   "groupsSaveChanges": "Save changes",

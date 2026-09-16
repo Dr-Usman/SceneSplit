@@ -119,6 +119,7 @@
   "groupsShowDecimals": "Dezimalstellen anzeigen",
   "groupsShowDecimalsSubtitle": "Cents und Bruchteilbeträge anzeigen",
   "groupsMembers": "MITGLIEDER",
+  "groupsSelectedCount": "{count, plural, =1{1 ausgewählt} other{{count} ausgewählt}}",
   "groupsAddMemberHint": "Mitglied nach Namen hinzufügen",
   "groupsCreateGroup": "Szene erstellen",
   "groupsSaveChanges": "Änderungen speichern",

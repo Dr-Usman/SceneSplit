@@ -291,6 +291,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupsMembers => 'MEMBERS';
 
   @override
+  String groupsSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count selected',
+      one: '1 selected',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get groupsAddMemberHint => 'Add member by name';
 
   @override

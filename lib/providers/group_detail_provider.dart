@@ -138,10 +138,15 @@ final groupDetailProvider =
           .where((m) => m.groupId == groupId)
           .map((m) => m.userId)
           .toList();
-      final memberInfos = [
-        for (final id in memberIds)
-          if (userMap[id] != null) GroupMemberInfo(userMap[id]!),
-      ];
+      final memberInfos =
+          [
+            for (final id in memberIds)
+              if (userMap[id] != null) GroupMemberInfo(userMap[id]!),
+          ]..sort(
+            (a, b) => a.user.name.trim().toLowerCase().compareTo(
+              b.user.name.trim().toLowerCase(),
+            ),
+          );
 
       final groupExpenses =
           expenses.value!.where((e) => e.groupId == groupId).toList()

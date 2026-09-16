@@ -119,6 +119,7 @@
   "groupsShowDecimals": "إظهار الكسور العشرية",
   "groupsShowDecimalsSubtitle": "عرض السنتات والمبالغ الكسرية",
   "groupsMembers": "الأعضاء",
+  "groupsSelectedCount": "{count, plural, =1{تم تحديد 1} other{تم تحديد {count}}}",
   "groupsAddMemberHint": "أضف عضوًا بالاسم",
   "groupsCreateGroup": "إنشاء مشهد",
   "groupsSaveChanges": "حفظ التغييرات",

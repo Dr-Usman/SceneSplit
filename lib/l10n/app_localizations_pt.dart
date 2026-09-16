@@ -293,6 +293,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get groupsMembers => 'MEMBROS';
 
   @override
+  String groupsSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count selecionados',
+      one: '1 selecionado',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get groupsAddMemberHint => 'Adicionar membro pelo nome';
 
   @override
@@ -1538,6 +1549,17 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get groupsMembers => 'MEMBROS';
+
+  @override
+  String groupsSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count selecionados',
+      one: '1 selecionado',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get groupsAddMemberHint => 'Adicionar membro pelo nome';
