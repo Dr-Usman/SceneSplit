@@ -140,6 +140,21 @@ void main() {
       expect(range.end, DateTime(2026, 3, 18));
     });
 
+    test('todayRange produces single day range', () {
+      final now = DateTime(2026, 3, 18, 15, 30);
+      final range = todayRange(now);
+      expect(range.start, DateTime(2026, 3, 18));
+      expect(range.end, DateTime(2026, 3, 18));
+    });
+
+    test('thisWeekRange produces Mon through today range', () {
+      // 2026-03-18 is a Wednesday (weekday 3)
+      final wednesday = DateTime(2026, 3, 18);
+      final range = thisWeekRange(wednesday);
+      expect(range.start, DateTime(2026, 3, 16)); // Monday
+      expect(range.end, DateTime(2026, 3, 18)); // Wednesday
+    });
+
     test('last 7 days crosses month boundary', () {
       final range = last7DaysRange(DateTime(2026, 3, 3));
       expect(range.start, DateTime(2026, 2, 25));
@@ -153,12 +168,32 @@ void main() {
         isNull,
       );
       expect(
+        resolveExpenseShareRange(ExpenseShareRangePreset.today, now: now),
+        DateTimeRange(start: DateTime(2026, 8, 18), end: DateTime(2026, 8, 18)),
+      );
+      expect(
+        resolveExpenseShareRange(ExpenseShareRangePreset.thisWeek, now: now),
+        DateTimeRange(start: DateTime(2026, 8, 17), end: DateTime(2026, 8, 18)),
+      );
+      expect(
         resolveExpenseShareRange(ExpenseShareRangePreset.month, now: now),
         DateTimeRange(start: DateTime(2026, 8, 1), end: DateTime(2026, 8, 18)),
       );
       expect(
         resolveExpenseShareRange(ExpenseShareRangePreset.last7, now: now),
         DateTimeRange(start: DateTime(2026, 8, 12), end: DateTime(2026, 8, 18)),
+      );
+      final singleDay = DateTimeRange(
+        start: DateTime(2026, 5, 10),
+        end: DateTime(2026, 5, 10),
+      );
+      expect(
+        resolveExpenseShareRange(
+          ExpenseShareRangePreset.singleDay,
+          now: now,
+          custom: singleDay,
+        ),
+        singleDay,
       );
       final custom = DateTimeRange(
         start: DateTime(2026, 1, 1),
@@ -349,6 +384,141 @@ void main() {
       expect(text, contains('Jordan: 10.50 + 14 = 24.50'));
       expect(text, contains('Riley: 10.50'));
       expect(text, contains(r'Total: $84'));
+    });
+
+    test(
+      'buildGroupPeriodReport aggregates totals, member summary, and debts',
+      () {
+        final userMap = {
+          'alex': User(
+            id: 'alex',
+            name: 'Alex',
+            colorIndex: 0,
+            isCurrentUser: true,
+            createdAt: createdAt,
+          ),
+          'sam': User(
+            id: 'sam',
+            name: 'Sam',
+            colorIndex: 1,
+            isCurrentUser: false,
+            createdAt: createdAt,
+          ),
+          'jordan': User(
+            id: 'jordan',
+            name: 'Jordan',
+            colorIndex: 2,
+            isCurrentUser: false,
+            createdAt: createdAt,
+          ),
+          'riley': User(
+            id: 'riley',
+            name: 'Riley',
+            colorIndex: 3,
+            isCurrentUser: false,
+            createdAt: createdAt,
+          ),
+        };
+        final members = [
+          GroupMemberInfo(userMap['alex']!),
+          GroupMemberInfo(userMap['sam']!),
+          GroupMemberInfo(userMap['jordan']!),
+          GroupMemberInfo(userMap['riley']!),
+        ];
+
+        final settlements = [
+          Settlement(
+            id: 'set-1',
+            groupId: 'g1',
+            fromUserId: 'sam',
+            toUserId: 'alex',
+            amountCents: 1000,
+            date: DateTime(2026, 3, 4),
+            createdAt: DateTime(2026, 3, 4),
+          ),
+        ];
+
+        // Test all dates
+        final reportAll = buildGroupPeriodReport(
+          allExpenses: [dinner(), groceries()],
+          allSettlements: settlements,
+          members: members,
+          users: userMap,
+          range: null,
+          currentUserId: 'alex',
+        );
+
+        expect(reportAll.totalSpendCents, 8400);
+        expect(reportAll.expenseCount, 2);
+        expect(reportAll.averageExpenseCents, 4200);
+        expect(reportAll.filteredExpenses.length, 2);
+        expect(reportAll.myPaidCents, 7200); // 4200 + 3000
+        expect(reportAll.myShareCents, 2450); // 1050 + 1400
+        // Alex net: paid (7200) - share (2450) - received settlement (1000) = +3750
+        expect(reportAll.myNetCents, 3750);
+        expect(reportAll.memberSummaries.length, 4);
+
+        // Test date range matching only Dinner (March 1 to March 3)
+        final dinnerRange = DateTimeRange(
+          start: DateTime(2026, 3, 1),
+          end: DateTime(2026, 3, 3),
+        );
+        final reportDinner = buildGroupPeriodReport(
+          allExpenses: [dinner(), groceries()],
+          allSettlements: settlements, // settlement on March 4 excluded
+          members: members,
+          users: userMap,
+          range: dinnerRange,
+          currentUserId: 'alex',
+        );
+
+        expect(reportDinner.totalSpendCents, 4200);
+        expect(reportDinner.expenseCount, 1);
+        expect(reportDinner.averageExpenseCents, 4200);
+        expect(reportDinner.filteredExpenses.length, 1);
+        expect(reportDinner.filteredExpenses.first.expense.title, 'Dinner');
+        expect(reportDinner.myPaidCents, 4200);
+        expect(reportDinner.myShareCents, 1050);
+        // Dinner net for Alex: 4200 - 1050 = 3150
+        expect(reportDinner.myNetCents, 3150);
+        // Debts for Dinner: 3 members owe Alex 1050 each
+        expect(reportDinner.periodDebts.length, 3);
+        for (final debt in reportDinner.periodDebts) {
+          expect(debt.toUserId, 'alex');
+          expect(debt.amountCents, 1050);
+        }
+      },
+    );
+
+    test('filterSettlementsByDateRange filters settlements inclusively', () {
+      final settlements = [
+        Settlement(
+          id: 's1',
+          groupId: 'g1',
+          fromUserId: 'u1',
+          toUserId: 'u2',
+          amountCents: 500,
+          date: DateTime(2026, 3, 2),
+          createdAt: DateTime(2026, 3, 2),
+        ),
+        Settlement(
+          id: 's2',
+          groupId: 'g1',
+          fromUserId: 'u2',
+          toUserId: 'u1',
+          amountCents: 800,
+          date: DateTime(2026, 3, 10),
+          createdAt: DateTime(2026, 3, 10),
+        ),
+      ];
+
+      final filtered = filterSettlementsByDateRange(
+        settlements,
+        DateTimeRange(start: DateTime(2026, 3, 1), end: DateTime(2026, 3, 5)),
+      );
+
+      expect(filtered.length, 1);
+      expect(filtered.first.id, 's1');
     });
   });
 }

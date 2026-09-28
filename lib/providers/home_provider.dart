@@ -112,6 +112,9 @@ final homeDataProvider = Provider<AsyncValue<HomeData>>((ref) {
       if (s.createdAt.isAfter(lastActivity)) {
         lastActivity = s.createdAt;
       }
+      if (s.date.isAfter(lastActivity)) {
+        lastActivity = s.date;
+      }
     }
 
     summaries.add(

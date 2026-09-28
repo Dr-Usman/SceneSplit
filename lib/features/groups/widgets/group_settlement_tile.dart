@@ -34,7 +34,7 @@ class GroupSettlementTile extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final from = users[settlement.fromUserId]?.name ?? '?';
     final to = users[settlement.toUserId]?.name ?? '?';
-    final date = DateFormat.MMMd(locale).format(settlement.createdAt);
+    final date = DateFormat.MMMEd(locale).format(settlement.date);
     final note = settlement.note?.trim();
     final hasNote = note != null && note.isNotEmpty;
 
@@ -58,60 +58,63 @@ class GroupSettlementTile extends StatelessWidget {
         return false;
       },
       child: AppCard(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         onTap: onTap,
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.positive.withValues(
-                  alpha: isDark ? 0.18 : 0.1,
+            Row(
+              children: [
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: AppColors.positive.withValues(
+                      alpha: isDark ? 0.18 : 0.1,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.handshake_outlined,
+                    color: AppColors.positive,
+                    size: 14,
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              alignment: Alignment.center,
-              child: const Icon(
-                Icons.handshake_outlined,
-                color: AppColors.positive,
-                size: 16,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
                     l10n.groupsSettlementPaid(from, to),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 1),
-                  Text(
-                    hasNote ? '$date · $note' : date,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: scheme.onSurfaceVariant,
-                    ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  formatCents(
+                    settlement.amountCents,
+                    currencyCode,
+                    locale: locale,
+                    showDecimals: showDecimals,
                   ),
-                ],
-              ),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.positive,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
+            const SizedBox(height: 5),
             Text(
-              formatCents(
-                settlement.amountCents,
-                currencyCode,
-                locale: locale,
-                showDecimals: showDecimals,
-              ),
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+              hasNote ? '$date · $note' : date,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant),
             ),
           ],
         ),

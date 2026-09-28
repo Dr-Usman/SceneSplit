@@ -291,6 +291,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupsMembers => 'MEMBERS';
 
   @override
+  String groupsSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count selected',
+      one: '1 selected',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get groupsAddMemberHint => 'Add member by name';
 
   @override
@@ -526,6 +537,177 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupsShareExpensesByPerson => 'By person';
+
+  @override
+  String get groupsReport => 'Report';
+
+  @override
+  String get groupsReportTooltip => 'View scene report';
+
+  @override
+  String groupsReportTitle(String groupName) {
+    return '$groupName report';
+  }
+
+  @override
+  String get groupsReportTotalSpending => 'Total spending';
+
+  @override
+  String get groupsReportAverageExpense => 'Average';
+
+  @override
+  String get groupsReportMemberSummary => 'Member breakdown';
+
+  @override
+  String get groupsReportPaid => 'Paid';
+
+  @override
+  String get groupsReportShare => 'Share';
+
+  @override
+  String get groupsReportNet => 'Net';
+
+  @override
+  String get groupsReportWhoOwesWhom => 'Who owes whom';
+
+  @override
+  String get groupsReportAllSettled => 'All settled for this period';
+
+  @override
+  String groupsReportItemizedExpenses(int count) {
+    return 'Expenses ($count)';
+  }
+
+  @override
+  String groupsReportYourShare(String amount) {
+    return 'Your share: $amount';
+  }
+
+  @override
+  String groupsReportYourNet(String amount) {
+    return 'Your net: $amount';
+  }
+
+  @override
+  String get groupsReportSearchPlaceholder =>
+      'Search title, note, or amount...';
+
+  @override
+  String get groupsReportFilterAllMembers => 'All members';
+
+  @override
+  String groupsReportFilterMember(String name) {
+    return 'Member: $name';
+  }
+
+  @override
+  String get groupsReportFilterDate => 'Date';
+
+  @override
+  String get groupsShareExpensesRangeToday => 'Today';
+
+  @override
+  String get groupsShareExpensesRange1Day => '1 day';
+
+  @override
+  String get groupsShareExpensesRangeThisWeek => 'This week';
+
+  @override
+  String get groupsReportDateDialogTitle => 'Choose date range';
+
+  @override
+  String get groupsReportFromDate => 'From';
+
+  @override
+  String get groupsReportToDate => 'To';
+
+  @override
+  String get groupsReportApply => 'Apply';
+
+  @override
+  String groupsReportSettlementsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count settlements',
+      one: '1 settlement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get groupsReportNoSettlements => 'No settlements in this period.';
+
+  @override
+  String get groupsReportSort => 'Sort';
+
+  @override
+  String get groupsReportSortDateDesc => 'Newest first';
+
+  @override
+  String get groupsReportSortDateAsc => 'Oldest first';
+
+  @override
+  String get groupsReportSortNewest => 'Newest';
+
+  @override
+  String get groupsReportSortOldest => 'Oldest';
+
+  @override
+  String groupsReportShowMore(int remaining) {
+    return 'Show more ($remaining)';
+  }
+
+  @override
+  String get groupsReportOpenDebt => 'Open debt';
+
+  @override
+  String get groupsReportTotalSettled => 'Total settled';
+
+  @override
+  String get groupsReportSettled => 'Settled';
+
+  @override
+  String get groupsReportPending => 'Pending';
+
+  @override
+  String get groupsReportTotalPaid => 'Total paid';
+
+  @override
+  String get groupsReportTotalReceived => 'Total received';
+
+  @override
+  String get groupsReportReceived => 'Received';
+
+  @override
+  String get groupsReportNetBalance => 'Your net balance';
+
+  @override
+  String groupsReportMemberNet(String name) {
+    return '$name\'s net balance';
+  }
+
+  @override
+  String groupsReportOwedTo(String name) {
+    return 'Owed to $name';
+  }
+
+  @override
+  String groupsReportOwes(String name) {
+    return '$name owes';
+  }
+
+  @override
+  String get groupsReportYouOwed => 'You are owed';
+
+  @override
+  String get groupsReportYouOwe => 'You owe';
+
+  @override
+  String get groupsReportPaidOutSubtitle => 'Expenses & payments';
+
+  @override
+  String get groupsReportReceivedSubtitle => 'Settlements collected';
 
   @override
   String get groupsSettlements => 'SETTLEMENTS';
@@ -1216,6 +1398,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorBackupImportWeb =>
       'Backup import is not available on web. Use the mobile or desktop app to import backups.';
+
+  @override
+  String get errorScreenTitle => 'Unable to load SceneSplit';
+
+  @override
+  String get errorScreenSubtitle =>
+      'We ran into an unexpected issue while loading your data. You can try restarting or reach out to support.';
+
+  @override
+  String get errorScreenRetry => 'Try again';
+
+  @override
+  String get errorScreenCopyDetails => 'Copy error details';
+
+  @override
+  String get errorScreenCopied => 'Error details copied to clipboard';
+
+  @override
+  String get errorScreenContact => 'Contact & Feedback';
 
   @override
   String get languageEnglish => 'English';

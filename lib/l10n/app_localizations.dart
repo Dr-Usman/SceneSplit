@@ -597,6 +597,12 @@ abstract class AppLocalizations {
   /// **'MEMBERS'**
   String get groupsMembers;
 
+  /// No description provided for @groupsSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 selected} other{{count} selected}}'**
+  String groupsSelectedCount(int count);
+
   /// No description provided for @groupsAddMemberHint.
   ///
   /// In en, this message translates to:
@@ -938,6 +944,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'By person'**
   String get groupsShareExpensesByPerson;
+
+  /// No description provided for @groupsReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get groupsReport;
+
+  /// No description provided for @groupsReportTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View scene report'**
+  String get groupsReportTooltip;
+
+  /// No description provided for @groupsReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{groupName} report'**
+  String groupsReportTitle(String groupName);
+
+  /// No description provided for @groupsReportTotalSpending.
+  ///
+  /// In en, this message translates to:
+  /// **'Total spending'**
+  String get groupsReportTotalSpending;
+
+  /// No description provided for @groupsReportAverageExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get groupsReportAverageExpense;
+
+  /// No description provided for @groupsReportMemberSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Member breakdown'**
+  String get groupsReportMemberSummary;
+
+  /// No description provided for @groupsReportPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get groupsReportPaid;
+
+  /// No description provided for @groupsReportShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get groupsReportShare;
+
+  /// No description provided for @groupsReportNet.
+  ///
+  /// In en, this message translates to:
+  /// **'Net'**
+  String get groupsReportNet;
+
+  /// No description provided for @groupsReportWhoOwesWhom.
+  ///
+  /// In en, this message translates to:
+  /// **'Who owes whom'**
+  String get groupsReportWhoOwesWhom;
+
+  /// No description provided for @groupsReportAllSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'All settled for this period'**
+  String get groupsReportAllSettled;
+
+  /// No description provided for @groupsReportItemizedExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses ({count})'**
+  String groupsReportItemizedExpenses(int count);
+
+  /// No description provided for @groupsReportYourShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Your share: {amount}'**
+  String groupsReportYourShare(String amount);
+
+  /// No description provided for @groupsReportYourNet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your net: {amount}'**
+  String groupsReportYourNet(String amount);
+
+  /// No description provided for @groupsReportSearchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search title, note, or amount...'**
+  String get groupsReportSearchPlaceholder;
+
+  /// No description provided for @groupsReportFilterAllMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'All members'**
+  String get groupsReportFilterAllMembers;
+
+  /// No description provided for @groupsReportFilterMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member: {name}'**
+  String groupsReportFilterMember(String name);
+
+  /// No description provided for @groupsReportFilterDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get groupsReportFilterDate;
+
+  /// No description provided for @groupsShareExpensesRangeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get groupsShareExpensesRangeToday;
+
+  /// No description provided for @groupsShareExpensesRange1Day.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day'**
+  String get groupsShareExpensesRange1Day;
+
+  /// No description provided for @groupsShareExpensesRangeThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get groupsShareExpensesRangeThisWeek;
+
+  /// No description provided for @groupsReportDateDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date range'**
+  String get groupsReportDateDialogTitle;
+
+  /// No description provided for @groupsReportFromDate.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get groupsReportFromDate;
+
+  /// No description provided for @groupsReportToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get groupsReportToDate;
+
+  /// No description provided for @groupsReportApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get groupsReportApply;
+
+  /// No description provided for @groupsReportSettlementsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 settlement} other{{count} settlements}}'**
+  String groupsReportSettlementsCount(int count);
+
+  /// No description provided for @groupsReportNoSettlements.
+  ///
+  /// In en, this message translates to:
+  /// **'No settlements in this period.'**
+  String get groupsReportNoSettlements;
+
+  /// No description provided for @groupsReportSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get groupsReportSort;
+
+  /// No description provided for @groupsReportSortDateDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest first'**
+  String get groupsReportSortDateDesc;
+
+  /// No description provided for @groupsReportSortDateAsc.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get groupsReportSortDateAsc;
+
+  /// No description provided for @groupsReportSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get groupsReportSortNewest;
+
+  /// No description provided for @groupsReportSortOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest'**
+  String get groupsReportSortOldest;
+
+  /// No description provided for @groupsReportShowMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more ({remaining})'**
+  String groupsReportShowMore(int remaining);
+
+  /// No description provided for @groupsReportOpenDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Open debt'**
+  String get groupsReportOpenDebt;
+
+  /// No description provided for @groupsReportTotalSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Total settled'**
+  String get groupsReportTotalSettled;
+
+  /// No description provided for @groupsReportSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'Settled'**
+  String get groupsReportSettled;
+
+  /// No description provided for @groupsReportPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get groupsReportPending;
+
+  /// No description provided for @groupsReportTotalPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Total paid'**
+  String get groupsReportTotalPaid;
+
+  /// No description provided for @groupsReportTotalReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Total received'**
+  String get groupsReportTotalReceived;
+
+  /// No description provided for @groupsReportReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get groupsReportReceived;
+
+  /// No description provided for @groupsReportNetBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your net balance'**
+  String get groupsReportNetBalance;
+
+  /// No description provided for @groupsReportMemberNet.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s net balance'**
+  String groupsReportMemberNet(String name);
+
+  /// No description provided for @groupsReportOwedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Owed to {name}'**
+  String groupsReportOwedTo(String name);
+
+  /// No description provided for @groupsReportOwes.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} owes'**
+  String groupsReportOwes(String name);
+
+  /// No description provided for @groupsReportYouOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'You are owed'**
+  String get groupsReportYouOwed;
+
+  /// No description provided for @groupsReportYouOwe.
+  ///
+  /// In en, this message translates to:
+  /// **'You owe'**
+  String get groupsReportYouOwe;
+
+  /// No description provided for @groupsReportPaidOutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses & payments'**
+  String get groupsReportPaidOutSubtitle;
+
+  /// No description provided for @groupsReportReceivedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settlements collected'**
+  String get groupsReportReceivedSubtitle;
 
   /// No description provided for @groupsSettlements.
   ///
@@ -2108,6 +2402,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup import is not available on web. Use the mobile or desktop app to import backups.'**
   String get errorBackupImportWeb;
+
+  /// No description provided for @errorScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load SceneSplit'**
+  String get errorScreenTitle;
+
+  /// No description provided for @errorScreenSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We ran into an unexpected issue while loading your data. You can try restarting or reach out to support.'**
+  String get errorScreenSubtitle;
+
+  /// No description provided for @errorScreenRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get errorScreenRetry;
+
+  /// No description provided for @errorScreenCopyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy error details'**
+  String get errorScreenCopyDetails;
+
+  /// No description provided for @errorScreenCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Error details copied to clipboard'**
+  String get errorScreenCopied;
+
+  /// No description provided for @errorScreenContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact & Feedback'**
+  String get errorScreenContact;
 
   /// No description provided for @languageEnglish.
   ///

@@ -290,6 +290,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsMembers => 'الأعضاء';
 
   @override
+  String groupsSelectedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تم تحديد $count',
+      one: 'تم تحديد 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get groupsAddMemberHint => 'أضف عضوًا بالاسم';
 
   @override
@@ -523,6 +534,177 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get groupsShareExpensesByPerson => 'حسب الشخص';
+
+  @override
+  String get groupsReport => 'التقرير';
+
+  @override
+  String get groupsReportTooltip => 'عرض تقرير المشهد';
+
+  @override
+  String groupsReportTitle(String groupName) {
+    return 'تقرير $groupName';
+  }
+
+  @override
+  String get groupsReportTotalSpending => 'إجمالي الإنفاق';
+
+  @override
+  String get groupsReportAverageExpense => 'المتوسط';
+
+  @override
+  String get groupsReportMemberSummary => 'تفصيل الأعضاء';
+
+  @override
+  String get groupsReportPaid => 'المدفوع';
+
+  @override
+  String get groupsReportShare => 'الحصة';
+
+  @override
+  String get groupsReportNet => 'الصافي';
+
+  @override
+  String get groupsReportWhoOwesWhom => 'من يدين لمن';
+
+  @override
+  String get groupsReportAllSettled => 'تمت تسوية كل شيء لهذه الفترة';
+
+  @override
+  String groupsReportItemizedExpenses(int count) {
+    return 'النفقات ($count)';
+  }
+
+  @override
+  String groupsReportYourShare(String amount) {
+    return 'حصتك: $amount';
+  }
+
+  @override
+  String groupsReportYourNet(String amount) {
+    return 'صافيك: $amount';
+  }
+
+  @override
+  String get groupsReportSearchPlaceholder =>
+      'ابحث بالاسم أو الملاحظة أو المبلغ...';
+
+  @override
+  String get groupsReportFilterAllMembers => 'جميع الأعضاء';
+
+  @override
+  String groupsReportFilterMember(String name) {
+    return 'العضو: $name';
+  }
+
+  @override
+  String get groupsReportFilterDate => 'التاريخ';
+
+  @override
+  String get groupsShareExpensesRangeToday => 'اليوم';
+
+  @override
+  String get groupsShareExpensesRange1Day => 'يوم واحد';
+
+  @override
+  String get groupsShareExpensesRangeThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get groupsReportDateDialogTitle => 'اختر النطاق الزمني';
+
+  @override
+  String get groupsReportFromDate => 'من';
+
+  @override
+  String get groupsReportToDate => 'إلى';
+
+  @override
+  String get groupsReportApply => 'تطبيق';
+
+  @override
+  String groupsReportSettlementsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تسويات',
+      one: 'تسوية واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get groupsReportNoSettlements => 'لا توجد تسويات في هذه الفترة.';
+
+  @override
+  String get groupsReportSort => 'ترتيب';
+
+  @override
+  String get groupsReportSortDateDesc => 'الأحدث أولاً';
+
+  @override
+  String get groupsReportSortDateAsc => 'الأقدم أولاً';
+
+  @override
+  String get groupsReportSortNewest => 'الأحدث';
+
+  @override
+  String get groupsReportSortOldest => 'الأقدم';
+
+  @override
+  String groupsReportShowMore(int remaining) {
+    return 'عرض المزيد ($remaining)';
+  }
+
+  @override
+  String get groupsReportOpenDebt => 'الديون المستحقة';
+
+  @override
+  String get groupsReportTotalSettled => 'إجمالي التسويات';
+
+  @override
+  String get groupsReportSettled => 'تمت التسوية';
+
+  @override
+  String get groupsReportPending => 'معلق';
+
+  @override
+  String get groupsReportTotalPaid => 'إجمالي المدفوع';
+
+  @override
+  String get groupsReportTotalReceived => 'إجمالي المستلم';
+
+  @override
+  String get groupsReportReceived => 'المستلم';
+
+  @override
+  String get groupsReportNetBalance => 'رصيدك الصافي';
+
+  @override
+  String groupsReportMemberNet(String name) {
+    return 'صافي رصيد $name';
+  }
+
+  @override
+  String groupsReportOwedTo(String name) {
+    return 'مستحق لـ $name';
+  }
+
+  @override
+  String groupsReportOwes(String name) {
+    return '$name مدين';
+  }
+
+  @override
+  String get groupsReportYouOwed => 'أنت مستحق لك';
+
+  @override
+  String get groupsReportYouOwe => 'أنت مدين';
+
+  @override
+  String get groupsReportPaidOutSubtitle => 'المصروفات والمدفوعات';
+
+  @override
+  String get groupsReportReceivedSubtitle => 'التسويات المحصلة';
 
   @override
   String get groupsSettlements => 'التسويات';
@@ -1211,6 +1393,25 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get errorBackupImportWeb =>
       'استيراد النسخة الاحتياطية غير متاح على الويب. استخدم تطبيق الجوال أو سطح المكتب لاستيراد النسخ الاحتياطية.';
+
+  @override
+  String get errorScreenTitle => 'تعذر تحميل SceneSplit';
+
+  @override
+  String get errorScreenSubtitle =>
+      'حدث خطأ غير متوقع أثناء تحميل بياناتك. يمكنك إعادة المحاولة أو التواصل مع الدعم.';
+
+  @override
+  String get errorScreenRetry => 'إعادة المحاولة';
+
+  @override
+  String get errorScreenCopyDetails => 'نسخ تفاصيل الخطأ';
+
+  @override
+  String get errorScreenCopied => 'تم نسخ تفاصيل الخطأ إلى الحافظة';
+
+  @override
+  String get errorScreenContact => 'التواصل والملاحظات';
 
   @override
   String get languageEnglish => 'English';

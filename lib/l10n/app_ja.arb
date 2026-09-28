@@ -119,6 +119,7 @@
   "groupsShowDecimals": "小数点以下を表示",
   "groupsShowDecimalsSubtitle": "セントや端数を表示",
   "groupsMembers": "メンバー",
+  "groupsSelectedCount": "{count, plural, other{{count}人選択中}}",
   "groupsAddMemberHint": "名前でメンバーを追加",
   "groupsCreateGroup": "シーンを作成",
   "groupsSaveChanges": "変更を保存",
@@ -174,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "人別",
+  "groupsReport": "レポート",
+  "groupsReportTooltip": "シーンのレポートを見る",
+  "groupsReportTitle": "{groupName}のレポート",
+  "groupsReportTotalSpending": "総支出",
+  "groupsReportAverageExpense": "平均",
+  "groupsReportMemberSummary": "メンバー別内訳",
+  "groupsReportPaid": "支払額",
+  "groupsReportShare": "負担額",
+  "groupsReportNet": "差引",
+  "groupsReportWhoOwesWhom": "誰が誰に支払うか",
+  "groupsReportAllSettled": "この期間はすべて精算済みです",
+  "groupsReportItemizedExpenses": "経費 ({count})",
+  "groupsReportYourShare": "あなたの負担: {amount}",
+  "groupsReportYourNet": "あなたの差引: {amount}",
+  "groupsReportSearchPlaceholder": "タイトル、メモ、金額で検索...",
+  "groupsReportFilterAllMembers": "すべてのメンバー",
+  "groupsReportFilterMember": "メンバー: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "日付",
+  "groupsShareExpensesRangeToday": "今日",
+  "groupsShareExpensesRange1Day": "1日",
+  "groupsShareExpensesRangeThisWeek": "今週",
+  "groupsReportDateDialogTitle": "期間を選択",
+  "groupsReportFromDate": "開始",
+  "groupsReportToDate": "終了",
+  "groupsReportApply": "適用",
+  "groupsReportSettlementsCount": "{count, plural, other{{count}件の清算}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "この期間の清算はありません。",
+  "groupsReportSort": "並び替え",
+  "groupsReportSortDateDesc": "新しい順",
+  "groupsReportSortDateAsc": "古い順",
+  "groupsReportSortNewest": "新しい順",
+  "groupsReportSortOldest": "古い順",
+  "groupsReportShowMore": "さらに表示 ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "未精算の借金",
+  "groupsReportTotalSettled": "精算総額",
+  "groupsReportSettled": "精算済み",
+  "groupsReportPending": "保留中",
+  "groupsReportTotalPaid": "支払総額",
+  "groupsReportTotalReceived": "受取総額",
+  "groupsReportReceived": "受取額",
+  "groupsReportNetBalance": "あなたの純残高",
+  "groupsReportMemberNet": "{name}の純残高",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "{name}に支払うべき",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name}の負債",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "受け取る予定",
+  "groupsReportYouOwe": "支払う予定",
+  "groupsReportPaidOutSubtitle": "経費と支払い",
+  "groupsReportReceivedSubtitle": "回収された精算",
   "groupsSettlements": "精算履歴",
   "groupsExpenses": "経費",
   "groupsSettlementsTitle": "精算履歴",
@@ -411,6 +502,12 @@
   "errorBackupNotSceneSplit": "このファイルは SceneSplit のバックアップではないようです。",
   "errorBackupExportWeb": "Web ではバックアップのエクスポートは利用できません。モバイルまたはデスクトップアプリをご利用ください。",
   "errorBackupImportWeb": "Web ではバックアップのインポートは利用できません。モバイルまたはデスクトップアプリをご利用ください。",
+  "errorScreenTitle": "SceneSplitを読み込めませんでした",
+  "errorScreenSubtitle": "データの読み込み中に予期せぬエラーが発生しました。再試行するか、サポートにお問い合わせください。",
+  "errorScreenRetry": "再試行",
+  "errorScreenCopyDetails": "エラー詳細をコピー",
+  "errorScreenCopied": "エラー詳細をクリップボードにコピーしました",
+  "errorScreenContact": "お問い合わせとフィードバック",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

@@ -29,17 +29,29 @@ import 'group_settlements_screen.dart';
 import 'widgets/group_expense_tile.dart';
 import 'widgets/group_settlement_tile.dart';
 import 'widgets/share_expenses_sheet.dart';
+import 'reports/group_report_screen.dart';
 
-const _kExpensePreviewCount = 5;
-const _kSettlementPreviewCount = 3;
+const _kExpenseInitialCount = 5;
+const _kSettlementInitialCount = 3;
+const _kExpenseStep = 10;
+const _kSettlementStep = 5;
 
-class GroupDetailScreen extends ConsumerWidget {
+class GroupDetailScreen extends ConsumerStatefulWidget {
   const GroupDetailScreen({super.key, required this.groupId});
 
   final String groupId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GroupDetailScreen> createState() => _GroupDetailScreenState();
+}
+
+class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
+  int _expenseLimit = _kExpenseInitialCount;
+  int _settlementLimit = _kSettlementInitialCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final groupId = widget.groupId;
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
     final detail = ref.watch(groupDetailProvider(groupId));
@@ -55,12 +67,10 @@ class GroupDetailScreen extends ConsumerWidget {
       data: (data) {
         final currency = currencyByCode(data.group.currencyCode);
         final shareEntries = data.memberShareCents.entries.toList();
-        final settlementPreview = data.settlements
-            .take(_kSettlementPreviewCount)
+        final displayedSettlements = data.settlements
+            .take(_settlementLimit)
             .toList();
-        final expensePreview = data.expenses
-            .take(_kExpensePreviewCount)
-            .toList();
+        final displayedExpenses = data.expenses.take(_expenseLimit).toList();
         return Scaffold(
           appBar: AppBar(
             title: Column(
@@ -94,6 +104,15 @@ class GroupDetailScreen extends ConsumerWidget {
               ],
             ),
             actions: [
+              IconButton(
+                tooltip: l10n.groupsReportTooltip,
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => GroupReportScreen(groupId: groupId),
+                  ),
+                ),
+                icon: const Icon(Icons.assessment_outlined),
+              ),
               PopupMenuButton<String>(
                 onSelected: (action) async {
                   if (action == 'edit') {
@@ -342,13 +361,28 @@ class GroupDetailScreen extends ConsumerWidget {
               ],
               if (data.settlements.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                SectionHeader(l10n.groupsSettlements),
+                SectionHeader(
+                  l10n.groupsSettlements,
+                  trailing: data.settlements.length > _kSettlementInitialCount
+                      ? TextButton(
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  GroupSettlementsScreen(groupId: groupId),
+                            ),
+                          ),
+                          child: Text(
+                            l10n.groupsViewAllCount(data.settlements.length),
+                          ),
+                        )
+                      : null,
+                ),
                 const SizedBox(height: 8),
                 _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
                 const SizedBox(height: 12),
-                for (var i = 0; i < settlementPreview.length; i++) ...[
+                for (var i = 0; i < displayedSettlements.length; i++) ...[
                   GroupSettlementTile(
-                    settlement: settlementPreview[i],
+                    settlement: displayedSettlements[i],
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
@@ -358,24 +392,34 @@ class GroupDetailScreen extends ConsumerWidget {
                       groupId: groupId,
                       currencyCode: data.group.currencyCode,
                       members: data.members,
-                      existing: settlementPreview[i],
+                      existing: displayedSettlements[i],
                     ),
                     onDelete: () => confirmDeleteSettlement(
                       context,
                       ref,
-                      settlementPreview[i],
+                      displayedSettlements[i],
                     ),
                   ),
-                  if (i < settlementPreview.length - 1)
+                  if (i < displayedSettlements.length - 1)
                     const SizedBox(height: 6),
                 ],
-                if (data.settlements.length > _kSettlementPreviewCount)
-                  _SeeAllFooter(
-                    label: l10n.groupsViewAllCount(data.settlements.length),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            GroupSettlementsScreen(groupId: groupId),
+                if (data.settlements.length > displayedSettlements.length)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Center(
+                      child: TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _settlementLimit += _kSettlementStep;
+                          });
+                        },
+                        icon: const Icon(Icons.expand_more_rounded, size: 18),
+                        label: Text(
+                          l10n.groupsReportShowMore(
+                            data.settlements.length -
+                                displayedSettlements.length,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -385,26 +429,52 @@ class GroupDetailScreen extends ConsumerWidget {
                 l10n.groupsExpenses,
                 trailing: data.expenses.isEmpty
                     ? null
-                    : IconButton(
-                        tooltip: l10n.groupsShareExpenses,
-                        onPressed: () => shareSceneExpenses(
-                          context,
-                          ref,
-                          data: data,
-                          users: users,
-                          locale: locale,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 28,
-                          minHeight: 28,
-                        ),
-                        icon: Icon(
-                          Icons.share_outlined,
-                          size: 18,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            tooltip: l10n.groupsReportTooltip,
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    GroupReportScreen(groupId: groupId),
+                              ),
+                            ),
+                            visualDensity: VisualDensity.compact,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(
+                              minWidth: 28,
+                              minHeight: 28,
+                            ),
+                            icon: Icon(
+                              Icons.assessment_outlined,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          IconButton(
+                            tooltip: l10n.groupsShareExpenses,
+                            onPressed: () => shareSceneExpenses(
+                              context,
+                              ref,
+                              data: data,
+                              users: users,
+                              locale: locale,
+                            ),
+                            visualDensity: VisualDensity.compact,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(
+                              minWidth: 28,
+                              minHeight: 28,
+                            ),
+                            icon: Icon(
+                              Icons.share_outlined,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
                       ),
               ),
               if (data.expenses.isEmpty) ...[
@@ -414,9 +484,9 @@ class GroupDetailScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _SwipeHint(text: l10n.groupsSwipeToDeleteHint),
                 const SizedBox(height: 12),
-                for (var i = 0; i < expensePreview.length; i++) ...[
+                for (var i = 0; i < displayedExpenses.length; i++) ...[
                   GroupExpenseTile(
-                    item: expensePreview[i],
+                    item: displayedExpenses[i],
                     users: users,
                     currencyCode: data.group.currencyCode,
                     locale: locale,
@@ -425,7 +495,7 @@ class GroupDetailScreen extends ConsumerWidget {
                       MaterialPageRoute(
                         builder: (_) => ExpenseDetailScreen(
                           groupId: groupId,
-                          expenseId: expensePreview[i].expense.id,
+                          expenseId: displayedExpenses[i].expense.id,
                           currencyCode: data.group.currencyCode,
                         ),
                       ),
@@ -433,18 +503,44 @@ class GroupDetailScreen extends ConsumerWidget {
                     onDelete: () => confirmDeleteExpense(
                       context,
                       ref,
-                      expensePreview[i].expense,
+                      displayedExpenses[i].expense,
                     ),
                   ),
-                  if (i < expensePreview.length - 1) const SizedBox(height: 10),
+                  if (i < displayedExpenses.length - 1)
+                    const SizedBox(height: 10),
                 ],
-                if (data.expenses.length > _kExpensePreviewCount)
-                  _SeeAllFooter(
-                    label: l10n.groupsViewAllCount(data.expenses.length),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => GroupExpensesScreen(groupId: groupId),
-                      ),
+                if (data.expenses.length > displayedExpenses.length)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              _expenseLimit += _kExpenseStep;
+                            });
+                          },
+                          icon: const Icon(Icons.expand_more_rounded, size: 18),
+                          label: Text(
+                            l10n.groupsReportShowMore(
+                              data.expenses.length - displayedExpenses.length,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  GroupExpensesScreen(groupId: groupId),
+                            ),
+                          ),
+                          child: Text(
+                            l10n.groupsViewAllCount(data.expenses.length),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
               ],
@@ -542,28 +638,6 @@ class GroupDetailScreen extends ConsumerWidget {
       await deleteGroup(ref.read(databaseProvider), group.id);
       if (context.mounted) Navigator.of(context).pop();
     }
-  }
-}
-
-class _SeeAllFooter extends StatelessWidget {
-  const _SeeAllFooter({required this.label, required this.onPressed});
-
-  final String label;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          // visualDensity: VisualDensity.compact,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-        ),
-        child: Text(label),
-      ),
-    );
   }
 }
 

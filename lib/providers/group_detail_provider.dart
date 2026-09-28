@@ -138,10 +138,15 @@ final groupDetailProvider =
           .where((m) => m.groupId == groupId)
           .map((m) => m.userId)
           .toList();
-      final memberInfos = [
-        for (final id in memberIds)
-          if (userMap[id] != null) GroupMemberInfo(userMap[id]!),
-      ];
+      final memberInfos =
+          [
+            for (final id in memberIds)
+              if (userMap[id] != null) GroupMemberInfo(userMap[id]!),
+          ]..sort(
+            (a, b) => a.user.name.trim().toLowerCase().compareTo(
+              b.user.name.trim().toLowerCase(),
+            ),
+          );
 
       final groupExpenses =
           expenses.value!.where((e) => e.groupId == groupId).toList()
@@ -165,7 +170,7 @@ final groupDetailProvider =
       ];
       final groupSettlements =
           settlements.value!.where((s) => s.groupId == groupId).toList()
-            ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            ..sort((a, b) => b.date.compareTo(a.date));
 
       final net = BalanceService.netBalances(
         payers: groupPayers,

@@ -46,6 +46,7 @@ void main() {
       fromUserId: fromUserId,
       toUserId: toUserId,
       amountCents: amountCents,
+      date: now,
       createdAt: now,
     );
   }

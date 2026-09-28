@@ -36,7 +36,17 @@ class GroupExpenseTile extends StatelessWidget {
       for (final p in item.payers) users[p.userId]?.name ?? '?',
     ];
     final payer = formatPayersLabel(payerNames, l10n);
-    final date = DateFormat.MMMd(locale).format(expense.date);
+    final date = DateFormat.MMMEd(locale).format(expense.date);
+    final peopleCount = item.splits.where((s) => s.amountCents > 0).length;
+    final peopleLabel = l10n.groupsShareExpensesPeopleCount(peopleCount);
+    final splitLabel = switch (expense.splitType) {
+      'exact' => l10n.expensesSplitExact,
+      'percent' => l10n.expensesSplitByPercentage,
+      _ => l10n.expensesSplitEqual,
+    };
+    final scheme = Theme.of(context).colorScheme;
+    final note = expense.note?.trim();
+    final hasNote = note != null && note.isNotEmpty;
 
     return Dismissible(
       key: ValueKey(expense.id),
@@ -58,41 +68,71 @@ class GroupExpenseTile extends StatelessWidget {
         return false;
       },
       child: AppCard(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         onTap: onTap,
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
                     expense.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.groupsPayerPaidDate(payer, date),
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  formatCents(
+                    expense.amountCents,
+                    currencyCode,
+                    locale: locale,
+                    showDecimals: showDecimals,
+                  ),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '$date · $payer ${l10n.expensesSubtitlePaid} · $peopleLabel · $splitLabel',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant),
+            ),
+            if (hasNote) ...[
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    Icons.notes_outlined,
+                    size: 13,
+                    color: scheme.onSurfaceVariant.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      note,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: scheme.onSurfaceVariant,
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Text(
-              formatCents(
-                expense.amountCents,
-                currencyCode,
-                locale: locale,
-                showDecimals: showDecimals,
-              ),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
+            ],
           ],
         ),
       ),

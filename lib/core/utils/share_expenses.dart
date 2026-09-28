@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../shared/widgets/expense_share_card.dart';
 import '../l10n/l10n_extensions.dart';
 import 'share_balance_image.dart';
 
 /// Captures [card] as a PNG and opens the system share sheet.
 Future<bool> shareExpenseImage(
   BuildContext context, {
-  required ExpenseShareCard card,
+  required Widget card,
   required String groupName,
   required String caption,
 }) async {

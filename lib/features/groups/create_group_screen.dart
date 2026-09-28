@@ -138,13 +138,19 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final l10n = context.l10n;
     final me = ref.watch(currentUserProvider).value;
     final allUsers = ref.watch(usersStreamProvider).value ?? [];
-    final otherUsers = allUsers.where((u) => !u.isCurrentUser).toList();
+    final otherUsers = allUsers.where((u) => !u.isCurrentUser).toList()
+      ..sort(
+        (a, b) =>
+            a.name.trim().toLowerCase().compareTo(b.name.trim().toLowerCase()),
+      );
     final defaultCurrency = ref.watch(currencyCodeProvider).value ?? 'PKR';
     if (!_currencyInitialized) {
       _currencyCode = defaultCurrency;
       _showDecimals = defaultDecimalsForCurrency(defaultCurrency);
       _currencyInitialized = true;
     }
+    final totalSelectedCount =
+        (_includeMe ? 1 : 0) + _selectedUserIds.length + _newNames.length;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.groupsNewGroup)),
@@ -197,7 +203,21 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          _sectionLabel(context, l10n.groupsMembers),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _sectionLabel(context, l10n.groupsMembers),
+              if (totalSelectedCount > 0)
+                Text(
+                  l10n.groupsSelectedCount(totalSelectedCount),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+            ],
+          ),
           const SizedBox(height: 8),
           if (me != null)
             _MemberTile(

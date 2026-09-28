@@ -192,6 +192,14 @@
   "groupsShowDecimals": "Show decimals",
   "groupsShowDecimalsSubtitle": "Display cents and fractional amounts",
   "groupsMembers": "MEMBERS",
+  "groupsSelectedCount": "{count, plural, =1{1 selected} other{{count} selected}}",
+  "@groupsSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupsAddMemberHint": "Add member by name",
   "groupsCreateGroup": "Create scene",
   "groupsSaveChanges": "Save changes",
@@ -433,6 +441,124 @@
     }
   },
   "groupsShareExpensesByPerson": "By person",
+  "groupsReport": "Report",
+  "groupsReportTooltip": "View scene report",
+  "groupsReportTitle": "{groupName} report",
+  "@groupsReportTitle": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportTotalSpending": "Total spending",
+  "groupsReportAverageExpense": "Average",
+  "groupsReportMemberSummary": "Member breakdown",
+  "groupsReportPaid": "Paid",
+  "groupsReportShare": "Share",
+  "groupsReportNet": "Net",
+  "groupsReportWhoOwesWhom": "Who owes whom",
+  "groupsReportAllSettled": "All settled for this period",
+  "groupsReportItemizedExpenses": "Expenses ({count})",
+  "@groupsReportItemizedExpenses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportYourShare": "Your share: {amount}",
+  "@groupsReportYourShare": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYourNet": "Your net: {amount}",
+  "@groupsReportYourNet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportSearchPlaceholder": "Search title, note, or amount...",
+  "groupsReportFilterAllMembers": "All members",
+  "groupsReportFilterMember": "Member: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "Date",
+  "groupsShareExpensesRangeToday": "Today",
+  "groupsShareExpensesRange1Day": "1 day",
+  "groupsShareExpensesRangeThisWeek": "This week",
+  "groupsReportDateDialogTitle": "Choose date range",
+  "groupsReportFromDate": "From",
+  "groupsReportToDate": "To",
+  "groupsReportApply": "Apply",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 settlement} other{{count} settlements}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "No settlements in this period.",
+  "groupsReportSort": "Sort",
+  "groupsReportSortDateDesc": "Newest first",
+  "groupsReportSortDateAsc": "Oldest first",
+  "groupsReportSortNewest": "Newest",
+  "groupsReportSortOldest": "Oldest",
+  "groupsReportShowMore": "Show more ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "Open debt",
+  "groupsReportTotalSettled": "Total settled",
+  "groupsReportSettled": "Settled",
+  "groupsReportPending": "Pending",
+  "groupsReportTotalPaid": "Total paid",
+  "groupsReportTotalReceived": "Total received",
+  "groupsReportReceived": "Received",
+  "groupsReportNetBalance": "Your net balance",
+  "groupsReportMemberNet": "{name}'s net balance",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "Owed to {name}",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} owes",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "You are owed",
+  "groupsReportYouOwe": "You owe",
+  "groupsReportPaidOutSubtitle": "Expenses & payments",
+  "groupsReportReceivedSubtitle": "Settlements collected",
   "groupsSettlements": "SETTLEMENTS",
   "groupsExpenses": "EXPENSES",
   "groupsSettlementsTitle": "Settlements",
@@ -935,6 +1061,12 @@
   "errorBackupNotSceneSplit": "This file does not look like a SceneSplit backup.",
   "errorBackupExportWeb": "Backup export is not available on web. Use the mobile or desktop app to export backups.",
   "errorBackupImportWeb": "Backup import is not available on web. Use the mobile or desktop app to import backups.",
+  "errorScreenTitle": "Unable to load SceneSplit",
+  "errorScreenSubtitle": "We ran into an unexpected issue while loading your data. You can try restarting or reach out to support.",
+  "errorScreenRetry": "Try again",
+  "errorScreenCopyDetails": "Copy error details",
+  "errorScreenCopied": "Error details copied to clipboard",
+  "errorScreenContact": "Contact & Feedback",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

@@ -119,6 +119,7 @@
   "groupsShowDecimals": "Mostrar decimales",
   "groupsShowDecimalsSubtitle": "Mostrar centavos y montos fraccionarios",
   "groupsMembers": "MIEMBROS",
+  "groupsSelectedCount": "{count, plural, =1{1 seleccionado} other{{count} seleccionados}}",
   "groupsAddMemberHint": "Añadir miembro por nombre",
   "groupsCreateGroup": "Crear escena",
   "groupsSaveChanges": "Guardar cambios",
@@ -174,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "Por persona",
+  "groupsReport": "Informe",
+  "groupsReportTooltip": "Ver informe del escenario",
+  "groupsReportTitle": "Informe de {groupName}",
+  "groupsReportTotalSpending": "Gasto total",
+  "groupsReportAverageExpense": "Promedio",
+  "groupsReportMemberSummary": "Desglose por miembro",
+  "groupsReportPaid": "Pagado",
+  "groupsReportShare": "Parte",
+  "groupsReportNet": "Neto",
+  "groupsReportWhoOwesWhom": "Quién debe a quién",
+  "groupsReportAllSettled": "Todo liquidado en este período",
+  "groupsReportItemizedExpenses": "Gastos ({count})",
+  "groupsReportYourShare": "Tu parte: {amount}",
+  "groupsReportYourNet": "Tu neto: {amount}",
+  "groupsReportSearchPlaceholder": "Buscar título, nota o monto...",
+  "groupsReportFilterAllMembers": "Todos los miembros",
+  "groupsReportFilterMember": "Miembro: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "Fecha",
+  "groupsShareExpensesRangeToday": "Hoy",
+  "groupsShareExpensesRange1Day": "1 día",
+  "groupsShareExpensesRangeThisWeek": "Esta semana",
+  "groupsReportDateDialogTitle": "Elegir rango de fechas",
+  "groupsReportFromDate": "Desde",
+  "groupsReportToDate": "Hasta",
+  "groupsReportApply": "Aplicar",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 liquidación} other{{count} liquidaciones}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "No hay liquidaciones en este período.",
+  "groupsReportSort": "Ordenar",
+  "groupsReportSortDateDesc": "Más recientes primero",
+  "groupsReportSortDateAsc": "Más antiguos primero",
+  "groupsReportSortNewest": "Más recientes",
+  "groupsReportSortOldest": "Más antiguos",
+  "groupsReportShowMore": "Mostrar más ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "Deuda pendiente",
+  "groupsReportTotalSettled": "Total liquidado",
+  "groupsReportSettled": "Liquidado",
+  "groupsReportPending": "Pendiente",
+  "groupsReportTotalPaid": "Total pagado",
+  "groupsReportTotalReceived": "Total recibido",
+  "groupsReportReceived": "Recibido",
+  "groupsReportNetBalance": "Tu saldo neto",
+  "groupsReportMemberNet": "Saldo neto de {name}",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "Se le debe a {name}",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} debe",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "Te deben",
+  "groupsReportYouOwe": "Debes",
+  "groupsReportPaidOutSubtitle": "Gastos y pagos",
+  "groupsReportReceivedSubtitle": "Liquidaciones cobradas",
   "groupsSettlements": "LIQUIDACIONES",
   "groupsExpenses": "GASTOS",
   "groupsSettlementsTitle": "Liquidaciones",
@@ -411,6 +502,12 @@
   "errorBackupNotSceneSplit": "Este archivo no parece ser una copia de seguridad de SceneSplit.",
   "errorBackupExportWeb": "La exportación de copias de seguridad no está disponible en la web. Usa la app móvil o de escritorio para exportar copias de seguridad.",
   "errorBackupImportWeb": "La importación de copias de seguridad no está disponible en la web. Usa la app móvil o de escritorio para importar copias de seguridad.",
+  "errorScreenTitle": "No se pudo cargar SceneSplit",
+  "errorScreenSubtitle": "Ocurrió un problema inesperado al cargar tus datos. Puedes intentar reiniciar o contactar con soporte.",
+  "errorScreenRetry": "Intentar de nuevo",
+  "errorScreenCopyDetails": "Copiar detalles del error",
+  "errorScreenCopied": "Detalles del error copiados al portapapeles",
+  "errorScreenContact": "Contacto y sugerencias",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

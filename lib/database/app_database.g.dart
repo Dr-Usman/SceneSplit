@@ -2629,6 +2629,16 @@ class $SettlementsTable extends Settlements
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -2649,6 +2659,7 @@ class $SettlementsTable extends Settlements
     toUserId,
     amountCents,
     note,
+    date,
     createdAt,
   ];
   @override
@@ -2712,6 +2723,12 @@ class $SettlementsTable extends Settlements
         note.isAcceptableOrUnknown(data['note']!, _noteMeta),
       );
     }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -2751,6 +2768,10 @@ class $SettlementsTable extends Settlements
         DriftSqlType.string,
         data['${effectivePrefix}note'],
       ),
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}date'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -2771,6 +2792,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
   final String toUserId;
   final int amountCents;
   final String? note;
+  final DateTime date;
   final DateTime createdAt;
   const Settlement({
     required this.id,
@@ -2779,6 +2801,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
     required this.toUserId,
     required this.amountCents,
     this.note,
+    required this.date,
     required this.createdAt,
   });
   @override
@@ -2792,6 +2815,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String>(note);
     }
+    map['date'] = Variable<DateTime>(date);
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
   }
@@ -2804,6 +2828,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
       toUserId: Value(toUserId),
       amountCents: Value(amountCents),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      date: Value(date),
       createdAt: Value(createdAt),
     );
   }
@@ -2820,6 +2845,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
       toUserId: serializer.fromJson<String>(json['toUserId']),
       amountCents: serializer.fromJson<int>(json['amountCents']),
       note: serializer.fromJson<String?>(json['note']),
+      date: serializer.fromJson<DateTime>(json['date']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -2833,6 +2859,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
       'toUserId': serializer.toJson<String>(toUserId),
       'amountCents': serializer.toJson<int>(amountCents),
       'note': serializer.toJson<String?>(note),
+      'date': serializer.toJson<DateTime>(date),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -2844,6 +2871,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
     String? toUserId,
     int? amountCents,
     Value<String?> note = const Value.absent(),
+    DateTime? date,
     DateTime? createdAt,
   }) => Settlement(
     id: id ?? this.id,
@@ -2852,6 +2880,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
     toUserId: toUserId ?? this.toUserId,
     amountCents: amountCents ?? this.amountCents,
     note: note.present ? note.value : this.note,
+    date: date ?? this.date,
     createdAt: createdAt ?? this.createdAt,
   );
   Settlement copyWithCompanion(SettlementsCompanion data) {
@@ -2866,6 +2895,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
           ? data.amountCents.value
           : this.amountCents,
       note: data.note.present ? data.note.value : this.note,
+      date: data.date.present ? data.date.value : this.date,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -2879,6 +2909,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
           ..write('toUserId: $toUserId, ')
           ..write('amountCents: $amountCents, ')
           ..write('note: $note, ')
+          ..write('date: $date, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -2892,6 +2923,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
     toUserId,
     amountCents,
     note,
+    date,
     createdAt,
   );
   @override
@@ -2904,6 +2936,7 @@ class Settlement extends DataClass implements Insertable<Settlement> {
           other.toUserId == this.toUserId &&
           other.amountCents == this.amountCents &&
           other.note == this.note &&
+          other.date == this.date &&
           other.createdAt == this.createdAt);
 }
 
@@ -2914,6 +2947,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
   final Value<String> toUserId;
   final Value<int> amountCents;
   final Value<String?> note;
+  final Value<DateTime> date;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
   const SettlementsCompanion({
@@ -2923,6 +2957,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
     this.toUserId = const Value.absent(),
     this.amountCents = const Value.absent(),
     this.note = const Value.absent(),
+    this.date = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -2933,6 +2968,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
     required String toUserId,
     required int amountCents,
     this.note = const Value.absent(),
+    this.date = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -2947,6 +2983,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
     Expression<String>? toUserId,
     Expression<int>? amountCents,
     Expression<String>? note,
+    Expression<DateTime>? date,
     Expression<DateTime>? createdAt,
     Expression<int>? rowid,
   }) {
@@ -2957,6 +2994,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
       if (toUserId != null) 'to_user_id': toUserId,
       if (amountCents != null) 'amount_cents': amountCents,
       if (note != null) 'note': note,
+      if (date != null) 'date': date,
       if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -2969,6 +3007,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
     Value<String>? toUserId,
     Value<int>? amountCents,
     Value<String?>? note,
+    Value<DateTime>? date,
     Value<DateTime>? createdAt,
     Value<int>? rowid,
   }) {
@@ -2979,6 +3018,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
       toUserId: toUserId ?? this.toUserId,
       amountCents: amountCents ?? this.amountCents,
       note: note ?? this.note,
+      date: date ?? this.date,
       createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
     );
@@ -3005,6 +3045,9 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
     if (note.present) {
       map['note'] = Variable<String>(note.value);
     }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -3023,6 +3066,7 @@ class SettlementsCompanion extends UpdateCompanion<Settlement> {
           ..write('toUserId: $toUserId, ')
           ..write('amountCents: $amountCents, ')
           ..write('note: $note, ')
+          ..write('date: $date, ')
           ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -5994,6 +6038,7 @@ typedef $$SettlementsTableCreateCompanionBuilder =
       required String toUserId,
       required int amountCents,
       Value<String?> note,
+      Value<DateTime> date,
       Value<DateTime> createdAt,
       Value<int> rowid,
     });
@@ -6005,6 +6050,7 @@ typedef $$SettlementsTableUpdateCompanionBuilder =
       Value<String> toUserId,
       Value<int> amountCents,
       Value<String?> note,
+      Value<DateTime> date,
       Value<DateTime> createdAt,
       Value<int> rowid,
     });
@@ -6086,6 +6132,11 @@ class $$SettlementsTableFilterComposer
 
   ColumnFilters<String> get note => $composableBuilder(
     column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get date => $composableBuilder(
+    column: $table.date,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6188,6 +6239,11 @@ class $$SettlementsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -6282,6 +6338,9 @@ class $$SettlementsTableAnnotationComposer
 
   GeneratedColumn<String> get note =>
       $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -6390,6 +6449,7 @@ class $$SettlementsTableTableManager
                 Value<String> toUserId = const Value.absent(),
                 Value<int> amountCents = const Value.absent(),
                 Value<String?> note = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SettlementsCompanion(
@@ -6399,6 +6459,7 @@ class $$SettlementsTableTableManager
                 toUserId: toUserId,
                 amountCents: amountCents,
                 note: note,
+                date: date,
                 createdAt: createdAt,
                 rowid: rowid,
               ),
@@ -6410,6 +6471,7 @@ class $$SettlementsTableTableManager
                 required String toUserId,
                 required int amountCents,
                 Value<String?> note = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SettlementsCompanion.insert(
@@ -6419,6 +6481,7 @@ class $$SettlementsTableTableManager
                 toUserId: toUserId,
                 amountCents: amountCents,
                 note: note,
+                date: date,
                 createdAt: createdAt,
                 rowid: rowid,
               ),

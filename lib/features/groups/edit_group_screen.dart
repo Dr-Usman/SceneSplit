@@ -175,9 +175,23 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       data: (data) {
         _init(data);
         final currentMemberIds = data.members.map((m) => m.user.id).toSet();
-        final otherUsers = allUsers
-            .where((u) => !currentMemberIds.contains(u.id))
-            .toList();
+        final currentMembers = [...data.members]
+          ..sort((a, b) {
+            if (a.user.id == me?.id) return -1;
+            if (b.user.id == me?.id) return 1;
+            return a.user.name.trim().toLowerCase().compareTo(
+              b.user.name.trim().toLowerCase(),
+            );
+          });
+        final otherUsers =
+            allUsers.where((u) => !currentMemberIds.contains(u.id)).toList()
+              ..sort(
+                (a, b) => a.name.trim().toLowerCase().compareTo(
+                  b.name.trim().toLowerCase(),
+                ),
+              );
+
+        final totalSelectedCount = _selectedMemberIds.length + _newNames.length;
 
         return Scaffold(
           appBar: AppBar(title: Text(l10n.groupsEditGroup)),
@@ -229,9 +243,23 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              _sectionLabel(l10n.groupsMembers),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _sectionLabel(l10n.groupsMembers),
+                  if (totalSelectedCount > 0)
+                    Text(
+                      l10n.groupsSelectedCount(totalSelectedCount),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                ],
+              ),
               const SizedBox(height: 8),
-              for (final m in data.members)
+              for (final m in currentMembers)
                 _MemberTile(
                   name: m.user.name,
                   label: m.user.id == me?.id
