@@ -98,13 +98,13 @@ Try the web demo: https://dr-usman.github.io/SceneSplit/
 
 Split trips, dinners, and rent by scene. See who owes whom across all balances, settle up fast, and keep everything offline. No account needed.
 
-## What's New (v1.12.0)
+## What's New (v1.13.0)
 
-- In-app bill calculator: tap the calculator icon on any expense amount field to quickly add up and evaluate totals
-- Smart scene sorting: scenes now automatically order by latest expense, settlement, or activity
-- Clearer scene cards: see exact activity timestamps with day and time at a glance
-- Streamlined settled views: cleaner zero balance displays across Home and Scene detail
-- Performance and UI refinements
+- Scene reports: view in-depth spending summaries, date ranges, and who-owes-whom breakdowns
+- 1-tap report sharing: export beautiful executive image cards or full formatted text reports
+- Editable settlement dates: record and update settlements with past or custom dates
+- Member breakdown: view individual spending, paid amounts, and net balances at a glance
+- UI refinements and performance enhancements
 ---
 
 ## Pre-submit checklist

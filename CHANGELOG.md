@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-09-28
+
 ### Added
 
 - Scene reports dashboard & export: Comprehensive in-app analytics screen featuring interactive date presets and custom ranges, member filtering, real-time search, date sorting, and progressive pagination. Includes 1-tap branded image sharing (`GroupReportShareCard`) and full formatted plain-text export.

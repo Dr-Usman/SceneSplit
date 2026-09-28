@@ -47,9 +47,10 @@ Play Store feature graphic, device captures, and phone mockups: see [`store/play
 - **Person detail** — Per-person balances across scenes, per-currency total debt / total credit, who-owes-whom, expense shares, and settle
 - **Flexible splits** — Equal, exact amounts, or percentage, with live validation; choose who is included per expense
 - **Multi-payer bills** — An expense can be paid by one or more people (equal or exact amounts)
-- **Settlements** — Live balances; who-owes-whom uses the fewest transfers to settle each scene; editable settlement records
-- **Share balances** — Export Who Owes Whom (plus expense share totals) as an image for WhatsApp and other apps
-- **Insights** — Scene expense breakdown pie; tap a member to see which expenses make up their share
+- **Settlements** — Live balances; who-owes-whom uses the fewest transfers to settle each scene; editable settlement records with custom dates
+- **Scene reports & analytics** — In-depth spending summaries filtered by date range presets, custom dates, or member; real-time search, sorting, and pagination
+- **Executive sharing** — 1-tap branded PNG image cards with dynamic member focus, complete formatted plain-text reports, and balance receipts
+- **In-app calculator** — Quick arithmetic keypad built into expense amount fields for summing totals on the fly
 - **Currency** — App-wide default for home summary and new scenes; each scene has its own currency; locale-aware formatting
 - **Language** — English, Spanish, French, German, Portuguese (Brazil), Hindi, Arabic, and Japanese (system or Profile override)
 - **Appearance** — System, light, or dark theme (saved and applied before first frame)
@@ -115,7 +116,7 @@ lib/
 │   ├── main_tabs/     # Scenes / Balances / Profile shell
 │   ├── home/          # Scenes list
 │   ├── balances/      # Cross-scene who-owes-whom + pair drill-down
-│   ├── groups/        # create, edit, scene detail (UI: “scenes”)
+│   ├── groups/        # create, edit, scene detail, reports/ (UI: “scenes”)
 │   ├── expenses/
 │   ├── settlements/
 │   ├── profile/       # people, person detail, language, data & backup
@@ -138,7 +139,7 @@ All money amounts are stored as **integer cents**. Table names still use `Groups
 | `Expenses` | Scene expenses (`amountCents`, `splitType`, note, date) |
 | `ExpensePayers` | Who paid (one or more), with per-payer `amountCents` |
 | `ExpenseSplits` | Per-user split amounts |
-| `Settlements` | Recorded payments between members |
+| `Settlements` | Recorded payments between members (`amountCents`, `date`) |
 
 ## Commands
 

@@ -49,6 +49,8 @@ app.*.map.json
 *.jks
 *.keystore
 /marketing/promo-video
+# Local marketing assets
+/brag-output/
 
 # Play Store binaries (docs: store/play/README.md)
 /store/play/screenshots/
