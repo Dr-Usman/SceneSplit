@@ -540,6 +540,176 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsShareExpensesByPerson => 'व्यक्ति के हिसाब से';
 
   @override
+  String get groupsReport => 'रिपोर्ट';
+
+  @override
+  String get groupsReportTooltip => 'सीन रिपोर्ट देखें';
+
+  @override
+  String groupsReportTitle(String groupName) {
+    return 'रिपोर्ट — $groupName';
+  }
+
+  @override
+  String get groupsReportTotalSpending => 'कुल खर्च';
+
+  @override
+  String get groupsReportAverageExpense => 'औसत';
+
+  @override
+  String get groupsReportMemberSummary => 'सदस्य विवरण';
+
+  @override
+  String get groupsReportPaid => 'भुगतान';
+
+  @override
+  String get groupsReportShare => 'हिस्सा';
+
+  @override
+  String get groupsReportNet => 'बाकी';
+
+  @override
+  String get groupsReportWhoOwesWhom => 'किसका कितना बाकी';
+
+  @override
+  String get groupsReportAllSettled => 'इस अवधि के लिए सब चुकता है';
+
+  @override
+  String groupsReportItemizedExpenses(int count) {
+    return 'खर्च ($count)';
+  }
+
+  @override
+  String groupsReportYourShare(String amount) {
+    return 'आपका हिस्सा: $amount';
+  }
+
+  @override
+  String groupsReportYourNet(String amount) {
+    return 'आपका कुल: $amount';
+  }
+
+  @override
+  String get groupsReportSearchPlaceholder => 'शीर्षक, नोट या राशि खोजें...';
+
+  @override
+  String get groupsReportFilterAllMembers => 'सभी सदस्य';
+
+  @override
+  String groupsReportFilterMember(String name) {
+    return 'सदस्य: $name';
+  }
+
+  @override
+  String get groupsReportFilterDate => 'तारीख';
+
+  @override
+  String get groupsShareExpensesRangeToday => 'आज';
+
+  @override
+  String get groupsShareExpensesRange1Day => '1 दिन';
+
+  @override
+  String get groupsShareExpensesRangeThisWeek => 'इस सप्ताह';
+
+  @override
+  String get groupsReportDateDialogTitle => 'तारीख सीमा चुनें';
+
+  @override
+  String get groupsReportFromDate => 'से';
+
+  @override
+  String get groupsReportToDate => 'तक';
+
+  @override
+  String get groupsReportApply => 'लागू करें';
+
+  @override
+  String groupsReportSettlementsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count निपटान',
+      one: '1 निपटान',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get groupsReportNoSettlements => 'इस अवधि में कोई निपटान नहीं।';
+
+  @override
+  String get groupsReportSort => 'क्रमबद्ध करें';
+
+  @override
+  String get groupsReportSortDateDesc => 'नवीनतम पहले';
+
+  @override
+  String get groupsReportSortDateAsc => 'सबसे पुराने पहले';
+
+  @override
+  String get groupsReportSortNewest => 'नवीनतम';
+
+  @override
+  String get groupsReportSortOldest => 'पुराने';
+
+  @override
+  String groupsReportShowMore(int remaining) {
+    return 'और दिखाएं ($remaining)';
+  }
+
+  @override
+  String get groupsReportOpenDebt => 'बकाया ऋण';
+
+  @override
+  String get groupsReportTotalSettled => 'कुल चुकता';
+
+  @override
+  String get groupsReportSettled => 'चुकता';
+
+  @override
+  String get groupsReportPending => 'लंबित';
+
+  @override
+  String get groupsReportTotalPaid => 'कुल भुगतान';
+
+  @override
+  String get groupsReportTotalReceived => 'कुल प्राप्त';
+
+  @override
+  String get groupsReportReceived => 'प्राप्त';
+
+  @override
+  String get groupsReportNetBalance => 'आपका शुद्ध संतुलन';
+
+  @override
+  String groupsReportMemberNet(String name) {
+    return '$name का शुद्ध संतुलन';
+  }
+
+  @override
+  String groupsReportOwedTo(String name) {
+    return '$name को देय';
+  }
+
+  @override
+  String groupsReportOwes(String name) {
+    return '$name का बकाया है';
+  }
+
+  @override
+  String get groupsReportYouOwed => 'आपको मिलना है';
+
+  @override
+  String get groupsReportYouOwe => 'आपको देना है';
+
+  @override
+  String get groupsReportPaidOutSubtitle => 'खर्चे और भुगतान';
+
+  @override
+  String get groupsReportReceivedSubtitle => 'प्राप्त निपटान';
+
+  @override
   String get groupsSettlements => 'निपटान';
 
   @override
@@ -1230,6 +1400,25 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get errorBackupImportWeb =>
       'वेब पर बैकअप आयात उपलब्ध नहीं है। बैकअप आयात के लिए मोबाइल या डेस्कटॉप ऐप का उपयोग करें।';
+
+  @override
+  String get errorScreenTitle => 'SceneSplit लोड नहीं हो सका';
+
+  @override
+  String get errorScreenSubtitle =>
+      'आपका डेटा लोड करते समय एक अनपेक्षित समस्या आई। आप पुनः प्रयास कर सकते हैं या सहायता टीम से संपर्क कर सकते हैं।';
+
+  @override
+  String get errorScreenRetry => 'पुनः प्रयास करें';
+
+  @override
+  String get errorScreenCopyDetails => 'त्रुटि विवरण कॉपी करें';
+
+  @override
+  String get errorScreenCopied => 'त्रुटि विवरण क्लिपबोर्ड पर कॉपी किया गया';
+
+  @override
+  String get errorScreenContact => 'संपर्क और प्रतिक्रिया';
 
   @override
   String get languageEnglish => 'English';

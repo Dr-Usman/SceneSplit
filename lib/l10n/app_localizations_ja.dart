@@ -529,6 +529,175 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsShareExpensesByPerson => '人別';
 
   @override
+  String get groupsReport => 'レポート';
+
+  @override
+  String get groupsReportTooltip => 'シーンのレポートを見る';
+
+  @override
+  String groupsReportTitle(String groupName) {
+    return '$groupNameのレポート';
+  }
+
+  @override
+  String get groupsReportTotalSpending => '総支出';
+
+  @override
+  String get groupsReportAverageExpense => '平均';
+
+  @override
+  String get groupsReportMemberSummary => 'メンバー別内訳';
+
+  @override
+  String get groupsReportPaid => '支払額';
+
+  @override
+  String get groupsReportShare => '負担額';
+
+  @override
+  String get groupsReportNet => '差引';
+
+  @override
+  String get groupsReportWhoOwesWhom => '誰が誰に支払うか';
+
+  @override
+  String get groupsReportAllSettled => 'この期間はすべて精算済みです';
+
+  @override
+  String groupsReportItemizedExpenses(int count) {
+    return '経費 ($count)';
+  }
+
+  @override
+  String groupsReportYourShare(String amount) {
+    return 'あなたの負担: $amount';
+  }
+
+  @override
+  String groupsReportYourNet(String amount) {
+    return 'あなたの差引: $amount';
+  }
+
+  @override
+  String get groupsReportSearchPlaceholder => 'タイトル、メモ、金額で検索...';
+
+  @override
+  String get groupsReportFilterAllMembers => 'すべてのメンバー';
+
+  @override
+  String groupsReportFilterMember(String name) {
+    return 'メンバー: $name';
+  }
+
+  @override
+  String get groupsReportFilterDate => '日付';
+
+  @override
+  String get groupsShareExpensesRangeToday => '今日';
+
+  @override
+  String get groupsShareExpensesRange1Day => '1日';
+
+  @override
+  String get groupsShareExpensesRangeThisWeek => '今週';
+
+  @override
+  String get groupsReportDateDialogTitle => '期間を選択';
+
+  @override
+  String get groupsReportFromDate => '開始';
+
+  @override
+  String get groupsReportToDate => '終了';
+
+  @override
+  String get groupsReportApply => '適用';
+
+  @override
+  String groupsReportSettlementsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count件の清算',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get groupsReportNoSettlements => 'この期間の清算はありません。';
+
+  @override
+  String get groupsReportSort => '並び替え';
+
+  @override
+  String get groupsReportSortDateDesc => '新しい順';
+
+  @override
+  String get groupsReportSortDateAsc => '古い順';
+
+  @override
+  String get groupsReportSortNewest => '新しい順';
+
+  @override
+  String get groupsReportSortOldest => '古い順';
+
+  @override
+  String groupsReportShowMore(int remaining) {
+    return 'さらに表示 ($remaining)';
+  }
+
+  @override
+  String get groupsReportOpenDebt => '未精算の借金';
+
+  @override
+  String get groupsReportTotalSettled => '精算総額';
+
+  @override
+  String get groupsReportSettled => '精算済み';
+
+  @override
+  String get groupsReportPending => '保留中';
+
+  @override
+  String get groupsReportTotalPaid => '支払総額';
+
+  @override
+  String get groupsReportTotalReceived => '受取総額';
+
+  @override
+  String get groupsReportReceived => '受取額';
+
+  @override
+  String get groupsReportNetBalance => 'あなたの純残高';
+
+  @override
+  String groupsReportMemberNet(String name) {
+    return '$nameの純残高';
+  }
+
+  @override
+  String groupsReportOwedTo(String name) {
+    return '$nameに支払うべき';
+  }
+
+  @override
+  String groupsReportOwes(String name) {
+    return '$nameの負債';
+  }
+
+  @override
+  String get groupsReportYouOwed => '受け取る予定';
+
+  @override
+  String get groupsReportYouOwe => '支払う予定';
+
+  @override
+  String get groupsReportPaidOutSubtitle => '経費と支払い';
+
+  @override
+  String get groupsReportReceivedSubtitle => '回収された精算';
+
+  @override
   String get groupsSettlements => '精算履歴';
 
   @override
@@ -1208,6 +1377,25 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get errorBackupImportWeb =>
       'Web ではバックアップのインポートは利用できません。モバイルまたはデスクトップアプリをご利用ください。';
+
+  @override
+  String get errorScreenTitle => 'SceneSplitを読み込めませんでした';
+
+  @override
+  String get errorScreenSubtitle =>
+      'データの読み込み中に予期せぬエラーが発生しました。再試行するか、サポートにお問い合わせください。';
+
+  @override
+  String get errorScreenRetry => '再試行';
+
+  @override
+  String get errorScreenCopyDetails => 'エラー詳細をコピー';
+
+  @override
+  String get errorScreenCopied => 'エラー詳細をクリップボードにコピーしました';
+
+  @override
+  String get errorScreenContact => 'お問い合わせとフィードバック';
 
   @override
   String get languageEnglish => 'English';

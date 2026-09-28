@@ -175,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "Por pessoa",
+  "groupsReport": "Relatório",
+  "groupsReportTooltip": "Ver relatório do cenário",
+  "groupsReportTitle": "Relatório — {groupName}",
+  "groupsReportTotalSpending": "Gasto total",
+  "groupsReportAverageExpense": "Média",
+  "groupsReportMemberSummary": "Divisão por membro",
+  "groupsReportPaid": "Pago",
+  "groupsReportShare": "Parte",
+  "groupsReportNet": "Líquido",
+  "groupsReportWhoOwesWhom": "Quem deve a quem",
+  "groupsReportAllSettled": "Tudo acertado neste período",
+  "groupsReportItemizedExpenses": "Despesas ({count})",
+  "groupsReportYourShare": "Sua parte: {amount}",
+  "groupsReportYourNet": "Seu líquido: {amount}",
+  "groupsReportSearchPlaceholder": "Pesquisar título, nota ou valor...",
+  "groupsReportFilterAllMembers": "Todos os membros",
+  "groupsReportFilterMember": "Membro: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "Data",
+  "groupsShareExpensesRangeToday": "Hoje",
+  "groupsShareExpensesRange1Day": "1 dia",
+  "groupsShareExpensesRangeThisWeek": "Esta semana",
+  "groupsReportDateDialogTitle": "Escolher intervalo de datas",
+  "groupsReportFromDate": "De",
+  "groupsReportToDate": "Até",
+  "groupsReportApply": "Aplicar",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 acerto} other{{count} acertos}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "Nenhum acerto neste período.",
+  "groupsReportSort": "Ordenar",
+  "groupsReportSortDateDesc": "Mais recentes primeiro",
+  "groupsReportSortDateAsc": "Mais antigos primeiro",
+  "groupsReportSortNewest": "Mais recentes",
+  "groupsReportSortOldest": "Mais antigos",
+  "groupsReportShowMore": "Mostrar mais ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "Dívida em aberto",
+  "groupsReportTotalSettled": "Total liquidado",
+  "groupsReportSettled": "Liquidado",
+  "groupsReportPending": "Pendente",
+  "groupsReportTotalPaid": "Total pago",
+  "groupsReportTotalReceived": "Total recebido",
+  "groupsReportReceived": "Recebido",
+  "groupsReportNetBalance": "Seu saldo líquido",
+  "groupsReportMemberNet": "Saldo líquido de {name}",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "Devido a {name}",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} deve",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "Devem a você",
+  "groupsReportYouOwe": "Você deve",
+  "groupsReportPaidOutSubtitle": "Despesas e pagamentos",
+  "groupsReportReceivedSubtitle": "Liquidações recebidas",
   "groupsSettlements": "ACERTOS",
   "groupsExpenses": "DESPESAS",
   "groupsSettlementsTitle": "Acertos",
@@ -412,6 +502,12 @@
   "errorBackupNotSceneSplit": "Este arquivo não parece ser um backup do SceneSplit.",
   "errorBackupExportWeb": "Exportação de backup não está disponível na web. Use o app móvel ou desktop para exportar backups.",
   "errorBackupImportWeb": "Importação de backup não está disponível na web. Use o app móvel ou desktop para importar backups.",
+  "errorScreenTitle": "Não foi possível carregar o SceneSplit",
+  "errorScreenSubtitle": "Ocorreu um erro inesperado ao carregar seus dados. Você pode tentar novamente ou entrar em contato com o suporte.",
+  "errorScreenRetry": "Tentar novamente",
+  "errorScreenCopyDetails": "Copiar detalhes do erro",
+  "errorScreenCopied": "Detalhes do erro copiados para a área de transferência",
+  "errorScreenContact": "Contato e feedback",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

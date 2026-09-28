@@ -175,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name} : {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name} : {total}",
   "groupsShareExpensesByPerson": "Par personne",
+  "groupsReport": "Rapport",
+  "groupsReportTooltip": "Afficher le rapport",
+  "groupsReportTitle": "Rapport — {groupName}",
+  "groupsReportTotalSpending": "Dépenses totales",
+  "groupsReportAverageExpense": "Moyenne",
+  "groupsReportMemberSummary": "Répartition par membre",
+  "groupsReportPaid": "Payé",
+  "groupsReportShare": "Part",
+  "groupsReportNet": "Net",
+  "groupsReportWhoOwesWhom": "Qui doit à qui",
+  "groupsReportAllSettled": "Tout est réglé pour cette période",
+  "groupsReportItemizedExpenses": "Dépenses ({count})",
+  "groupsReportYourShare": "Votre part : {amount}",
+  "groupsReportYourNet": "Votre net : {amount}",
+  "groupsReportSearchPlaceholder": "Rechercher titre, note ou montant...",
+  "groupsReportFilterAllMembers": "Tous les membres",
+  "groupsReportFilterMember": "Membre : {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "Date",
+  "groupsShareExpensesRangeToday": "Aujourd'hui",
+  "groupsShareExpensesRange1Day": "1 jour",
+  "groupsShareExpensesRangeThisWeek": "Cette semaine",
+  "groupsReportDateDialogTitle": "Choisir la plage de dates",
+  "groupsReportFromDate": "Du",
+  "groupsReportToDate": "Au",
+  "groupsReportApply": "Appliquer",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 règlement} other{{count} règlements}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "Aucun règlement sur cette période.",
+  "groupsReportSort": "Trier",
+  "groupsReportSortDateDesc": "Plus récents d'abord",
+  "groupsReportSortDateAsc": "Plus anciens d'abord",
+  "groupsReportSortNewest": "Plus récents",
+  "groupsReportSortOldest": "Plus anciens",
+  "groupsReportShowMore": "Afficher plus ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "Dette en cours",
+  "groupsReportTotalSettled": "Total réglé",
+  "groupsReportSettled": "Réglé",
+  "groupsReportPending": "En attente",
+  "groupsReportTotalPaid": "Total payé",
+  "groupsReportTotalReceived": "Total reçu",
+  "groupsReportReceived": "Reçu",
+  "groupsReportNetBalance": "Votre solde net",
+  "groupsReportMemberNet": "Solde net de {name}",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "Dû à {name}",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} doit",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "On vous doit",
+  "groupsReportYouOwe": "Vous devez",
+  "groupsReportPaidOutSubtitle": "Dépenses et paiements",
+  "groupsReportReceivedSubtitle": "Règlements perçus",
   "groupsSettlements": "RÈGLEMENTS",
   "groupsExpenses": "DÉPENSES",
   "groupsSettlementsTitle": "Règlements",
@@ -412,6 +502,12 @@
   "errorBackupNotSceneSplit": "Ce fichier ne ressemble pas à une sauvegarde SceneSplit.",
   "errorBackupExportWeb": "L'exportation de sauvegarde n'est pas disponible sur le web. Utilisez l'application mobile ou de bureau pour exporter des sauvegardes.",
   "errorBackupImportWeb": "L'importation de sauvegarde n'est pas disponible sur le web. Utilisez l'application mobile ou de bureau pour importer des sauvegardes.",
+  "errorScreenTitle": "Impossible de charger SceneSplit",
+  "errorScreenSubtitle": "Un problème inattendu est survenu lors du chargement de vos données. Vous pouvez réessayer ou contacter l'assistance.",
+  "errorScreenRetry": "Réessayer",
+  "errorScreenCopyDetails": "Copier les détails de l'erreur",
+  "errorScreenCopied": "Détails de l'erreur copiés dans le presse-papiers",
+  "errorScreenContact": "Contact et retours",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

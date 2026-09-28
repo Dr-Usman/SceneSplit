@@ -175,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "حسب الشخص",
+  "groupsReport": "التقرير",
+  "groupsReportTooltip": "عرض تقرير المشهد",
+  "groupsReportTitle": "تقرير {groupName}",
+  "groupsReportTotalSpending": "إجمالي الإنفاق",
+  "groupsReportAverageExpense": "المتوسط",
+  "groupsReportMemberSummary": "تفصيل الأعضاء",
+  "groupsReportPaid": "المدفوع",
+  "groupsReportShare": "الحصة",
+  "groupsReportNet": "الصافي",
+  "groupsReportWhoOwesWhom": "من يدين لمن",
+  "groupsReportAllSettled": "تمت تسوية كل شيء لهذه الفترة",
+  "groupsReportItemizedExpenses": "النفقات ({count})",
+  "groupsReportYourShare": "حصتك: {amount}",
+  "groupsReportYourNet": "صافيك: {amount}",
+  "groupsReportSearchPlaceholder": "ابحث بالاسم أو الملاحظة أو المبلغ...",
+  "groupsReportFilterAllMembers": "جميع الأعضاء",
+  "groupsReportFilterMember": "العضو: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "التاريخ",
+  "groupsShareExpensesRangeToday": "اليوم",
+  "groupsShareExpensesRange1Day": "يوم واحد",
+  "groupsShareExpensesRangeThisWeek": "هذا الأسبوع",
+  "groupsReportDateDialogTitle": "اختر النطاق الزمني",
+  "groupsReportFromDate": "من",
+  "groupsReportToDate": "إلى",
+  "groupsReportApply": "تطبيق",
+  "groupsReportSettlementsCount": "{count, plural, =1{تسوية واحدة} other{{count} تسويات}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "لا توجد تسويات في هذه الفترة.",
+  "groupsReportSort": "ترتيب",
+  "groupsReportSortDateDesc": "الأحدث أولاً",
+  "groupsReportSortDateAsc": "الأقدم أولاً",
+  "groupsReportSortNewest": "الأحدث",
+  "groupsReportSortOldest": "الأقدم",
+  "groupsReportShowMore": "عرض المزيد ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "الديون المستحقة",
+  "groupsReportTotalSettled": "إجمالي التسويات",
+  "groupsReportSettled": "تمت التسوية",
+  "groupsReportPending": "معلق",
+  "groupsReportTotalPaid": "إجمالي المدفوع",
+  "groupsReportTotalReceived": "إجمالي المستلم",
+  "groupsReportReceived": "المستلم",
+  "groupsReportNetBalance": "رصيدك الصافي",
+  "groupsReportMemberNet": "صافي رصيد {name}",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "مستحق لـ {name}",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} مدين",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "أنت مستحق لك",
+  "groupsReportYouOwe": "أنت مدين",
+  "groupsReportPaidOutSubtitle": "المصروفات والمدفوعات",
+  "groupsReportReceivedSubtitle": "التسويات المحصلة",
   "groupsSettlements": "التسويات",
   "groupsExpenses": "النفقات",
   "groupsSettlementsTitle": "التسويات",
@@ -412,6 +502,12 @@
   "errorBackupNotSceneSplit": "يبدو أن هذا الملف ليس نسخة احتياطية من SceneSplit.",
   "errorBackupExportWeb": "تصدير النسخة الاحتياطية غير متاح على الويب. استخدم تطبيق الجوال أو سطح المكتب لتصدير النسخ الاحتياطية.",
   "errorBackupImportWeb": "استيراد النسخة الاحتياطية غير متاح على الويب. استخدم تطبيق الجوال أو سطح المكتب لاستيراد النسخ الاحتياطية.",
+  "errorScreenTitle": "تعذر تحميل SceneSplit",
+  "errorScreenSubtitle": "حدث خطأ غير متوقع أثناء تحميل بياناتك. يمكنك إعادة المحاولة أو التواصل مع الدعم.",
+  "errorScreenRetry": "إعادة المحاولة",
+  "errorScreenCopyDetails": "نسخ تفاصيل الخطأ",
+  "errorScreenCopied": "تم نسخ تفاصيل الخطأ إلى الحافظة",
+  "errorScreenContact": "التواصل والملاحظات",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

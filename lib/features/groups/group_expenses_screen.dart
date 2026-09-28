@@ -7,6 +7,7 @@ import '../../providers/group_detail_provider.dart';
 import '../../shared/widgets/app_card.dart';
 import '../expenses/expense_detail_screen.dart';
 import 'group_activity_dialogs.dart';
+import 'reports/group_report_screen.dart';
 import 'widgets/group_expense_tile.dart';
 import 'widgets/share_expenses_sheet.dart';
 
@@ -38,7 +39,16 @@ class GroupExpensesScreen extends ConsumerWidget {
           ).appBarTheme.titleTextStyle?.copyWith(fontSize: 18),
         ),
         actions: [
-          if (data != null && data.expenses.isNotEmpty)
+          if (data != null && data.expenses.isNotEmpty) ...[
+            IconButton(
+              tooltip: l10n.groupsReportTooltip,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => GroupReportScreen(groupId: groupId),
+                ),
+              ),
+              icon: const Icon(Icons.assessment_outlined),
+            ),
             IconButton(
               tooltip: l10n.groupsShareExpenses,
               onPressed: () => shareSceneExpenses(
@@ -50,6 +60,7 @@ class GroupExpensesScreen extends ConsumerWidget {
               ),
               icon: const Icon(Icons.share_outlined),
             ),
+          ],
         ],
       ),
       body: detail.when(

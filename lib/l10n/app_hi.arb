@@ -175,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "व्यक्ति के हिसाब से",
+  "groupsReport": "रिपोर्ट",
+  "groupsReportTooltip": "सीन रिपोर्ट देखें",
+  "groupsReportTitle": "रिपोर्ट — {groupName}",
+  "groupsReportTotalSpending": "कुल खर्च",
+  "groupsReportAverageExpense": "औसत",
+  "groupsReportMemberSummary": "सदस्य विवरण",
+  "groupsReportPaid": "भुगतान",
+  "groupsReportShare": "हिस्सा",
+  "groupsReportNet": "बाकी",
+  "groupsReportWhoOwesWhom": "किसका कितना बाकी",
+  "groupsReportAllSettled": "इस अवधि के लिए सब चुकता है",
+  "groupsReportItemizedExpenses": "खर्च ({count})",
+  "groupsReportYourShare": "आपका हिस्सा: {amount}",
+  "groupsReportYourNet": "आपका कुल: {amount}",
+  "groupsReportSearchPlaceholder": "शीर्षक, नोट या राशि खोजें...",
+  "groupsReportFilterAllMembers": "सभी सदस्य",
+  "groupsReportFilterMember": "सदस्य: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "तारीख",
+  "groupsShareExpensesRangeToday": "आज",
+  "groupsShareExpensesRange1Day": "1 दिन",
+  "groupsShareExpensesRangeThisWeek": "इस सप्ताह",
+  "groupsReportDateDialogTitle": "तारीख सीमा चुनें",
+  "groupsReportFromDate": "से",
+  "groupsReportToDate": "तक",
+  "groupsReportApply": "लागू करें",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 निपटान} other{{count} निपटान}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "इस अवधि में कोई निपटान नहीं।",
+  "groupsReportSort": "क्रमबद्ध करें",
+  "groupsReportSortDateDesc": "नवीनतम पहले",
+  "groupsReportSortDateAsc": "सबसे पुराने पहले",
+  "groupsReportSortNewest": "नवीनतम",
+  "groupsReportSortOldest": "पुराने",
+  "groupsReportShowMore": "और दिखाएं ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "बकाया ऋण",
+  "groupsReportTotalSettled": "कुल चुकता",
+  "groupsReportSettled": "चुकता",
+  "groupsReportPending": "लंबित",
+  "groupsReportTotalPaid": "कुल भुगतान",
+  "groupsReportTotalReceived": "कुल प्राप्त",
+  "groupsReportReceived": "प्राप्त",
+  "groupsReportNetBalance": "आपका शुद्ध संतुलन",
+  "groupsReportMemberNet": "{name} का शुद्ध संतुलन",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "{name} को देय",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} का बकाया है",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "आपको मिलना है",
+  "groupsReportYouOwe": "आपको देना है",
+  "groupsReportPaidOutSubtitle": "खर्चे और भुगतान",
+  "groupsReportReceivedSubtitle": "प्राप्त निपटान",
   "groupsSettlements": "निपटान",
   "groupsExpenses": "खर्च",
   "groupsSettlementsTitle": "निपटान",
@@ -412,6 +502,12 @@
   "errorBackupNotSceneSplit": "यह फ़ाइल SceneSplit बैकअप जैसी नहीं लगती।",
   "errorBackupExportWeb": "वेब पर बैकअप निर्यात उपलब्ध नहीं है। बैकअप निर्यात के लिए मोबाइल या डेस्कटॉप ऐप का उपयोग करें।",
   "errorBackupImportWeb": "वेब पर बैकअप आयात उपलब्ध नहीं है। बैकअप आयात के लिए मोबाइल या डेस्कटॉप ऐप का उपयोग करें।",
+  "errorScreenTitle": "SceneSplit लोड नहीं हो सका",
+  "errorScreenSubtitle": "आपका डेटा लोड करते समय एक अनपेक्षित समस्या आई। आप पुनः प्रयास कर सकते हैं या सहायता टीम से संपर्क कर सकते हैं।",
+  "errorScreenRetry": "पुनः प्रयास करें",
+  "errorScreenCopyDetails": "त्रुटि विवरण कॉपी करें",
+  "errorScreenCopied": "त्रुटि विवरण क्लिपबोर्ड पर कॉपी किया गया",
+  "errorScreenContact": "संपर्क और प्रतिक्रिया",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

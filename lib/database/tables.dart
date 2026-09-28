@@ -93,6 +93,7 @@ class Settlements extends Table {
   TextColumn get toUserId => text().references(Users, #id)();
   IntColumn get amountCents => integer()();
   TextColumn get note => text().nullable()();
+  DateTimeColumn get date => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override

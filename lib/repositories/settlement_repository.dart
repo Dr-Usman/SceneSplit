@@ -12,8 +12,11 @@ Future<String> createSettlement(
   required String toUserId,
   required int amountCents,
   String? note,
+  DateTime? date,
+  DateTime? createdAt,
 }) async {
   final id = _uuid.v4();
+  final settlementDate = date ?? createdAt ?? DateTime.now();
   await db
       .into(db.settlements)
       .insert(
@@ -24,6 +27,10 @@ Future<String> createSettlement(
           toUserId: toUserId,
           amountCents: amountCents,
           note: Value(note),
+          date: Value(settlementDate),
+          createdAt: createdAt != null
+              ? Value(createdAt)
+              : const Value.absent(),
         ),
       );
   return id;
@@ -36,6 +43,7 @@ Future<void> updateSettlement(
   required String toUserId,
   required int amountCents,
   String? note,
+  DateTime? date,
 }) async {
   await (db.update(
     db.settlements,
@@ -45,6 +53,7 @@ Future<void> updateSettlement(
       toUserId: Value(toUserId),
       amountCents: Value(amountCents),
       note: Value(note),
+      date: date != null ? Value(date) : const Value.absent(),
     ),
   );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
@@ -73,6 +74,7 @@ class _RecordSettlementSheetState
   final _noteController = TextEditingController();
   late String _fromUserId;
   late String _toUserId;
+  late DateTime _date;
   bool _saving = false;
 
   bool get _isEditing => widget.existing != null;
@@ -84,22 +86,26 @@ class _RecordSettlementSheetState
     if (existing != null) {
       _fromUserId = existing.fromUserId;
       _toUserId = existing.toUserId;
+      _date = existing.date;
       _amountController.text = (existing.amountCents / 100).toStringAsFixed(
         existing.amountCents % 100 == 0 ? 0 : 2,
       );
       if (existing.note != null) {
         _noteController.text = existing.note!;
       }
-    } else if (widget.prefill != null) {
-      _fromUserId = widget.prefill!.fromUserId;
-      _toUserId = widget.prefill!.toUserId;
-      _amountController.text = (widget.prefill!.amountCents / 100)
-          .toStringAsFixed(widget.prefill!.amountCents % 100 == 0 ? 0 : 2);
     } else {
-      _fromUserId = widget.members.first.user.id;
-      _toUserId = widget.members.length > 1
-          ? widget.members[1].user.id
-          : widget.members.first.user.id;
+      _date = DateTime.now();
+      if (widget.prefill != null) {
+        _fromUserId = widget.prefill!.fromUserId;
+        _toUserId = widget.prefill!.toUserId;
+        _amountController.text = (widget.prefill!.amountCents / 100)
+            .toStringAsFixed(widget.prefill!.amountCents % 100 == 0 ? 0 : 2);
+      } else {
+        _fromUserId = widget.members.first.user.id;
+        _toUserId = widget.members.length > 1
+            ? widget.members[1].user.id
+            : widget.members.first.user.id;
+      }
     }
     _amountController.addListener(() => setState(() {}));
   }
@@ -109,6 +115,16 @@ class _RecordSettlementSheetState
     _amountController.dispose();
     _noteController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null) setState(() => _date = picked);
   }
 
   bool get _canSave {
@@ -134,6 +150,7 @@ class _RecordSettlementSheetState
         toUserId: _toUserId,
         amountCents: cents,
         note: note,
+        date: _date,
       );
     } else {
       await createSettlement(
@@ -143,6 +160,7 @@ class _RecordSettlementSheetState
         toUserId: _toUserId,
         amountCents: cents,
         note: note,
+        date: _date,
       );
       await ref
           .read(analyticsServiceProvider)
@@ -224,6 +242,23 @@ class _RecordSettlementSheetState
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 onTapOutside: (_) => FocusScope.of(context).unfocus(),
+              ),
+              const SizedBox(height: 16),
+              _label(l10n.expensesDate),
+              const SizedBox(height: 8),
+              InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: _pickDate,
+                child: InputDecorator(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.calendar_today_outlined),
+                  ),
+                  child: Text(
+                    DateFormat.yMMMEd(
+                      Localizations.localeOf(context).toString(),
+                    ).format(_date),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               _label(l10n.settlementsNoteOptional),

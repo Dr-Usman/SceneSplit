@@ -23,7 +23,7 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting(super.executor);
 
-  static const int databaseSchemaVersion = 5;
+  static const int databaseSchemaVersion = 6;
 
   @override
   int get schemaVersion => databaseSchemaVersion;
@@ -52,6 +52,25 @@ FROM expenses
       }
       if (from < 5) {
         await m.addColumn(groups, groups.showDecimals);
+      }
+      if (from < 6) {
+        final columns = await customSelect(
+          'PRAGMA table_info(settlements)',
+        ).get();
+        final hasDate = columns.any(
+          (row) => row.read<String>('name') == 'date',
+        );
+        if (!hasDate) {
+          // SQLite does not allow non-constant expressions (like CURRENT_TIMESTAMP)
+          // in ALTER TABLE ADD COLUMN. Add the integer column without default,
+          // then backfill from created_at.
+          await customStatement(
+            'ALTER TABLE settlements ADD COLUMN date INTEGER',
+          );
+        }
+        await customStatement(
+          'UPDATE settlements SET date = created_at WHERE date IS NULL',
+        );
       }
     },
   );

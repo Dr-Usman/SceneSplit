@@ -242,6 +242,9 @@ Future<void> shareSceneExpenses(
           format: format.name,
           range: switch (preset) {
             ExpenseShareRangePreset.all => 'all',
+            ExpenseShareRangePreset.today => 'today',
+            ExpenseShareRangePreset.singleDay => '1d',
+            ExpenseShareRangePreset.thisWeek => 'this_week',
             ExpenseShareRangePreset.month => 'month',
             ExpenseShareRangePreset.last7 => '7d',
             ExpenseShareRangePreset.custom => 'custom',

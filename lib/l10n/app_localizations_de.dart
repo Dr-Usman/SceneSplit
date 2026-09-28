@@ -544,6 +544,179 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsShareExpensesByPerson => 'Pro Person';
 
   @override
+  String get groupsReport => 'Bericht';
+
+  @override
+  String get groupsReportTooltip => 'Szenen-Bericht anzeigen';
+
+  @override
+  String groupsReportTitle(String groupName) {
+    return 'Bericht — $groupName';
+  }
+
+  @override
+  String get groupsReportTotalSpending => 'Gesamtausgaben';
+
+  @override
+  String get groupsReportAverageExpense => 'Durchschnitt';
+
+  @override
+  String get groupsReportMemberSummary => 'Mitgliederübersicht';
+
+  @override
+  String get groupsReportPaid => 'Bezahlt';
+
+  @override
+  String get groupsReportShare => 'Anteil';
+
+  @override
+  String get groupsReportNet => 'Netto';
+
+  @override
+  String get groupsReportWhoOwesWhom => 'Wer wem schuldet';
+
+  @override
+  String get groupsReportAllSettled =>
+      'Für diesen Zeitraum ist alles beglichen';
+
+  @override
+  String groupsReportItemizedExpenses(int count) {
+    return 'Ausgaben ($count)';
+  }
+
+  @override
+  String groupsReportYourShare(String amount) {
+    return 'Dein Anteil: $amount';
+  }
+
+  @override
+  String groupsReportYourNet(String amount) {
+    return 'Dein Netto: $amount';
+  }
+
+  @override
+  String get groupsReportSearchPlaceholder =>
+      'Titel, Notiz oder Betrag suchen...';
+
+  @override
+  String get groupsReportFilterAllMembers => 'Alle Mitglieder';
+
+  @override
+  String groupsReportFilterMember(String name) {
+    return 'Mitglied: $name';
+  }
+
+  @override
+  String get groupsReportFilterDate => 'Datum';
+
+  @override
+  String get groupsShareExpensesRangeToday => 'Heute';
+
+  @override
+  String get groupsShareExpensesRange1Day => '1 Tag';
+
+  @override
+  String get groupsShareExpensesRangeThisWeek => 'Diese Woche';
+
+  @override
+  String get groupsReportDateDialogTitle => 'Datumsbereich wählen';
+
+  @override
+  String get groupsReportFromDate => 'Von';
+
+  @override
+  String get groupsReportToDate => 'Bis';
+
+  @override
+  String get groupsReportApply => 'Anwenden';
+
+  @override
+  String groupsReportSettlementsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Abrechnungen',
+      one: '1 Abrechnung',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get groupsReportNoSettlements =>
+      'Keine Abrechnungen in diesem Zeitraum.';
+
+  @override
+  String get groupsReportSort => 'Sortieren';
+
+  @override
+  String get groupsReportSortDateDesc => 'Neueste zuerst';
+
+  @override
+  String get groupsReportSortDateAsc => 'Älteste zuerst';
+
+  @override
+  String get groupsReportSortNewest => 'Neueste';
+
+  @override
+  String get groupsReportSortOldest => 'Älteste';
+
+  @override
+  String groupsReportShowMore(int remaining) {
+    return 'Mehr anzeigen ($remaining)';
+  }
+
+  @override
+  String get groupsReportOpenDebt => 'Offene Schulden';
+
+  @override
+  String get groupsReportTotalSettled => 'Gesamt beglichen';
+
+  @override
+  String get groupsReportSettled => 'Beglichen';
+
+  @override
+  String get groupsReportPending => 'Ausstehend';
+
+  @override
+  String get groupsReportTotalPaid => 'Gesamt gezahlt';
+
+  @override
+  String get groupsReportTotalReceived => 'Gesamt erhalten';
+
+  @override
+  String get groupsReportReceived => 'Erhalten';
+
+  @override
+  String get groupsReportNetBalance => 'Dein Nettosaldo';
+
+  @override
+  String groupsReportMemberNet(String name) {
+    return 'Nettosaldo von $name';
+  }
+
+  @override
+  String groupsReportOwedTo(String name) {
+    return 'Wird $name geschuldet';
+  }
+
+  @override
+  String groupsReportOwes(String name) {
+    return '$name schuldet';
+  }
+
+  @override
+  String get groupsReportYouOwed => 'Dir wird geschuldet';
+
+  @override
+  String get groupsReportYouOwe => 'Du schuldest';
+
+  @override
+  String get groupsReportPaidOutSubtitle => 'Ausgaben & Zahlungen';
+
+  @override
+  String get groupsReportReceivedSubtitle => 'Erhaltene Ausgleiche';
+
+  @override
   String get groupsSettlements => 'AUSGLEICHSZAHLUNGEN';
 
   @override
@@ -1239,6 +1412,25 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorBackupImportWeb =>
       'Sicherungsimport ist im Web nicht verfügbar. Verwende die mobile oder Desktop-App, um Sicherungen zu importieren.';
+
+  @override
+  String get errorScreenTitle => 'SceneSplit konnte nicht geladen werden';
+
+  @override
+  String get errorScreenSubtitle =>
+      'Beim Laden deiner Daten ist ein unerwarteter Fehler aufgetreten. Du kannst es erneut versuchen oder den Support kontaktieren.';
+
+  @override
+  String get errorScreenRetry => 'Erneut versuchen';
+
+  @override
+  String get errorScreenCopyDetails => 'Fehlerdetails kopieren';
+
+  @override
+  String get errorScreenCopied => 'Fehlerdetails in die Zwischenablage kopiert';
+
+  @override
+  String get errorScreenContact => 'Kontakt & Feedback';
 
   @override
   String get languageEnglish => 'English';

@@ -175,6 +175,96 @@
   "groupsShareExpensesMemberTotalLine": "{name}: {parts} = {total}",
   "groupsShareExpensesMemberSingle": "{name}: {total}",
   "groupsShareExpensesByPerson": "Pro Person",
+  "groupsReport": "Bericht",
+  "groupsReportTooltip": "Szenen-Bericht anzeigen",
+  "groupsReportTitle": "Bericht — {groupName}",
+  "groupsReportTotalSpending": "Gesamtausgaben",
+  "groupsReportAverageExpense": "Durchschnitt",
+  "groupsReportMemberSummary": "Mitgliederübersicht",
+  "groupsReportPaid": "Bezahlt",
+  "groupsReportShare": "Anteil",
+  "groupsReportNet": "Netto",
+  "groupsReportWhoOwesWhom": "Wer wem schuldet",
+  "groupsReportAllSettled": "Für diesen Zeitraum ist alles beglichen",
+  "groupsReportItemizedExpenses": "Ausgaben ({count})",
+  "groupsReportYourShare": "Dein Anteil: {amount}",
+  "groupsReportYourNet": "Dein Netto: {amount}",
+  "groupsReportSearchPlaceholder": "Titel, Notiz oder Betrag suchen...",
+  "groupsReportFilterAllMembers": "Alle Mitglieder",
+  "groupsReportFilterMember": "Mitglied: {name}",
+  "@groupsReportFilterMember": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportFilterDate": "Datum",
+  "groupsShareExpensesRangeToday": "Heute",
+  "groupsShareExpensesRange1Day": "1 Tag",
+  "groupsShareExpensesRangeThisWeek": "Diese Woche",
+  "groupsReportDateDialogTitle": "Datumsbereich wählen",
+  "groupsReportFromDate": "Von",
+  "groupsReportToDate": "Bis",
+  "groupsReportApply": "Anwenden",
+  "groupsReportSettlementsCount": "{count, plural, =1{1 Abrechnung} other{{count} Abrechnungen}}",
+  "@groupsReportSettlementsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportNoSettlements": "Keine Abrechnungen in diesem Zeitraum.",
+  "groupsReportSort": "Sortieren",
+  "groupsReportSortDateDesc": "Neueste zuerst",
+  "groupsReportSortDateAsc": "Älteste zuerst",
+  "groupsReportSortNewest": "Neueste",
+  "groupsReportSortOldest": "Älteste",
+  "groupsReportShowMore": "Mehr anzeigen ({remaining})",
+  "@groupsReportShowMore": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "groupsReportOpenDebt": "Offene Schulden",
+  "groupsReportTotalSettled": "Gesamt beglichen",
+  "groupsReportSettled": "Beglichen",
+  "groupsReportPending": "Ausstehend",
+  "groupsReportTotalPaid": "Gesamt gezahlt",
+  "groupsReportTotalReceived": "Gesamt erhalten",
+  "groupsReportReceived": "Erhalten",
+  "groupsReportNetBalance": "Dein Nettosaldo",
+  "groupsReportMemberNet": "Nettosaldo von {name}",
+  "@groupsReportMemberNet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwedTo": "Wird {name} geschuldet",
+  "@groupsReportOwedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportOwes": "{name} schuldet",
+  "@groupsReportOwes": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupsReportYouOwed": "Dir wird geschuldet",
+  "groupsReportYouOwe": "Du schuldest",
+  "groupsReportPaidOutSubtitle": "Ausgaben & Zahlungen",
+  "groupsReportReceivedSubtitle": "Erhaltene Ausgleiche",
   "groupsSettlements": "AUSGLEICHSZAHLUNGEN",
   "groupsExpenses": "AUSGABEN",
   "groupsSettlementsTitle": "Ausgleichszahlungen",
@@ -412,6 +502,12 @@
   "errorBackupNotSceneSplit": "Diese Datei scheint keine SceneSplit-Sicherung zu sein.",
   "errorBackupExportWeb": "Sicherungsexport ist im Web nicht verfügbar. Verwende die mobile oder Desktop-App, um Sicherungen zu exportieren.",
   "errorBackupImportWeb": "Sicherungsimport ist im Web nicht verfügbar. Verwende die mobile oder Desktop-App, um Sicherungen zu importieren.",
+  "errorScreenTitle": "SceneSplit konnte nicht geladen werden",
+  "errorScreenSubtitle": "Beim Laden deiner Daten ist ein unerwarteter Fehler aufgetreten. Du kannst es erneut versuchen oder den Support kontaktieren.",
+  "errorScreenRetry": "Erneut versuchen",
+  "errorScreenCopyDetails": "Fehlerdetails kopieren",
+  "errorScreenCopied": "Fehlerdetails in die Zwischenablage kopiert",
+  "errorScreenContact": "Kontakt & Feedback",
   "languageEnglish": "English",
   "languageSpanish": "Español",
   "languageFrench": "Français",

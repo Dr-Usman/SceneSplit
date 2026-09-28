@@ -170,7 +170,7 @@ final groupDetailProvider =
       ];
       final groupSettlements =
           settlements.value!.where((s) => s.groupId == groupId).toList()
-            ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            ..sort((a, b) => b.date.compareTo(a.date));
 
       final net = BalanceService.netBalances(
         payers: groupPayers,

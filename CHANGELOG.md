@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Group creation and edit screens: added a dynamic selected members count (e.g. `3 selected`) displayed on the right side of the "MEMBERS" section header.
+- Scene reports dashboard & export: Comprehensive in-app analytics screen featuring interactive date presets and custom ranges, member filtering, real-time search, date sorting, and progressive pagination. Includes 1-tap branded image sharing (`GroupReportShareCard`) and full formatted plain-text export.
+- Editable settlement dates: Settlements now support custom and past dates with a date picker in `RecordSettlementSheet` and persisted SQLite storage.
+- Selected members counter: Real-time counter (e.g. `3 selected`) displayed on scene creation and edit headers.
+- Enhanced test coverage & organization: Feature-aligned test suite structure with edge-case tests covering cyclic debt cancellation, uneven split remainders, and report search filtering.
 
 ### Changed
 
-- Group creation and edit screens: existing members and people are now sorted alphabetically (A to Z), keeping "You" pinned at the top.
-- Group detail screen: members in the horizontal row are now sorted alphabetically by name.
+- Scene report summary & debt overview: Redesigned hybrid KPI hero card dynamically adapting between total group spending and individual net balance, paired with clean who-owes-whom settlement cards and `$0  Settled` status.
+- Streamlined expense & settlement tile layouts: Aligned title and amount on a single row, formatted dates with abbreviated weekdays, added dedicated note badges, and matched layout consistency across group detail and report screens.
+- Alphabetical member sorting: Members across scene creation, editing, and group detail screens are now sorted alphabetically (A to Z) with "You" pinned at top.
+- Modular report architecture: Decomposed report features into a dedicated, maintainable subfolder structure (`lib/features/groups/reports/`).
 
 ## [1.12.0] - 2026-09-16
 
