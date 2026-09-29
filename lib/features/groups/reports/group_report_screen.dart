@@ -35,10 +35,12 @@ class GroupReportScreen extends ConsumerStatefulWidget {
     super.key,
     required this.groupId,
     this.initialPreset = ExpenseShareRangePreset.all,
+    this.source = 'group_detail',
   });
 
   final String groupId;
   final ExpenseShareRangePreset initialPreset;
+  final String source;
 
   @override
   ConsumerState<GroupReportScreen> createState() => _GroupReportScreenState();
@@ -56,6 +58,7 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
   ReportSortOrder _sortOrder = ReportSortOrder.dateDesc;
   int _expenseLimit = _kInitialItemLimit;
   int _settlementLimit = _kInitialItemLimit;
+  bool _hasTrackedOpen = false;
 
   @override
   void initState() {
@@ -69,7 +72,11 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
     super.dispose();
   }
 
-  Future<void> _onSelectDatePreset(ExpenseShareRangePreset preset) async {
+  Future<void> _onSelectDatePreset(
+    ExpenseShareRangePreset preset, {
+    required String groupName,
+  }) async {
+    bool applied = false;
     if (preset == ExpenseShareRangePreset.singleDay) {
       final now = DateTime.now();
       final picked = await showDatePicker(
@@ -84,6 +91,7 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
           _customRange = DateTimeRange(start: day, end: day);
           _preset = ExpenseShareRangePreset.singleDay;
         });
+        applied = true;
       }
     } else if (preset == ExpenseShareRangePreset.custom) {
       final picked = await showDateRangeDialog(
@@ -95,11 +103,24 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
           _customRange = picked;
           _preset = ExpenseShareRangePreset.custom;
         });
+        applied = true;
       }
     } else {
       setState(() {
         _preset = preset;
       });
+      applied = true;
+    }
+
+    if (applied && mounted) {
+      ref
+          .read(analyticsServiceProvider)
+          .trackReportFilterApplied(
+            groupId: widget.groupId,
+            groupName: groupName,
+            filterType: 'date',
+            filterValue: preset.name,
+          );
     }
   }
 
@@ -212,18 +233,15 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
     if (ok) {
       await ref
           .read(analyticsServiceProvider)
-          .trackExpensesShared(
-            expenseCount: filteredExpenses.length,
+          .trackReportShared(
+            groupId: widget.groupId,
+            groupName: groupName,
             format: format.name,
-            range: switch (_preset) {
-              ExpenseShareRangePreset.all => 'all',
-              ExpenseShareRangePreset.today => 'today',
-              ExpenseShareRangePreset.singleDay => '1d',
-              ExpenseShareRangePreset.thisWeek => 'this_week',
-              ExpenseShareRangePreset.month => 'month',
-              ExpenseShareRangePreset.last7 => '7d',
-              ExpenseShareRangePreset.custom => 'custom',
-            },
+            rangePreset: _preset.name,
+            isSingleMember: isSingleMember,
+            selectedMemberName: selectedMemberName,
+            expenseCount: filteredExpenses.length,
+            settlementCount: filteredSettlements.length,
           );
     } else {
       ScaffoldMessenger.of(
@@ -310,6 +328,24 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
         body: Center(child: Text('$e')),
       ),
       data: (data) {
+        if (!_hasTrackedOpen) {
+          _hasTrackedOpen = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              ref
+                  .read(analyticsServiceProvider)
+                  .trackReportOpened(
+                    groupId: widget.groupId,
+                    groupName: data.group.name,
+                    source: widget.source,
+                    defaultPreset: _preset.name,
+                    expenseCount: data.expenses.length,
+                    settlementCount: data.settlements.length,
+                  );
+            }
+          });
+        }
+
         final range = resolveExpenseShareRange(
           _preset,
           now: DateTime.now(),
@@ -503,7 +539,10 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                       activePreset: _preset,
                       customRange: _customRange,
                       locale: locale,
-                      onSelect: _onSelectDatePreset,
+                      onSelect: (preset) => _onSelectDatePreset(
+                        preset,
+                        groupName: data.group.name,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -514,6 +553,17 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                       selectedMemberId: _selectedMemberId,
                       onSelect: (memberId) {
                         setState(() => _selectedMemberId = memberId);
+                        final memberName = memberId != null
+                            ? (users[memberId]?.name ?? memberId)
+                            : 'all';
+                        ref
+                            .read(analyticsServiceProvider)
+                            .trackReportFilterApplied(
+                              groupId: widget.groupId,
+                              groupName: data.group.name,
+                              filterType: 'member',
+                              filterValue: memberName,
+                            );
                       },
                     ),
                   ),
@@ -547,6 +597,13 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                     sortOrder: _sortOrder,
                     onSelect: (order) {
                       setState(() => _sortOrder = order);
+                      ref
+                          .read(analyticsServiceProvider)
+                          .trackReportSortChanged(
+                            groupId: widget.groupId,
+                            groupName: data.group.name,
+                            sortOrder: order.name,
+                          );
                     },
                   ),
                 ],
@@ -803,9 +860,11 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                                 onTap: () => showRecordSettlementSheet(
                                   context,
                                   groupId: widget.groupId,
+                                  groupName: data.group.name,
                                   currencyCode: data.group.currencyCode,
                                   members: data.members,
                                   existing: visibleSettlements[i],
+                                  analyticsSource: 'group_report',
                                 ),
                               ),
                               if (i < visibleSettlements.length - 1 ||

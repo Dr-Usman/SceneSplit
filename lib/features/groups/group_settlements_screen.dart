@@ -65,6 +65,7 @@ class GroupSettlementsScreen extends ConsumerWidget {
                 onTap: () => showRecordSettlementSheet(
                   context,
                   groupId: groupId,
+                  groupName: data.group.name,
                   currencyCode: data.group.currencyCode,
                   members: data.members,
                   existing: settlement,

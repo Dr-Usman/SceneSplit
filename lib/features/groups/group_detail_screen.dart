@@ -108,7 +108,10 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                 tooltip: l10n.groupsReportTooltip,
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => GroupReportScreen(groupId: groupId),
+                    builder: (_) => GroupReportScreen(
+                      groupId: groupId,
+                      source: 'group_detail',
+                    ),
                   ),
                 ),
                 icon: const Icon(Icons.assessment_outlined),
@@ -306,6 +309,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                         onPressed: () => showRecordSettlementSheet(
                           context,
                           groupId: groupId,
+                          groupName: data.group.name,
                           currencyCode: data.group.currencyCode,
                           members: data.members,
                         ),
@@ -347,6 +351,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                                 onTap: () => showRecordSettlementSheet(
                                   context,
                                   groupId: groupId,
+                                  groupName: data.group.name,
                                   currencyCode: data.group.currencyCode,
                                   members: data.members,
                                   prefill: data.debts[i],
@@ -390,6 +395,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                     onTap: () => showRecordSettlementSheet(
                       context,
                       groupId: groupId,
+                      groupName: data.group.name,
                       currencyCode: data.group.currencyCode,
                       members: data.members,
                       existing: displayedSettlements[i],
@@ -436,8 +442,10 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                             tooltip: l10n.groupsReportTooltip,
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    GroupReportScreen(groupId: groupId),
+                                builder: (_) => GroupReportScreen(
+                                  groupId: groupId,
+                                  source: 'group_detail',
+                                ),
                               ),
                             ),
                             visualDensity: VisualDensity.compact,
@@ -636,6 +644,9 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     );
     if (ok == true && context.mounted) {
       await deleteGroup(ref.read(databaseProvider), group.id);
+      await ref
+          .read(analyticsServiceProvider)
+          .trackGroupDeleted(groupId: group.id, groupName: group.name);
       if (context.mounted) Navigator.of(context).pop();
     }
   }

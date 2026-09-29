@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../database/app_database.dart';
+import '../../../providers/analytics_provider.dart';
 import '../../../providers/database_provider.dart';
+import '../../../providers/group_detail_provider.dart';
 import '../../../repositories/expense_repository.dart';
 import '../../../repositories/settlement_repository.dart';
 
@@ -34,6 +36,17 @@ Future<void> confirmDeleteExpense(
   );
   if (ok == true && context.mounted) {
     await deleteExpense(ref.read(databaseProvider), expense.id);
+    final group = ref.read(groupDetailProvider(expense.groupId)).value?.group;
+    final groupName = group?.name;
+    final currencyCode = group?.currencyCode ?? '';
+    await ref
+        .read(analyticsServiceProvider)
+        .trackExpenseDeleted(
+          groupId: expense.groupId,
+          groupName: groupName,
+          amountCents: expense.amountCents,
+          currencyCode: currencyCode.isNotEmpty ? currencyCode : null,
+        );
   }
 }
 
@@ -63,5 +76,18 @@ Future<void> confirmDeleteSettlement(
   );
   if (ok == true && context.mounted) {
     await deleteSettlement(ref.read(databaseProvider), settlement.id);
+    final group = ref
+        .read(groupDetailProvider(settlement.groupId))
+        .value
+        ?.group;
+    final currencyCode = group?.currencyCode ?? '';
+    await ref
+        .read(analyticsServiceProvider)
+        .trackSettlementDeleted(
+          groupId: settlement.groupId,
+          groupName: group?.name,
+          amountCents: settlement.amountCents,
+          currencyCode: currencyCode,
+        );
   }
 }

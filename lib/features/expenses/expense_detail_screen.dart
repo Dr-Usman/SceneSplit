@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/money.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
@@ -104,6 +105,19 @@ class ExpenseDetailScreen extends ConsumerWidget {
                         ref.read(databaseProvider),
                         expense.id,
                       );
+                      final groupName = ref
+                          .read(groupDetailProvider(groupId))
+                          .value
+                          ?.group
+                          .name;
+                      await ref
+                          .read(analyticsServiceProvider)
+                          .trackExpenseDeleted(
+                            groupId: groupId,
+                            groupName: groupName,
+                            amountCents: expense.amountCents,
+                            currencyCode: currencyCode,
+                          );
                       if (context.mounted) Navigator.pop(context);
                     }
                   }

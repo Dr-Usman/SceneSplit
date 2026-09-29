@@ -120,7 +120,14 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             groupName: groupName,
             currencyCode: _currencyCode,
             memberCount: _memberCount,
+            showDecimals: _showDecimals,
           );
+
+      for (var i = 0; i < _newNames.length; i++) {
+        await ref
+            .read(analyticsServiceProvider)
+            .trackPersonCreated(source: 'group_create');
+      }
 
       if (mounted) Navigator.of(context).pop();
     } on UserNameTakenException catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/l10n/l10n_extensions.dart';
+import '../../../providers/analytics_provider.dart';
 import '../../../providers/database_provider.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../shared/widgets/currency_picker_sheet.dart';
@@ -30,7 +31,17 @@ class ProfileCurrencySection extends ConsumerWidget {
         CurrencyPickerField(
           currencyCode: currencyCode,
           sheetTitle: l10n.profileDefaultCurrencySheet,
-          onChanged: (code) => updateCurrency(ref.read(databaseProvider), code),
+          onChanged: (code) {
+            if (code != currencyCode) {
+              updateCurrency(ref.read(databaseProvider), code);
+              ref
+                  .read(analyticsServiceProvider)
+                  .trackCurrencyChanged(
+                    currencyCode: code,
+                    previousCurrencyCode: currencyCode,
+                  );
+            }
+          },
         ),
       ],
     );

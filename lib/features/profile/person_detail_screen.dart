@@ -355,6 +355,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
                   onTap: () => showRecordSettlementSheet(
                     context,
                     groupId: balance.group.id,
+                    groupName: balance.group.name,
                     currencyCode: currency,
                     members: balance.members,
                     prefill: balance.debts[i],

@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../core/constants/app_links.dart';
 import '../core/l10n/l10n_extensions.dart';
 import '../core/utils/version_compare.dart';
-import 'analytics_service.dart';
+import 'analytics/analytics_service.dart';
 import 'itunes_lookup_io.dart'
     if (dart.library.html) 'itunes_lookup_stub.dart'
     as itunes_lookup;

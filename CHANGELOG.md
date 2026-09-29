@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Comprehensive product telemetry suite: Integrated Mixpanel tracking across full app lifecycle, including Scene Reports (`report_opened`, `report_shared`, `report_filter_applied`, `report_sort_changed`), in-app calculator usage (`calculator_used`), complete CRUD lifecycle events for Groups (`group_created`, `group_edited`, `group_deleted`), Expenses (`expense_created`, `expense_edited`, `expense_deleted`), People (`person_created`, `person_edited`, `person_deleted`), Settlements (`settlement_created`, `settlement_edited`, `settlement_deleted`), and Profile/About interactions (`currency_changed`, `profile_name_updated`, `feedback_initiated`, `privacy_policy_opened`, `terms_of_service_opened`, `rate_app_clicked`, `share_app_clicked`, `more_apps_clicked`).
+- Standardized currency telemetry: Expense events now reliably transmit explicit `currency_code` alongside integer cents (`amount_cents`) with zero async context dependencies.
+- Analytics documentation & architecture: Added dedicated `lib/services/analytics/` module with canonical `AnalyticsEvents` constants, typed tracking methods, and full event catalog in `README.md`.
+
+### Changed
+
+- Expense and report share images now show the `logo_mark` before the SceneSplit brand name in the footer, matching the balance share card.
+
 ## [1.13.0] - 2026-09-28
 
 ### Added

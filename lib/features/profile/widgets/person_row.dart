@@ -5,6 +5,7 @@ import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/l10n/localize_error.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../database/app_database.dart';
+import '../../../providers/analytics_provider.dart';
 import '../../../providers/database_provider.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../shared/widgets/user_avatar.dart';
@@ -290,6 +291,7 @@ Future<void> editPerson(
   }
   try {
     await updateUserName(ref.read(databaseProvider), person.id, name);
+    ref.read(analyticsServiceProvider).trackPersonEdited(personId: person.id);
   } on UserNameTakenException catch (e) {
     if (context.mounted) {
       ScaffoldMessenger.of(
@@ -335,6 +337,7 @@ Future<bool> deletePerson(
 
   try {
     await deleteUser(ref.read(databaseProvider), person.id);
+    ref.read(analyticsServiceProvider).trackPersonDeleted(personId: person.id);
     return true;
   } on UserDeleteBlockedException catch (e) {
     if (context.mounted) {

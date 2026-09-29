@@ -22,6 +22,7 @@ const kSettlementSourcePersonDetail = 'person_detail';
 Future<void> showRecordSettlementSheet(
   BuildContext context, {
   required String groupId,
+  String? groupName,
   required String currencyCode,
   required List<GroupMemberInfo> members,
   OpenDebt? prefill,
@@ -37,6 +38,7 @@ Future<void> showRecordSettlementSheet(
     ),
     builder: (_) => _RecordSettlementSheet(
       groupId: groupId,
+      groupName: groupName,
       currencyCode: currencyCode,
       members: members,
       prefill: prefill,
@@ -49,6 +51,7 @@ Future<void> showRecordSettlementSheet(
 class _RecordSettlementSheet extends ConsumerStatefulWidget {
   const _RecordSettlementSheet({
     required this.groupId,
+    this.groupName,
     required this.currencyCode,
     required this.members,
     required this.analyticsSource,
@@ -57,6 +60,7 @@ class _RecordSettlementSheet extends ConsumerStatefulWidget {
   });
 
   final String groupId;
+  final String? groupName;
   final String currencyCode;
   final List<GroupMemberInfo> members;
   final String analyticsSource;
@@ -76,6 +80,7 @@ class _RecordSettlementSheetState
   late String _toUserId;
   late DateTime _date;
   bool _saving = false;
+  bool _isCustomDate = false;
 
   bool get _isEditing => widget.existing != null;
 
@@ -124,7 +129,12 @@ class _RecordSettlementSheetState
       firstDate: DateTime(2000),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-    if (picked != null) setState(() => _date = picked);
+    if (picked != null) {
+      setState(() {
+        _date = picked;
+        _isCustomDate = true;
+      });
+    }
   }
 
   bool get _canSave {
@@ -142,6 +152,14 @@ class _RecordSettlementSheetState
         : _noteController.text.trim();
     final db = ref.read(databaseProvider);
 
+    final groupName =
+        widget.groupName ??
+        ref.read(groupDetailProvider(widget.groupId)).value?.group.name ??
+        (await (db.select(
+              db.groups,
+            )..where((tbl) => tbl.id.equals(widget.groupId))).getSingleOrNull())
+            ?.name;
+
     if (_isEditing) {
       await updateSettlement(
         db,
@@ -152,6 +170,15 @@ class _RecordSettlementSheetState
         note: note,
         date: _date,
       );
+      await ref
+          .read(analyticsServiceProvider)
+          .trackSettlementEdited(
+            groupId: widget.groupId,
+            groupName: groupName,
+            amountCents: cents,
+            currencyCode: widget.currencyCode,
+            isCustomDate: _isCustomDate,
+          );
     } else {
       await createSettlement(
         db,
@@ -166,10 +193,12 @@ class _RecordSettlementSheetState
           .read(analyticsServiceProvider)
           .trackSettlementCreated(
             groupId: widget.groupId,
+            groupName: groupName,
             amountCents: cents,
             currencyCode: widget.currencyCode,
             source: widget.analyticsSource,
             hadPrefill: widget.prefill != null,
+            isCustomDate: _isCustomDate,
           );
     }
     if (mounted) Navigator.pop(context);

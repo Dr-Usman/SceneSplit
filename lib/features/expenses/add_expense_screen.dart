@@ -303,6 +303,20 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
         note: note,
         date: _date,
       );
+      final groupName =
+          ref.read(groupDetailProvider(widget.groupId)).value?.group.name ?? '';
+
+      await ref
+          .read(analyticsServiceProvider)
+          .trackExpenseEdited(
+            groupId: widget.groupId,
+            groupName: groupName,
+            splitType: _splitType.name,
+            paidByMode: _paidByMode.name,
+            amountCents: _amountCents!,
+            currencyCode: widget.currencyCode,
+            memberCount: splits.length,
+          );
     } else {
       await createExpense(
         db,
@@ -317,6 +331,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       );
       final groupName =
           ref.read(groupDetailProvider(widget.groupId)).value?.group.name ?? '';
+
       await ref
           .read(analyticsServiceProvider)
           .trackExpenseCreated(
@@ -325,6 +340,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             splitType: _splitType.name,
             paidByMode: _paidByMode.name,
             amountCents: _amountCents!,
+            currencyCode: widget.currencyCode,
             memberCount: splits.length,
           );
     }
@@ -377,6 +393,11 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       setState(() {
         _amountController.text = result;
       });
+      final groupName =
+          ref.read(groupDetailProvider(widget.groupId)).value?.group.name ?? '';
+      ref
+          .read(analyticsServiceProvider)
+          .trackCalculatorUsed(groupId: widget.groupId, groupName: groupName);
       // Ensure focus is completely cleared and keyboard stays hidden
       FocusScope.of(context).unfocus();
       WidgetsBinding.instance.addPostFrameCallback((_) {

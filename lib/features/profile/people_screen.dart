@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../database/app_database.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/person_detail_provider.dart';
@@ -38,6 +39,9 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     if (name == null || name.isEmpty || !mounted) return;
     try {
       await createUser(ref.read(databaseProvider), name);
+      ref
+          .read(analyticsServiceProvider)
+          .trackPersonCreated(source: 'profile_people');
     } on UserNameTakenException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(

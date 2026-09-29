@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../database/app_database.dart';
-import '../services/analytics_service.dart';
+import '../services/analytics/analytics_service.dart';
 import 'database_provider.dart';
 
 final analyticsServiceProvider = Provider<AnalyticsService>((ref) {

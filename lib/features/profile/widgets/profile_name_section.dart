@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/l10n/localize_error.dart';
 import '../../../core/l10n/l10n_extensions.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../providers/analytics_provider.dart';
 import '../../../providers/database_provider.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../shared/widgets/section_header.dart';
@@ -33,6 +34,7 @@ class _ProfileNameSectionState extends ConsumerState<ProfileNameSection> {
     setState(() => _saving = true);
     try {
       await updateCurrentUserName(ref.read(databaseProvider), name);
+      ref.read(analyticsServiceProvider).trackProfileNameUpdated(name: name);
       if (mounted) {
         setState(() {
           _saving = false;

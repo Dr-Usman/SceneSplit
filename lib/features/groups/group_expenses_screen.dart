@@ -44,7 +44,10 @@ class GroupExpensesScreen extends ConsumerWidget {
               tooltip: l10n.groupsReportTooltip,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => GroupReportScreen(groupId: groupId),
+                  builder: (_) => GroupReportScreen(
+                    groupId: groupId,
+                    source: 'group_expenses',
+                  ),
                 ),
               ),
               icon: const Icon(Icons.assessment_outlined),

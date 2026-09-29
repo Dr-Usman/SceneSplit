@@ -18,7 +18,13 @@ import '../legal/legal_document_type.dart';
 class AppInfoScreen extends ConsumerWidget {
   const AppInfoScreen({super.key});
 
-  Future<void> _sendEmail(BuildContext context, String subject) async {
+  Future<void> _sendEmail(
+    BuildContext context,
+    String subject, {
+    required String type,
+    required WidgetRef ref,
+  }) async {
+    ref.read(analyticsServiceProvider).trackFeedbackInitiated(type: type);
     final launched = await launchSupportEmail(subject, context.l10n);
     if (!launched && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -106,42 +112,60 @@ class AppInfoScreen extends ConsumerWidget {
                     SettingsTile(
                       icon: Icons.privacy_tip_outlined,
                       title: l10n.aboutPrivacyPolicy,
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const LegalDocumentScreen(
-                            type: LegalDocumentType.privacy,
+                      onTap: () {
+                        analytics.trackPrivacyPolicyOpened();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const LegalDocumentScreen(
+                              type: LegalDocumentType.privacy,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                     SettingsTile(
                       icon: Icons.description_outlined,
                       title: l10n.aboutTermsOfService,
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const LegalDocumentScreen(
-                            type: LegalDocumentType.terms,
+                      onTap: () {
+                        analytics.trackTermsOfServiceOpened();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const LegalDocumentScreen(
+                              type: LegalDocumentType.terms,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                     SettingsTile(
                       icon: Icons.mail_outline_rounded,
                       title: l10n.aboutContactUs,
-                      onTap: () =>
-                          _sendEmail(context, l10n.aboutEmailSupportSubject),
+                      onTap: () => _sendEmail(
+                        context,
+                        l10n.aboutEmailSupportSubject,
+                        type: 'support',
+                        ref: ref,
+                      ),
                     ),
                     SettingsTile(
                       icon: Icons.feedback_outlined,
                       title: l10n.aboutSendFeedback,
-                      onTap: () =>
-                          _sendEmail(context, l10n.aboutEmailFeedbackSubject),
+                      onTap: () => _sendEmail(
+                        context,
+                        l10n.aboutEmailFeedbackSubject,
+                        type: 'feedback',
+                        ref: ref,
+                      ),
                     ),
                     SettingsTile(
                       icon: Icons.lightbulb_outline_rounded,
                       title: l10n.aboutSuggestFeature,
-                      onTap: () =>
-                          _sendEmail(context, l10n.aboutEmailFeatureSubject),
+                      onTap: () => _sendEmail(
+                        context,
+                        l10n.aboutEmailFeatureSubject,
+                        type: 'feature_request',
+                        ref: ref,
+                      ),
                     ),
                     SettingsTile(
                       icon: Icons.star_outline_rounded,
@@ -169,7 +193,7 @@ class AppInfoScreen extends ConsumerWidget {
                       icon: Icons.apps_rounded,
                       title: l10n.aboutMoreApps,
                       showDivider: false,
-                      onTap: () => openDeveloperPage(),
+                      onTap: () => openDeveloperPage(analytics: analytics),
                     ),
                   ],
                 ),

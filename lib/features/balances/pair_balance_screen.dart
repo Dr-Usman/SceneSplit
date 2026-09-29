@@ -403,6 +403,7 @@ class _ScenePairCard extends StatelessWidget {
                 onPressed: () => showRecordSettlementSheet(
                   context,
                   groupId: scene.groupId,
+                  groupName: scene.groupName,
                   currencyCode: scene.currencyCode,
                   members: scene.members,
                   prefill: prefill,

@@ -4,7 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../services/analytics_service.dart';
+import '../../services/analytics/analytics_service.dart';
 import '../constants/app_links.dart';
 import '../l10n/l10n_extensions.dart';
 
@@ -42,6 +42,8 @@ Future<bool> shareApp(
   final box = context.findRenderObject() as RenderBox?;
   final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
 
+  await analytics?.trackShareAppClicked();
+
   try {
     final result = await SharePlus.instance.share(
       ShareParams(
@@ -50,11 +52,7 @@ Future<bool> shareApp(
         sharePositionOrigin: origin,
       ),
     );
-    final shared = result.status != ShareResultStatus.unavailable;
-    if (shared) {
-      await analytics?.trackAppShared();
-    }
-    return shared;
+    return result.status != ShareResultStatus.unavailable;
   } on Object {
     return false;
   }
@@ -69,7 +67,7 @@ Future<bool> rateApp({AnalyticsService? analytics}) async {
       : AppLinks.playStoreUrl;
 
   final hasStoreUrl = storeUrl.isNotEmpty;
-  await analytics?.trackReviewPrompted(available: hasStoreUrl);
+  await analytics?.trackRateAppClicked(available: hasStoreUrl);
 
   if (hasStoreUrl) {
     return launchExternalUrl(storeUrl);
@@ -78,7 +76,8 @@ Future<bool> rateApp({AnalyticsService? analytics}) async {
 }
 
 /// Opens the developer store page on Google Play.
-Future<bool> openDeveloperPage() async {
+Future<bool> openDeveloperPage({AnalyticsService? analytics}) async {
+  await analytics?.trackMoreAppsClicked();
   return launchExternalUrl(AppLinks.developerPlayStoreUrl);
 }
 

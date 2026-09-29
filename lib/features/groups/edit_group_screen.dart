@@ -5,6 +5,7 @@ import '../../core/constants/currencies.dart';
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/l10n/localize_error.dart';
 import '../../core/theme/app_theme.dart';
+import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
@@ -109,6 +110,19 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
         memberUserIds: _selectedMemberIds.toList(),
         newMemberNames: _newNames,
       );
+
+      final analytics = ref.read(analyticsServiceProvider);
+      await analytics.trackGroupEdited(
+        groupId: widget.groupId,
+        groupName: _nameController.text.trim(),
+        currencyCode: _currencyCode,
+        memberCount: _selectedMemberIds.length + _newNames.length,
+        showDecimals: _showDecimals,
+      );
+
+      for (var i = 0; i < _newNames.length; i++) {
+        await analytics.trackPersonCreated(source: 'group_edit');
+      }
 
       if (mounted) Navigator.of(context).pop();
     } on MemberRemovalBlockedException catch (e) {
