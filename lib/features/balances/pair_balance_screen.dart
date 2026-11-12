@@ -481,6 +481,7 @@ class _ScenePairCard extends StatelessWidget {
                             groupId: scene.groupId,
                             expenseId: expenseId,
                             currencyCode: scene.currencyCode,
+                            analyticsSource: 'pair_balance',
                           ),
                         ),
                       );

@@ -28,11 +28,15 @@ class AddExpenseScreen extends ConsumerStatefulWidget {
     required this.groupId,
     required this.currencyCode,
     this.existing,
+    this.analyticsSource = 'group_detail',
   });
 
   final String groupId;
   final String currencyCode;
   final ExpenseWithSplits? existing;
+
+  /// Entry point that opened this form (`group_detail`, `expense_detail`).
+  final String analyticsSource;
 
   bool get isEditing => existing != null;
 
@@ -61,6 +65,23 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   /// Exact / percentage per-member values (as text).
   final _exactControllers = <String, TextEditingController>{};
   final _percentControllers = <String, TextEditingController>{};
+
+  bool _openedTracked = false;
+
+  /// Fires the form-opened event once, as soon as the scene is resolved.
+  void _trackOpenedOnce(String groupName) {
+    if (_openedTracked) return;
+    _openedTracked = true;
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackExpenseFormOpened(
+        groupId: widget.groupId,
+        groupName: groupName,
+        mode: widget.isEditing ? 'edit' : 'create',
+        source: widget.analyticsSource,
+      );
+    });
+  }
 
   @override
   void dispose() {
@@ -422,6 +443,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       ),
       data: (data) {
         _initMembers(data.members);
+        _trackOpenedOnce(data.group.name);
         final members = data.members;
         final l10n = context.l10n;
         final locale = Localizations.localeOf(context).toString();

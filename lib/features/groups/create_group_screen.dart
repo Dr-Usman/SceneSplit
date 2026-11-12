@@ -44,6 +44,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   void initState() {
     super.initState();
     _nameController.addListener(() => setState(() {}));
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackGroupFormOpened(mode: 'create');
+    });
   }
 
   @override

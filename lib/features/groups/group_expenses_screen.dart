@@ -128,6 +128,7 @@ class GroupExpensesScreen extends ConsumerWidget {
                       groupId: groupId,
                       expenseId: item.expense.id,
                       currencyCode: data.group.currencyCode,
+                      analyticsSource: 'group_expenses',
                     ),
                   ),
                 ),

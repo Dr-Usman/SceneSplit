@@ -406,6 +406,7 @@ class _SceneBalanceCardState extends State<_SceneBalanceCard> {
                             groupId: balance.group.id,
                             expenseId: expenseId,
                             currencyCode: currency,
+                            analyticsSource: 'person_detail',
                           ),
                         ),
                       );

@@ -767,6 +767,7 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                                     groupId: widget.groupId,
                                     expenseId: visibleExpenses[i].expense.id,
                                     currencyCode: data.group.currencyCode,
+                                    analyticsSource: 'group_report',
                                   ),
                                 ),
                               );
@@ -804,9 +805,7 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    l10n.groupsReportShowMore(
-                                      remainingExpenses,
-                                    ),
+                                    l10n.groupsReportShowMore,
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
@@ -901,9 +900,7 @@ class _GroupReportScreenState extends ConsumerState<GroupReportScreen> {
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        l10n.groupsReportShowMore(
-                                          remainingSettlements,
-                                        ),
+                                        l10n.groupsReportShowMore,
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w600,

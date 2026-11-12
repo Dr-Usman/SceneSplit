@@ -55,6 +55,22 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
     _nameController.addListener(() => setState(() {}));
   }
 
+  bool _openedTracked = false;
+
+  /// Fires the form-opened event once, as soon as the scene is resolved.
+  void _trackOpenedOnce(String groupName) {
+    if (_openedTracked) return;
+    _openedTracked = true;
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackGroupFormOpened(
+        mode: 'edit',
+        groupId: widget.groupId,
+        groupName: groupName,
+      );
+    });
+  }
+
   int get _memberCount => _selectedMemberIds.length + _newNames.length;
 
   bool get _canSave =>
@@ -188,6 +204,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       ),
       data: (data) {
         _init(data);
+        _trackOpenedOnce(data.group.name);
         final currentMemberIds = data.members.map((m) => m.user.id).toSet();
         final currentMembers = [...data.members]
           ..sort((a, b) {

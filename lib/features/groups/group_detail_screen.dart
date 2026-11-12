@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,6 +50,24 @@ class GroupDetailScreen extends ConsumerStatefulWidget {
 class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
   int _expenseLimit = _kExpenseInitialCount;
   int _settlementLimit = _kSettlementInitialCount;
+  bool _openedTracked = false;
+
+  /// Fires the scene-opened event once, as soon as the scene data is available.
+  void _trackOpenedOnce(GroupDetailData data) {
+    if (_openedTracked) return;
+    _openedTracked = true;
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackGroupDetailOpened(
+        groupId: data.group.id,
+        groupName: data.group.name,
+        currencyCode: data.group.currencyCode,
+        memberCount: data.members.length,
+        expenseCount: data.expenses.length,
+        settlementCount: data.settlements.length,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +85,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
         body: Center(child: Text(l10n.commonSomethingWentWrong('$e'))),
       ),
       data: (data) {
+        _trackOpenedOnce(data);
         final currency = currencyByCode(data.group.currencyCode);
         final shareEntries = data.memberShareCents.entries.toList();
         final displayedSettlements = data.settlements
@@ -147,6 +168,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                 builder: (_) => AddExpenseScreen(
                   groupId: groupId,
                   currencyCode: data.group.currencyCode,
+                  analyticsSource: 'group_detail',
                 ),
               ),
             ),
@@ -189,15 +211,28 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                         0,
                         (sum, e) => sum + e.value,
                       );
+                      final sharePercent = totalShares == 0
+                          ? null
+                          : slice.cents / totalShares * 100;
+                      unawaited(
+                        ref
+                            .read(analyticsServiceProvider)
+                            .trackMemberBreakdownOpened(
+                              groupId: groupId,
+                              groupName: data.group.name,
+                              memberName: slice.label,
+                              shareCents: slice.cents,
+                              expenseCount: items.length,
+                              percent: sharePercent,
+                            ),
+                      );
                       showMemberExpenseBreakdownSheet(
                         context,
                         memberName: slice.label,
                         colorIndex: users[userId]?.colorIndex ?? 0,
                         currencyCode: data.group.currencyCode,
                         totalCents: slice.cents,
-                        percent: totalShares == 0
-                            ? null
-                            : slice.cents / totalShares * 100,
+                        percent: sharePercent,
                         items: items,
                         showDecimals: data.group.showDecimals,
                         onExpenseTap: (expenseId) {
@@ -207,6 +242,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                                 groupId: groupId,
                                 expenseId: expenseId,
                                 currencyCode: data.group.currencyCode,
+                                analyticsSource: 'member_breakdown',
                               ),
                             ),
                           );
@@ -370,12 +406,24 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                   l10n.groupsSettlements,
                   trailing: data.settlements.length > _kSettlementInitialCount
                       ? TextButton(
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  GroupSettlementsScreen(groupId: groupId),
-                            ),
-                          ),
+                          onPressed: () {
+                            unawaited(
+                              ref
+                                  .read(analyticsServiceProvider)
+                                  .trackSettlementListViewAll(
+                                    groupId: groupId,
+                                    groupName: data.group.name,
+                                    settlementCount: data.settlements.length,
+                                    memberCount: data.members.length,
+                                  ),
+                            );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    GroupSettlementsScreen(groupId: groupId),
+                              ),
+                            );
+                          },
                           child: Text(
                             l10n.groupsViewAllCount(data.settlements.length),
                           ),
@@ -418,14 +466,24 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                           setState(() {
                             _settlementLimit += _kSettlementStep;
                           });
+                          final total = data.settlements.length;
+                          final shown = _settlementLimit < total
+                              ? _settlementLimit
+                              : total;
+                          unawaited(
+                            ref
+                                .read(analyticsServiceProvider)
+                                .trackSettlementListExpanded(
+                                  groupId: groupId,
+                                  groupName: data.group.name,
+                                  settlementCount: total,
+                                  memberCount: data.members.length,
+                                  shownCount: shown,
+                                ),
+                          );
                         },
                         icon: const Icon(Icons.expand_more_rounded, size: 18),
-                        label: Text(
-                          l10n.groupsReportShowMore(
-                            data.settlements.length -
-                                displayedSettlements.length,
-                          ),
-                        ),
+                        label: Text(l10n.groupsReportShowMore),
                       ),
                     ),
                   ),
@@ -505,6 +563,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                           groupId: groupId,
                           expenseId: displayedExpenses[i].expense.id,
                           currencyCode: data.group.currencyCode,
+                          analyticsSource: 'group_detail',
                         ),
                       ),
                     ),
@@ -520,33 +579,76 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                 if (data.expenses.length > displayedExpenses.length)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        TextButton.icon(
-                          onPressed: () {
-                            setState(() {
-                              _expenseLimit += _kExpenseStep;
-                            });
-                          },
-                          icon: const Icon(Icons.expand_more_rounded, size: 18),
-                          label: Text(
-                            l10n.groupsReportShowMore(
-                              data.expenses.length - displayedExpenses.length,
-                            ),
+                        Text(
+                          l10n.groupsExpensesShowingOf(
+                            displayedExpenses.length,
+                            data.expenses.length,
                           ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                         ),
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  GroupExpensesScreen(groupId: groupId),
+                        const SizedBox(height: 4),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 8,
+                          children: [
+                            TextButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  _expenseLimit += _kExpenseStep;
+                                });
+                                final total = data.expenses.length;
+                                final shown = _expenseLimit < total
+                                    ? _expenseLimit
+                                    : total;
+                                unawaited(
+                                  ref
+                                      .read(analyticsServiceProvider)
+                                      .trackExpenseListExpanded(
+                                        groupId: groupId,
+                                        groupName: data.group.name,
+                                        expenseCount: total,
+                                        memberCount: data.members.length,
+                                        shownCount: shown,
+                                      ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.expand_more_rounded,
+                                size: 18,
+                              ),
+                              label: Text(l10n.groupsReportShowMore),
                             ),
-                          ),
-                          child: Text(
-                            l10n.groupsViewAllCount(data.expenses.length),
-                          ),
+                            TextButton(
+                              onPressed: () {
+                                unawaited(
+                                  ref
+                                      .read(analyticsServiceProvider)
+                                      .trackExpenseListViewAll(
+                                        groupId: groupId,
+                                        groupName: data.group.name,
+                                        expenseCount: data.expenses.length,
+                                        memberCount: data.members.length,
+                                      ),
+                                );
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        GroupExpensesScreen(groupId: groupId),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                l10n.groupsViewAllCount(data.expenses.length),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
