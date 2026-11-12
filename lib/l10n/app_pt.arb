@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "Mais antigos primeiro",
   "groupsReportSortNewest": "Mais recentes",
   "groupsReportSortOldest": "Mais antigos",
-  "groupsReportShowMore": "Mostrar mais ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "Mostrar mais",
+  "groupsExpensesShowingOf": "Mostrando {shown} de {total}",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "Por porcentagem",
   "expensesSplitEqually": "Dividir igualmente",
   "expensesSplitBreakdown": "DETALHAMENTO DA DIVISÃO",
+  "expensesWhoOwesWhomHeader": "QUEM DEVE A QUEM (NESTA DESPESA)",
+  "expensesWhoOwesWhomHelp": "Calculado apenas para esta despesa. O saldo do grupo reflete todas as despesas.",
   "expensesNote": "Nota",
   "expensesNoteHint": "Nota opcional",
   "expensesSaveChanges": "Salvar alterações",
   "expensesSaveExpense": "Salvar despesa",
   "expensesSubtitlePaid": "pagou",
   "expensesSubtitleAlsoPaid": "também pagou",
+  "expensesNetGetsBack": "recebe {amount}",
+  "expensesNetOwes": "deve {amount}",
+  "expensesNetSettled": "liquidado",
+  "expensesShareTooltip": "Compartilhar despesa",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "LIQUIDAÇÃO",
+  "expensesShareSharedVia": "Compartilhado via SceneSplit",
   "expensesPaymentExceeds": "Cada pagamento não deve exceder {amount}",
   "expensesEnterValidPayments": "Insira valores de pagamento válidos",
   "expensesOverBy": "Excedente de {amount}",

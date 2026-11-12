@@ -757,3 +757,107 @@ String buildGroupReportShareText({
 
   return buffer.toString();
 }
+
+/// Formats a single expense with its payers, split breakdown, and settlement into plain text.
+String formatSingleExpenseText({
+  required ExpenseWithSplits item,
+  required String groupName,
+  required String groupEmoji,
+  required String currencyCode,
+  required Map<String, String> userNames,
+  required AppLocalizations l10n,
+  required String locale,
+  bool showDecimals = true,
+}) {
+  final expense = item.expense;
+  final buffer = StringBuffer();
+
+  // 1. Header: Emoji + Title + Amount
+  final formattedTotal = formatCents(
+    expense.amountCents,
+    currencyCode,
+    locale: locale,
+    showDecimals: showDecimals,
+  );
+  buffer.writeln('$groupEmoji ${expense.title}');
+  buffer.writeln('$formattedTotal · $groupName');
+
+  // Date and split label
+  final dateStr = DateFormat.yMMMd(locale).format(expense.date);
+  final splitLabel = switch (expense.splitType) {
+    'exact' => l10n.expensesSplitExactAmounts,
+    'percentage' => l10n.expensesSplitByPercentage,
+    _ => l10n.expensesSplitEqually,
+  };
+  buffer.writeln('$dateStr · $splitLabel');
+  if (expense.note != null && expense.note!.trim().isNotEmpty) {
+    buffer.writeln('${l10n.expensesNote}: ${expense.note!.trim()}');
+  }
+  buffer.writeln();
+
+  // 2. Paid By
+  buffer.writeln(l10n.expensesPaidByHeader);
+  final sortedPayers = [...item.payers]
+    ..sort((a, b) => b.amountCents.compareTo(a.amountCents));
+  for (final payer in sortedPayers) {
+    final name = userNames[payer.userId] ?? '?';
+    final amount = formatCents(
+      payer.amountCents,
+      currencyCode,
+      locale: locale,
+      showDecimals: showDecimals,
+    );
+    buffer.writeln('• $name: $amount');
+  }
+  buffer.writeln();
+
+  // 3. Split Breakdown (with net)
+  final singleExpenseNet = BalanceService.netBalances(
+    payers: item.payers,
+    splits: item.splits,
+    settlements: const [],
+  );
+  buffer.writeln(l10n.expensesSplitBreakdown);
+  for (final split in item.splits) {
+    final name = userNames[split.userId] ?? '?';
+    final amount = formatCents(
+      split.amountCents,
+      currencyCode,
+      locale: locale,
+      showDecimals: showDecimals,
+    );
+    final net = singleExpenseNet[split.userId] ?? 0;
+    final netLabel = switch (net) {
+      > 0 =>
+        ' (${l10n.expensesNetGetsBack(formatCents(net, currencyCode, locale: locale, showDecimals: showDecimals))})',
+      < 0 =>
+        ' (${l10n.expensesNetOwes(formatCents(-net, currencyCode, locale: locale, showDecimals: showDecimals))})',
+      _ => ' (${l10n.expensesNetSettled})',
+    };
+    buffer.writeln('• $name: $amount$netLabel');
+  }
+  buffer.writeln();
+
+  // 4. Who owes whom (settlement)
+  final debts = BalanceService.simplifyDebts(singleExpenseNet);
+  if (debts.isNotEmpty) {
+    buffer.writeln(l10n.expensesShareSettlementHeader);
+    for (final debt in debts) {
+      final from = userNames[debt.fromUserId] ?? '?';
+      final to = userNames[debt.toUserId] ?? '?';
+      final debtAmount = formatCents(
+        debt.amountCents,
+        currencyCode,
+        locale: locale,
+        showDecimals: showDecimals,
+      );
+      buffer.writeln('• ${l10n.groupsOwesTemplate(from, to)} $debtAmount');
+    }
+    buffer.writeln();
+  }
+
+  // 5. Footer
+  buffer.write('— ${l10n.expensesShareSharedVia}');
+
+  return buffer.toString();
+}

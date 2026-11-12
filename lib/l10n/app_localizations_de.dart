@@ -661,8 +661,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get groupsReportSortOldest => 'Älteste';
 
   @override
-  String groupsReportShowMore(int remaining) {
-    return 'Mehr anzeigen ($remaining)';
+  String get groupsReportShowMore => 'Mehr anzeigen';
+
+  @override
+  String groupsExpensesShowingOf(int shown, int total) {
+    return '$shown von $total werden angezeigt';
   }
 
   @override
@@ -881,6 +884,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get expensesSplitBreakdown => 'AUFTEILUNGSÜBERSICHT';
 
   @override
+  String get expensesWhoOwesWhomHeader =>
+      'WER SCHULDET WEM (FÜR DIESE AUSGABE)';
+
+  @override
+  String get expensesWhoOwesWhomHelp =>
+      'Nur für diese Ausgabe berechnet. Der Gruppensaldo berücksichtigt alle Ausgaben.';
+
+  @override
   String get expensesNote => 'Notiz';
 
   @override
@@ -897,6 +908,33 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get expensesSubtitleAlsoPaid => 'hat auch bezahlt';
+
+  @override
+  String expensesNetGetsBack(String amount) {
+    return 'bekommt $amount zurück';
+  }
+
+  @override
+  String expensesNetOwes(String amount) {
+    return 'schuldet $amount';
+  }
+
+  @override
+  String get expensesNetSettled => 'ausgeglichen';
+
+  @override
+  String get expensesShareTooltip => 'Ausgabe teilen';
+
+  @override
+  String expensesShareSubject(String title, String groupName) {
+    return '$title — $groupName';
+  }
+
+  @override
+  String get expensesShareSettlementHeader => 'AUSGLEICH';
+
+  @override
+  String get expensesShareSharedVia => 'Geteilt über SceneSplit';
 
   @override
   String expensesPaymentExceeds(String amount) {

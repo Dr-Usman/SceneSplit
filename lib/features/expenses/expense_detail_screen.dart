@@ -4,29 +4,70 @@ import 'package:intl/intl.dart';
 
 import '../../core/l10n/l10n_extensions.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/expense_share.dart';
 import '../../core/utils/money.dart';
+import '../../core/utils/share_expenses.dart';
 import '../../providers/analytics_provider.dart';
 import '../../providers/data_providers.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/group_detail_provider.dart';
 import '../../repositories/expense_repository.dart';
+import '../../services/balance_service.dart';
+import '../../shared/widgets/open_debt_tile.dart';
+import '../../shared/widgets/single_expense_share_card.dart';
 import '../../shared/widgets/user_avatar.dart';
+import '../groups/widgets/share_expenses_sheet.dart';
+import '../settlements/record_settlement_sheet.dart';
 import 'add_expense_screen.dart';
 
-class ExpenseDetailScreen extends ConsumerWidget {
+class ExpenseDetailScreen extends ConsumerStatefulWidget {
   const ExpenseDetailScreen({
     super.key,
     required this.groupId,
     required this.expenseId,
     required this.currencyCode,
+    this.analyticsSource = 'group_detail',
   });
 
   final String groupId;
   final String expenseId;
   final String currencyCode;
 
+  /// Entry point that opened this screen (`group_detail`, `group_expenses`,
+  /// `member_breakdown`, `pair_balance`, `group_report`, `person_detail`).
+  final String analyticsSource;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ExpenseDetailScreen> createState() =>
+      _ExpenseDetailScreenState();
+}
+
+class _ExpenseDetailScreenState extends ConsumerState<ExpenseDetailScreen> {
+  bool _openedTracked = false;
+
+  /// Fires the expense-opened event once, as soon as the expense is resolved.
+  void _trackOpenedOnce(String groupName, ExpenseWithSplits item) {
+    if (_openedTracked) return;
+    _openedTracked = true;
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackExpenseDetailOpened(
+        groupId: widget.groupId,
+        groupName: groupName,
+        expenseId: item.expense.id,
+        amountCents: item.expense.amountCents,
+        currencyCode: widget.currencyCode,
+        participantCount: item.splits.where((s) => s.amountCents > 0).length,
+        source: widget.analyticsSource,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final groupId = widget.groupId;
+    final expenseId = widget.expenseId;
+    final currencyCode = widget.currencyCode;
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
     final detail = ref.watch(groupDetailProvider(groupId));
@@ -52,7 +93,6 @@ class ExpenseDetailScreen extends ConsumerWidget {
         }
 
         final expense = item.expense;
-        final payerIds = {for (final p in item.payers) p.userId};
         final sortedPayers = [...item.payers]
           ..sort((a, b) => b.amountCents.compareTo(a.amountCents));
         final splitLabel = switch (expense.splitType) {
@@ -60,11 +100,89 @@ class ExpenseDetailScreen extends ConsumerWidget {
           'percentage' => l10n.expensesSplitByPercentage,
           _ => l10n.expensesSplitEqually,
         };
+        final singleExpenseNet = BalanceService.netBalances(
+          payers: item.payers,
+          splits: item.splits,
+          settlements: const [],
+        );
+        final singleExpenseDebts = BalanceService.simplifyDebts(
+          singleExpenseNet,
+        );
+
+        _trackOpenedOnce(data.group.name, item);
 
         return Scaffold(
           appBar: AppBar(
             title: Text(l10n.expensesDetailTitle),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.share_outlined),
+                tooltip: l10n.expensesShareTooltip,
+                onPressed: () async {
+                  final format = await showExpenseShareFormatSheet(context);
+                  if (format == null || !context.mounted) return;
+
+                  final userNames = {
+                    for (final entry in users.entries)
+                      entry.key: entry.value.name,
+                  };
+
+                  final group = data.group;
+                  bool ok = false;
+                  if (format == ExpenseShareFormat.image) {
+                    ok = await shareSingleExpenseImage(
+                      context,
+                      card: SingleExpenseShareCard(
+                        groupEmoji: group.emoji,
+                        groupName: group.name,
+                        currencyCode: currencyCode,
+                        locale: locale,
+                        item: item,
+                        users: users,
+                        showDecimals: group.showDecimals,
+                      ),
+                      groupName: group.name,
+                      expenseTitle: expense.title,
+                    );
+                  } else {
+                    final text = formatSingleExpenseText(
+                      item: item,
+                      groupName: group.name,
+                      groupEmoji: group.emoji,
+                      currencyCode: currencyCode,
+                      userNames: userNames,
+                      l10n: l10n,
+                      locale: locale,
+                      showDecimals: group.showDecimals,
+                    );
+                    ok = await shareSingleExpenseText(
+                      context,
+                      body: text,
+                      groupName: group.name,
+                      expenseTitle: expense.title,
+                    );
+                  }
+
+                  if (ok) {
+                    await ref
+                        .read(analyticsServiceProvider)
+                        .trackExpenseShared(
+                          groupId: groupId,
+                          groupName: data.group.name,
+                          expenseId: expense.id,
+                          amountCents: expense.amountCents,
+                          currencyCode: currencyCode,
+                          format: format.name,
+                          splitType: expense.splitType,
+                          payerCount: item.payers.length,
+                          participantCount: item.splits
+                              .where((s) => s.amountCents > 0)
+                              .length,
+                          debtCount: singleExpenseDebts.length,
+                        );
+                  }
+                },
+              ),
               PopupMenuButton<String>(
                 onSelected: (action) async {
                   if (action == 'edit') {
@@ -74,6 +192,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
                           groupId: groupId,
                           currencyCode: currencyCode,
                           existing: item,
+                          analyticsSource: 'expense_detail',
                         ),
                       ),
                     );
@@ -203,19 +322,95 @@ class ExpenseDetailScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               for (final split in item.splits) ...[
-                _SplitRow(
-                  name: users[split.userId]?.name ?? '?',
-                  colorIndex: users[split.userId]?.colorIndex ?? 0,
-                  amount: formatCents(
-                    split.amountCents,
-                    currencyCode,
-                    locale: locale,
-                  ),
-                  subtitle: payerIds.contains(split.userId)
-                      ? l10n.expensesSubtitleAlsoPaid
-                      : null,
-                ),
+                () {
+                  final net = singleExpenseNet[split.userId] ?? 0;
+                  final (subtitle, subtitleColor) = switch (net) {
+                    > 0 => (
+                      l10n.expensesNetGetsBack(
+                        formatCents(net, currencyCode, locale: locale),
+                      ),
+                      AppColors.positive,
+                    ),
+                    < 0 => (
+                      l10n.expensesNetOwes(
+                        formatCents(-net, currencyCode, locale: locale),
+                      ),
+                      AppColors.negative,
+                    ),
+                    _ => (l10n.expensesNetSettled, AppColors.textSecondary),
+                  };
+                  return _SplitRow(
+                    name: users[split.userId]?.name ?? '?',
+                    colorIndex: users[split.userId]?.colorIndex ?? 0,
+                    amount: formatCents(
+                      split.amountCents,
+                      currencyCode,
+                      locale: locale,
+                    ),
+                    subtitle: subtitle,
+                    subtitleColor: subtitleColor,
+                  );
+                }(),
                 const SizedBox(height: 8),
+              ],
+              if (singleExpenseDebts.isNotEmpty) ...[
+                const SizedBox(height: 20),
+                Text(
+                  l10n.expensesWhoOwesWhomHeader,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.expensesWhoOwesWhomHelp,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Theme.of(
+                        context,
+                      ).dividerColor.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < singleExpenseDebts.length; i++) ...[
+                        OpenDebtTile(
+                          debt: singleExpenseDebts[i],
+                          users: users,
+                          currencyCode: currencyCode,
+                          locale: locale,
+                          showDebtorAvatar: true,
+                          onTap: () => showRecordSettlementSheet(
+                            context,
+                            groupId: groupId,
+                            groupName: data.group.name,
+                            currencyCode: data.group.currencyCode,
+                            members: data.members,
+                            prefill: singleExpenseDebts[i],
+                            analyticsSource: kSettlementSourceExpenseDetail,
+                          ),
+                        ),
+                        if (i < singleExpenseDebts.length - 1)
+                          const Divider(height: 1),
+                      ],
+                    ],
+                  ),
+                ),
               ],
             ],
           ),
@@ -297,12 +492,14 @@ class _SplitRow extends StatelessWidget {
     required this.colorIndex,
     required this.amount,
     this.subtitle,
+    this.subtitleColor,
   });
 
   final String name;
   final int colorIndex;
   final String amount;
   final String? subtitle;
+  final Color? subtitleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -318,9 +515,9 @@ class _SplitRow extends StatelessWidget {
               if (subtitle != null)
                 Text(
                   subtitle!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.primary,
+                    color: subtitleColor ?? AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

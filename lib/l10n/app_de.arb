@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "Älteste zuerst",
   "groupsReportSortNewest": "Neueste",
   "groupsReportSortOldest": "Älteste",
-  "groupsReportShowMore": "Mehr anzeigen ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "Mehr anzeigen",
+  "groupsExpensesShowingOf": "{shown} von {total} werden angezeigt",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "Nach Prozent",
   "expensesSplitEqually": "Gleichmäßig aufteilen",
   "expensesSplitBreakdown": "AUFTEILUNGSÜBERSICHT",
+  "expensesWhoOwesWhomHeader": "WER SCHULDET WEM (FÜR DIESE AUSGABE)",
+  "expensesWhoOwesWhomHelp": "Nur für diese Ausgabe berechnet. Der Gruppensaldo berücksichtigt alle Ausgaben.",
   "expensesNote": "Notiz",
   "expensesNoteHint": "Optionale Notiz",
   "expensesSaveChanges": "Änderungen speichern",
   "expensesSaveExpense": "Ausgabe speichern",
   "expensesSubtitlePaid": "hat bezahlt",
   "expensesSubtitleAlsoPaid": "hat auch bezahlt",
+  "expensesNetGetsBack": "bekommt {amount} zurück",
+  "expensesNetOwes": "schuldet {amount}",
+  "expensesNetSettled": "ausgeglichen",
+  "expensesShareTooltip": "Ausgabe teilen",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "AUSGLEICH",
+  "expensesShareSharedVia": "Geteilt über SceneSplit",
   "expensesPaymentExceeds": "Jede Zahlung darf {amount} nicht überschreiten",
   "expensesEnterValidPayments": "Gültige Zahlungsbeträge eingeben",
   "expensesOverBy": "Überschuss von {amount}",

@@ -515,10 +515,14 @@
   "groupsReportSortDateAsc": "Oldest first",
   "groupsReportSortNewest": "Newest",
   "groupsReportSortOldest": "Oldest",
-  "groupsReportShowMore": "Show more ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "Show more",
+  "groupsExpensesShowingOf": "Showing {shown} of {total}",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -679,12 +683,45 @@
   "expensesSplitByPercentage": "By percentage",
   "expensesSplitEqually": "Split equally",
   "expensesSplitBreakdown": "SPLIT BREAKDOWN",
+  "expensesWhoOwesWhomHeader": "WHO OWES WHOM (FOR THIS EXPENSE)",
+  "expensesWhoOwesWhomHelp": "Calculated for this expense only. Group balance reflects all expenses.",
   "expensesNote": "Note",
   "expensesNoteHint": "Optional note",
   "expensesSaveChanges": "Save changes",
   "expensesSaveExpense": "Save expense",
   "expensesSubtitlePaid": "paid",
   "expensesSubtitleAlsoPaid": "also paid",
+  "expensesNetGetsBack": "gets back {amount}",
+  "@expensesNetGetsBack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesNetOwes": "owes {amount}",
+  "@expensesNetOwes": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesNetSettled": "settled",
+  "expensesShareTooltip": "Share expense",
+  "expensesShareSubject": "{title} — {groupName}",
+  "@expensesShareSubject": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesShareSettlementHeader": "SETTLEMENT",
+  "expensesShareSharedVia": "Shared via SceneSplit",
   "expensesPaymentExceeds": "Each payment must not exceed {amount}",
   "@expensesPaymentExceeds": {
     "placeholders": {

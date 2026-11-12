@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "सबसे पुराने पहले",
   "groupsReportSortNewest": "नवीनतम",
   "groupsReportSortOldest": "पुराने",
-  "groupsReportShowMore": "और दिखाएं ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "और दिखाएं",
+  "groupsExpensesShowingOf": "{total} में से {shown} दिखाए जा रहे हैं",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "प्रतिशत के अनुसार",
   "expensesSplitEqually": "बराबर बाँटें",
   "expensesSplitBreakdown": "बँटवारा विवरण",
+  "expensesWhoOwesWhomHeader": "किसे किसे देना है (इस ख़र्च के लिए)",
+  "expensesWhoOwesWhomHelp": "केवल इस ख़र्च के लिए गणना की गई। समूह का बकाया सभी ख़र्चों को दर्शाता है।",
   "expensesNote": "नोट",
   "expensesNoteHint": "वैकल्पिक नोट",
   "expensesSaveChanges": "बदलाव सहेजें",
   "expensesSaveExpense": "खर्च सहेजें",
   "expensesSubtitlePaid": "ने भुगतान किया",
   "expensesSubtitleAlsoPaid": "ने भी भुगतान किया",
+  "expensesNetGetsBack": "{amount} वापस मिलेंगे",
+  "expensesNetOwes": "{amount} बकाया",
+  "expensesNetSettled": "बराबर",
+  "expensesShareTooltip": "ख़र्च साझा करें",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "हिसाब-किताब",
+  "expensesShareSharedVia": "SceneSplit के माध्यम से साझा किया गया",
   "expensesPaymentExceeds": "प्रत्येक भुगतान {amount} से अधिक नहीं हो सकता",
   "expensesEnterValidPayments": "मान्य भुगतान राशि दर्ज करें",
   "expensesOverBy": "{amount} अधिक",

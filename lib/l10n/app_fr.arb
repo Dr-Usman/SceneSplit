@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "Plus anciens d'abord",
   "groupsReportSortNewest": "Plus récents",
   "groupsReportSortOldest": "Plus anciens",
-  "groupsReportShowMore": "Afficher plus ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "Afficher plus",
+  "groupsExpensesShowingOf": "Affichage de {shown} sur {total}",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "Par pourcentage",
   "expensesSplitEqually": "Répartir également",
   "expensesSplitBreakdown": "DÉTAIL DE LA RÉPARTITION",
+  "expensesWhoOwesWhomHeader": "QUI DOIT À QUI (POUR CETTE DÉPENSE)",
+  "expensesWhoOwesWhomHelp": "Calculé pour cette dépense uniquement. Le solde du groupe reflète toutes les dépenses.",
   "expensesNote": "Note",
   "expensesNoteHint": "Note facultative",
   "expensesSaveChanges": "Enregistrer les modifications",
   "expensesSaveExpense": "Enregistrer la dépense",
   "expensesSubtitlePaid": "a payé",
   "expensesSubtitleAlsoPaid": "a aussi payé",
+  "expensesNetGetsBack": "récupère {amount}",
+  "expensesNetOwes": "doit {amount}",
+  "expensesNetSettled": "réglé",
+  "expensesShareTooltip": "Partager la dépense",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "RÈGLEMENT",
+  "expensesShareSharedVia": "Partagé via SceneSplit",
   "expensesPaymentExceeds": "Chaque paiement ne doit pas dépasser {amount}",
   "expensesEnterValidPayments": "Saisissez des montants de paiement valides",
   "expensesOverBy": "Dépassement de {amount}",

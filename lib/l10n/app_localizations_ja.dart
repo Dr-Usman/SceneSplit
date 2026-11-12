@@ -642,8 +642,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupsReportSortOldest => '古い順';
 
   @override
-  String groupsReportShowMore(int remaining) {
-    return 'さらに表示 ($remaining)';
+  String get groupsReportShowMore => 'さらに表示';
+
+  @override
+  String groupsExpensesShowingOf(int shown, int total) {
+    return '$total 件中 $shown 件を表示';
   }
 
   @override
@@ -860,6 +863,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get expensesSplitBreakdown => '分割の内訳';
 
   @override
+  String get expensesWhoOwesWhomHeader => '誰が誰に支払うか（この支出）';
+
+  @override
+  String get expensesWhoOwesWhomHelp => 'この支出のみの計算です。グループ全体の残高はすべての支出を反映します。';
+
+  @override
   String get expensesNote => 'メモ';
 
   @override
@@ -876,6 +885,33 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get expensesSubtitleAlsoPaid => 'も支払い';
+
+  @override
+  String expensesNetGetsBack(String amount) {
+    return '$amount を受け取る';
+  }
+
+  @override
+  String expensesNetOwes(String amount) {
+    return '$amount を支払う';
+  }
+
+  @override
+  String get expensesNetSettled => '精算済み';
+
+  @override
+  String get expensesShareTooltip => '経費を共有';
+
+  @override
+  String expensesShareSubject(String title, String groupName) {
+    return '$title — $groupName';
+  }
+
+  @override
+  String get expensesShareSettlementHeader => '精算';
+
+  @override
+  String get expensesShareSharedVia => 'SceneSplit で共有';
 
   @override
   String expensesPaymentExceeds(String amount) {

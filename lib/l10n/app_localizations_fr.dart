@@ -660,8 +660,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get groupsReportSortOldest => 'Plus anciens';
 
   @override
-  String groupsReportShowMore(int remaining) {
-    return 'Afficher plus ($remaining)';
+  String get groupsReportShowMore => 'Afficher plus';
+
+  @override
+  String groupsExpensesShowingOf(int shown, int total) {
+    return 'Affichage de $shown sur $total';
   }
 
   @override
@@ -880,6 +883,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get expensesSplitBreakdown => 'DÉTAIL DE LA RÉPARTITION';
 
   @override
+  String get expensesWhoOwesWhomHeader => 'QUI DOIT À QUI (POUR CETTE DÉPENSE)';
+
+  @override
+  String get expensesWhoOwesWhomHelp =>
+      'Calculé pour cette dépense uniquement. Le solde du groupe reflète toutes les dépenses.';
+
+  @override
   String get expensesNote => 'Note';
 
   @override
@@ -896,6 +906,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get expensesSubtitleAlsoPaid => 'a aussi payé';
+
+  @override
+  String expensesNetGetsBack(String amount) {
+    return 'récupère $amount';
+  }
+
+  @override
+  String expensesNetOwes(String amount) {
+    return 'doit $amount';
+  }
+
+  @override
+  String get expensesNetSettled => 'réglé';
+
+  @override
+  String get expensesShareTooltip => 'Partager la dépense';
+
+  @override
+  String expensesShareSubject(String title, String groupName) {
+    return '$title — $groupName';
+  }
+
+  @override
+  String get expensesShareSettlementHeader => 'RÈGLEMENT';
+
+  @override
+  String get expensesShareSharedVia => 'Partagé via SceneSplit';
 
   @override
   String expensesPaymentExceeds(String amount) {

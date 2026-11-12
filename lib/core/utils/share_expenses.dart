@@ -60,3 +60,61 @@ Future<bool> shareExpenseText(
     return false;
   }
 }
+
+/// Captures a single expense [card] as a PNG and opens the system share sheet.
+Future<bool> shareSingleExpenseImage(
+  BuildContext context, {
+  required Widget card,
+  required String groupName,
+  required String expenseTitle,
+}) async {
+  final l10n = context.l10n;
+  final origin = sharePositionOrigin(context);
+
+  final bytes = await captureShareWidget(context, child: card);
+  if (bytes == null || !context.mounted) return false;
+
+  try {
+    final result = await SharePlus.instance.share(
+      ShareParams(
+        files: [
+          XFile.fromData(
+            bytes,
+            name: 'scenesplit-expense.png',
+            mimeType: 'image/png',
+          ),
+        ],
+        subject: l10n.expensesShareSubject(expenseTitle, groupName),
+        text: '$expenseTitle · $groupName',
+        sharePositionOrigin: origin,
+      ),
+    );
+    return result.status != ShareResultStatus.unavailable;
+  } on Object {
+    return false;
+  }
+}
+
+/// Opens the system share sheet with a formatted single-expense text summary.
+Future<bool> shareSingleExpenseText(
+  BuildContext context, {
+  required String body,
+  required String groupName,
+  required String expenseTitle,
+}) async {
+  final l10n = context.l10n;
+  final origin = sharePositionOrigin(context);
+
+  try {
+    final result = await SharePlus.instance.share(
+      ShareParams(
+        text: body,
+        subject: l10n.expensesShareSubject(expenseTitle, groupName),
+        sharePositionOrigin: origin,
+      ),
+    );
+    return result.status != ShareResultStatus.unavailable;
+  } on Object {
+    return false;
+  }
+}

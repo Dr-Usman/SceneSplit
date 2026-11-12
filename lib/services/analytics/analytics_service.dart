@@ -147,6 +147,49 @@ class AnalyticsService {
   // 2. Groups / Scenes (CRUD)
   // ===========================================================================
 
+  /// Fired when the group detail (scene) screen is opened.
+  ///
+  /// Counts and sizes describe the scene at the moment it was opened, so the
+  /// event doubles as the denominator for scene-level interactions.
+  Future<void> trackGroupDetailOpened({
+    required String groupId,
+    required String groupName,
+    required String currencyCode,
+    required int memberCount,
+    required int expenseCount,
+    required int settlementCount,
+  }) async {
+    await _track(
+      AnalyticsEvents.groupDetailOpened,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'currency_code': currencyCode,
+        'member_count': memberCount,
+        'expense_count': expenseCount,
+        'settlement_count': settlementCount,
+      },
+    );
+  }
+
+  /// Fired when the create or edit group form is opened.
+  ///
+  /// [mode] is `create` or `edit`. Group identifiers are null for `create`.
+  Future<void> trackGroupFormOpened({
+    required String mode,
+    String? groupId,
+    String? groupName,
+  }) async {
+    await _track(
+      AnalyticsEvents.groupFormOpened,
+      properties: {
+        'mode': mode,
+        'group_id': ?groupId,
+        'group_name': ?groupName,
+      },
+    );
+  }
+
   /// Fired after a group is created.
   Future<void> trackGroupCreated({
     required String groupId,
@@ -298,9 +341,224 @@ class AnalyticsService {
     );
   }
 
+  /// Fired after the user successfully shares an individual expense.
+  ///
+  /// [format] is `image` or `text`.
+  Future<void> trackExpenseShared({
+    required String groupId,
+    String? groupName,
+    required String expenseId,
+    required int amountCents,
+    required String currencyCode,
+    required String format,
+    required String splitType,
+    required int payerCount,
+    required int participantCount,
+    required int debtCount,
+  }) async {
+    await _track(
+      AnalyticsEvents.expenseShared,
+      properties: {
+        'group_id': groupId,
+        'group_name': ?groupName,
+        'expense_id': expenseId,
+        'amount_cents': amountCents,
+        'currency_code': currencyCode,
+        'format': format,
+        'split_type': splitType,
+        'payer_count': payerCount,
+        'participant_count': participantCount,
+        'debt_count': debtCount,
+        'platform': platformLabel(),
+      },
+    );
+  }
+
+  /// Fired when the user expands the in-place expense list to reveal more rows.
+  ///
+  /// [shownCount] is the number of expense rows visible *after* the expansion,
+  /// so the sequence of taps reveals how far a user actually scrolls.
+  Future<void> trackExpenseListExpanded({
+    required String groupId,
+    required String groupName,
+    required int expenseCount,
+    required int memberCount,
+    required int shownCount,
+    String source = 'group_detail',
+  }) async {
+    await _track(
+      AnalyticsEvents.expenseListExpanded,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'expense_count': expenseCount,
+        'member_count': memberCount,
+        'shown_count': shownCount,
+        'source': source,
+      },
+    );
+  }
+
+  /// Fired when the user opens the full expense list screen from the group detail.
+  Future<void> trackExpenseListViewAll({
+    required String groupId,
+    required String groupName,
+    required int expenseCount,
+    required int memberCount,
+    String source = 'group_detail',
+  }) async {
+    await _track(
+      AnalyticsEvents.expenseListViewAll,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'expense_count': expenseCount,
+        'member_count': memberCount,
+        'source': source,
+      },
+    );
+  }
+
+  /// Fired when the expense detail screen is opened.
+  ///
+  /// [source] identifies the entry point (`group_detail`, `group_expenses`,
+  /// `member_breakdown`, `pair_balance`, `group_report`, `person_detail`).
+  Future<void> trackExpenseDetailOpened({
+    required String groupId,
+    required String groupName,
+    required String expenseId,
+    required int amountCents,
+    required String currencyCode,
+    required int participantCount,
+    required String source,
+  }) async {
+    await _track(
+      AnalyticsEvents.expenseDetailOpened,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'expense_id': expenseId,
+        'amount_cents': amountCents,
+        'currency_code': currencyCode,
+        'participant_count': participantCount,
+        'source': source,
+      },
+    );
+  }
+
+  /// Fired when the add / edit expense form is opened.
+  ///
+  /// [mode] is `create` or `edit`. [source] identifies the entry point
+  /// (`group_detail`, `expense_detail`).
+  Future<void> trackExpenseFormOpened({
+    required String groupId,
+    required String groupName,
+    required String mode,
+    required String source,
+  }) async {
+    await _track(
+      AnalyticsEvents.expenseFormOpened,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'mode': mode,
+        'source': source,
+      },
+    );
+  }
+
+  /// Fired when a member slice is tapped in the scene breakdown chart.
+  Future<void> trackMemberBreakdownOpened({
+    required String groupId,
+    required String groupName,
+    required String memberName,
+    required int shareCents,
+    required int expenseCount,
+    double? percent,
+  }) async {
+    await _track(
+      AnalyticsEvents.memberBreakdownOpened,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'member_name': memberName,
+        'share_cents': shareCents,
+        'expense_count': expenseCount,
+        'percent': ?percent,
+      },
+    );
+  }
+
   // ===========================================================================
   // 4. Settlements (CRUD)
   // ===========================================================================
+
+  /// Fired when the record settlement sheet is opened.
+  ///
+  /// [mode] is `create` or `edit`. [source] is one of `scene_detail`,
+  /// `balances_pair`, `person_detail`.
+  Future<void> trackSettlementFormOpened({
+    required String groupId,
+    String? groupName,
+    required String mode,
+    required String source,
+    required bool hadPrefill,
+  }) async {
+    await _track(
+      AnalyticsEvents.settlementFormOpened,
+      properties: {
+        'group_id': groupId,
+        'group_name': ?groupName,
+        'mode': mode,
+        'source': source,
+        'had_prefill': hadPrefill,
+      },
+    );
+  }
+
+  /// Fired when the in-place settlement list on the scene screen is expanded.
+  ///
+  /// [shownCount] is the number of settlement rows visible after the expansion.
+  Future<void> trackSettlementListExpanded({
+    required String groupId,
+    required String groupName,
+    required int settlementCount,
+    required int memberCount,
+    required int shownCount,
+    String source = 'group_detail',
+  }) async {
+    await _track(
+      AnalyticsEvents.settlementListExpanded,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'settlement_count': settlementCount,
+        'member_count': memberCount,
+        'shown_count': shownCount,
+        'source': source,
+      },
+    );
+  }
+
+  /// Fired when the full settlement list screen is opened from the scene screen.
+  Future<void> trackSettlementListViewAll({
+    required String groupId,
+    required String groupName,
+    required int settlementCount,
+    required int memberCount,
+    String source = 'group_detail',
+  }) async {
+    await _track(
+      AnalyticsEvents.settlementListViewAll,
+      properties: {
+        'group_id': groupId,
+        'group_name': groupName,
+        'settlement_count': settlementCount,
+        'member_count': memberCount,
+        'source': source,
+      },
+    );
+  }
 
   /// Fired after a new settlement is saved (not on edit).
   ///

@@ -37,6 +37,8 @@ lib/services/analytics/
 | [Group Created](#group_created) | `group_created` | `group_id`, `group_name`, `currency_code`, `member_count`, `show_decimals` | Primary activation milestone; tracks scene creation rate and average group size. |
 | [Group Edited](#group_edited) | `group_edited` | `group_id`, `group_name`, `currency_code`, `member_count`, `show_decimals` | Tracks modifications to group metadata, currency switches, and member list changes. |
 | [Group Deleted](#group_deleted) | `group_deleted` | `group_id`, `group_name` | Measures group churn, cancellation rates, and scene cleanup frequency. |
+| [Group Detail Opened](#group_detail_opened) | `group_detail_opened` | `group_id`, `group_name`, `currency_code`, `member_count`, `expense_count`, `settlement_count` | The denominator for every scene-level interaction, and the natural slice for scene size (how many expenses before a scene feels "full"). |
+| [Group Form Opened](#group_form_opened) | `group_form_opened` | `mode`, `group_id`, `group_name` | Separates creation intent from edit intent, so `group_form_opened` → `group_created` gives a real creation conversion rate. |
 
 ### 3. Expenses & Split (CRUD) & Calculator
 | Event Name | Mixpanel Identifier | Event Properties | Why It’s Useful |
@@ -46,6 +48,12 @@ lib/services/analytics/
 | [Expense Deleted](#expense_deleted) | `expense_deleted` | `group_id`, `group_name`, `amount_cents`, `currency_code` | Captures transaction cancellation rates and mistakenly logged expenses. |
 | [Calculator Used](#calculator_used) | `calculator_used` | `group_id`, `group_name` | Validates adoption of the in-app bill calculator keypad over external apps. |
 | [Expenses Shared](#expenses_shared) | `expenses_shared` | `expense_count`, `format`, `range`, `platform` | Tracks quick-share usage directly from the expenses list sheet. |
+| [Expense Shared](#expense_shared) | `expense_shared` | `group_id`, `group_name`, `expense_id`, `amount_cents`, `currency_code`, `format`, `split_type`, `payer_count`, `participant_count`, `debt_count`, `platform` | Tracks single-expense sharing directly from the Expense Detail screen. |
+| [Expense List Expanded](#expense_list_expanded) | `expense_list_expanded` | `group_id`, `group_name`, `expense_count`, `member_count`, `shown_count`, `source` | Measures how far users expand the truncated expense list and whether the initial item cap (5) is too aggressive. |
+| [Expense List View All](#expense_list_view_all) | `expense_list_view_all` | `group_id`, `group_name`, `expense_count`, `member_count`, `source` | Compares in-place expansion against navigation to the full expense list, so the two controls can be tuned or merged. |
+| [Expense Detail Opened](#expense_detail_opened) | `expense_detail_opened` | `group_id`, `group_name`, `expense_id`, `amount_cents`, `currency_code`, `participant_count`, `source` | Closes the funnel started by `expense_list_expanded` / `expense_list_view_all` — shows which entry point actually leads to a real expense lookup. |
+| [Expense Form Opened](#expense_form_opened) | `expense_form_opened` | `group_id`, `group_name`, `mode`, `source` | Captures add/edit intent before the save, exposing form abandonment that `expense_created` can never show. |
+| [Member Breakdown Opened](#member_breakdown_opened) | `member_breakdown_opened` | `group_id`, `group_name`, `member_name`, `share_cents`, `expense_count`, `percent` | Measures adoption of the scene breakdown chart and which members' spending users drill into. |
 
 ### 4. Settlements (CRUD)
 | Event Name | Mixpanel Identifier | Event Properties | Why It’s Useful |
@@ -53,6 +61,9 @@ lib/services/analytics/
 | [Settlement Created](#settlement_created) | `settlement_created` | `group_id`, `group_name`, `amount_cents`, `currency_code`, `source`, `had_prefill`, `is_custom_date` | Measures debt closure rates, navigation paths, and custom date adoption. |
 | [Settlement Edited](#settlement_edited) | `settlement_edited` | `group_id`, `group_name`, `amount_cents`, `currency_code`, `is_custom_date` | Monitors debt correction rates and date adjustments after settlement. |
 | [Settlement Deleted](#settlement_deleted) | `settlement_deleted` | `group_id`, `group_name`, `amount_cents`, `currency_code` | Tracks settlement reversals or accidental debt clearance undo actions. |
+| [Settlement Form Opened](#settlement_form_opened) | `settlement_form_opened` | `group_id`, `group_name`, `mode`, `source`, `had_prefill` | Shows how often users start a settlement (and how often it is pre-filled from an open debt) before saving it. |
+| [Settlement List Expanded](#settlement_list_expanded) | `settlement_list_expanded` | `group_id`, `group_name`, `settlement_count`, `member_count`, `shown_count`, `source` | Mirrors `expense_list_expanded` for settlements, so list-length pressure can be judged on both lists. |
+| [Settlement List View All](#settlement_list_view_all) | `settlement_list_view_all` | `group_id`, `group_name`, `settlement_count`, `member_count`, `source` | Tracks navigation to the full settlement list, the settlement counterpart of `expense_list_view_all`. |
 
 ### 5. Scene Reports
 | Event Name | Mixpanel Identifier | Event Properties | Why It’s Useful |
@@ -174,6 +185,27 @@ lib/services/analytics/
   * `group_name` (`String`): Title of the deleted group.
 * **What it does & Why it helps**: Tracks group churn, abandonment rates, and scene completion lifecycle.
 
+#### `group_detail_opened`
+* **Trigger**: Fired once each time the scene detail screen opens and its data loads.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `currency_code` (`String`): Scene currency code.
+  * `member_count` (`int`): Number of members in the scene.
+  * `expense_count` (`int`): Number of expenses in the scene.
+  * `settlement_count` (`int`): Number of settlements in the scene.
+* **What it does & Why it helps**: The denominator for every scene-level interaction (expense opens, list expansions, share actions). Because it carries scene size, it also answers "at how many expenses does a scene stop feeling browsable".
+
+#### `group_form_opened`
+* **Trigger**: Fired when the create or edit scene form is opened.
+* **Code Location**: [create_group_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/create_group_screen.dart) and [edit_group_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/edit_group_screen.dart).
+* **Properties**:
+  * `mode` (`String`): `create` or `edit`.
+  * `group_id` (`String?`): Group UUID — null when creating.
+  * `group_name` (`String?`): Scene name — null when creating.
+* **What it does & Why it helps**: Separates creation intent from edit intent. `group_form_opened` (mode `create`) → `group_created` gives an honest creation conversion rate instead of one inflated by edits.
+
 ---
 
 ### 3. Expenses & Split (CRUD) & Calculator
@@ -232,6 +264,81 @@ lib/services/analytics/
   * `platform` (`String`): Host OS.
 * **What it does & Why it helps**: Measures quick-share usage directly from the expenses list sheet.
 
+#### `expense_shared`
+* **Trigger**: Fired when sharing an individual expense directly from the Expense Detail screen.
+* **Code Location**: [expense_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/expenses/expense_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String?`): Name of the scene.
+  * `expense_id` (`String`): Expense UUID.
+  * `amount_cents` (`int`): Total expense amount in cents.
+  * `currency_code` (`String`): Currency code for the expense.
+  * `format` (`String`): Export format (`image` or `text`).
+  * `split_type` (`String`): Split method (`equal`, `exact`, `percentage`).
+  * `payer_count` (`int`): Number of payers who contributed.
+  * `participant_count` (`int`): Number of participants in the split.
+  * `debt_count` (`int`): Number of debt rows resulting from this single expense.
+  * `platform` (`String`): Host OS.
+* **What it does & Why it helps**: Measures viral loop and direct-message receipt sharing for individual expenses.
+
+#### `expense_list_expanded`
+* **Trigger**: Fired when the user taps "Show more" to expand the truncated expense list on the group detail screen.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `expense_count` (`int`): Total expenses in the scene (not just the visible ones).
+  * `member_count` (`int`): Number of members in the scene.
+  * `shown_count` (`int`): Expense rows visible **after** the expansion.
+  * `source` (`String`): Origin screen (`group_detail`).
+* **What it does & Why it helps**: Reveals whether long scenes need more than the initial 5 visible rows, and how deep users actually go before giving up. A rising `shown_count` per tap sequence indicates the cap should be higher.
+
+#### `expense_list_view_all`
+* **Trigger**: Fired when the user taps "See all" to open the full expense list screen from the group detail screen.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `expense_count` (`int`): Total expenses in the scene.
+  * `member_count` (`int`): Number of members in the scene.
+  * `source` (`String`): Origin screen (`group_detail`).
+* **What it does & Why it helps**: Directly comparable to `expense_list_expanded`. If "See all" wins consistently over in-place expansion, the redundant control should be removed; if expansion wins, the dedicated screen is over-engineered.
+
+#### `expense_detail_opened`
+* **Trigger**: Fired once each time an expense detail screen opens and the expense resolves.
+* **Code Location**: [expense_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/expenses/expense_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `expense_id` (`String`): Expense UUID.
+  * `amount_cents` (`int`): Expense value in integer cents.
+  * `currency_code` (`String`): Scene currency code.
+  * `participant_count` (`int`): Number of members sharing this expense.
+  * `source` (`String`): Entry point (`group_detail`, `group_expenses`, `member_breakdown`, `pair_balance`, `group_report`, `person_detail`).
+* **What it does & Why it helps**: Closes the funnel opened by `expense_list_expanded` / `expense_list_view_all`. It answers whether users actually open expenses after expanding a list, and which entry point drives real lookups.
+
+#### `expense_form_opened`
+* **Trigger**: Fired once each time the add / edit expense form opens.
+* **Code Location**: [add_expense_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/expenses/add_expense_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `mode` (`String`): `create` or `edit`.
+  * `source` (`String`): Entry point (`group_detail`, `expense_detail`).
+* **What it does & Why it helps**: Captures intent before the save. `expense_form_opened` (mode `create`) → `expense_created` exposes abandonment that the create event alone hides.
+
+#### `member_breakdown_opened`
+* **Trigger**: Fired when a member slice is tapped in the scene breakdown chart.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart) in the pie-chart `onSliceTap`.
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `member_name` (`String`): Display name of the tapped member.
+  * `share_cents` (`int`): That member's share of scene spending, in cents.
+  * `expense_count` (`int`): Number of expenses behind that share.
+  * `percent` (`double?`): The member's share as a percentage of the total.
+* **What it does & Why it helps**: Measures adoption of the visual breakdown and reveals which members' spending users care enough to drill into.
+
 ---
 
 ### 4. Settlements (CRUD)
@@ -269,6 +376,40 @@ lib/services/analytics/
   * `amount_cents` (`int`): Amount of the deleted settlement in cents.
   * `currency_code` (`String`): Currency code of the settlement.
 * **What it does & Why it helps**: Tracks settlement reversals or accidental debt clearance undo actions.
+
+#### `settlement_form_opened`
+* **Trigger**: Fired when the record settlement sheet opens.
+* **Code Location**: [record_settlement_sheet.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/settlements/record_settlement_sheet.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String?`): Name of the scene.
+  * `mode` (`String`): `create` or `edit`.
+  * `source` (`String`): Entry point (`scene_detail`, `balances_pair`, `person_detail`).
+  * `had_prefill` (`bool`): `true` if the sheet was opened from an existing open debt.
+* **What it does & Why it helps**: Shows settlement intent before the save, and quantifies how often the one-tap "settle this debt" path is used versus manual entry.
+
+#### `settlement_list_expanded`
+* **Trigger**: Fired when the user taps "Show more" to expand the truncated settlement list on the scene screen.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `settlement_count` (`int`): Total settlements in the scene.
+  * `member_count` (`int`): Number of members in the scene.
+  * `shown_count` (`int`): Settlement rows visible **after** the expansion.
+  * `source` (`String`): Origin screen (`group_detail`).
+* **What it does & Why it helps**: The settlement counterpart of `expense_list_expanded`, so list-length pressure can be judged across both lists.
+
+#### `settlement_list_view_all`
+* **Trigger**: Fired when the user opens the full settlement list screen from the scene screen.
+* **Code Location**: [group_detail_screen.dart](file:///Users/usman/Development/Projects/Others/scene_split/lib/features/groups/group_detail_screen.dart).
+* **Properties**:
+  * `group_id` (`String`): Group UUID.
+  * `group_name` (`String`): Name of the scene.
+  * `settlement_count` (`int`): Total settlements in the scene.
+  * `member_count` (`int`): Number of members in the scene.
+  * `source` (`String`): Origin screen (`group_detail`).
+* **What it does & Why it helps**: Tracks navigation to the full settlement list — the settlement counterpart of `expense_list_view_all`.
 
 ---
 

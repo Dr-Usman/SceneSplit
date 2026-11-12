@@ -654,8 +654,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get groupsReportSortOldest => 'पुराने';
 
   @override
-  String groupsReportShowMore(int remaining) {
-    return 'और दिखाएं ($remaining)';
+  String get groupsReportShowMore => 'और दिखाएं';
+
+  @override
+  String groupsExpensesShowingOf(int shown, int total) {
+    return '$total में से $shown दिखाए जा रहे हैं';
   }
 
   @override
@@ -873,6 +876,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get expensesSplitBreakdown => 'बँटवारा विवरण';
 
   @override
+  String get expensesWhoOwesWhomHeader => 'किसे किसे देना है (इस ख़र्च के लिए)';
+
+  @override
+  String get expensesWhoOwesWhomHelp =>
+      'केवल इस ख़र्च के लिए गणना की गई। समूह का बकाया सभी ख़र्चों को दर्शाता है।';
+
+  @override
   String get expensesNote => 'नोट';
 
   @override
@@ -889,6 +899,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get expensesSubtitleAlsoPaid => 'ने भी भुगतान किया';
+
+  @override
+  String expensesNetGetsBack(String amount) {
+    return '$amount वापस मिलेंगे';
+  }
+
+  @override
+  String expensesNetOwes(String amount) {
+    return '$amount बकाया';
+  }
+
+  @override
+  String get expensesNetSettled => 'बराबर';
+
+  @override
+  String get expensesShareTooltip => 'ख़र्च साझा करें';
+
+  @override
+  String expensesShareSubject(String title, String groupName) {
+    return '$title — $groupName';
+  }
+
+  @override
+  String get expensesShareSettlementHeader => 'हिसाब-किताब';
+
+  @override
+  String get expensesShareSharedVia => 'SceneSplit के माध्यम से साझा किया गया';
 
   @override
   String expensesPaymentExceeds(String amount) {

@@ -1140,8 +1140,14 @@ abstract class AppLocalizations {
   /// No description provided for @groupsReportShowMore.
   ///
   /// In en, this message translates to:
-  /// **'Show more ({remaining})'**
-  String groupsReportShowMore(int remaining);
+  /// **'Show more'**
+  String get groupsReportShowMore;
+
+  /// No description provided for @groupsExpensesShowingOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {shown} of {total}'**
+  String groupsExpensesShowingOf(int shown, int total);
 
   /// No description provided for @groupsReportOpenDebt.
   ///
@@ -1521,6 +1527,18 @@ abstract class AppLocalizations {
   /// **'SPLIT BREAKDOWN'**
   String get expensesSplitBreakdown;
 
+  /// No description provided for @expensesWhoOwesWhomHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'WHO OWES WHOM (FOR THIS EXPENSE)'**
+  String get expensesWhoOwesWhomHeader;
+
+  /// No description provided for @expensesWhoOwesWhomHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated for this expense only. Group balance reflects all expenses.'**
+  String get expensesWhoOwesWhomHelp;
+
   /// No description provided for @expensesNote.
   ///
   /// In en, this message translates to:
@@ -1556,6 +1574,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'also paid'**
   String get expensesSubtitleAlsoPaid;
+
+  /// No description provided for @expensesNetGetsBack.
+  ///
+  /// In en, this message translates to:
+  /// **'gets back {amount}'**
+  String expensesNetGetsBack(String amount);
+
+  /// No description provided for @expensesNetOwes.
+  ///
+  /// In en, this message translates to:
+  /// **'owes {amount}'**
+  String expensesNetOwes(String amount);
+
+  /// No description provided for @expensesNetSettled.
+  ///
+  /// In en, this message translates to:
+  /// **'settled'**
+  String get expensesNetSettled;
+
+  /// No description provided for @expensesShareTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Share expense'**
+  String get expensesShareTooltip;
+
+  /// No description provided for @expensesShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} — {groupName}'**
+  String expensesShareSubject(String title, String groupName);
+
+  /// No description provided for @expensesShareSettlementHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'SETTLEMENT'**
+  String get expensesShareSettlementHeader;
+
+  /// No description provided for @expensesShareSharedVia.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared via SceneSplit'**
+  String get expensesShareSharedVia;
 
   /// No description provided for @expensesPaymentExceeds.
   ///

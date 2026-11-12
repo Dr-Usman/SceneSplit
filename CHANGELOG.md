@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Single expense share & settlement telemetry: Expense Detail screen now features an AppBar Share icon to export an individual expense as either a branded PNG receipt card (`SingleExpenseShareCard`) or clean structured text, with dedicated `expense_shared` Mixpanel telemetry (capturing expense ID, scene, format, split type, payer count, and debt count), plus `expense_detail` source tracking when settling debts directly from the expense.
+- Per-expense settlement breakdown: Expense Detail screen now includes a dedicated "Who owes whom (for this expense)" section using simplified min-transfer debts, with tap-to-settle support that opens the settlement sheet prefilled with the debt.
+- Expense list telemetry: New `expense_list_expanded` and `expense_list_view_all` Mixpanel events capture scene name, total expense count, member count, and visible item count when users expand the in-place expense list or open the full expense list.
+- Screen view & form intent telemetry: New `group_detail_opened`, `group_form_opened`, `expense_detail_opened`, `expense_form_opened`, `settlement_form_opened`, `member_breakdown_opened`, `settlement_list_expanded`, and `settlement_list_view_all` events track which surfaces users reach and which forms they open, closing the funnel between intent and the existing create/save events.
+
+### Changed
+
+- Expense detail split breakdown clarity: Replaced the ambiguous `also paid` subtitle on split shares with exact per-person net impact indicators (`gets back X` in positive green, `owes X` in negative red, or `settled`).
+- Expense list pagination clarity: Group detail now shows a "Showing X of Y" caption above the list so the visible and total counts are explicit, and the expand button is labelled plainly "Show more" instead of a decrementing remaining count. The same fix applies to the settlements list and the scene report lists.
+
 ## [1.14.0] - 2026-09-29
 
 ### Added

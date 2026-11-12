@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "الأقدم أولاً",
   "groupsReportSortNewest": "الأحدث",
   "groupsReportSortOldest": "الأقدم",
-  "groupsReportShowMore": "عرض المزيد ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "عرض المزيد",
+  "groupsExpensesShowingOf": "عرض {shown} من {total}",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "حسب النسبة المئوية",
   "expensesSplitEqually": "تقسيم متساوٍ",
   "expensesSplitBreakdown": "تفصيل التقسيم",
+  "expensesWhoOwesWhomHeader": "من يدين لمن (لهذه النفقة)",
+  "expensesWhoOwesWhomHelp": "محسوبة لهذه النفقة فقط. يعكس رصيد المجموعة جميع النفقات.",
   "expensesNote": "ملاحظة",
   "expensesNoteHint": "ملاحظة اختيارية",
   "expensesSaveChanges": "حفظ التغييرات",
   "expensesSaveExpense": "حفظ النفقة",
   "expensesSubtitlePaid": "دفع",
   "expensesSubtitleAlsoPaid": "دفع أيضًا",
+  "expensesNetGetsBack": "يسترد {amount}",
+  "expensesNetOwes": "يدين بـ {amount}",
+  "expensesNetSettled": "تمت التسوية",
+  "expensesShareTooltip": "مشاركة النفقة",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "التسوية",
+  "expensesShareSharedVia": "تمت المشاركة عبر SceneSplit",
   "expensesPaymentExceeds": "يجب ألا يتجاوز كل دفع {amount}",
   "expensesEnterValidPayments": "أدخل مبالغ دفع صالحة",
   "expensesOverBy": "زيادة بمقدار {amount}",

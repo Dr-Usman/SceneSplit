@@ -651,8 +651,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupsReportSortOldest => 'الأقدم';
 
   @override
-  String groupsReportShowMore(int remaining) {
-    return 'عرض المزيد ($remaining)';
+  String get groupsReportShowMore => 'عرض المزيد';
+
+  @override
+  String groupsExpensesShowingOf(int shown, int total) {
+    return 'عرض $shown من $total';
   }
 
   @override
@@ -870,6 +873,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get expensesSplitBreakdown => 'تفصيل التقسيم';
 
   @override
+  String get expensesWhoOwesWhomHeader => 'من يدين لمن (لهذه النفقة)';
+
+  @override
+  String get expensesWhoOwesWhomHelp =>
+      'محسوبة لهذه النفقة فقط. يعكس رصيد المجموعة جميع النفقات.';
+
+  @override
   String get expensesNote => 'ملاحظة';
 
   @override
@@ -886,6 +896,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get expensesSubtitleAlsoPaid => 'دفع أيضًا';
+
+  @override
+  String expensesNetGetsBack(String amount) {
+    return 'يسترد $amount';
+  }
+
+  @override
+  String expensesNetOwes(String amount) {
+    return 'يدين بـ $amount';
+  }
+
+  @override
+  String get expensesNetSettled => 'تمت التسوية';
+
+  @override
+  String get expensesShareTooltip => 'مشاركة النفقة';
+
+  @override
+  String expensesShareSubject(String title, String groupName) {
+    return '$title — $groupName';
+  }
+
+  @override
+  String get expensesShareSettlementHeader => 'التسوية';
+
+  @override
+  String get expensesShareSharedVia => 'تمت المشاركة عبر SceneSplit';
 
   @override
   String expensesPaymentExceeds(String amount) {

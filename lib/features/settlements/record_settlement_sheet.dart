@@ -18,6 +18,7 @@ import '../../services/balance_service.dart';
 const kSettlementSourceSceneDetail = 'scene_detail';
 const kSettlementSourceBalancesPair = 'balances_pair';
 const kSettlementSourcePersonDetail = 'person_detail';
+const kSettlementSourceExpenseDetail = 'expense_detail';
 
 Future<void> showRecordSettlementSheet(
   BuildContext context, {
@@ -113,6 +114,16 @@ class _RecordSettlementSheetState
       }
     }
     _amountController.addListener(() => setState(() {}));
+    final analytics = ref.read(analyticsServiceProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      analytics.trackSettlementFormOpened(
+        groupId: widget.groupId,
+        groupName: widget.groupName,
+        mode: _isEditing ? 'edit' : 'create',
+        source: widget.analyticsSource,
+        hadPrefill: widget.prefill != null,
+      );
+    });
   }
 
   @override

@@ -17,6 +17,7 @@ class OpenDebtTile extends StatelessWidget {
     this.showDecimals = true,
     this.subtitle,
     this.showAvatars = false,
+    this.showDebtorAvatar = false,
     this.onTap,
   });
 
@@ -27,6 +28,7 @@ class OpenDebtTile extends StatelessWidget {
   final bool showDecimals;
   final String? subtitle;
   final bool showAvatars;
+  final bool showDebtorAvatar;
   final VoidCallback? onTap;
 
   @override
@@ -51,7 +53,14 @@ class OpenDebtTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
         child: Row(
           children: [
-            if (showAvatars) ...[
+            if (showDebtorAvatar) ...[
+              UserAvatar(
+                name: from,
+                colorIndex: fromUser?.colorIndex ?? 0,
+                size: 36,
+              ),
+              const SizedBox(width: 12),
+            ] else if (showAvatars) ...[
               UserAvatar(
                 name: from,
                 colorIndex: fromUser?.colorIndex ?? 0,

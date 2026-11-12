@@ -221,10 +221,14 @@
   "groupsReportSortDateAsc": "古い順",
   "groupsReportSortNewest": "新しい順",
   "groupsReportSortOldest": "古い順",
-  "groupsReportShowMore": "さらに表示 ({remaining})",
-  "@groupsReportShowMore": {
+  "groupsReportShowMore": "さらに表示",
+  "groupsExpensesShowingOf": "{total} 件中 {shown} 件を表示",
+  "@groupsExpensesShowingOf": {
     "placeholders": {
-      "remaining": {
+      "shown": {
+        "type": "int"
+      },
+      "total": {
         "type": "int"
       }
     }
@@ -334,12 +338,21 @@
   "expensesSplitByPercentage": "割合指定",
   "expensesSplitEqually": "均等に分割",
   "expensesSplitBreakdown": "分割の内訳",
+  "expensesWhoOwesWhomHeader": "誰が誰に支払うか（この支出）",
+  "expensesWhoOwesWhomHelp": "この支出のみの計算です。グループ全体の残高はすべての支出を反映します。",
   "expensesNote": "メモ",
   "expensesNoteHint": "任意のメモ",
   "expensesSaveChanges": "変更を保存",
   "expensesSaveExpense": "経費を保存",
   "expensesSubtitlePaid": "が支払い",
   "expensesSubtitleAlsoPaid": "も支払い",
+  "expensesNetGetsBack": "{amount} を受け取る",
+  "expensesNetOwes": "{amount} を支払う",
+  "expensesNetSettled": "精算済み",
+  "expensesShareTooltip": "経費を共有",
+  "expensesShareSubject": "{title} — {groupName}",
+  "expensesShareSettlementHeader": "精算",
+  "expensesShareSharedVia": "SceneSplit で共有",
   "expensesPaymentExceeds": "各支払いは {amount} を超えられません",
   "expensesEnterValidPayments": "有効な支払金額を入力してください",
   "expensesOverBy": "{amount} 超過",

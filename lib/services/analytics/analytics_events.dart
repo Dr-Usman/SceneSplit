@@ -14,6 +14,8 @@ abstract final class AnalyticsEvents {
   static const groupCreated = 'group_created';
   static const groupEdited = 'group_edited';
   static const groupDeleted = 'group_deleted';
+  static const groupDetailOpened = 'group_detail_opened';
+  static const groupFormOpened = 'group_form_opened';
 
   // 3. Expenses (CRUD) & Calculator
   static const expenseCreated = 'expense_created';
@@ -21,11 +23,20 @@ abstract final class AnalyticsEvents {
   static const expenseDeleted = 'expense_deleted';
   static const calculatorUsed = 'calculator_used';
   static const expensesShared = 'expenses_shared';
+  static const expenseShared = 'expense_shared';
+  static const expenseListExpanded = 'expense_list_expanded';
+  static const expenseListViewAll = 'expense_list_view_all';
+  static const expenseDetailOpened = 'expense_detail_opened';
+  static const expenseFormOpened = 'expense_form_opened';
+  static const memberBreakdownOpened = 'member_breakdown_opened';
 
   // 4. Settlements (CRUD)
   static const settlementCreated = 'settlement_created';
   static const settlementEdited = 'settlement_edited';
   static const settlementDeleted = 'settlement_deleted';
+  static const settlementFormOpened = 'settlement_form_opened';
+  static const settlementListExpanded = 'settlement_list_expanded';
+  static const settlementListViewAll = 'settlement_list_view_all';
 
   // 5. Scene Reports
   static const reportOpened = 'report_opened';
@@ -58,7 +69,7 @@ abstract final class AnalyticsEvents {
   static const termsOfServiceOpened = 'terms_of_service_opened';
   static const moreAppsClicked = 'more_apps_clicked';
 
-  /// Complete integrated catalog of all 39 events organized by functional domain.
+  /// Complete integrated catalog of all 50 events organized by functional domain.
   static const List<String> all = [
     // 1. App Lifecycle & Onboarding
     appOpened,
@@ -71,6 +82,8 @@ abstract final class AnalyticsEvents {
     groupCreated,
     groupEdited,
     groupDeleted,
+    groupDetailOpened,
+    groupFormOpened,
 
     // 3. Expenses & Calculator
     expenseCreated,
@@ -78,11 +91,20 @@ abstract final class AnalyticsEvents {
     expenseDeleted,
     calculatorUsed,
     expensesShared,
+    expenseShared,
+    expenseListExpanded,
+    expenseListViewAll,
+    expenseDetailOpened,
+    expenseFormOpened,
+    memberBreakdownOpened,
 
     // 4. Settlements
     settlementCreated,
     settlementEdited,
     settlementDeleted,
+    settlementFormOpened,
+    settlementListExpanded,
+    settlementListViewAll,
 
     // 5. Scene Reports
     reportOpened,

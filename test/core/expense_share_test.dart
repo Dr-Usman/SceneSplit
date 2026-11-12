@@ -520,5 +520,47 @@ void main() {
       expect(filtered.length, 1);
       expect(filtered.first.id, 's1');
     });
+
+    test('formatSingleExpenseText formats single expense cleanly', () {
+      final dinner = ExpenseWithSplits(
+        expense: expense(
+          id: 'e1',
+          title: 'Saudi Broast',
+          date: DateTime(2026, 11, 7),
+          amountCents: 273000,
+        ),
+        payers: [
+          payer(expenseId: 'e1', userId: 'alex', amountCents: 214000),
+          payer(expenseId: 'e1', userId: 'sam', amountCents: 59000),
+        ],
+        splits: [
+          split(expenseId: 'e1', userId: 'alex', amountCents: 136500),
+          split(expenseId: 'e1', userId: 'sam', amountCents: 136500),
+        ],
+      );
+
+      final text = formatSingleExpenseText(
+        item: dinner,
+        groupName: 'Foodies',
+        groupEmoji: '🍗',
+        currencyCode: 'PKR',
+        userNames: names,
+        l10n: l10n,
+        locale: locale,
+        showDecimals: false,
+      );
+
+      expect(text, contains('🍗 Saudi Broast'));
+      expect(text, contains('Rs 2,730 · Foodies'));
+      expect(text, contains('PAID BY'));
+      expect(text, contains('• Alex: Rs 2,140'));
+      expect(text, contains('• Sam: Rs 590'));
+      expect(text, contains('SPLIT BREAKDOWN'));
+      expect(text, contains('• Alex: Rs 1,365 (gets back Rs 775)'));
+      expect(text, contains('• Sam: Rs 1,365 (owes Rs 775)'));
+      expect(text, contains('SETTLEMENT'));
+      expect(text, contains('Sam owes Alex Rs 775'));
+      expect(text, contains('Shared via SceneSplit'));
+    });
   });
 }
